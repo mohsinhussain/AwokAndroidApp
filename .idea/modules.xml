@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Awok.iml" filepath="$PROJECT_DIR$/Awok.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mp-android.iml" filepath="$PROJECT_DIR$/mp-android.iml" />
     </modules>
   </component>
 </project>
