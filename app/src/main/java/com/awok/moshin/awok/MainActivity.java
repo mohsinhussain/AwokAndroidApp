@@ -60,14 +60,6 @@ private DrawerLayout mDrawerLayout;
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(viewPager);
-
-
-
-
-
-
-
-
     }
 
 
@@ -145,7 +137,7 @@ private DrawerLayout mDrawerLayout;
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new Home_Fragment(), "Hot Deals");
+        adapter.addFragment(new HotDealsFragment(), "Hot Deals");
         adapter.addFragment(new Home_Fragment(), "Categories");
         adapter.addFragment(new Home_Fragment(), "Daily Deals");
         adapter.addFragment(new Home_Fragment(), "Weekly Best Sellers");
