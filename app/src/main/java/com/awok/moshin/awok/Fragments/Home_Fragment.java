@@ -1,4 +1,4 @@
-package com.awok.moshin.awok;
+package com.awok.moshin.awok.Fragments;
 
 
 import android.app.Activity;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.awok.moshin.awok.R;
 
 public class Home_Fragment extends Fragment {
 
