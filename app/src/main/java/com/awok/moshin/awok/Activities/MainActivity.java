@@ -1,7 +1,5 @@
-package com.awok.moshin.awok;
+package com.awok.moshin.awok.Activities;
 
-import android.app.Dialog;
-import android.graphics.Typeface;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,18 +12,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.awok.moshin.awok.Fragments.BundleOffersFragment;
+import com.awok.moshin.awok.Fragments.CategoriesFragment;
+import com.awok.moshin.awok.Fragments.DailyDealsFragment;
+import com.awok.moshin.awok.Fragments.Home_Fragment;
+import com.awok.moshin.awok.Fragments.HotDealsFragment;
+import com.awok.moshin.awok.Fragments.WeeklyBestSellersFragment;
+import com.awok.moshin.awok.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,10 +134,10 @@ private DrawerLayout mDrawerLayout;
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new HotDealsFragment(), "Hot Deals");
-        adapter.addFragment(new Home_Fragment(), "Categories");
-        adapter.addFragment(new Home_Fragment(), "Daily Deals");
-        adapter.addFragment(new Home_Fragment(), "Weekly Best Sellers");
-        adapter.addFragment(new Home_Fragment(), "Bundle Offers");
+        adapter.addFragment(new CategoriesFragment(), "Categories");
+        adapter.addFragment(new DailyDealsFragment(), "Daily Deals");
+        adapter.addFragment(new WeeklyBestSellersFragment(), "Weekly Best Sellers");
+        adapter.addFragment(new BundleOffersFragment(), "Bundle Offers");
 
 
 
