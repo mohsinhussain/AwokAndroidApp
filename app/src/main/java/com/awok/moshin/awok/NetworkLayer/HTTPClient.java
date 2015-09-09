@@ -90,11 +90,11 @@ public class HTTPClient{
 
 //	public void fetchRequestToken() throws IOException
 //	{
-		String authString = "OAuth realm=\"\"," +
-				" oauth_nonce=\"" + getNonce() + "\"," +
-				" oauth_timestamp=\"" + getTimestamp() + "\"," +
-				" oauth_consumer_key=\"website\", oauth_signature_method=\"PLAINTEXT\", oauth_version=\"1.0\"," + "" +
-				" oauth_signature=\"websitesecret_%2524M%2523%2540LL-178%26\", oauth_callback=\"http%3A%2F%2Flocalhost%3A8000%2Fready\"";
+//		String authString = "OAuth realm=\"\"," +
+//				" oauth_nonce=\"" + getNonce() + "\"," +
+//				" oauth_timestamp=\"" + getTimestamp() + "\"," +
+//				" oauth_consumer_key=\"website\", oauth_signature_method=\"PLAINTEXT\", oauth_version=\"1.0\"," + "" +
+//				" oauth_signature=\"websitesecret_%2524M%2523%2540LL-178%26\", oauth_callback=\"http%3A%2F%2Flocalhost%3A8000%2Fready\"";
 //
 //		URL url = new URL(Constants.API_SERVER_URL + REQUEST_TOKEN_URL);
 //
