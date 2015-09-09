@@ -39,7 +39,37 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.Person
     @Override
     public void onBindViewHolder(final PersonViewHolder holder, int i) {
         holder.nameTextView.setText(items.get(i).getName());
-        holder.priceTextView.setText(items.get(i).getPrice());
+        holder.priceTextView.setText(items.get(i).getPriceNew());
+
+        final int viewType = getItemViewType(i);
+        switch (viewType) {
+            case ITEM_WITH_DISCOUNT:
+                holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
+                holder.oldPriceTextView.setText(items.get(i).getPriceOld());
+                holder.endsInTextView.setText("Ends in " + items.get(i).getH() + "h " + items.get(i).getI() + "m " + items.get(i).getS() + "s");
+                break;
+            case ITEM_WITHOUT_DISCOUNT:
+                holder.discountTextView.setVisibility(View.GONE);
+                holder.endsInTextView.setVisibility(View.GONE);
+                holder.oldPriceTextView.setVisibility(View.GONE);
+                break;
+            default:
+                // Blow up in whatever way you choose.
+        }
+
+
+
+        if(!items.get(i).getPriceOld().equalsIgnoreCase("0 AED")){
+            holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
+            holder.oldPriceTextView.setText(items.get(i).getPriceOld());
+            holder.endsInTextView.setText("Ends in "+items.get(i).getH()+"h "+items.get(i).getI()+"m "+items.get(i).getS()+"s");
+        }
+        else{
+            holder.discountTextView.setVisibility(View.GONE);
+            holder.endsInTextView.setVisibility(View.GONE);
+            holder.oldPriceTextView.setVisibility(View.GONE);
+        }
+
 
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
@@ -89,26 +119,46 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.Person
 
 
     List<Items> items;
+    public static final int ITEM_WITH_DISCOUNT = 1;
+    public static final int ITEM_WITHOUT_DISCOUNT = 2;
 
     public HotDealsAdapter(Context context, List<Items> items){
         this.mContext = context;
         this.items = items;
     }
 
+
+    @Override
+    public int getItemViewType(int position) {
+        if (!items.get(position).getPriceOld().equalsIgnoreCase("0 AED")) {
+            return ITEM_WITH_DISCOUNT;
+        }
+        else{
+            return ITEM_WITHOUT_DISCOUNT;
+        }
+    }
+
+
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
         CardView mCardView;
         TextView nameTextView;
         TextView priceTextView;
+        TextView oldPriceTextView;
+        TextView discountTextView;
         ImageView itemImageView;
         LinearLayout container;
+        TextView endsInTextView;
 
 
         PersonViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView)itemView.findViewById(R.id.cv);
-            nameTextView = (TextView)itemView.findViewById(R.id.person_name);
-            priceTextView = (TextView)itemView.findViewById(R.id.person_age);
-            itemImageView = (ImageView)itemView.findViewById(R.id.person_photo);
+            nameTextView = (TextView)itemView.findViewById(R.id.nameTextView);
+            priceTextView = (TextView)itemView.findViewById(R.id.priceTextView);
+            oldPriceTextView = (TextView)itemView.findViewById(R.id.oldPriceTextView);
+            discountTextView = (TextView)itemView.findViewById(R.id.percentTextView);
+            endsInTextView = (TextView)itemView.findViewById(R.id.endsInTextView);
+            itemImageView = (ImageView)itemView.findViewById(R.id.itemImageView);
             container = (LinearLayout) itemView.findViewById(R.id.parentPanel);
         }
     }
