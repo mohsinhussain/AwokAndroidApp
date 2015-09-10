@@ -3,6 +3,7 @@ package com.awok.moshin.awok.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.awok.moshin.awok.Adapters.HotDealsAdapter;
 import com.awok.moshin.awok.Models.Person;
@@ -33,13 +35,15 @@ public class WeeklyBestSellersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_hot_deals, container, false);
-        mRecyclerView = (RecyclerView) mView.findViewById(R.id.dealsRecyclerView);
+        mView = inflater.inflate(R.layout.product_detail_page, container, false);
+        //TextView b=(TextView)mView.findViewById(R.id.button3);
+        //b.setPaintFlags(b.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG );
+        /*mRecyclerView = (RecyclerView) mView.findViewById(R.id.dealsRecyclerView);
 
         mRecyclerView.setHasFixedSize(true);
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(mLayoutManager);*/
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

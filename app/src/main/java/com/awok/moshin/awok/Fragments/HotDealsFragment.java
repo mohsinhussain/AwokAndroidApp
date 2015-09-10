@@ -116,8 +116,9 @@ public class HotDealsFragment extends Fragment {
 //                result = URLDecoder.decode(result);
 
 //                String text = "foo";
-                char a_char = result.charAt(499);
-                System.out.println(a_char ); // Prints f
+//                char a_char = result.charAt(499);
+           //
+           //     System.out.println(a_char ); // Prints f
 
 
                 JSONObject obj = new JSONObject(result);
