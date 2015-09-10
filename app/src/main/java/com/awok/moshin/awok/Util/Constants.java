@@ -10,4 +10,6 @@ public class Constants {
     public static Integer Exception = -1;
     public static String connectionTimeOutMessage = "Internet Connection is Slow!";
     public static String JSON_PRODUCT_LIST_NAME = "PRODUCTS";
+    public static String JSON_CATEGORY_LIST_NAME = "CATEGORIES";
+
 }

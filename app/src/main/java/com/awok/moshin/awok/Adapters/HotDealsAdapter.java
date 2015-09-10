@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.awok.moshin.awok.AppController;
-import com.awok.moshin.awok.Models.Items;
+import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.R;
 
 import java.util.List;
@@ -24,20 +24,20 @@ import java.util.List;
 /**
  * Created by moshin on 9/6/2015.
  */
-public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.PersonViewHolder>{
+public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemViewHolder>{
 
     private int lastPosition = -1;
     private Context mContext;
 
     @Override
-    public PersonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
-        PersonViewHolder pvh = new PersonViewHolder(v);
+        ItemViewHolder pvh = new ItemViewHolder(v);
         return pvh;
     }
 
     @Override
-    public void onBindViewHolder(final PersonViewHolder holder, int i) {
+    public void onBindViewHolder(final ItemViewHolder holder, int i) {
         holder.nameTextView.setText(items.get(i).getName());
         holder.priceTextView.setText(items.get(i).getPriceNew());
 
@@ -118,11 +118,11 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.Person
     }
 
 
-    List<Items> items;
+    List<Products> items;
     public static final int ITEM_WITH_DISCOUNT = 1;
     public static final int ITEM_WITHOUT_DISCOUNT = 2;
 
-    public HotDealsAdapter(Context context, List<Items> items){
+    public HotDealsAdapter(Context context, List<Products> items){
         this.mContext = context;
         this.items = items;
     }
@@ -139,7 +139,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.Person
     }
 
 
-    public static class PersonViewHolder extends RecyclerView.ViewHolder {
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
         CardView mCardView;
         TextView nameTextView;
         TextView priceTextView;
@@ -150,7 +150,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.Person
         TextView endsInTextView;
 
 
-        PersonViewHolder(View itemView) {
+        ItemViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView)itemView.findViewById(R.id.cv);
             nameTextView = (TextView)itemView.findViewById(R.id.nameTextView);

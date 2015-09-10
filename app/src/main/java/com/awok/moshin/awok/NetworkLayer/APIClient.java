@@ -33,9 +33,15 @@ public class APIClient {
 
     }
 
-    public void testAPICall() {
+    public void productsAPICall() {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, Constants.API_SERVER_URL, "GET", null);
+        mTask.execute(mContext, Constants.API_SERVER_URL+"product/", "GET", null);
+    }
+
+
+    public void categoriesAPICall() {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, Constants.API_SERVER_URL+"category/", "GET", null);
     }
 
 

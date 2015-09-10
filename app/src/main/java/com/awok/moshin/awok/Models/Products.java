@@ -4,7 +4,7 @@ package com.awok.moshin.awok.Models;
  * Created by moshin on 9/7/2015.
  */
 
-public class Items {
+public class Products {
 
     String id;
     String name;
@@ -22,11 +22,11 @@ public class Items {
     int inDays;
     int endTime;
 
-    public Items() {
+    public Products() {
     }
 
-    public Items(String id, String name, String image, int priceNew, int priceOld, int discount, int discPercent, String y, String m,
-                 String d, String h, String i, String s, int inDays, int endTime) {
+    public Products(String id, String name, String image, int priceNew, int priceOld, int discount, int discPercent, String y, String m,
+                    String d, String h, String i, String s, int inDays, int endTime) {
         this.id = id;
         this.name = name;
         this.image = image;
