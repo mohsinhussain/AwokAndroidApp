@@ -4,18 +4,25 @@ package com.awok.moshin.awok.Models;
  * Created by moshin on 9/7/2015.
  */
 
-public class Items {
+public class Categories {
 
     String id;
     String name;
+    String sort;
     String image;
-    String price;
+    String depthLevel;
 
-    public Items(String id, String name, String image, String price){
+
+    public Categories() {
+    }
+
+    public Categories(String id, String name, String sort, String image, String depthLevel) {
         this.id = id;
         this.name = name;
         this.image = image;
-        this.price = price;
+        this.sort = sort;
+        this.depthLevel = depthLevel;
+
     }
 
     public String getId() {
@@ -34,6 +41,14 @@ public class Items {
         this.name = name;
     }
 
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
     public String getImage() {
         return image;
     }
@@ -42,11 +57,11 @@ public class Items {
         this.image = image;
     }
 
-    public String getPrice() {
-        return price;
+    public String getDepthLevel() {
+        return depthLevel;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setDepthLevel(String depthLevel) {
+        this.depthLevel = depthLevel;
     }
 }
