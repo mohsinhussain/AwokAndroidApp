@@ -36,7 +36,7 @@ public class ProductOverViewFragment extends Fragment {
     /**
      * Created by shon on 9/10/2015.
      */
-    public class product_test_frag extends Fragment {
+
         private RecyclerView mRecyclerView;
         private RecyclerView.Adapter mAdapter;
         private RecyclerView.LayoutManager mLayoutManager;
@@ -85,19 +85,20 @@ public class ProductOverViewFragment extends Fragment {
 
 
             int i=0;
-            for(i=0;i<=20;i++)
+            for(i=0;i<=4;i++)
             {
                 ProductOverview listData=new ProductOverview();
-                listData.setOverViewText("Spec" + " " + i);
-                listData.setOverViewTitle("VALUES" + " " + i);
+                listData.setOverViewText(getResources().getString(R.string.body_txt));
+                listData.setOverViewTitle(getResources().getString(R.string.head_txt));
 
                 overViewList.add(listData);
 
             }
+            System.out.println("COOL"+overViewList.toString());
             mAdapter.notifyDataSetChanged();
 
             return mView;
         }
 
     }
-}
+

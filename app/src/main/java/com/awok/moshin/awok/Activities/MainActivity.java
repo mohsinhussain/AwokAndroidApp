@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,10 +95,12 @@ private DrawerLayout mDrawerLayout;
                     case R.id.nav_discussion:
                         /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
                         startActivity(i);*/
-
-                        Intent i=new Intent(getApplicationContext(),ProductDetailsView.class);
+                        //mDrawerLayout.closeDrawers();
+                        Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
                         startActivity(i);
-                        mDrawerLayout.closeDrawers();
+
+                        mDrawerLayout.closeDrawer(Gravity.LEFT);
+
                         return true;
 
 

@@ -31,6 +31,7 @@ import com.awok.moshin.awok.Fragments.DailyDealsFragment;
 import com.awok.moshin.awok.Fragments.HotDealsFragment;
 import com.awok.moshin.awok.Fragments.ProductOverViewFragment;
 import com.awok.moshin.awok.Fragments.ProductSpecificationFragment;
+import com.awok.moshin.awok.Fragments.RelatedProductsFragment;
 import com.awok.moshin.awok.Fragments.WeeklyBestSellersFragment;
 import com.awok.moshin.awok.Fragments.product_test_frag;
 import com.awok.moshin.awok.R;
@@ -62,26 +63,29 @@ public class ProductDetailsView extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
         final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+       // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+        //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle("Mobiles");
 
 
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+       /* NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
-        }
+        }*/
 
 
 
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+      // // CollapsingToolbarLayout collapsingToolbar =
+     //  //         (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         //collapsingToolbar.setExpandedTitleColor(Color.parseColor("#3e3e3e"));
 
-        //collapsingToolbar.setTitle("Mobiles");
-        collapsingToolbar.setTitleEnabled(false);
+    //    //collapsingToolbar.setTitle("Mobiles");
+//        collapsingToolbar.setTitleEnabled(false);
 
         /*FloatingActionButton floatButton=(FloatingActionButton)findViewById(R.id.floatButton);
         floatButton.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +115,8 @@ public class ProductDetailsView extends AppCompatActivity{
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -143,7 +148,7 @@ public class ProductDetailsView extends AppCompatActivity{
         adapter.addFragment(new product_test_frag(), "Overview");
         adapter.addFragment(new ProductSpecificationFragment(), "Specifications");
         adapter.addFragment(new ProductOverViewFragment(), "Description");
-        adapter.addFragment(new product_test_frag(), "Related Products");
+        adapter.addFragment(new RelatedProductsFragment(), "Related Products");
 
 
 
