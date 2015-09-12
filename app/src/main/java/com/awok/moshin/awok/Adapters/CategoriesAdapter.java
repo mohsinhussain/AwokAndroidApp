@@ -66,7 +66,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         }
 
 
-        setAnimation(holder.container, i);
+//        setAnimation(holder.container, i);
     }
 
     @Override

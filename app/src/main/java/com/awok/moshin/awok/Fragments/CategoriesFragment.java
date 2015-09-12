@@ -2,6 +2,7 @@ package com.awok.moshin.awok.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 
+import com.awok.moshin.awok.Activities.SubCategoriesActivity;
 import com.awok.moshin.awok.Adapters.CategoriesAdapter;
 import com.awok.moshin.awok.Models.Categories;
 import com.awok.moshin.awok.Models.Products;
@@ -24,6 +26,7 @@ import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
+import com.awok.moshin.awok.Util.RecyclerItemClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +41,7 @@ public class CategoriesFragment extends Fragment {
     View mView;
     ProgressBar progressBar;
     ArrayList<Categories> categoriesArrayList;
-    private String TAG = "Categories Fragment";
+    private String TAG = "Sub Fragment";
     public CategoriesFragment(){}
 
 
@@ -54,7 +57,16 @@ public class CategoriesFragment extends Fragment {
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
+                        subCatIntent.putExtra(Constants.SUBCAT_TITLE_INTENT, categoriesArrayList.get(position).getName());
+                        startActivity(subCatIntent);
+                    }
+                })
+        );
 
         categoriesArrayList = new ArrayList<Categories>();
 

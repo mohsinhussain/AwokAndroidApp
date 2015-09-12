@@ -59,16 +59,16 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 
 
 
-        if(!items.get(i).getPriceOld().equalsIgnoreCase("0 AED")){
-            holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
-            holder.oldPriceTextView.setText(items.get(i).getPriceOld());
-            holder.endsInTextView.setText("Ends in "+items.get(i).getH()+"h "+items.get(i).getI()+"m "+items.get(i).getS()+"s");
-        }
-        else{
-            holder.discountTextView.setVisibility(View.GONE);
-            holder.endsInTextView.setVisibility(View.GONE);
-            holder.oldPriceTextView.setVisibility(View.GONE);
-        }
+//        if(!items.get(i).getPriceOld().equalsIgnoreCase("0 AED")){
+//            holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
+//            holder.oldPriceTextView.setText(items.get(i).getPriceOld());
+//            holder.endsInTextView.setText("Ends in "+items.get(i).getH()+"h "+items.get(i).getI()+"m "+items.get(i).getS()+"s");
+//        }
+//        else{
+//            holder.discountTextView.setVisibility(View.GONE);
+//            holder.endsInTextView.setVisibility(View.GONE);
+//            holder.oldPriceTextView.setVisibility(View.GONE);
+//        }
 
 
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
@@ -90,7 +90,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
             }
         });
 
-        setAnimation(holder.container, i);
+//        setAnimation(holder.container, i);
     }
 
     @Override
