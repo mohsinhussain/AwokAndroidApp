@@ -72,7 +72,6 @@ public class APIClient {
                 if (parameters[METHOD_INDEX] == "POST") {
                     if (parameters[PARAMS_INDEX] instanceof HashMap) {
                         postResponse = client.post(url, params);
-
                     }
                     return postResponse;
 
