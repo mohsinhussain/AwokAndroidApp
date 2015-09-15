@@ -1,35 +1,37 @@
 package com.awok.moshin.awok.Models;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by moshin on 9/7/2015.
  */
 
-public class Categories {
+public class Categories implements Serializable {
 
-    String id;
+    int id;
     String name;
-    String sort;
     String image;
-    String depthLevel;
+    int parentId;
+    int depthLevel;
 
 
     public Categories() {
     }
 
-    public Categories(String id, String name, String sort, String image, String depthLevel) {
+    public Categories(int id, String name, int parentId, String image, int depthLevel) {
         this.id = id;
         this.name = name;
         this.image = image;
-        this.sort = sort;
+        this.parentId = parentId;
         this.depthLevel = depthLevel;
-
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -41,12 +43,12 @@ public class Categories {
         this.name = name;
     }
 
-    public String getSort() {
-        return sort;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setSort(String sort) {
-        this.sort = sort;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public String getImage() {
@@ -57,11 +59,11 @@ public class Categories {
         this.image = image;
     }
 
-    public String getDepthLevel() {
+    public int getDepthLevel() {
         return depthLevel;
     }
 
-    public void setDepthLevel(String depthLevel) {
+    public void setDepthLevel(int depthLevel) {
         this.depthLevel = depthLevel;
     }
 }

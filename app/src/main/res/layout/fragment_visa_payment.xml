@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/fullNameOnCardTextView"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="@string/full_name_on_card"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/fullNameOnCardEditText"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/fullNameOnCardTextView"
+        />
+
+
+    <TextView
+        android:id="@+id/cardNumberTextView"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="@string/card_number"
+        android:layout_below="@+id/fullNameOnCardEditText"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/cardNumberMessageTextView"
+        android:textSize="14sp"
+        android:textColor="#aaa"
+        android:text="@string/card_digits"
+        android:layout_below="@+id/fullNameOnCardEditText"
+        android:layout_toRightOf="@+id/cardNumberTextView"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/cardNumberEditText"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/cardNumberTextView"
+        />
+
+
+    <TextView
+        android:id="@+id/CCVTextView"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="@string/cvv"
+        android:layout_below="@+id/cardNumberEditText"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/CCVEditText"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        android:layout_alignRight="@+id/CCVTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_below="@+id/CCVTextView"
+        />
+
+    <TextView
+        android:id="@+id/ccvMessageTextView"
+        android:textSize="14sp"
+        android:textColor="#aaa"
+        android:text="@string/last_digits_displayed"
+        android:layout_below="@+id/CCVEditText"
+        android:layout_margin="10dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:padding="5dp"
+        android:text="@string/next"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:background="#C81E2B"
+        android:layout_below="@+id/ccvMessageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </RelativeLayout>

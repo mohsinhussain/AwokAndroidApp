@@ -11,6 +11,10 @@ public class Constants {
     public static String connectionTimeOutMessage = "Internet Connection is Slow!";
     public static String JSON_PRODUCT_LIST_NAME = "PRODUCTS";
     public static String JSON_CATEGORY_LIST_NAME = "CATEGORIES";
-    public static String SUBCAT_TITLE_INTENT = "subcategoryTitleIntent";
+    public static String CAT_ARRAY_INTENT = "categoryArrayListIntent";
+    public static String CAT_PARENT_ID_INTENT = "catParentIdIntent";
+    public static String CAT_ID_INTENT = "catIdIntent";
+    public static String CAT_DEPTH_LEVEL_INTENT = "catDepthLevelIntent";
+    public static String CAT_NAME_INTENT = "catNameIntent";
 
 }
