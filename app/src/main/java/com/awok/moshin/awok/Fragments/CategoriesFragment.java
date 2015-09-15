@@ -32,7 +32,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriesFragment extends Fragment {
 
@@ -40,7 +42,8 @@ public class CategoriesFragment extends Fragment {
     CategoriesAdapter mAdapter;
     View mView;
     ProgressBar progressBar;
-    ArrayList<Categories> categoriesArrayList;
+    List<Categories> categoriesArrayList;
+    ArrayList<Categories> localCategoriesArrayList;
     private String TAG = "Sub Fragment";
     public CategoriesFragment(){}
 
@@ -55,6 +58,8 @@ public class CategoriesFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
         mRecyclerView.setHasFixedSize(true);
 
+        categoriesArrayList = new ArrayList<Categories>();
+
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addOnItemTouchListener(
@@ -62,13 +67,17 @@ public class CategoriesFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
-                        subCatIntent.putExtra(Constants.SUBCAT_TITLE_INTENT, categoriesArrayList.get(position).getName());
+                        subCatIntent.putExtra(Constants.CAT_ARRAY_INTENT, (Serializable) categoriesArrayList);
+                        subCatIntent.putExtra(Constants.CAT_DEPTH_LEVEL_INTENT, localCategoriesArrayList.get(position).getDepthLevel());
+                        subCatIntent.putExtra(Constants.CAT_PARENT_ID_INTENT, localCategoriesArrayList.get(position).getParentId());
+                        subCatIntent.putExtra(Constants.CAT_NAME_INTENT, localCategoriesArrayList.get(position).getName());
+                        subCatIntent.putExtra(Constants.CAT_ID_INTENT, localCategoriesArrayList.get(position).getId());
                         startActivity(subCatIntent);
                     }
                 })
         );
 
-        categoriesArrayList = new ArrayList<Categories>();
+
 
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -94,9 +103,9 @@ public class CategoriesFragment extends Fragment {
 
                 for(int i=0;i<length;i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        categoriesArrayList.add(new Categories(jsonObject.getInt("ID"), jsonObject.getString("NAME"), jsonObject.getInt("PARENT_ID"), jsonObject.getString("IMAGE"),
+                                 jsonObject.getInt("DEPTH_LEVEL")));
 
-                    categoriesArrayList.add(new Categories(jsonObject.getString("ID"), jsonObject.getString("NAME"), jsonObject.getString("SORT"), jsonObject.getString("IMAGE"),
-                            jsonObject.getString("DEPTH_LEVEL")));
                 }
 
                 if(getActivity()!=null){
@@ -125,7 +134,14 @@ public class CategoriesFragment extends Fragment {
 
 
     private void initializeData(){
-        mAdapter = new CategoriesAdapter(getActivity(), categoriesArrayList);
+        localCategoriesArrayList = new ArrayList<Categories>();
+        int size = categoriesArrayList.size();
+        for (int i=0;i<size;i++){
+            if (categoriesArrayList.get(i).getParentId()==0){
+                localCategoriesArrayList.add(categoriesArrayList.get(i));
+            }
+        }
+        mAdapter = new CategoriesAdapter(getActivity(), localCategoriesArrayList);
         mRecyclerView.setAdapter(mAdapter);
     }
 

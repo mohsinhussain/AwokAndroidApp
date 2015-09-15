@@ -57,6 +57,12 @@ private DrawerLayout mDrawerLayout;
     CategoriesAdapter mAdapter;
     ProgressBar progressBar;
     ArrayList<Categories> categoriesArrayList;
+    ArrayList<Categories> localCategoriesArrayList;
+    int depthLevel = 2;
+    int parentId = 0;
+    String name;
+    int id;
+    ActionBar ab;
     private String TAG = "Categories Fragment";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +71,10 @@ private DrawerLayout mDrawerLayout;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final ActionBar ab = getSupportActionBar();
+        ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(getIntent().getExtras().getString(Constants.SUBCAT_TITLE_INTENT));
+        ab.setTitle(getIntent().getExtras().getString(Constants.CAT_NAME_INTENT));
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -90,28 +96,58 @@ private DrawerLayout mDrawerLayout;
                 new RecyclerItemClickListener(SubCategoriesActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-//                        Intent subCatIntent = new Intent(SubCategoriesActivity.this, SubCategoriesActivity.class);
-//                        subCatIntent.putExtra(Constants.SUBCAT_TITLE_INTENT, categoriesArrayList.get(position).getName());
-//                        startActivity(subCatIntent);
-                        Snackbar.make(SubCategoriesActivity.this.findViewById(android.R.id.content), "SubCat Clicked", Snackbar.LENGTH_LONG)
-                                .setActionTextColor(Color.RED)
-                                .show();
+
+                        name = localCategoriesArrayList.get(position).getName();
+                        parentId =localCategoriesArrayList.get(position).getParentId();
+                        id = localCategoriesArrayList.get(position).getId();
+                        depthLevel =localCategoriesArrayList.get(position).getDepthLevel();
+                        ab.setTitle(name);
+
+                        int size = categoriesArrayList.size();
+                        ArrayList<Categories> tempArray = new ArrayList<Categories>();
+                        for (int i=0;i<size;i++){
+                            if (categoriesArrayList.get(i).getParentId()==id){
+                                tempArray.add(categoriesArrayList.get(i));
+                            }
+                        }
+
+                        if (tempArray.size()==0){
+                            Snackbar.make(SubCategoriesActivity.this.findViewById(android.R.id.content), "Open Products Listing", Snackbar.LENGTH_SHORT)
+                    .setActionTextColor(Color.RED)
+                    .show();
+                        }
+                        else{
+                            localCategoriesArrayList.clear();
+                            localCategoriesArrayList.addAll(tempArray);
+                            tempArray.clear();
+                            mAdapter.notifyDataSetChanged();
+                            mRecyclerView.getLayoutManager().scrollToPosition(0);
+//                            mRecyclerView.smoothScrollToPosition(0);
+//                            mAdapter = new CategoriesAdapter(SubCategoriesActivity.this, localCategoriesArrayList);
+//                            mRecyclerView.setAdapter(mAdapter);
+                        }
+
+
                     }
                 })
         );
-
         categoriesArrayList = new ArrayList<Categories>();
+        categoriesArrayList = (ArrayList<Categories>)getIntent().getSerializableExtra(Constants.CAT_ARRAY_INTENT);
 
-        ConnectivityManager connMgr = (ConnectivityManager)
-                SubCategoriesActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(SubCategoriesActivity.this, SubCategoriesActivity.this,  new GetCategoriesCallback()).categoriesAPICall();
-        } else {
-            Snackbar.make(SubCategoriesActivity.this.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                    .setActionTextColor(Color.RED)
-                    .show();
-        }
+        initializeData();
+
+
+
+//        ConnectivityManager connMgr = (ConnectivityManager)
+//                SubCategoriesActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+//        if (networkInfo != null && networkInfo.isConnected()) {
+//            new APIClient(SubCategoriesActivity.this, SubCategoriesActivity.this,  new GetCategoriesCallback()).categoriesAPICall();
+//        } else {
+//            Snackbar.make(SubCategoriesActivity.this.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+//                    .setActionTextColor(Color.RED)
+//                    .show();
+//        }
 
 
 
@@ -154,51 +190,103 @@ private DrawerLayout mDrawerLayout;
         });
     }
 
-
-    public class GetCategoriesCallback extends AsyncCallback {
-        public void onTaskComplete(String response) {
-            try {
-                JSONObject mMembersJSON;
-                mMembersJSON = new JSONObject(response);
-                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_CATEGORY_LIST_NAME);
-                int length = jsonArray.length();
-
-                for(int i=0;i<length;i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                    categoriesArrayList.add(new Categories(jsonObject.getString("ID"), jsonObject.getString("NAME"), jsonObject.getString("SORT"), jsonObject.getString("IMAGE"),
-                            jsonObject.getString("DEPTH_LEVEL")));
+    @Override
+    public void onBackPressed() {
+        if (depthLevel==1){
+            super.onBackPressed();
+        }
+        else{
+            int size = categoriesArrayList.size();
+            for(int i=0;i<size;i++){
+                if(categoriesArrayList.get(i).getId()==parentId){
+                    name = categoriesArrayList.get(i).getName();
+                    parentId =categoriesArrayList.get(i).getParentId();
+                    id = categoriesArrayList.get(i).getId();
+                    depthLevel =categoriesArrayList.get(i).getDepthLevel();
+                    ab.setTitle(name);
+                    break;
                 }
-
-                if(SubCategoriesActivity.this!=null){
-                    Animation animation = AnimationUtils.loadAnimation(SubCategoriesActivity.this, android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
-                }
-                progressBar.setVisibility(View.GONE);
-                initializeData();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Snackbar.make(SubCategoriesActivity.this.findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
-                        .setActionTextColor(Color.RED)
-                        .show();
             }
+            ArrayList<Categories> tempArray = new ArrayList<Categories>();
+            for (int i=0;i<size;i++){
+                if (categoriesArrayList.get(i).getParentId()==id){
+                    tempArray.add(categoriesArrayList.get(i));
+                }
+            }
+                localCategoriesArrayList.clear();
+                localCategoriesArrayList.addAll(tempArray);
+                tempArray.clear();
+                mAdapter.notifyDataSetChanged();
+                mRecyclerView.getLayoutManager().scrollToPosition(0);
+//                            mRecyclerView.smoothScrollToPosition(0);
+//                            mAdapter = new CategoriesAdapter(SubCategoriesActivity.this, localCategoriesArrayList);
+//                            mRecyclerView.setAdapter(mAdapter);
+
         }
-        @Override
-        public void onTaskCancelled() {
-        }
-        @Override
-        public void onPreExecute() {
-            // TODO Auto-generated method stub
-            progressBar.setVisibility(View.VISIBLE);
-        }
+
     }
+
+
+    //    public class GetCategoriesCallback extends AsyncCallback {
+//        public void onTaskComplete(String response) {
+//            try {
+//                JSONObject mMembersJSON;
+//                mMembersJSON = new JSONObject(response);
+//                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_CATEGORY_LIST_NAME);
+//                int length = jsonArray.length();
+//
+//                for(int i=0;i<length;i++){
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+//
+//                    categoriesArrayList.add(new Categories(jsonObject.getString("ID"), jsonObject.getString("NAME"), jsonObject.getString("SORT"), jsonObject.getString("IMAGE"),
+//                            jsonObject.getString("DEPTH_LEVEL")));
+//                }
+//
+//                if(SubCategoriesActivity.this!=null){
+//                    Animation animation = AnimationUtils.loadAnimation(SubCategoriesActivity.this, android.R.anim.fade_out);
+//                    progressBar.startAnimation(animation);
+//                }
+//                progressBar.setVisibility(View.GONE);
+//                initializeData();
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                Snackbar.make(SubCategoriesActivity.this.findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+//                        .setActionTextColor(Color.RED)
+//                        .show();
+//            }
+//        }
+//        @Override
+//        public void onTaskCancelled() {
+//        }
+//        @Override
+//        public void onPreExecute() {
+//            // TODO Auto-generated method stub
+//            progressBar.setVisibility(View.VISIBLE);
+//        }
+//    }
 
 
 
     private void initializeData(){
-        mAdapter = new CategoriesAdapter(SubCategoriesActivity.this, categoriesArrayList);
+        localCategoriesArrayList = new ArrayList<Categories>();
+        name = getIntent().getExtras().getString(Constants.CAT_NAME_INTENT);
+        parentId = getIntent().getExtras().getInt(Constants.CAT_PARENT_ID_INTENT);
+        id = getIntent().getExtras().getInt(Constants.CAT_ID_INTENT);
+        depthLevel = getIntent().getExtras().getInt(Constants.CAT_DEPTH_LEVEL_INTENT);
+
+        int size = categoriesArrayList.size();
+        for (int i=0;i<size;i++){
+            if (categoriesArrayList.get(i).getParentId()==id){
+                localCategoriesArrayList.add(categoriesArrayList.get(i));
+            }
+        }
+
+        mAdapter = new CategoriesAdapter(SubCategoriesActivity.this, localCategoriesArrayList);
         mRecyclerView.setAdapter(mAdapter);
     }
+
+
+
 
 
 

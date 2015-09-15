@@ -8,11 +8,39 @@
 
     <string name="head_txt">Stylish Design</string>
     <string name="body_txt">A sophisticated design and practicality. The Samsung Galaxy Tab 4 (10.1") has it all. Its sleek design is accented by a luxurious back cover with a leather-like texture that adds a premium feel and classic look.</string>
-
     <string name="enter_mobile_number">Enter your mobile number</string>
 
+
+    <string name="checkout_guest_header">Checkout as a Guest</string>
+    <string name="login_with_awok_header">Login with AWOK account</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="or_sign_in_with">OR Sign in with</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="register">Register</string>
+    <string name="log_in_to_your_account">1. Log in to your account</string>
+    <string name="select_payment_method">2. Select Payment Method</string>
+    <string name="checkout_guest_message">Havent set up a an account yet? Youll have the chance to create an account as youre checking out</string>
+
+
+
+    <string name="full_name_on_card">Full Name on a Card</string>
+    <string name="card_number">Card Number</string>
+    <string name="card_digits">(The 16 digits on front of your card)</string>
+    <string name="cvv">CVV2/CVC2</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="last_digits_displayed">The last 3 digits displayed on back of your credit/debit card</string>
+    <string name="next">NEXT</string>
+
+
+    <string name="enter_email_address">Enter your email address</string>
+    <string name="continue_checkout">Checkout as a Guest</string>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_launcher">LauncherActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="payment_method_activity">PaymentMethodActivity</string>
 </resources>

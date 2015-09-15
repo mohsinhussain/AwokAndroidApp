@@ -1,16 +1,12 @@
 package com.awok.moshin.awok.Activities;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -23,33 +19,33 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.awok.moshin.awok.Fragments.BundleOffersFragment;
 import com.awok.moshin.awok.Fragments.CategoriesFragment;
 import com.awok.moshin.awok.Fragments.DailyDealsFragment;
-import com.awok.moshin.awok.Fragments.Home_Fragment;
 import com.awok.moshin.awok.Fragments.HotDealsFragment;
+import com.awok.moshin.awok.Fragments.NewMemberLoginFragment;
+import com.awok.moshin.awok.Fragments.SignInFragment;
 import com.awok.moshin.awok.Fragments.WeeklyBestSellersFragment;
 import com.awok.moshin.awok.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setTitle(getResources().getString(R.string.log_in_to_your_account));
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -68,8 +64,10 @@ public class MainActivity extends AppCompatActivity {
             setupViewPager(viewPager);
         }
 
-         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setupWithViewPager(viewPager);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -96,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
                         startActivity(i);*/
                         //mDrawerLayout.closeDrawers();
-                        Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
+                        Intent i=new Intent(LoginActivity.this,ProductDetailsView.class);
                         startActivity(i);
 
                         mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -118,41 +116,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-  /*      searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                tabLayout.setVisibility(View.VISIBLE);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                tabLayout.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                tabLayout.setVisibility(View.VISIBLE);
-
-                return false;
-            }
-        });
-
-closeButton.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        tabLayout.setVisibility(View.VISIBLE);
-    }
-});*/
-
+        getMenuInflater().inflate(R.menu.menu_login, menu);
 
         return true;
     }
@@ -164,9 +128,10 @@ closeButton.setOnClickListener(new View.OnClickListener() {
 
 
 
-               switch (item.getItemId()) {
+        switch (item.getItemId()) {
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
+                onBackPressed();
+//                mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -221,15 +186,8 @@ closeButton.setOnClickListener(new View.OnClickListener() {
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new HotDealsFragment(), "Hot Deals");
-        adapter.addFragment(new CategoriesFragment(), "Categories");
-        adapter.addFragment(new DailyDealsFragment(), "Daily Deals");
-        adapter.addFragment(new WeeklyBestSellersFragment(), "Weekly Best Sellers");
-        adapter.addFragment(new BundleOffersFragment(), "Bundle Offers");
-
-
-
-
+        adapter.addFragment(new NewMemberLoginFragment(), "Not a Member?");
+        adapter.addFragment(new SignInFragment(), "Sign In");
         viewPager.setAdapter(adapter);
     }
 
@@ -270,7 +228,7 @@ closeButton.setOnClickListener(new View.OnClickListener() {
             // set the toolbar title
             getSupportActionBar().setTitle(title);
         }*/
-   // }
+    // }
 
 
 
