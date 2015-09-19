@@ -10,6 +10,9 @@
     <string name="body_txt">A sophisticated design and practicality. The Samsung Galaxy Tab 4 (10.1") has it all. Its sleek design is accented by a luxurious back cover with a leather-like texture that adds a premium feel and classic look.</string>
     <string name="enter_mobile_number">Enter your mobile number</string>
 
+    <string name="checkout_head">Xperia™ Z5 Premium
+Introducing the world’s first 4K smartphone</string>
+    <string name="check_out_price">3000 AED</string>
 
     <string name="checkout_guest_header">Checkout as a Guest</string>
     <string name="login_with_awok_header">Login with AWOK account</string>
@@ -46,6 +49,36 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_launcher">LauncherActivity</string>
+
+
+
+
+    <string-array name="object_array">
+
+        <item>1</item>
+
+        <item>2</item>
+
+        <item>3</item>
+
+        <item>4</item>
+
+        <item>5</item>
+
+        <item>6</item>
+
+        <item>7</item>
+
+        <item>8</item>
+
+        <item>9</item>
+
+        <item>10</item>
+
+    </string-array>
+    <string name="title_activity_order_summary">OrderSummaryActivity</string>
+
+
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="payment_method_activity">PaymentMethodActivity</string>

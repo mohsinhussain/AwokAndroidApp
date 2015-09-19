@@ -37,8 +37,8 @@ import com.awok.moshin.awok.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-    private DrawerLayout mDrawerLayout;
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
          tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(viewPager);
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -120,10 +121,22 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+
+
+
+
+
+
+
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
+        ImageView closeButton = (ImageView) searchView.findViewById(R.id.search_close_btn);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        //searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
+
+
   /*      searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -168,6 +181,10 @@ closeButton.setOnClickListener(new View.OnClickListener() {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+                   case R.id.app_cart:
+                       Intent i=new Intent(this,CheckOutActivity.class);
+                       startActivity(i);
+
         }
         return super.onOptionsItemSelected(item);
 
@@ -188,6 +205,24 @@ closeButton.setOnClickListener(new View.OnClickListener() {
                 });
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+
+        Snackbar.make(MainActivity.this.findViewById(android.R.id.content), "Submitted", Snackbar.LENGTH_LONG)
+                .setActionTextColor(Color.RED)
+                .show();
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        Snackbar.make(MainActivity.this.findViewById(android.R.id.content), "CHANGE", Snackbar.LENGTH_LONG)
+                .setActionTextColor(Color.RED)
+                .show();
+        return false;
+    }
 
 
     static class Adapter extends FragmentPagerAdapter {

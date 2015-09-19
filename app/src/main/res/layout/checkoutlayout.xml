@@ -1,0 +1,190 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/sellerLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seller : ABC"
+            android:layout_margin="10dp"
+            />
+
+
+
+        <View
+            android:id="@+id/sellerDivider"
+            android:layout_below="@+id/sellerLabel"
+            android:layout_width="match_parent"
+            android:background="#607D8B"
+            android:layout_height="1dp"/>
+
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/mainImg"
+            android:layout_below="@+id/sellerDivider"
+            android:layout_margin="10dp"
+            android:src="@drawable/test"
+
+            />
+
+        <TextView
+            android:id="@+id/OverViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="title"
+            android:textColor="#222"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignTop="@+id/mainImg"
+            android:layout_alignRight="@+id/sellerLabel"
+            android:layout_alignEnd="@+id/sellerLabel"
+            android:layout_toEndOf="@+id/mainImg"
+            android:layout_toRightOf="@+id/mainImg" />
+
+        <TextView
+            android:id="@+id/overviewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+android:layout_marginTop="10dp"
+            android:padding="8dp"
+            android:text="description"
+            android:textColor="#666"
+            android:textSize="14dp"
+
+            android:layout_below="@+id/spinner"
+            android:layout_alignLeft="@+id/spinner"
+            android:layout_alignStart="@+id/spinner" />
+
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="[ Remove ]"
+            android:id="@+id/textView"
+            android:gravity="center"
+            android:layout_alignLeft="@+id/mainImg"
+            android:layout_alignStart="@+id/mainImg"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignTop="@+id/overviewText"
+            android:layout_alignRight="@+id/mainImg"
+            android:layout_alignEnd="@+id/mainImg" />-->
+
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            android:layout_marginTop="10dp"
+            android:spinnerMode="dialog"
+            android:layout_below="@+id/OverViewTitle"
+            android:layout_alignLeft="@+id/OverViewTitle"
+            android:layout_alignStart="@+id/OverViewTitle" />
+
+
+    </RelativeLayout>
+
+ <!--   <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/sellerLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seller : ABC"
+            android:layout_margin="10dp"
+            />
+
+
+
+        <View
+            android:id="@+id/sellerDivider"
+            android:layout_below="@+id/sellerLabel"
+            android:layout_width="match_parent"
+            android:background="#607D8B"
+            android:layout_height="1dp"/>
+
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/mainImg"
+            android:layout_below="@+id/sellerDivider"
+            android:layout_margin="5dp"
+            android:src="@drawable/test"
+
+            />
+
+        <TextView
+            android:id="@+id/OverViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="title"
+            android:textColor="#222"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignTop="@+id/mainImg"
+            android:layout_alignRight="@+id/sellerLabel"
+            android:layout_alignEnd="@+id/sellerLabel"
+            android:layout_toEndOf="@+id/mainImg"
+            android:layout_toRightOf="@+id/mainImg" />
+
+        <TextView
+            android:id="@+id/overviewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+
+            android:padding="8dp"
+            android:text="description"
+            android:textColor="#666"
+            android:textSize="14dp"
+
+            android:layout_below="@+id/mainImg"
+            android:layout_alignRight="@+id/OverViewTitle"
+            android:layout_alignEnd="@+id/OverViewTitle" />
+
+        &lt;!&ndash;<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="[ Remove ]"
+            android:id="@+id/textView"
+            android:gravity="center"
+            android:layout_alignLeft="@+id/mainImg"
+            android:layout_alignStart="@+id/mainImg"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignTop="@+id/overviewText"
+            android:layout_alignRight="@+id/mainImg"
+            android:layout_alignEnd="@+id/mainImg" />&ndash;&gt;
+
+        <Spinner
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            android:spinnerMode="dropdown"
+            android:layout_marginBottom="10dp"
+            android:layout_alignBottom="@+id/overviewText"
+            android:layout_alignLeft="@+id/OverViewTitle"
+            android:layout_alignStart="@+id/OverViewTitle"
+             />
+
+
+    </RelativeLayout>-->
+</android.support.v7.widget.CardView>
