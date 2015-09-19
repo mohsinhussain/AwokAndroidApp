@@ -16,5 +16,6 @@ public class Constants {
     public static String CAT_ID_INTENT = "catIdIntent";
     public static String CAT_DEPTH_LEVEL_INTENT = "catDepthLevelIntent";
     public static String CAT_NAME_INTENT = "catNameIntent";
+    public static String USER_MOBILE_PREFS = "userMobileNumberInPrefs";
 
 }

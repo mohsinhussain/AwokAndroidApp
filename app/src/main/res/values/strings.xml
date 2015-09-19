@@ -21,6 +21,11 @@
     <string name="select_payment_method">2. Select Payment Method</string>
     <string name="checkout_guest_message">Havent set up a an account yet? Youll have the chance to create an account as youre checking out</string>
 
+    <string name="create_your_account">Lets create your account</string>
+    <string name="full_name">Full Name</string>
+    <string name="your_email_address">Your Email Address</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_account">CREATE ACCOUNT</string>
 
 
     <string name="full_name_on_card">Full Name on a Card</string>
@@ -42,5 +47,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_launcher">LauncherActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
     <string name="payment_method_activity">PaymentMethodActivity</string>
 </resources>
