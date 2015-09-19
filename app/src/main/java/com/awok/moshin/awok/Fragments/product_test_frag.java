@@ -1,6 +1,7 @@
 package com.awok.moshin.awok.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -27,6 +28,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.awok.moshin.awok.Activities.FragmentFullScreenImage;
 import com.awok.moshin.awok.R;
 
 /**
@@ -143,13 +145,23 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
             View itemView = mLayoutInflater.inflate(R.layout.fragment_imageslider, container, false);
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
             imageView.setImageResource(mResources[position]);
 
             container.addView(itemView);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i=new Intent(getContext(), FragmentFullScreenImage.class);
+                    i.putExtra("size",mResources.length);
+                    i.putExtra("position", position);
+                            startActivity(i);
+                }
+            });
 
             return itemView;
         }

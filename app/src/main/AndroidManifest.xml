@@ -76,6 +76,10 @@
             android:name=".Activities.OrderSummaryActivity"
             android:label="@string/title_activity_order_summary" >
         </activity>
+        <activity
+            android:name=".Activities.FragmentFullScreenImage"
+            android:label="@string/title_activity_order_summary" >
+        </activity>
     </application>
 
 </manifest>
