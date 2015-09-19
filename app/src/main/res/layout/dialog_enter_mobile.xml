@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Verify"
-        android:textColor="#ff00ddff"
+        android:textColor="#FFFFFF"
         android:background="#0000"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/mobileEditText"

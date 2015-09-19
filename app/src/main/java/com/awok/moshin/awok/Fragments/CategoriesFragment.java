@@ -77,8 +77,6 @@ public class CategoriesFragment extends Fragment {
                 })
         );
 
-
-
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

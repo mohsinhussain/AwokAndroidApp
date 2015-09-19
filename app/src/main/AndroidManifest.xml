@@ -11,15 +11,30 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <!-- Splash screen -->
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Activities.SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".Activities.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".Activities.ProductDetailsView"
@@ -38,7 +53,8 @@
         </activity>
         <activity
             android:name=".Activities.LauncherActivity"
-            android:label="@string/title_activity_launcher" >
+            android:label="@string/title_activity_launcher"
+            android:screenOrientation="portrait">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -59,9 +75,21 @@
         </activity>
 
         <activity
-            android:name=".Activities.LoginActivity"
+        android:name=".Activities.LoginActivity"
+        android:label="@string/title_activity_login"
+        android:screenOrientation="portrait" >
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
+    </activity>
+
+        <activity
+            android:name=".Activities.RegisterActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" >
+
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
@@ -74,7 +102,9 @@
         </activity>
         <activity
             android:name=".Activities.OrderSummaryActivity"
-            android:label="@string/title_activity_order_summary" >
+            android:label="@string/title_activity_order_summary"
+            android:screenOrientation="portrait">
+
         </activity>
         <activity
             android:name=".Activities.FragmentFullScreenImage"

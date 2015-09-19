@@ -97,16 +97,16 @@ private DrawerLayout mDrawerLayout;
                     @Override
                     public void onItemClick(View view, int position) {
 
-                        name = localCategoriesArrayList.get(position).getName();
-                        parentId =localCategoriesArrayList.get(position).getParentId();
-                        id = localCategoriesArrayList.get(position).getId();
-                        depthLevel =localCategoriesArrayList.get(position).getDepthLevel();
-                        ab.setTitle(name);
+//                        name = localCategoriesArrayList.get(position).getName();
+//                        parentId =localCategoriesArrayList.get(position).getParentId();
+//                        id = localCategoriesArrayList.get(position).getId();
+//                        depthLevel =localCategoriesArrayList.get(position).getDepthLevel();
+
 
                         int size = categoriesArrayList.size();
                         ArrayList<Categories> tempArray = new ArrayList<Categories>();
                         for (int i=0;i<size;i++){
-                            if (categoriesArrayList.get(i).getParentId()==id){
+                            if (categoriesArrayList.get(i).getParentId()==localCategoriesArrayList.get(position).getId()){
                                 tempArray.add(categoriesArrayList.get(i));
                             }
                         }
@@ -117,11 +117,16 @@ private DrawerLayout mDrawerLayout;
                     .show();
                         }
                         else{
+                            name = localCategoriesArrayList.get(position).getName();
+                            parentId =localCategoriesArrayList.get(position).getParentId();
+                            id = localCategoriesArrayList.get(position).getId();
+                            depthLevel =localCategoriesArrayList.get(position).getDepthLevel();
                             localCategoriesArrayList.clear();
                             localCategoriesArrayList.addAll(tempArray);
                             tempArray.clear();
                             mAdapter.notifyDataSetChanged();
                             mRecyclerView.getLayoutManager().scrollToPosition(0);
+                            ab.setTitle(name);
 //                            mRecyclerView.smoothScrollToPosition(0);
 //                            mAdapter = new CategoriesAdapter(SubCategoriesActivity.this, localCategoriesArrayList);
 //                            mRecyclerView.setAdapter(mAdapter);
