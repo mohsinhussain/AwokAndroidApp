@@ -61,7 +61,7 @@ private DrawerLayout mDrawerLayout;
     int depthLevel = 2;
     int parentId = 0;
     String name;
-    int id;
+    String id;
     ActionBar ab;
     private String TAG = "Categories Fragment";
     @Override
@@ -105,11 +105,11 @@ private DrawerLayout mDrawerLayout;
 
                         int size = categoriesArrayList.size();
                         ArrayList<Categories> tempArray = new ArrayList<Categories>();
-                        for (int i=0;i<size;i++){
-                            if (categoriesArrayList.get(i).getParentId()==localCategoriesArrayList.get(position).getId()){
-                                tempArray.add(categoriesArrayList.get(i));
-                            }
-                        }
+//                        for (int i=0;i<size;i++){
+//                            if (categoriesArrayList.get(i).getParentId()==localCategoriesArrayList.get(position).getId()){
+//                                tempArray.add(categoriesArrayList.get(i));
+//                            }
+//                        }
 
                         if (tempArray.size()==0){
                             Snackbar.make(SubCategoriesActivity.this.findViewById(android.R.id.content), "Open Products Listing", Snackbar.LENGTH_SHORT)
@@ -118,9 +118,9 @@ private DrawerLayout mDrawerLayout;
                         }
                         else{
                             name = localCategoriesArrayList.get(position).getName();
-                            parentId =localCategoriesArrayList.get(position).getParentId();
+//                            parentId =localCategoriesArrayList.get(position).getParentId();
                             id = localCategoriesArrayList.get(position).getId();
-                            depthLevel =localCategoriesArrayList.get(position).getDepthLevel();
+//                            depthLevel =localCategoriesArrayList.get(position).getDepthLevel();
                             localCategoriesArrayList.clear();
                             localCategoriesArrayList.addAll(tempArray);
                             tempArray.clear();
@@ -203,20 +203,20 @@ private DrawerLayout mDrawerLayout;
         else{
             int size = categoriesArrayList.size();
             for(int i=0;i<size;i++){
-                if(categoriesArrayList.get(i).getId()==parentId){
-                    name = categoriesArrayList.get(i).getName();
-                    parentId =categoriesArrayList.get(i).getParentId();
-                    id = categoriesArrayList.get(i).getId();
-                    depthLevel =categoriesArrayList.get(i).getDepthLevel();
-                    ab.setTitle(name);
-                    break;
-                }
+//                if(categoriesArrayList.get(i).getId()==parentId){
+//                    name = categoriesArrayList.get(i).getName();
+//                    parentId =categoriesArrayList.get(i).getParentId();
+//                    id = categoriesArrayList.get(i).getId();
+////                    depthLevel =categoriesArrayList.get(i).getDepthLevel();
+//                    ab.setTitle(name);
+//                    break;
+//                }
             }
             ArrayList<Categories> tempArray = new ArrayList<Categories>();
             for (int i=0;i<size;i++){
-                if (categoriesArrayList.get(i).getParentId()==id){
-                    tempArray.add(categoriesArrayList.get(i));
-                }
+//                if (categoriesArrayList.get(i).getParentId()==id){
+//                    tempArray.add(categoriesArrayList.get(i));
+//                }
             }
                 localCategoriesArrayList.clear();
                 localCategoriesArrayList.addAll(tempArray);
@@ -276,14 +276,14 @@ private DrawerLayout mDrawerLayout;
         localCategoriesArrayList = new ArrayList<Categories>();
         name = getIntent().getExtras().getString(Constants.CAT_NAME_INTENT);
         parentId = getIntent().getExtras().getInt(Constants.CAT_PARENT_ID_INTENT);
-        id = getIntent().getExtras().getInt(Constants.CAT_ID_INTENT);
+//        id = getIntent().getExtras().getInt(Constants.CAT_ID_INTENT);
         depthLevel = getIntent().getExtras().getInt(Constants.CAT_DEPTH_LEVEL_INTENT);
 
         int size = categoriesArrayList.size();
         for (int i=0;i<size;i++){
-            if (categoriesArrayList.get(i).getParentId()==id){
-                localCategoriesArrayList.add(categoriesArrayList.get(i));
-            }
+//            if (categoriesArrayList.get(i).getParentId()==id){
+//                localCategoriesArrayList.add(categoriesArrayList.get(i));
+//            }
         }
 
         mAdapter = new CategoriesAdapter(SubCategoriesActivity.this, localCategoriesArrayList);

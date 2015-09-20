@@ -28,6 +28,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <ProgressBar android:indeterminate="true"
+        android:layout_width="50dp" android:layout_height="50dp"
+        android:id="@+id/marker_progress" android:background ="@drawable/progress"
+        android:layout_gravity="center_vertical|center_horizontal"/>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"

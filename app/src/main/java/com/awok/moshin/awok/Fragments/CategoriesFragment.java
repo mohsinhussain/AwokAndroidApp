@@ -68,7 +68,7 @@ public class CategoriesFragment extends Fragment {
                     public void onItemClick(View view, int position) {
                         Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
                         subCatIntent.putExtra(Constants.CAT_ARRAY_INTENT, (Serializable) categoriesArrayList);
-                        subCatIntent.putExtra(Constants.CAT_DEPTH_LEVEL_INTENT, localCategoriesArrayList.get(position).getDepthLevel());
+//                        subCatIntent.putExtra(Constants.CAT_DEPTH_LEVEL_INTENT, localCategoriesArrayList.get(position).getDepthLevel());
                         subCatIntent.putExtra(Constants.CAT_PARENT_ID_INTENT, localCategoriesArrayList.get(position).getParentId());
                         subCatIntent.putExtra(Constants.CAT_NAME_INTENT, localCategoriesArrayList.get(position).getName());
                         subCatIntent.putExtra(Constants.CAT_ID_INTENT, localCategoriesArrayList.get(position).getId());
@@ -101,8 +101,8 @@ public class CategoriesFragment extends Fragment {
 
                 for(int i=0;i<length;i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        categoriesArrayList.add(new Categories(jsonObject.getInt("ID"), jsonObject.getString("NAME"), jsonObject.getInt("PARENT_ID"), jsonObject.getString("IMAGE"),
-                                 jsonObject.getInt("DEPTH_LEVEL")));
+//                        categoriesArrayList.add(new Categories(jsonObject.getInt("ID"), jsonObject.getString("NAME"), jsonObject.getInt("PARENT_ID"), jsonObject.getString("IMAGE"),
+//                                 jsonObject.getInt("DEPTH_LEVEL")));
 
                 }
 
@@ -135,9 +135,9 @@ public class CategoriesFragment extends Fragment {
         localCategoriesArrayList = new ArrayList<Categories>();
         int size = categoriesArrayList.size();
         for (int i=0;i<size;i++){
-            if (categoriesArrayList.get(i).getParentId()==0){
-                localCategoriesArrayList.add(categoriesArrayList.get(i));
-            }
+//            if (categoriesArrayList.get(i).getParentId()==0){
+//                localCategoriesArrayList.add(categoriesArrayList.get(i));
+//            }
         }
         mAdapter = new CategoriesAdapter(getActivity(), localCategoriesArrayList);
         mRecyclerView.setAdapter(mAdapter);

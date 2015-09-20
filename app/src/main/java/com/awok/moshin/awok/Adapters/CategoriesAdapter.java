@@ -44,26 +44,26 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         holder.nameTextView.setText(categories.get(i).getName());
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-        if(categories.get(i).getImage()!=null && !categories.get(i).getImage().equalsIgnoreCase("") && !categories.get(i).getImage().equalsIgnoreCase("null")){
-            imageLoader.get(categories.get(i).getImage(), new ImageLoader.ImageListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("HotDealsAdapter", "Image Load Error: " + error.getMessage());
-                }
-
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                    if (response.getBitmap() != null) {
-                        // load image into imageview
-                        holder.itemImageView.setImageBitmap(response.getBitmap());
-                    }
-                }
-            });
-        }
-        else{
-            holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_awok));
-        }
+//        if(categories.get(i).getImage()!=null && !categories.get(i).getImage().equalsIgnoreCase("") && !categories.get(i).getImage().equalsIgnoreCase("null")){
+//            imageLoader.get(categories.get(i).getImage(), new ImageLoader.ImageListener() {
+//
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    Log.e("HotDealsAdapter", "Image Load Error: " + error.getMessage());
+//                }
+//
+//                @Override
+//                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+//                    if (response.getBitmap() != null) {
+//                        // load image into imageview
+//                        holder.itemImageView.setImageBitmap(response.getBitmap());
+//                    }
+//                }
+//            });
+//        }
+//        else{
+//            holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_awok));
+//        }
 
 
 //        setAnimation(holder.container, i);
@@ -104,15 +104,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     }
 
 
-    @Override
-    public int getItemViewType(int position) {
-        if(categories.get(position).getImage()!=null && !categories.get(position).getImage().equalsIgnoreCase("") && !categories.get(position).getImage().equalsIgnoreCase("null")){
-            return ITEM_WITH_DISCOUNT;
-        }
-        else{
-            return ITEM_WITHOUT_DISCOUNT;
-        }
-    }
+//    @Override
+//    public int getItemViewType(int position) {
+////        if(categories.get(position).getImage()!=null && !categories.get(position).getImage().equalsIgnoreCase("") && !categories.get(position).getImage().equalsIgnoreCase("null")){
+////            return ITEM_WITH_DISCOUNT;
+////        }
+////        else{
+////            return ITEM_WITHOUT_DISCOUNT;
+////        }
+//    }
 
 
     public static class CategoriesViewHolder extends RecyclerView.ViewHolder {
