@@ -2,6 +2,7 @@ package com.awok.moshin.awok.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,18 +17,22 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.awok.moshin.awok.Activities.SubCategoriesActivity;
 import com.awok.moshin.awok.Adapters.HotDealsAdapter;
 import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
+import com.awok.moshin.awok.Util.RecyclerItemClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class HotDealsFragment extends Fragment {
@@ -37,8 +42,14 @@ public class HotDealsFragment extends Fragment {
     View mView;
     ProgressBar progressBar;
     ArrayList<Products> productsArrayList;
+    String categoryId = null;
     private String TAG = "Hot Deals Fragment";
     public HotDealsFragment(){}
+
+    public HotDealsFragment(String categoryId)
+    {
+        this.categoryId = categoryId;
+    }
 
 
     @Override
@@ -54,6 +65,22 @@ public class HotDealsFragment extends Fragment {
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Toast.makeText(getActivity(), "Product Name: "+productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
+//                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
+//                        subCatIntent.putExtra(Constants.CAT_ARRAY_INTENT, (Serializable) categoriesArrayList);
+////                        subCatIntent.putExtra(Constants.CAT_DEPTH_LEVEL_INTENT, localCategoriesArrayList.get(position).getDepthLevel());
+//                        subCatIntent.putExtra(Constants.CAT_PARENT_ID_INTENT, localCategoriesArrayList.get(position).getParentId());
+//                        subCatIntent.putExtra(Constants.CAT_NAME_INTENT, localCategoriesArrayList.get(position).getName());
+//                        subCatIntent.putExtra(Constants.CAT_ID_INTENT, localCategoriesArrayList.get(position).getId());
+//                        startActivity(subCatIntent);
+                    }
+                })
+        );
+
 
         productsArrayList = new ArrayList<Products>();
 
@@ -61,7 +88,13 @@ public class HotDealsFragment extends Fragment {
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).productsAPICall();
+            if(categoryId==null){
+                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).allProductsAPICall();
+            }
+            else{
+                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).productsFromCategoryAPICall(categoryId);
+            }
+
         } else {
             Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
@@ -74,32 +107,23 @@ public class HotDealsFragment extends Fragment {
     public class GetProductsCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
-                JSONObject mMembersJSON;
-                mMembersJSON = new JSONObject(response);
-                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
+                JSONArray jsonArray;
+                jsonArray = new JSONArray(response);
+//                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
                 int length = jsonArray.length();
 
                 for(int i=0;i<length;i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     Products item = new Products();
-                    item.setId(jsonObject.getString("ID"));
-                    item.setName(jsonObject.getString("NAME"));
-                    item.setImage(jsonObject.getString("IMAGE"));
-                    JSONObject priceObject = jsonObject.getJSONObject("PRICE");
-                    item.setPriceNew(priceObject.getInt("PRICE_NEW"));
-                    item.setPriceOld(priceObject.getInt("PRICE_OLD"));
-                    if (priceObject.getInt("PRICE_OLD")!=0){
-                        item.setDiscount(priceObject.getInt("DISCOUNT"));
-                        item.setDiscPercent(priceObject.getInt("PERCENT"));
-                        item.setY(priceObject.getJSONObject("TIMER").getString("Y"));
-                        item.setM(priceObject.getJSONObject("TIMER").getString("M"));
-                        item.setD(priceObject.getJSONObject("TIMER").getString("D"));
-                        item.setH(priceObject.getJSONObject("TIMER").getString("H"));
-                        item.setI(priceObject.getJSONObject("TIMER").getString("I"));
-                        item.setS(priceObject.getJSONObject("TIMER").getString("S"));
-                        item.setInDays(priceObject.getJSONObject("TIMER").getInt("IN_DAYS"));
-                        item.setEndTime(priceObject.getInt("END_TIME"));
-                    }
+                    item.setId(jsonObject.getString("id"));
+                    item.setName(jsonObject.getString("name"));
+                    item.setImage(jsonObject.getString("image"));
+                    item.setPriceNew(jsonObject.getInt("new_price"));
+                    item.setPriceOld(jsonObject.getInt("original_price"));
+                    item.setDiscPercent(jsonObject.getInt("discount_percentage"));
+//                    if (priceObject.getInt("PRICE_OLD")!=0){
+//                        item.setDiscPercent(priceObject.getInt("PERCENT"));
+//                    }
                     productsArrayList.add(item);
                 }
 

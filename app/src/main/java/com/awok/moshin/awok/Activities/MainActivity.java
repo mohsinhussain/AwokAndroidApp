@@ -3,7 +3,10 @@ package com.awok.moshin.awok.Activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -20,11 +23,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.awok.moshin.awok.Fragments.BundleOffersFragment;
 import com.awok.moshin.awok.Fragments.CategoriesFragment;
@@ -32,7 +39,16 @@ import com.awok.moshin.awok.Fragments.DailyDealsFragment;
 import com.awok.moshin.awok.Fragments.Home_Fragment;
 import com.awok.moshin.awok.Fragments.HotDealsFragment;
 import com.awok.moshin.awok.Fragments.WeeklyBestSellersFragment;
+import com.awok.moshin.awok.Models.Categories;
+import com.awok.moshin.awok.Models.Products;
+import com.awok.moshin.awok.NetworkLayer.APIClient;
+import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.Constants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +56,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
+    ProgressBar progressBar;
+    ViewPager viewPager;
+    ArrayList<Categories> categoriesArrayList;
+    private String TAG = "Main Activity";
+    SharedPreferences mSharedPrefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
+        progressBar = (ProgressBar) findViewById(R.id.marker_progress);
+        progressBar.setVisibility(View.GONE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -54,6 +78,8 @@ private DrawerLayout mDrawerLayout;
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
@@ -63,14 +89,14 @@ private DrawerLayout mDrawerLayout;
 
 
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        if (viewPager != null) {
-            setupViewPager(viewPager);
-        }
 
-         tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        if (viewPager != null) {
+//            setupViewPager(viewPager);
+//        }
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setupWithViewPager(viewPager);
+//        tabLayout.setupWithViewPager(viewPager);
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -110,9 +136,108 @@ private DrawerLayout mDrawerLayout;
                 }
             }
         });
+
+        /**
+         *
+         * FETCHING CATEGORIES FROM SERVER
+         */
+        categoriesArrayList = new ArrayList<Categories>();
+
+        if (mSharedPrefs.contains(Constants.CAT_LIST_PREFS)){
+            String resp = mSharedPrefs.getString(Constants.CAT_LIST_PREFS, null);
+            try {
+                JSONObject mMembersJSON;
+                mMembersJSON = new JSONObject(resp);
+                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_CATEGORY_LIST_NAME);
+                int length = jsonArray.length();
+
+                for(int i=0;i<length;i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    categoriesArrayList.add(new Categories(jsonObject.getString("id"), jsonObject.getString("name"), jsonObject.getString("parent")));
+
+                }
+                initializeData();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Snackbar.make(findViewById(android.R.id.content), "Categories could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(Color.RED)
+                        .show();
+            }
+        }
+        else{
+            ConnectivityManager connMgr = (ConnectivityManager)
+                    getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                new APIClient(MainActivity.this, MainActivity.this,  new GetCategoriesCallback()).categoriesAPICall();
+            } else {
+                Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED)
+                        .show();
+            }
+        }
     }
 
 
+    public class GetCategoriesCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject mMembersJSON;
+                Log.v(TAG, response);
+                mMembersJSON = new JSONObject(response);
+                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_CATEGORY_LIST_NAME);
+                int length = jsonArray.length();
+
+                for(int i=0;i<length;i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    categoriesArrayList.add(new Categories(jsonObject.getString("id"), jsonObject.getString("name"), jsonObject.getString("parent")));
+
+                }
+
+                if(MainActivity.this!=null){
+                    Animation animation = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out);
+                    progressBar.startAnimation(animation);
+                }
+                progressBar.setVisibility(View.GONE);
+                SharedPreferences.Editor editor = mSharedPrefs.edit();
+                editor.putString(Constants.CAT_LIST_PREFS, response);
+                editor.commit();
+                initializeData();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Snackbar.make(findViewById(android.R.id.content), "Categories could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(Color.RED)
+                        .show();
+            }
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+
+    private void initializeData(){
+        Adapter adapter = new Adapter(getSupportFragmentManager());
+        if(viewPager!=null){
+            adapter.addFragment(new HotDealsFragment(), "ALL ITEMS");
+            int size = categoriesArrayList.size();
+
+            for (int i = 0; i < size; i++){
+                adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId()), categoriesArrayList.get(i).getName());
+            }
+
+        }
+
+        viewPager.setAdapter(adapter);
+
+        tabLayout.setupWithViewPager(viewPager);
+    }
 
 
 
@@ -120,13 +245,6 @@ private DrawerLayout mDrawerLayout;
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-
-
-
-
-
-
 
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         ImageView closeButton = (ImageView) searchView.findViewById(R.id.search_close_btn);
@@ -255,17 +373,7 @@ closeButton.setOnClickListener(new View.OnClickListener() {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new HotDealsFragment(), "Hot Deals");
-        adapter.addFragment(new CategoriesFragment(), "Categories");
-        adapter.addFragment(new DailyDealsFragment(), "Daily Deals");
-        adapter.addFragment(new WeeklyBestSellersFragment(), "Weekly Best Sellers");
-        adapter.addFragment(new BundleOffersFragment(), "Bundle Offers");
 
-
-
-
-        viewPager.setAdapter(adapter);
     }
 
 

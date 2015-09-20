@@ -181,13 +181,13 @@ public class HTTPClient{
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setConnectTimeout(2000);
         con.setDoInput(true);
-        con.setDoOutput(true);
+//        con.setDoOutput(true);
         con.setRequestMethod("GET");
 //        con.setRequestProperty("Cookie", oauth_cookies);
         con.setRequestProperty("Parameters", Utilities.buildParams(params));
 //		if (oauth_client)
 //			con.setRequestProperty("Authorization", getAuthString());
-        con.setRequestProperty("Content-Length", "0");
+//        con.setRequestProperty("Content-Length", "0");
 
         String resp = readURL(con);
 

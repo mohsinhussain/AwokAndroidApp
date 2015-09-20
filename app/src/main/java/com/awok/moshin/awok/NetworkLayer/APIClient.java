@@ -38,10 +38,20 @@ public class APIClient {
         mTask.execute(mContext, Constants.API_SERVER_URL+"product/", "GET", null);
     }
 
+    public void allProductsAPICall() {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
+    }
+
+    public void productsFromCategoryAPICall(String categoryId) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
+    }
+
 
     public void categoriesAPICall() {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, Constants.API_SERVER_URL+"category/", "GET", null);
+        mTask.execute(mContext, "http://192.168.1.56/marketplace/sections/", "GET", null);
     }
 
 
@@ -76,7 +86,12 @@ public class APIClient {
                     return postResponse;
 
                 } else if (parameters[METHOD_INDEX] == "GET")
-                    return client.get(url, params);
+                {
+                    String resp = client.get(url, params);
+                    Log.v(TAG, "resp: "+resp);
+                    return resp;
+                }
+
                 else if (parameters[METHOD_INDEX] == "PUT")
                     return client.put(url, params);
                 else if (parameters[METHOD_INDEX] == "DELETE")

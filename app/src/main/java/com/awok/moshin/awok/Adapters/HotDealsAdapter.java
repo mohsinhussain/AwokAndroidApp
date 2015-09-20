@@ -1,14 +1,19 @@
 package com.awok.moshin.awok.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,19 +49,34 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         final int viewType = getItemViewType(i);
         switch (viewType) {
             case ITEM_WITH_DISCOUNT:
-                holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
+                holder.discountTextView.setText("55"+"%");
                 holder.oldPriceTextView.setText(items.get(i).getPriceOld());
-                holder.endsInTextView.setText("Ends in " + items.get(i).getH() + "h " + items.get(i).getI() + "m " + items.get(i).getS() + "s");
+//                holder.discountTextView.setRotation();
+
+//                holder.endsInTextView.setText("Ends in " + items.get(i).getH() + "h " + items.get(i).getI() + "m " + items.get(i).getS() + "s");
                 break;
             case ITEM_WITHOUT_DISCOUNT:
                 holder.discountTextView.setVisibility(View.GONE);
-                holder.endsInTextView.setVisibility(View.GONE);
+//                holder.endsInTextView.setVisibility(View.GONE);
                 holder.oldPriceTextView.setVisibility(View.GONE);
                 break;
             default:
                 // Blow up in whatever way you choose.
         }
 
+        float init = 0;
+        float rotate = 315;
+
+        if (Build.VERSION.SDK_INT < 11) {
+
+            RotateAnimation animation = new RotateAnimation(init, rotate);
+            animation.setDuration(100);
+            animation.setFillAfter(true);
+            holder.discountTextView.startAnimation(animation);
+        } else {
+
+            holder.discountTextView.setRotation(rotate);
+        }
 
 
 //        if(!items.get(i).getPriceOld().equalsIgnoreCase("0 AED")){
@@ -71,24 +91,28 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 //        }
 
 
-        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        byte[] decodedString = Base64.decode(items.get(i).getImage(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        holder.itemImageView.setImageBitmap(decodedByte);
 
-// If you are using normal ImageView
-        imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("HotDealsAdapter", "Image Load Error: " + error.getMessage());
-            }
-
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                if (response.getBitmap() != null) {
-                    // load image into imageview
-                    holder.itemImageView.setImageBitmap(response.getBitmap());
-                }
-            }
-        });
+//        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+//
+//// If you are using normal ImageView
+//        imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("HotDealsAdapter", "Image Load Error: " + error.getMessage());
+//            }
+//
+//            @Override
+//            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+//                if (response.getBitmap() != null) {
+//                    // load image into imageview
+//                    holder.itemImageView.setImageBitmap(response.getBitmap());
+//                }
+//            }
+//        });
 
 //        setAnimation(holder.container, i);
     }
@@ -147,7 +171,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         TextView discountTextView;
         ImageView itemImageView;
         LinearLayout container;
-        TextView endsInTextView;
+//        TextView endsInTextView;
 
 
         ItemViewHolder(View itemView) {
@@ -157,7 +181,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
             priceTextView = (TextView)itemView.findViewById(R.id.priceTextView);
             oldPriceTextView = (TextView)itemView.findViewById(R.id.oldPriceTextView);
             discountTextView = (TextView)itemView.findViewById(R.id.percentTextView);
-            endsInTextView = (TextView)itemView.findViewById(R.id.endsInTextView);
+//            endsInTextView = (TextView)itemView.findViewById(R.id.endsInTextView);
             itemImageView = (ImageView)itemView.findViewById(R.id.itemImageView);
             container = (LinearLayout) itemView.findViewById(R.id.parentPanel);
         }
