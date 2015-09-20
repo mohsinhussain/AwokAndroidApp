@@ -44,6 +44,11 @@ public class APIClient {
         mTask.execute(mContext, Constants.API_SERVER_URL+"category/", "GET", null);
     }
 
+    public void productDetailsAPICall(String productId) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/show/"+productId, "GET", null);
+    }
+
 
 
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {

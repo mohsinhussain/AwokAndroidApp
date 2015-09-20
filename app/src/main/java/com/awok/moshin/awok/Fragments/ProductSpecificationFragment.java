@@ -22,7 +22,10 @@ import com.awok.moshin.awok.Models.ProductSpecification;
 import com.awok.moshin.awok.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by shon on 9/10/2015.
@@ -35,6 +38,16 @@ public class ProductSpecificationFragment extends Fragment{
     private RatingBar prodRatingBar,prod_reviewRating;
     private ProductSpecificationAdapter adapter;
     private List<ProductSpecification> specList = new ArrayList<ProductSpecification>();
+    Map<String,String> prodSpecData=new HashMap<String, String>();
+
+
+   /* public ProductSpecificationFragment(Map<String, String> productSpec) {
+        prodSpecData=productSpec;
+    }*/
+   public ProductSpecificationFragment() {
+
+   }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,17 +56,29 @@ public class ProductSpecificationFragment extends Fragment{
         ListView prodSpecList = (ListView) mView.findViewById(R.id.productSpecList);
         adapter=new ProductSpecificationAdapter(getActivity(),specList);
         prodSpecList.setAdapter(adapter);
-
+        specList.clear();
         int i=0;
-        for(i=0;i<=20;i++)
+        for(i=0;i<=prodSpecData.size();i++)
         {
            ProductSpecification listData=new ProductSpecification();
-            listData.setSpecTitle("Spec" + " " + i);
+            listData.setSpecTitle(prodSpecData.get(i));
             listData.setSpecValue("VALUES" + " " + i);
 
             specList.add(listData);
 
         }
+
+       /* for (Map.Entry<String, String> entry : prodSpecData.entrySet()) {
+            *//*String key = entry.getKey();
+            Object value = entry.getValue();*//*
+            ProductSpecification listData=new ProductSpecification();
+            listData.setSpecTitle(entry.getKey());
+            listData.setSpecValue(entry.getValue());
+System.out.println(entry.getValue());
+            specList.add(listData);
+
+
+        }*/
 adapter.notifyDataSetChanged();
         return mView;
     }

@@ -36,14 +36,18 @@ public class ProductOverViewFragment extends Fragment {
     /**
      * Created by shon on 9/10/2015.
      */
-
+ProductOverview prodOverviewData = new ProductOverview();
         private RecyclerView mRecyclerView;
         private RecyclerView.Adapter mAdapter;
         private RecyclerView.LayoutManager mLayoutManager;
         private List<ProductOverview> overViewList = new ArrayList<ProductOverview>();
 
+    public ProductOverViewFragment(ProductOverview productOverview) {
+        prodOverviewData=productOverview;
+    }
 
-        @Override
+
+    @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
@@ -83,8 +87,9 @@ public class ProductOverViewFragment extends Fragment {
             mRecyclerView.setAdapter(mAdapter);
 
 
-
-            int i=0;
+overViewList.clear();
+        overViewList.add(prodOverviewData);
+           /* int i=0;
             for(i=0;i<=4;i++)
             {
                 ProductOverview listData=new ProductOverview();
@@ -94,7 +99,7 @@ public class ProductOverViewFragment extends Fragment {
                 overViewList.add(listData);
 
             }
-            System.out.println("COOL"+overViewList.toString());
+            System.out.println("COOL"+overViewList.toString());*/
             mAdapter.notifyDataSetChanged();
 
             return mView;

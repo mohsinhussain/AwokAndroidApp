@@ -2,6 +2,8 @@ package com.awok.moshin.awok.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -18,6 +20,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,17 +32,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Activities.FragmentFullScreenImage;
+import com.awok.moshin.awok.Models.Checkout;
+import com.awok.moshin.awok.Models.ProductDetailsModel;
 import com.awok.moshin.awok.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shon on 9/10/2015.
  */
-public class product_test_frag extends Fragment{
+public class productDescription extends Fragment{
 
 
 
-
-
+    ProductDetailsModel productModel = new ProductDetailsModel();
 
     static final int NUM_ITEMS = 6;
     CustomPagerAdapter mCustomPagerAdapter;
@@ -52,6 +59,14 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
  private Button prod_buyNow;
     private RatingBar prodRatingBar,prod_reviewRating;
+    String image;
+
+    public productDescription(ProductDetailsModel productDetails, String imageData) {
+        productModel=productDetails;
+        image=imageData;
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,8 +84,8 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         prod_deliveryTime=(TextView)mView.findViewById(R.id.prod_deliveryTime);
         prod_reviews=(TextView)mView.findViewById(R.id.prod_reviews);
         quickDeliveryTxt=(TextView)mView.findViewById(R.id.quickDeliveryTxt);
-     //   prod_price=(TextView)mView.findViewById(R.id.prod_price);
-     //   prod_discountPrice=(TextView)mView.findViewById(R.id.prod_discountPrice);
+        //prod_price=(TextView)mView.findViewById(R.id.prod_price);
+        //prod_discountPrice=(TextView)mView.findViewById(R.id.prod_discountPrice);
    //  prod_buyNow=(Button)mView.findViewById(R.id.prod_buyNow);
 
                     prodRatingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
@@ -108,6 +123,11 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
   //      prod_discountPrice.setPaintFlags(prod_discountPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
   //   prod_buyNow.setTypeface(innerFont);
+        System.out.println("COOL" + productModel.getName());
+productTitle.setText(productModel.getName());
+        //prod_price.setText(productModel.getPriceNew());
+        //prod_discountPrice.setText(productModel.getDiscPercent());
+
 
 
 
@@ -122,7 +142,11 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
         return mView;
     }
+    private Bitmap base64ToBitmap(String imageString) {
+        byte[] imageAsBytes = Base64.decode(imageString.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
+    }
 
     class CustomPagerAdapter extends PagerAdapter {
 
@@ -149,7 +173,8 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
             View itemView = mLayoutInflater.inflate(R.layout.fragment_imageslider, container, false);
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-            imageView.setImageResource(mResources[position]);
+            //imageView.setImageResource(mResources[position]);
+imageView.setImageBitmap(base64ToBitmap(image));
 
             container.addView(itemView);
 
@@ -159,6 +184,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
                     Intent i=new Intent(getContext(), FragmentFullScreenImage.class);
                     i.putExtra("size",mResources.length);
                     i.putExtra("position", position);
+                    i.putExtra("image",image);
                             startActivity(i);
                 }
             });

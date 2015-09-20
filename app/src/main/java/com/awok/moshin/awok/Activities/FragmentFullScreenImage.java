@@ -3,12 +3,15 @@ package com.awok.moshin.awok.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,11 +29,13 @@ public class FragmentFullScreenImage extends AppCompatActivity {
      ActionBar ab;
     int[] mResources = {R.drawable.eagle, R.drawable.horse, R.drawable.bonobo, R.drawable.wolf, R.drawable.owl};
 int size,pos;
+    String image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_full_screen_image);
         Intent i=getIntent();
+        image=getIntent().getExtras().getString("image");
          size=getIntent().getExtras().getInt("size");
          pos=getIntent().getExtras().getInt("position");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -99,8 +104,8 @@ int size,pos;
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
             System.out.println(mResources[position]);
-
-            imageView.setImageResource(mResources[position]);
+imageView.setImageBitmap(base64ToBitmap(image));
+            //imageView.setImageResource(mResources[position]);
 
 
 
@@ -133,5 +138,9 @@ int size,pos;
 
 
     }
+    private Bitmap base64ToBitmap(String imageString) {
+        byte[] imageAsBytes = Base64.decode(imageString.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
+    }
 }
