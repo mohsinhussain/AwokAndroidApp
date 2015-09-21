@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.awok.moshin.awok.Util.Constants;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,10 +58,14 @@ public class APIClient {
 
     public void productDetailsAPICall(String productId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/show/"+productId, "GET", null);
+        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/show/" + productId, "GET", null);
     }
 
+    public void addToCartAPICall(String dataToSend) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://192.168.1.78/cart/", "POST", dataToSend);
 
+    }
 
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {
 
@@ -78,16 +84,11 @@ public class APIClient {
                 HTTPClient client = new HTTPClient(
                         context.getSharedPreferences(Constants.PREFS_NAME, 0));
 
-                Map<String, String> params = null;
-                if (parameters[PARAMS_INDEX] instanceof HashMap) {
-                    params = (HashMap<String, String>) parameters[PARAMS_INDEX];
+                String params = (String) parameters[PARAMS_INDEX];
 
-                }
 
                 if (parameters[METHOD_INDEX] == "POST") {
-                    if (parameters[PARAMS_INDEX] instanceof HashMap) {
                         postResponse = client.post(url, params);
-                    }
                     return postResponse;
 
                 } else if (parameters[METHOD_INDEX] == "GET")

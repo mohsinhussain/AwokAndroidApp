@@ -47,10 +47,9 @@
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_alignTop="@+id/mainImg"
-            android:layout_alignRight="@+id/sellerLabel"
-            android:layout_alignEnd="@+id/sellerLabel"
-            android:layout_toEndOf="@+id/mainImg"
-            android:layout_toRightOf="@+id/mainImg" />
+            android:layout_toRightOf="@+id/mainImg"
+            android:layout_toLeftOf="@+id/imageButton"
+            android:layout_toStartOf="@+id/imageButton" />
 
         <TextView
             android:id="@+id/overviewText"
@@ -92,6 +91,17 @@ android:layout_marginTop="10dp"
             android:layout_below="@+id/OverViewTitle"
             android:layout_alignLeft="@+id/OverViewTitle"
             android:layout_alignStart="@+id/OverViewTitle" />
+
+        <ImageButton
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:id="@+id/imageButton"
+            android:background="@android:drawable/screen_background_light_transparent"
+            android:src="@drawable/cross"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/sellerLabel"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
 
     </RelativeLayout>

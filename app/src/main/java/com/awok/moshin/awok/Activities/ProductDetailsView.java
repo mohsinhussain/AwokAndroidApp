@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,8 +71,11 @@ public class ProductDetailsView extends AppCompatActivity{
     ProductDetailsModel productDetails=new ProductDetailsModel();
     ProductOverview productOverview=new ProductOverview();
     private TextView prodNewPrice,prodOldPrice;
+    private Button buyNow;
     Map<String,String> productSpec = new HashMap<String,String>();
     private String imageData;
+    String cat_id;
+    JSONObject dataToSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +86,13 @@ public class ProductDetailsView extends AppCompatActivity{
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);*/
+        Intent i=new Intent();
+        cat_id=getIntent().getExtras().getString("id");
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(ProductDetailsView.this, getApplicationContext(),  new GetProductDetailsCallback()).productDetailsAPICall("55fe41403b90a7d41600007a");
+            new APIClient(ProductDetailsView.this, getApplicationContext(),  new GetProductDetailsCallback()).productDetailsAPICall(cat_id);
         } else {
             Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
@@ -95,6 +101,29 @@ public class ProductDetailsView extends AppCompatActivity{
 
         //productD.setName("COOL");
         //productDetails.setName("COLD");
+        buyNow=(Button)findViewById(R.id.prod_buyNow);
+        buyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String,Object> addToCartData=new HashMap<String, Object>();
+
+
+
+                addToCartData.put("user_id", "55f6a9462f17f64a9b5f5ce4");
+                addToCartData.put("product_id",cat_id);
+                addToCartData.put("shipping_method","55f6ab5e2f17f64a9b5f5ce6");
+                addToCartData.put("quantity",1);
+
+
+
+                 dataToSend=new JSONObject(addToCartData);
+
+System.out.println(dataToSend.toString());
+                new APIClient(ProductDetailsView.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(dataToSend.toString());
+
+
+            }
+        });
         prodNewPrice=(TextView)findViewById(R.id.prod_price);
         prodOldPrice=(TextView)findViewById(R.id.prod_discountPrice);
         prodOldPrice.setPaintFlags(prodOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -312,5 +341,34 @@ productDetails.setName(mMembersJSON.getString("name"));
 
         return true;
     }
+
+
+    public class GetAddToCartCallBack extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject mMembersJSON;
+                mMembersJSON = new JSONObject(response);
+                System.out.println(mMembersJSON);
+
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(Color.RED)
+                        .show();
+            }
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+//            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
 
 }

@@ -5,7 +5,11 @@
 
 
 
-
+    <!--item android:id="@+id/awok_logo"
+        android:title="logo"
+        android:icon="@drawable/awok_logo"
+        app:showAsAction="always"
+         />-->
    <!-- <item
         android:id="@+id/action_search"
         android:title="search"
@@ -20,18 +24,20 @@
         app:showAsAction="always"
         />-->
 
-    <item android:id="@+id/action_search"
-        android:title="Search"
-        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+
 
     <item
         android:id="@+id/app_cart"
         app:showAsAction="always"
         android:orderInCategory="200"
-        android:icon="@drawable/ic_add_shopping_cart_white_24dp"
+        android:icon="@drawable/filter_icon"
         android:title="Shopping Cart" />
+
+    <item android:id="@+id/action_search"
+        android:title="Search"
+        android:icon="@drawable/search_icon"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
     <!--app:actionViewClass="android.support.v7.widget.SearchView"
           android:icon="@drawable/ic_search_white_24dp"
           app:showAsAction="ifRoom"-->
