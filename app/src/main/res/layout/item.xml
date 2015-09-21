@@ -16,8 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:background="#fff"
-            >
+            android:background="#fff">
 
 
 
@@ -118,7 +117,7 @@
                     android:id="@+id/saveButton"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:drawableLeft="@drawable/abc_ic_search_api_mtrl_alpha"
+                    android:drawableLeft="@drawable/save_icon"
                     android:textSize="10sp"
                     android:textStyle="bold"
                     android:text="SAVE"
@@ -142,7 +141,7 @@
                     android:id="@+id/buyButton"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:drawableLeft="@drawable/abc_ic_search_api_mtrl_alpha"
+                    android:drawableLeft="@drawable/cart_icon"
                     android:textSize="10sp"
                     android:text="BUY NOW"
                     android:textStyle="bold"

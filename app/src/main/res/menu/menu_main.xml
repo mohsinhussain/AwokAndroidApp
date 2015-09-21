@@ -22,7 +22,7 @@
 
     <item android:id="@+id/action_search"
         android:title="Search"
-        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
+        android:icon="@drawable/search_icon"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
@@ -30,8 +30,8 @@
         android:id="@+id/app_cart"
         app:showAsAction="always"
         android:orderInCategory="200"
-        android:icon="@drawable/ic_add_shopping_cart_white_24dp"
-        android:title="Shopping Cart" />
+        android:icon="@drawable/filter_icon"
+        android:title="Filter" />
     <!--app:actionViewClass="android.support.v7.widget.SearchView"
           android:icon="@drawable/ic_search_white_24dp"
           app:showAsAction="ifRoom"-->

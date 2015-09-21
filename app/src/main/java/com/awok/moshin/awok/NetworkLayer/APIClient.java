@@ -38,14 +38,16 @@ public class APIClient {
         mTask.execute(mContext, Constants.API_SERVER_URL+"product/", "GET", null);
     }
 
-    public void allProductsAPICall() {
+    public void allProductsAPICall(int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
+        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getPaginatedProducts/"+pageCount, "GET", null);
+//        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
     }
 
-    public void productsFromCategoryAPICall(String categoryId) {
+    public void productsFromCategoryAPICall(String categoryId, int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
+        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getPaginatedProductsByCategory/"+categoryId+"/"+pageCount, "GET", null);
+//        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
     }
 
 
