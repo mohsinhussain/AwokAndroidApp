@@ -49,7 +49,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         final int viewType = getItemViewType(i);
         switch (viewType) {
             case ITEM_WITH_DISCOUNT:
-                holder.discountTextView.setText("55"+"%");
+                holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
                 holder.oldPriceTextView.setText(items.get(i).getPriceOld());
 //                holder.discountTextView.setRotation();
 

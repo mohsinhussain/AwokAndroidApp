@@ -74,9 +74,13 @@ private DrawerLayout mDrawerLayout;
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowTitleEnabled(false);
+        ab.setLogo(R.drawable.awok_logo);
+
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 

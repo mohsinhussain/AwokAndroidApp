@@ -12,18 +12,27 @@ public class Products {
     int priceNew;
     int priceOld;
     int discPercent;
+    String categoryId;
 
     public Products() {
     }
 
-    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent) {
+    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.priceNew = priceNew;
         this.priceOld = priceOld;
         this.discPercent = discPercent;
+        this.categoryId = categoryId;
+    }
 
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getId() {

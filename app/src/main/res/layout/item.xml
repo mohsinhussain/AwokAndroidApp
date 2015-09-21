@@ -31,22 +31,47 @@
                 android:id="@+id/itemImageView"
                 android:layout_alignParentTop="true" />
 
+            <!--<TextView-->
+                <!--android:id="@+id/percentTextView"-->
+                <!--android:text="50%"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_marginLeft="-22dp"-->
+                <!--android:layout_marginTop="-10dp"-->
+                <!--android:singleLine="true"-->
+                <!--android:textColor="#fff"-->
+                <!--android:paddingRight="20dp"-->
+                <!--android:paddingLeft="20dp"-->
+                <!--android:paddingTop="15dp"-->
+                <!--android:textSize="14sp"-->
+                <!--android:background="#ef6c00"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+
+            <LinearLayout
+                android:id="@+id/percentageLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/percentage_tag"
+                android:layout_alignParentLeft="true">
+
             <TextView
                 android:id="@+id/percentTextView"
                 android:text="50%"
+                android:paddingLeft="2dp"
+                android:paddingTop="5dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="-22dp"
-                android:layout_marginTop="-10dp"
                 android:singleLine="true"
                 android:textColor="#fff"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp"
-                android:paddingTop="15dp"
                 android:textSize="14sp"
-                android:background="#ef6c00"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
 
             <ImageView

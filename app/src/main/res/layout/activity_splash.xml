@@ -4,22 +4,97 @@
     android:layout_height="match_parent"
     android:background="@drawable/splash_background" >
 
-    <!--<ImageView-->
-        <!--android:id="@+id/imgLogo"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:src="@drawable/ic_awok" />-->
 
-    <!--<TextView-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:textSize="32dp"-->
-        <!--android:textStyle="bold"-->
-        <!--android:textColor="#C81E2B"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:layout_below="@+id/imgLogo"-->
-        <!--android:text="@string/app_name" />-->
+<LinearLayout
+    android:id="@+id/logoLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:visibility="invisible"
+    android:layout_marginTop="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="28dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFF"
+        android:text="@string/always_low_prices"
+         />
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/launch_logo" />
+
+</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/formLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logoLayout"
+        android:visibility="invisible"
+        android:layout_margin="30dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/countryCodeTextView"
+            android:text="@string/country_code"
+            android:padding="10dp"
+            android:textColor="#B3B3B3"
+            android:background="#F5F5F5"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/mobileEditText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:inputType="phone"
+                android:imeOptions="actionDone"
+                android:textSize="16sp"
+                android:hint="@string/enter_mobile_number"
+                android:background="#FFFFFF"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/verifyButton"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:background="#FF9800"
+            android:text="@string/verify_now"
+            android:textColor="#fff"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/skipButton"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:background="#0000"
+            android:padding="10dp"
+            android:text="@string/skip"
+            android:textColor="#fff"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+
+
 
 </RelativeLayout>

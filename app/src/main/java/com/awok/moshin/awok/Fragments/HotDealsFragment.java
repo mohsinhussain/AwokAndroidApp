@@ -22,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.awok.moshin.awok.Activities.ProductDetailsView;
 import com.awok.moshin.awok.Activities.SubCategoriesActivity;
 import com.awok.moshin.awok.Adapters.HotDealsAdapter;
 import com.awok.moshin.awok.Models.Products;
@@ -93,7 +94,11 @@ public class HotDealsFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Toast.makeText(getActivity(), "Product Name: " +productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Product Name: "+productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                        Intent i=new Intent(getContext(), ProductDetailsView.class);
+                        i.putExtra("id",productsArrayList.get(position).getId());
+                        i.putExtra(Constants.CAT_ID_INTENT, productsArrayList.get(position).getCategoryId());
+                        startActivity(i);
 //                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
 //                        subCatIntent.putExtra(Constants.CAT_ARRAY_INTENT, (Serializable) categoriesArrayList);
 ////                        subCatIntent.putExtra(Constants.CAT_DEPTH_LEVEL_INTENT, localCategoriesArrayList.get(position).getDepthLevel());
@@ -128,11 +133,13 @@ public class HotDealsFragment extends Fragment {
                         <= (firstVisibleItem + visibleThreshold)) {
                     // End has been reached
 
-                    Log.i("...", "end called");
+                    pageCount++;
+                    Log.i("Hot Deals Fragment", "pageCount: " + pageCount);
 
                     // Do something
-                    pageCount++;
                     refreshContent();
+
+
 
                     loading = true;
                 }
@@ -229,6 +236,7 @@ public class HotDealsFragment extends Fragment {
                     item.setId(jsonObject.getString("id"));
                     item.setName(jsonObject.getString("name"));
                     item.setImage(jsonObject.getString("image"));
+                    item.setCategoryId(jsonObject.getString("category_id"));
                     item.setPriceNew(jsonObject.getInt("new_price"));
                     item.setPriceOld(jsonObject.getInt("original_price"));
                     item.setDiscPercent(jsonObject.getInt("discount_percentage"));
@@ -252,6 +260,11 @@ public class HotDealsFragment extends Fragment {
                 Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
                         .show();
+                if(getActivity()!=null){
+                    Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+                    progressBar.startAnimation(animation);
+                }
+                progressBar.setVisibility(View.GONE);
                 if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
@@ -263,15 +276,24 @@ public class HotDealsFragment extends Fragment {
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
-            progressBar.setVisibility(View.VISIBLE);
+            if(!mSwipeRefreshLayout.isRefreshing()){
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
 
 
     private void initializeData(){
-        mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
-        mRecyclerView.setAdapter(mAdapter);
+        if (pageCount==1){
+            mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+        else{
+            mAdapter.notifyDataSetChanged();
+        }
+
     }
 
 }
