@@ -34,6 +34,8 @@ public class CheckOutActivity extends AppCompatActivity{
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<Checkout> overViewList = new ArrayList<Checkout>();
+    String[] schoolbag = new String[]{"SHON","SHON","SONU","SHON","SONU"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +73,7 @@ public class CheckOutActivity extends AppCompatActivity{
             Checkout listData=new Checkout();
             listData.setOverViewText(getResources().getString(R.string.check_out_price));
             listData.setOverViewTitle(getResources().getString(R.string.checkout_head));
+            listData.setSellerLabel(schoolbag[i].toString());
 
             overViewList.add(listData);
 

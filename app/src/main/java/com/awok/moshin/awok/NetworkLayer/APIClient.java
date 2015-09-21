@@ -52,6 +52,10 @@ public class APIClient {
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
     }
 
+    public void removeProductFromCartCall(String cartId) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://192.168.1.78/cart/"+cartId+"/", "DELETE", null);
+    }
 
     public void categoriesAPICall() {
         mTask = new AsyncTaskWithDialog();
@@ -103,9 +107,10 @@ public class APIClient {
 
                 else if (parameters[METHOD_INDEX] == "PUT")
                     return client.put(url, params);
-                else if (parameters[METHOD_INDEX] == "DELETE")
+                else if (parameters[METHOD_INDEX] == "DELETE") {
+                    System.out.println("DELETE");
                     return client.delete(url, params);
-
+                }
                 return Constants.Success.toString();
             } catch (Exception e) {
                 e.printStackTrace();

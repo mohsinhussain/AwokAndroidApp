@@ -7,15 +7,17 @@ public class Checkout {
 
     public String OverViewTitle;
     public String OverViewText;
+    public String SellerLabel;
 
     public Checkout()
     {
 
     }
 
-    public Checkout(String OverViewTitle, String OverViewText) {
+    public Checkout(String OverViewTitle, String OverViewText,String SellerLabel) {
         this.OverViewTitle = OverViewTitle;
         this.OverViewText = OverViewText;
+        this.SellerLabel=SellerLabel;
 
     }
 
@@ -47,6 +49,21 @@ public class Checkout {
     public String getOverViewText()
     {
         return OverViewText;
+    }
+
+
+
+
+
+    public String getSellerLabel()
+    {
+        return SellerLabel;
+    }
+
+
+    public void setSellerLabel(String SellerLabel)
+    {
+        this.SellerLabel=SellerLabel;
     }
 
 
