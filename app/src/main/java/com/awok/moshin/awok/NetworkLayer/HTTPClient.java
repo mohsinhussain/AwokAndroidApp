@@ -278,7 +278,7 @@ public class HTTPClient{
         URL url = new URL(reqapi);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setDoInput(true);
-        con.setDoOutput(true);
+        //con.setDoOutput(true);
         con.setRequestMethod("DELETE");
 //        con.setRequestProperty("Cookie", oauth_cookies);
         con.setRequestProperty("Content-Length", "0");
@@ -289,6 +289,9 @@ public class HTTPClient{
         String resp = readURL(con);
 
         Log.v(TAG, "DELETE Response: " + resp);
+       /* System.out.println("VHFGHDFHFhf" + con.getURL().toString());
+        System.out.println("VHFGHDFHFhf"+ params.toString());
+        System.out.println("GO" + con.getContentType());*/
         return resp;
     }
 

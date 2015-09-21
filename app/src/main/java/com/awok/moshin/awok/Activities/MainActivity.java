@@ -127,10 +127,10 @@ private DrawerLayout mDrawerLayout;
                         /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
                         startActivity(i);*/
                         //mDrawerLayout.closeDrawers();
-                        Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
+                       /* Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
                         startActivity(i);
 
-                        mDrawerLayout.closeDrawer(Gravity.LEFT);
+                        mDrawerLayout.closeDrawer(Gravity.LEFT);*/
 
                         return true;
 

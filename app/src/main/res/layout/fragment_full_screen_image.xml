@@ -52,7 +52,7 @@
         >
 <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/imageSlider"
-    android:background="#D8000000"
+    android:background="#FFFFFF"
 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">

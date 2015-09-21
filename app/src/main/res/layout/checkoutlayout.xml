@@ -1,31 +1,48 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
+android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dp"
     android:layout_height="match_parent"
-    android:layout_margin="8dp">
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+<LinearLayout
+    android:id="@+id/sellerMainLay"
+    android:layout_width="fill_parent"
+    android:background="#e0e0e0"
 
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
         <TextView
             android:id="@+id/sellerLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Seller : ABC"
+            android:gravity="center"
             android:layout_margin="10dp"
             />
 
 
 
-        <View
+       <!-- <View
             android:id="@+id/sellerDivider"
             android:layout_below="@+id/sellerLabel"
             android:layout_width="match_parent"
             android:background="#607D8B"
+            android:layout_height="1dp"/>-->
+</LinearLayout>
+        <View
+            android:id="@+id/sellerDivider"
+            android:layout_below="@+id/sellerMainLay"
+            android:layout_width="match_parent"
+            android:background="#607D8B"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_height="1dp"/>
-
-
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -47,9 +64,7 @@
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_alignTop="@+id/mainImg"
-            android:layout_toRightOf="@+id/mainImg"
-            android:layout_toLeftOf="@+id/imageButton"
-            android:layout_toStartOf="@+id/imageButton" />
+            android:layout_toRightOf="@+id/mainImg" />
 
         <TextView
             android:id="@+id/overviewText"
@@ -91,17 +106,6 @@ android:layout_marginTop="10dp"
             android:layout_below="@+id/OverViewTitle"
             android:layout_alignLeft="@+id/OverViewTitle"
             android:layout_alignStart="@+id/OverViewTitle" />
-
-        <ImageButton
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:id="@+id/imageButton"
-            android:background="@android:drawable/screen_background_light_transparent"
-            android:src="@drawable/cross"
-            android:layout_margin="10dp"
-            android:layout_below="@+id/sellerLabel"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
 
 
     </RelativeLayout>
@@ -197,4 +201,5 @@ android:layout_marginTop="10dp"
 
 
     </RelativeLayout>-->
-</android.support.v7.widget.CardView>
+
+</RelativeLayout>
