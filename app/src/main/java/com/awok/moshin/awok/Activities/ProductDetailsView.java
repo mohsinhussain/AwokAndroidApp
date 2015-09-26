@@ -13,10 +13,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -251,7 +253,13 @@ productDetails.setName(mMembersJSON.getString("name"));
                 //mDrawerLayout.openDrawer(GravityCompat.START);
                 onBackPressed();
                 return true;
+
+          /*  case R.id.app_cart:
+            {
+
+            }*/
         }
+
         return super.onOptionsItemSelected(item);
 
 
@@ -323,9 +331,9 @@ productDetails.setName(mMembersJSON.getString("name"));
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_productdetails, menu);
 
-
+//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 
 
         return true;

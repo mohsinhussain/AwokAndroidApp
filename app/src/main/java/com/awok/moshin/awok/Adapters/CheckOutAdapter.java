@@ -2,11 +2,15 @@ package com.awok.moshin.awok.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +19,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,6 +33,8 @@ import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +55,8 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
     private ArrayAdapter<CharSequence> adapter;
     NetworkInfo networkInfo;
     Context context;
+    Context mContext;
+    SVG svg;
     String sellerCheck="";
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -61,7 +71,8 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
                 activity.getSystemService(Context.CONNECTIVITY_SERVICE);
          networkInfo = connMgr.getActiveNetworkInfo();
         context=activity.getApplicationContext();
-
+       // mContext=
+        svg = SVGParser.getSVGFromResource(activity.getResources(),R.raw.cross);
 
     }
 
@@ -94,6 +105,11 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
         final Checkout item = OverViewList.get(position);
         System.out.println("GOAL"+sellerCheck);
         System.out.println(OverViewList.get(position).getSellerLabel());
+
+
+        // Get a drawable from the parsed SVG and set it as the drawable for the ImageView
+
+        //viewHolder.productImg.setImageDrawable(svg.createPictureDrawable());
         if(sellerCheck.equals(OverViewList.get(position).getSellerLabel()))
         {
 
@@ -103,24 +119,25 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
             viewHolder.sellerLabel.setText(OverViewList.get(position).getSellerLabel());
             viewHolder.sellerMainLay.setVisibility(View.GONE);
             viewHolder.seperator.setVisibility(View.VISIBLE);
+            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
             sellerCheck=OverViewList.get(position).getSellerLabel();
 
         }
-        else
-        {
+        else {
             customView.setLayoutParams(lp);
-            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText());
+            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+" AED");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
-            viewHolder.sellerLabel.setText("Seller Name :"+OverViewList.get(position).getSellerLabel());
+            viewHolder.sellerLabel.setText("Seller Name : " + OverViewList.get(position).getSellerLabel());
             viewHolder.sellerMainLay.setVisibility(View.VISIBLE);
             viewHolder.seperator.setVisibility(View.GONE);
-            //customView.setLayoutParams(lp);
+            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
+           // customView.setLayoutParams(lp);
 
             sellerCheck=OverViewList.get(position).getSellerLabel();
         }
 
       //  viewHolder.data = new CheckoutDataObjects(activity);
-        viewHolder.countOfProducts.setAdapter(adapter);
+        /*viewHolder.countOfProducts.setAdapter(adapter);*/
 
 
 
@@ -169,6 +186,9 @@ viewHolder.prodOverviewTitle.setOnClickListener(new View.OnClickListener() {
         return OverViewList.size();
     }
 
+
+
+
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
 
@@ -176,6 +196,7 @@ viewHolder.prodOverviewTitle.setOnClickListener(new View.OnClickListener() {
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         public View seperator;
+        public ImageView cross,productImg;
 
         //public CheckoutDataObjects data;
 
@@ -185,14 +206,19 @@ viewHolder.prodOverviewTitle.setOnClickListener(new View.OnClickListener() {
                     .findViewById(R.id.OverViewTitle);
             prodOverViewText = (TextView) itemLayoutView
                     .findViewById(R.id.overviewText);
-            countOfProducts=(Spinner)itemLayoutView
-                    .findViewById(R.id.spinner);
+            /*countOfProducts=(Spinner)itemLayoutView
+                    .findViewById(R.id.spinner);*/
+            cross=(ImageView)itemLayoutView
+                    .findViewById(R.id.cross);
             sellerMainLay=(LinearLayout)itemLayoutView
                     .findViewById(R.id.sellerMainLay);
             sellerLabel=(TextView)itemLayoutView
                     .findViewById(R.id.sellerLabel);
             seperator=(View)itemLayoutView
                     .findViewById(R.id.sellerDivider);
+            productImg=(ImageView)itemLayoutView
+
+                    .findViewById(R.id.mainImg);
 
         }
         @Override
@@ -241,4 +267,15 @@ viewHolder.prodOverviewTitle.setOnClickListener(new View.OnClickListener() {
             //progressBar.setVisibility(View.VISIBLE);
         }
     }
+
+
+
+
+
+    private Bitmap base64ToBitmap(String imageString) {
+        byte[] imageAsBytes = Base64.decode(imageString.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+
+    }
+
 }

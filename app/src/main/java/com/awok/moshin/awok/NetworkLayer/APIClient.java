@@ -52,6 +52,12 @@ public class APIClient {
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
     }
 
+    public void cartItemsCallBack(String userId) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+userId+"/summary/", "GET", null);
+//        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
+    }
+
     public void removeProductFromCartCall(String cartId) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://192.168.1.78/cart/"+cartId+"/", "DELETE", null);
