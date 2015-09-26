@@ -331,9 +331,19 @@ closeButton.setOnClickListener(new View.OnClickListener() {
     public boolean onQueryTextSubmit(String query) {
 
 
-        Snackbar.make(MainActivity.this.findViewById(android.R.id.content), "Submitted", Snackbar.LENGTH_LONG)
+//
+
+        if(query.equalsIgnoreCase("")){
+            Snackbar.make(MainActivity.this.findViewById(android.R.id.content), "Please type some thing to search Awok", Snackbar.LENGTH_LONG)
                 .setActionTextColor(Color.RED)
                 .show();
+        }
+        else{
+            Intent i = new Intent(MainActivity.this, SearchActivity.class);
+            i.putExtra(Constants.SEARCH_FILTER_INTENT, query);
+            startActivity(i);
+        }
+
 
         return false;
     }

@@ -54,6 +54,9 @@ public class HotDealsFragment extends Fragment {
     private boolean loading = true;
     private int visibleThreshold = 5;
     private  int pageCount = 1;
+
+    private boolean isSearch = false;
+    private String searchString = null;
     int firstVisibleItem, visibleItemCount, totalItemCount;
     public HotDealsFragment(){}
 
@@ -62,6 +65,12 @@ public class HotDealsFragment extends Fragment {
         this.categoryId = categoryId;
     }
 
+
+    public HotDealsFragment(String searchString, boolean isSearch)
+    {
+        this.isSearch = isSearch;
+        this.searchString = searchString;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -208,11 +217,14 @@ public class HotDealsFragment extends Fragment {
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            if(categoryId==null){
-                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).allProductsAPICall(pageCount);
+            if(isSearch && searchString!=null){
+                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).productsFromSearchAPICall(searchString, pageCount);
+            }
+            else if(categoryId!=null){
+                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).productsFromCategoryAPICall(categoryId, pageCount);
             }
             else{
-                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).productsFromCategoryAPICall(categoryId, pageCount);
+                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).allProductsAPICall(pageCount);
             }
 
         } else {
@@ -225,8 +237,41 @@ public class HotDealsFragment extends Fragment {
     public class GetProductsCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
-                JSONArray jsonArray;
-                jsonArray = new JSONArray(response);
+                JSONArray jsonArray = null;
+                if (isSearch){
+                    JSONObject obj = new JSONObject(response);
+                    if(obj.getInt("status")==1){
+                        jsonArray = obj.getJSONArray("items");
+                    }
+                    else{
+                        if(pageCount>1){
+                            Snackbar.make(getActivity().findViewById(android.R.id.content), "No further data", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+                        }
+                        else{
+                            Snackbar.make(getActivity().findViewById(android.R.id.content), "No such object found", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+//                            Snackbar.make(getActivity().findViewById(android.R.id.content), obj.getString(obj.getString("title")), Snackbar.LENGTH_LONG)
+//                                    .setActionTextColor(Color.RED)
+//                                    .show();
+                        }
+                        if(getActivity()!=null){
+                            Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+                            progressBar.startAnimation(animation);
+                        }
+                        progressBar.setVisibility(View.GONE);
+                        if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        return;
+                    }
+                }
+                else{
+                    jsonArray = new JSONArray(response);
+                }
+
 //                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
                 int length = jsonArray.length();
 

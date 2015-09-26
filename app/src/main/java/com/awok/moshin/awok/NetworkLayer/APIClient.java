@@ -42,14 +42,18 @@ public class APIClient {
 
     public void allProductsAPICall(int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getPaginatedProducts/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/ahmed/api/webapi/public/products/getPaginatedProducts/"+pageCount, "GET", null);
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
+    }
+
+    public void productsFromSearchAPICall(String searchFilter, int pageCount) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/search/index/"+searchFilter+"/"+pageCount, "GET", null);
     }
 
     public void productsFromCategoryAPICall(String categoryId, int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getPaginatedProductsByCategory/"+categoryId+"/"+pageCount, "GET", null);
-//        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/ahmed/api/webapi/public/products/getPaginatedProductsByCategory/"+categoryId+"/"+pageCount, "GET", null);
     }
 
     public void removeProductFromCartCall(String cartId) {
@@ -59,12 +63,12 @@ public class APIClient {
 
     public void categoriesAPICall() {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://192.168.1.56/marketplace/sections/", "GET", null);
+        mTask.execute(mContext, "http://market1.awok/setti/api/sections", "GET", null);
     }
 
     public void productDetailsAPICall(String productId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/show/" + productId, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/ahmed/api/webapi/public/products/show/" + productId, "GET", null);
     }
 
     public void addToCartAPICall(String dataToSend) {
