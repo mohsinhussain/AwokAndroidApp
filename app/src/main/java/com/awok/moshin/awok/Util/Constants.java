@@ -12,6 +12,7 @@ public class Constants {
     public static String JSON_PRODUCT_LIST_NAME = "PRODUCTS";
     public static String JSON_CATEGORY_LIST_NAME = "categories";
     public static String CAT_ARRAY_INTENT = "categoryArrayListIntent";
+    public static String SEARCH_FILTER_INTENT = "searchFilterIntent";
     public static String CAT_PARENT_ID_INTENT = "catParentIdIntent";
     public static String CAT_ID_INTENT = "catIdIntent";
     public static String CAT_DEPTH_LEVEL_INTENT = "catDepthLevelIntent";
