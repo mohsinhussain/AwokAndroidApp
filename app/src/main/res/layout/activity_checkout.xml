@@ -60,7 +60,7 @@ android:layout_above="@+id/bottomLay"
         </android.support.design.widget.CoordinatorLayout>
     <LinearLayout
         android:id="@+id/bottomLay"
-android:background="#EEEEEE"
+android:background="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
@@ -77,7 +77,7 @@ android:layout_marginTop="10dp"
 android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
 
-            android:text="Hurry Up Egilgible for Free Shipping"
+            android:text="Hurry Up Eligible for Free Shipping"
             android:textColor="#4CAF50" />
 
         <LinearLayout
@@ -95,14 +95,15 @@ android:layout_marginLeft="10dp"
 
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center|right"
-                android:background="#EEEEEE"
+
+                android:gravity="left"
+                android:background="#FFFFFF"
             android:textAppearance="?android:attr/textAppearanceLarge"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
 
-                android:text="SUBTOTAL : "
-                android:textColor="#F44336" />
+                android:text="SUBTOTAL"
+                android:textColor="#555555" />
 
 
             <TextView
@@ -111,12 +112,12 @@ android:layout_marginLeft="10dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:background="#EEEEEE"
-                android:gravity="center|left"
+                android:background="#FFFFFF"
+                android:gravity="right"
                android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:text="929 AED"
-                android:textColor="#BDBDBD" />
+                android:text=""
+                android:textColor="#333333" />
 
 
         </LinearLayout>
@@ -136,7 +137,7 @@ android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="#FF5722"
+                android:background="#e64a19"
                 android:text="CHECKOUT"
                 android:textColor="#FFFFFF" />
 
@@ -145,6 +146,22 @@ android:textAppearance="?android:attr/textAppearanceLarge"
 
 
     </LinearLayout>
+    <ProgressBar android:indeterminate="true"
+
+        android:layout_width="50dp" android:layout_height="50dp"
+        android:id="@+id/marker_progress" android:background ="@drawable/progress"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Cart is Empty!! Continue Shopping"
+        android:id="@+id/cartEmptyText"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
 
 

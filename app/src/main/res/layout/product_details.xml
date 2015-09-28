@@ -82,7 +82,7 @@ android:id="@+id/bottomLay"
                     android:background="#EEEEEE"
                     android:gravity="center|right"
                     android:paddingRight="5dp"
-                    android:text="929 AED"
+                    android:text=""
                     android:textColor="#F44336" />
 
 
@@ -95,7 +95,7 @@ android:id="@+id/bottomLay"
                     android:background="#EEEEEE"
                     android:gravity="center|left"
                     android:paddingLeft="5dp"
-                    android:text="929 AED"
+                    android:text=""
                     android:textColor="#BDBDBD" />
 
 

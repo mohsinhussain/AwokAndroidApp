@@ -85,7 +85,7 @@ android:scaleType="fitCenter"
 android:textSize="15dp"
 
 
-            android:layout_below="@+id/editText"
+            android:layout_below="@+id/quantity"
             android:layout_alignLeft="@+id/textView"
             android:layout_alignStart="@+id/textView" />
 
@@ -104,16 +104,19 @@ android:textSize="15dp"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:inputType="number"
-            android:ems="10"
+
+            android:singleLine="true"
             android:textColor="#333333"
-            android:maxLines="1"
+
             android:cursorVisible="false"
             android:maxLength="2"
+            android:imeOptions="actionDone"
+            android:imeActionLabel="Update"
             android:gravity="center"
 
             android:background="@drawable/edit_text_background"
             style="@style/_EditText"
-            android:id="@+id/editText"
+            android:id="@+id/quantity"
 
             android:layout_below="@+id/OverViewTitle"
             android:layout_toRightOf="@+id/textView"
@@ -125,7 +128,7 @@ android:textSize="15dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="In Stock : 25 Items"
             android:gravity="center_vertical"
-            android:id="@+id/textView2"
+            android:id="@+id/stock"
             android:textSize="10dp"
             android:layout_alignBottom="@+id/overviewText"
             android:layout_alignRight="@+id/cross"
@@ -133,11 +136,11 @@ android:textSize="15dp"
             android:layout_alignTop="@+id/overviewText" />
 
         <ImageView
-            android:layout_width="14dp"
-            android:layout_height="14dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:id="@+id/cross"
-
-            android:scaleType="fitXY"
+android:padding="16dp"
+            android:scaleType="center"
             android:background="@drawable/cross_icon"
             android:layout_margin="10dp"
             android:layout_below="@+id/sellerDivider"

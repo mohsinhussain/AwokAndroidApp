@@ -21,7 +21,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.awok.moshin.awok.Adapters.CheckOutAdapter;
@@ -45,7 +48,10 @@ import java.util.List;
  */
 public class CheckOutActivity extends AppCompatActivity{
     private RecyclerView mRecyclerView;
+    private LinearLayout bottomLay;
+    private TextView cartEmptyText,prodPrice;
     private RecyclerView.Adapter mAdapter;
+    ProgressBar progressBar;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<Checkout> overViewList = new ArrayList<Checkout>();
     String[] schoolbag = new String[]{"SHON","SHON","SONU","SHON","SONU"};
@@ -55,7 +61,13 @@ public class CheckOutActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
         mRecyclerView = (RecyclerView) findViewById(R.id.overViewRecyclerView);
-
+bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
+        bottomLay.setVisibility(View.GONE);
+        cartEmptyText=(TextView)findViewById(R.id.cartEmptyText);
+        cartEmptyText.setVisibility(View.GONE);
+        prodPrice=(TextView)findViewById(R.id.prod_discountPrice);
+        progressBar = (ProgressBar) findViewById(R.id.marker_progress);
+        progressBar.setVisibility(View.GONE);
         // getSupportActionBar().setIcon(R.drawable.ic_launcher);
 
         // getSupportActionBar().setTitle("Android Versions");
@@ -69,7 +81,7 @@ public class CheckOutActivity extends AppCompatActivity{
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new CheckOutAdapter(CheckOutActivity.this,overViewList);
-        mRecyclerView.setAdapter(mAdapter);
+        //mRecyclerView.setAdapter(mAdapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -78,7 +90,7 @@ public class CheckOutActivity extends AppCompatActivity{
         // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Mobiles");
+        ab.setTitle("Cart");
         ConnectivityManager connMgr = (ConnectivityManager)
                 getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -88,7 +100,7 @@ public class CheckOutActivity extends AppCompatActivity{
             }
             else{*/
                 new APIClient(this, getApplicationContext(),  new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
-           // }
+            // }
 
         } else {
             Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
@@ -137,7 +149,7 @@ public class CheckOutActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_productdetails, menu);
 
 
 
@@ -167,6 +179,7 @@ public class CheckOutActivity extends AppCompatActivity{
     public class GetCartCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
+                overViewList.clear();
                 System.out.println(response);
                 /*JSONArray jsonArray;
                 jsonArray = new JSONArray(response);*/
@@ -175,14 +188,24 @@ public class CheckOutActivity extends AppCompatActivity{
                 jsonObjectData=new JSONObject(response);
                 System.out.println(jsonObjectData.toString());
                // int length = jsonObjectData.length();
-                System.out.println(jsonObjectData.getJSONObject("data"));
-                System.out.println(jsonObjectData.getJSONObject("data").getJSONArray("seller_cart"));
+/////////                System.out.println(jsonObjectData.getJSONObject("data"));
+///                System.out.println(jsonObjectData.getJSONObject("data").getJSONArray("seller_cart"));
 
                 JSONArray jsonArray;
-                jsonArray=jsonObjectData.getJSONObject("data").getJSONArray("seller_cart");
-                int length = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").length();
-                //String sellerName=jsonArray.getString("seller").toString();
+  /////              jsonArray=jsonObjectData.getJSONObject("data").getJSONArray("seller_cart");
 
+                //String sellerName=jsonArray.getString("seller").toString();
+if(jsonObjectData.getString("status").equals("0"))
+{
+bottomLay.setVisibility(View.GONE);
+    cartEmptyText.setVisibility(View.VISIBLE);
+}
+
+                else
+{
+bottomLay.setVisibility(View.VISIBLE);
+    cartEmptyText.setVisibility(View.GONE);
+    int length = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").length();
                 for(int i=0;i<length;i++){
                     JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").getJSONObject(i);
 
@@ -193,9 +216,15 @@ public class CheckOutActivity extends AppCompatActivity{
                         Checkout listData=new Checkout();
                         JSONObject jsonObjectProductDetails=productDetails.getJSONObject(j);
                         listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
+                        //listData.setOverViewText(jsonObject.getString("total_price"));
+                        listData.setStatusId(jsonObjectData.getString("status"));
                         listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
                         listData.setSellerLabel(jsonObject.getString("seller"));
                         listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
+                        listData.setProductId(jsonObjectProductDetails.getString("_id"));
+                        listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
+                        listData.setRemainingStock(jsonObjectProductDetails.getString("remaining_quantity"));
+                        prodPrice.setText((jsonObjectData.getJSONObject("data").getString("total")) + " AED");
                         overViewList.add(listData);
                     }
                     /*listData.setOverViewText(getResources().getString(R.string.check_out_price));
@@ -207,14 +236,19 @@ public class CheckOutActivity extends AppCompatActivity{
 
                 }
 
-                mAdapter.notifyDataSetChanged();
+
+               // mAdapter.notifyAll();
+
+}
 
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    //progressBar.startAnimation(animation);
+                    progressBar.startAnimation(animation);
                 }
-                //progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 //initializeData();
+                mRecyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -223,9 +257,9 @@ public class CheckOutActivity extends AppCompatActivity{
                         .show();
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    //progressBar.startAnimation(animation);
+                    progressBar.startAnimation(animation);
                 }
-                //progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 /*if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }*/
@@ -238,11 +272,14 @@ public class CheckOutActivity extends AppCompatActivity{
         public void onPreExecute() {
             // TODO Auto-generated method stub
 //            if(!mSwipeRefreshLayout.isRefreshing()){
-//                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
 //            }
 
         }
     }
 
-
+public void refreshData()
+{
+    new APIClient(this, getApplicationContext(),  new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
+}
 }

@@ -62,7 +62,7 @@ public class ProductDetailsView extends AppCompatActivity{
     private Button buyNow;
     Map<String,String> productSpec = new HashMap<String,String>();
     private String imageData;
-    String productId;
+    String productId,productName;
     String catId;
     JSONObject dataToSend;
 
@@ -77,6 +77,7 @@ public class ProductDetailsView extends AppCompatActivity{
         getSupportActionBar().setHomeButtonEnabled(true);*/
         Intent i=new Intent();
         productId =getIntent().getExtras().getString("id");
+        productName=getIntent().getExtras().getString("productName");
         catId =getIntent().getExtras().getString(Constants.CAT_ID_INTENT);
         Log.v("Product DetailView", productId);
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -126,7 +127,7 @@ System.out.println(dataToSend.toString());
        // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Mobiles");
+        ab.setTitle(productName);
 
 
 
@@ -288,7 +289,7 @@ productDetails.setName(mMembersJSON.getString("name"));
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new productDescription(productDetails,imageData), "Overview");
        // adapter.addFragment(new ProductSpecificationFragment(productSpec), "Specifications");
-        adapter.addFragment(new ProductSpecificationFragment(), "Specifications");
+        //adapter.addFragment(new ProductSpecificationFragment(), "Specifications");
         adapter.addFragment(new ProductOverViewFragment(productOverview), "Description");
         adapter.addFragment(new HotDealsFragment(catId), "Related Products");
 
@@ -346,6 +347,9 @@ productDetails.setName(mMembersJSON.getString("name"));
                 JSONObject mMembersJSON;
                 mMembersJSON = new JSONObject(response);
                 System.out.println(mMembersJSON);
+
+                Intent i=new Intent(ProductDetailsView.this,CheckOutActivity.class);
+                startActivity(i);
 
 
 

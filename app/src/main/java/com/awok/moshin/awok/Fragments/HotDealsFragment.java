@@ -46,6 +46,7 @@ public class HotDealsFragment extends Fragment {
     HotDealsAdapter mAdapter;
     View mView;
     ProgressBar progressBar;
+    ProgressBar loadMore;
     ArrayList<Products> productsArrayList;
     String categoryId = null;
     private String TAG = "Hot Deals Fragment";
@@ -80,6 +81,8 @@ public class HotDealsFragment extends Fragment {
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.dealsRecyclerView);
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
+        loadMore=(ProgressBar)mView.findViewById(R.id.load_progress_bar);
+        loadMore.setVisibility(View.GONE);
         mSwipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -106,6 +109,7 @@ public class HotDealsFragment extends Fragment {
                         Toast.makeText(getActivity(), "Product Name: "+productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
                         Intent i=new Intent(getContext(), ProductDetailsView.class);
                         i.putExtra("id",productsArrayList.get(position).getId());
+                        i.putExtra("productName",productsArrayList.get(position).getName());
                         i.putExtra(Constants.CAT_ID_INTENT, productsArrayList.get(position).getCategoryId());
                         startActivity(i);
 //                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
@@ -127,7 +131,7 @@ public class HotDealsFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
+                progressBar.setVisibility(View.GONE);
                 visibleItemCount = mRecyclerView.getChildCount();
                 totalItemCount = mLayoutManager.getItemCount();
                 firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
@@ -212,6 +216,12 @@ public class HotDealsFragment extends Fragment {
         if(pageCount==1){
             productsArrayList = new ArrayList<Products>();
         }
+        else
+        {
+            loadMore.setVisibility(View.VISIBLE);
+            progressBar
+                    .setVisibility(View.GONE);
+        }
 
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -257,11 +267,12 @@ public class HotDealsFragment extends Fragment {
 //                                    .setActionTextColor(Color.RED)
 //                                    .show();
                         }
-                        if(getActivity()!=null){
+                        /*if(getActivity()!=null){
                             Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
                             progressBar.startAnimation(animation);
-                        }
+                        }*/
                         progressBar.setVisibility(View.GONE);
+                        loadMore.setVisibility(View.GONE);
                         if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
@@ -291,11 +302,12 @@ public class HotDealsFragment extends Fragment {
                     productsArrayList.add(item);
                 }
 
-                if(getActivity()!=null){
+               /* if(getActivity()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
                     progressBar.startAnimation(animation);
-                }
+                }*/
                 progressBar.setVisibility(View.GONE);
+                loadMore.setVisibility(View.GONE);
                 initializeData();
                 if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -305,11 +317,12 @@ public class HotDealsFragment extends Fragment {
                 Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
                         .show();
-                if(getActivity()!=null){
+                /*if(getActivity()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
                     progressBar.startAnimation(animation);
-                }
+                }*/
                 progressBar.setVisibility(View.GONE);
+                loadMore.setVisibility(View.GONE);
                 if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
@@ -324,6 +337,11 @@ public class HotDealsFragment extends Fragment {
             if(!mSwipeRefreshLayout.isRefreshing()){
                 progressBar.setVisibility(View.VISIBLE);
             }
+           /* else
+            {
+                //progressBar.setVisibility(View.GONE);
+                loadMore.setVisibility(View.VISIBLE);
+            }*/
 
         }
     }

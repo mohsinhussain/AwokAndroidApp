@@ -257,19 +257,44 @@ public class HTTPClient{
 
     public String put(String reqapi,String params) throws IOException
     {
-        URL url = new URL(reqapi);
+       /* URL url = new URL(reqapi);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setConnectTimeout(2000);
         con.setDoInput(true);
         con.setDoOutput(true);
         con.setRequestMethod("PUT");
-//        con.setRequestProperty("Cookie", oauth_cookies);
+
         con.setRequestProperty("Parameters", params);
         con.setRequestProperty("Content-Length", "0");
 
         String resp = readURL(con);
 
         Log.v(TAG, "PUT Response: " + resp);
+        return resp;*/
+        URL url = new URL(reqapi);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setConnectTimeout(2000);
+        con.setDoInput(true);
+
+        con.setRequestMethod("PUT");
+//        con.setRequestProperty("Cookie", oauth_cookies);
+        con.setRequestProperty("Parameters", params);
+//		if (oauth_client)
+//			con.setRequestProperty("Authorization", getAuthString());
+//        con.setRequestProperty("Content-Length", "0");
+
+        //String resp = readURL(con);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream ());
+        wr.writeBytes(params.toString());
+
+        wr.flush();
+        wr.close();
+
+        System.out.println("VHFGHDFHFhf" + con.getURL().toString());
+        System.out.println("VHFGHDFHFhf"+ params.toString());
+        System.out.println("GO"+con.getContentType());
+        String resp = readURL(con);
+        Log.v(TAG, "POST Response: " + resp);
         return resp;
     }
 
