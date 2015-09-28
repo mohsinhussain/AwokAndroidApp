@@ -49,7 +49,7 @@ public class HTTPClient{
     public String oauth_cookies;
     //	public Boolean oauth_client = true;
     SharedPreferences mSharedPrefs;
-    static int TIMEOUT_VALUE = 10000;
+    static int TIMEOUT_VALUE = 4000;
 
 
 

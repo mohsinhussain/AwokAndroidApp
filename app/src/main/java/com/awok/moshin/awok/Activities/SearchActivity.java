@@ -37,6 +37,7 @@ import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
 import com.awok.moshin.awok.Util.RecyclerItemClickListener;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ private DrawerLayout mDrawerLayout;
         ab = getSupportActionBar();
 //        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
-//        ab.setTitle(getIntent().getExtras().getString(Constants.CAT_NAME_INTENT));
+        ab.setTitle(getIntent().getExtras().getString(Constants.CAT_NAME_INTENT));
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -67,6 +68,8 @@ private DrawerLayout mDrawerLayout;
         }
 
         searchString = getIntent().getStringExtra(Constants.SEARCH_FILTER_INTENT);
+        ab.setTitle(searchString);
+        URLEncoder.encode(searchString);
 
         HotDealsFragment fragment = new HotDealsFragment(searchString, true);
         FragmentManager fm = getSupportFragmentManager(); //or getFragmentManager() if you are not using support library.

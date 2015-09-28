@@ -1,44 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_background" >
+     >
 
-
-<LinearLayout
-    android:id="@+id/logoLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:visibility="invisible"
-    android:layout_marginTop="20dp"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="28dp"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#FFF"
-        android:text="@string/always_low_prices"
-         />
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/splash_background">
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:src="@drawable/launch_logo" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/dummyLogoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:textSize="28dp"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:textColor="#FFF"-->
+            <!--android:text="@string/always_low_prices"-->
+            <!--/>-->
+
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/launch_logo" />
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/loginLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dummyLogoLayout"
+        android:visibility="gone"
+        android:layout_margin="30dp"
+        android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                android:layout_gravity="center_horizontal"
+                android:imeOptions="actionDone"
+                android:textSize="16sp"
+                android:hint="@string/password"
+                android:background="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:background="#FF9800"
+            android:text="@string/login"
+            android:textColor="#fff"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/registerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dummyLogoLayout"
+        android:visibility="gone"
+        android:layout_margin="30dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/regPasswordEditText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:layout_gravity="center_horizontal"
+            android:imeOptions="actionNext"
+            android:textSize="16sp"
+            android:hint="@string/password"
+            android:background="#FFFFFF"/>
+
+        <EditText
+            android:id="@+id/regConfirmPasswordEditText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:imeOptions="actionDone"
+            android:textSize="16sp"
+            android:hint="@string/confirm_password"
+            android:background="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:background="#FF9800"
+            android:text="@string/next"
+            android:textColor="#fff"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+
+
 
     <LinearLayout
         android:id="@+id/formLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/logoLayout"
+        android:layout_below="@+id/dummyLogoLayout"
         android:visibility="invisible"
         android:layout_margin="30dp"
         android:orientation="vertical">
@@ -47,15 +147,15 @@
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/countryCodeTextView"
-            android:text="@string/country_code"
-            android:padding="10dp"
-            android:textColor="#B3B3B3"
-            android:background="#F5F5F5"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/countryCodeTextView"
+                android:text="@string/country_code"
+                android:padding="10dp"
+                android:textColor="#B3B3B3"
+                android:background="#F5F5F5"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/mobileEditText"
@@ -72,13 +172,13 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/verifyButton"
+            android:id="@+id/nextButton"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
             android:padding="10dp"
             android:background="#FF9800"
-            android:text="@string/verify_now"
+            android:text="@string/next"
             android:textColor="#fff"
             android:textSize="16sp"/>
 
@@ -95,6 +195,13 @@
     </LinearLayout>
 
 
+    <ProgressBar android:indeterminate="true"
+        android:layout_width="50dp" android:layout_height="50dp"
+        android:id="@+id/marker_progress" android:background ="@drawable/progress_splash"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 
+    </RelativeLayout>
 
-</RelativeLayout>
+</ScrollView>
