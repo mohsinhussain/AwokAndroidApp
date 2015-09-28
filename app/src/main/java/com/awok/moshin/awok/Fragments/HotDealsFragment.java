@@ -19,7 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.awok.moshin.awok.Activities.ProductDetailsView;
@@ -54,8 +56,9 @@ public class HotDealsFragment extends Fragment {
     private boolean loading = true;
     private int visibleThreshold = 5;
     private  int pageCount = 1;
-
+    private TextView itemCount;
     private boolean isSearch = false;
+    private Button gotoTopButton;
     private String searchString = null;
     int firstVisibleItem, visibleItemCount, totalItemCount;
     public HotDealsFragment(){}
@@ -79,6 +82,8 @@ public class HotDealsFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_hot_deals, container, false);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.dealsRecyclerView);
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);
+        itemCount = (TextView) mView.findViewById(R.id.itemCountTextView);
+        gotoTopButton = (Button) mView.findViewById(R.id.goToTopButton);
         progressBar.setVisibility(View.GONE);
         mSwipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -103,9 +108,9 @@ public class HotDealsFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Toast.makeText(getActivity(), "Product Name: "+productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
-                        Intent i=new Intent(getContext(), ProductDetailsView.class);
-                        i.putExtra("id",productsArrayList.get(position).getId());
+                        Toast.makeText(getActivity(), "Product Name: " + productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getContext(), ProductDetailsView.class);
+                        i.putExtra("id", productsArrayList.get(position).getId());
                         i.putExtra(Constants.CAT_ID_INTENT, productsArrayList.get(position).getCategoryId());
                         startActivity(i);
 //                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
@@ -119,6 +124,13 @@ public class HotDealsFragment extends Fragment {
                 })
         );
 
+        gotoTopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLayoutManager.smoothScrollToPosition(mRecyclerView, null, 0);
+            }
+        });
+
 //        boolean loading = true;
 //        int pastVisiblesItems, visibleItemCount, totalItemCount;
 
@@ -131,6 +143,15 @@ public class HotDealsFragment extends Fragment {
                 visibleItemCount = mRecyclerView.getChildCount();
                 totalItemCount = mLayoutManager.getItemCount();
                 firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
+
+                if(firstVisibleItem<=6){
+                    //Hide GO TO TOP
+                    gotoTopButton.setVisibility(View.GONE);
+                }
+                else{
+                    //show GO TO TOP
+                    gotoTopButton.setVisibility(View.VISIBLE);
+                }
 
                 if (loading) {
                     if (totalItemCount > previousTotal) {
@@ -167,7 +188,9 @@ public class HotDealsFragment extends Fragment {
 //
 //        });
 
-
+        loading = true;
+        pageCount = 1;
+        previousTotal = 0;
 
         refreshContent();
 
@@ -240,6 +263,8 @@ public class HotDealsFragment extends Fragment {
                 JSONArray jsonArray = null;
                 if (isSearch){
                     JSONObject obj = new JSONObject(response);
+                    itemCount.setVisibility(View.VISIBLE);
+                    itemCount.setText("We found "+obj.getInt("total_products")+" search results for '"+searchString+"'");
                     if(obj.getInt("status")==1){
                         jsonArray = obj.getJSONArray("items");
                     }

@@ -83,6 +83,23 @@ public class APIClient {
 
     }
 
+    public void userCheckAPICall(String phoneNumber) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/bengalua/check/" + phoneNumber, "GET", null);
+    }
+
+    public void userLoginAPICall(String dataToSend) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/bengalua/login/", "POST", dataToSend);
+
+    }
+
+    public void useRegisterAPICall(String dataToSend) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/bengalua/register/", "POST", dataToSend);
+
+    }
+
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -101,7 +118,7 @@ public class APIClient {
                         context.getSharedPreferences(Constants.PREFS_NAME, 0));
 
                 String params = (String) parameters[PARAMS_INDEX];
-
+                Log.v(TAG, "URL: "+url);
 
                 if (parameters[METHOD_INDEX] == "POST") {
                         postResponse = client.post(url, params);
@@ -109,7 +126,6 @@ public class APIClient {
 
                 } else if (parameters[METHOD_INDEX] == "GET")
                 {
-                    Log.v(TAG, "URL: "+url);
                     String resp = client.get(url, params);
                     Log.v(TAG, "resp: "+resp);
                     return resp;

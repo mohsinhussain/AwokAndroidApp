@@ -95,7 +95,7 @@
                 android:maxLines="2"
                 android:minLines="2"
                 android:ellipsize="end"
-                android:padding="2dp"
+                android:padding="5dp"
                 android:textColor="#565656"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
@@ -145,7 +145,7 @@
                 <Button
                     android:id="@+id/saveButton"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="35dp"
                     android:drawableLeft="@drawable/save_icon"
                     android:textSize="10sp"
                     android:textStyle="bold"
@@ -169,7 +169,7 @@
                 <Button
                     android:id="@+id/buyButton"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="35dp"
                     android:drawableLeft="@drawable/cart_icon"
                     android:textSize="10sp"
                     android:text="BUY NOW"

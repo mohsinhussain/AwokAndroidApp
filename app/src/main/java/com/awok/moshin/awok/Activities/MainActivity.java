@@ -1,5 +1,6 @@
 package com.awok.moshin.awok.Activities;
 
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -61,6 +63,8 @@ private DrawerLayout mDrawerLayout;
     ArrayList<Categories> categoriesArrayList;
     private String TAG = "Main Activity";
     SharedPreferences mSharedPrefs;
+    SearchView searchView;
+    MenuItem searchItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -250,8 +254,9 @@ private DrawerLayout mDrawerLayout;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         ImageView closeButton = (ImageView) searchView.findViewById(R.id.search_close_btn);
+        searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
@@ -327,12 +332,9 @@ closeButton.setOnClickListener(new View.OnClickListener() {
                 });
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public boolean onQueryTextSubmit(String query) {
-
-
-//
-
         if(query.equalsIgnoreCase("")){
             Snackbar.make(MainActivity.this.findViewById(android.R.id.content), "Please type some thing to search Awok", Snackbar.LENGTH_LONG)
                 .setActionTextColor(Color.RED)
@@ -342,6 +344,7 @@ closeButton.setOnClickListener(new View.OnClickListener() {
             Intent i = new Intent(MainActivity.this, SearchActivity.class);
             i.putExtra(Constants.SEARCH_FILTER_INTENT, query);
             startActivity(i);
+            searchItem.collapseActionView();
         }
 
 
@@ -389,8 +392,6 @@ closeButton.setOnClickListener(new View.OnClickListener() {
     private void setupViewPager(ViewPager viewPager) {
 
     }
-
-
 
 
     /*@Override
