@@ -60,7 +60,7 @@ android:layout_above="@+id/load_progress_bar"
 
 
     <ProgressBar android:indeterminate="true"
-<<<<<<< HEAD
+
 
         android:layout_width="50dp" android:layout_height="50dp"
         android:id="@+id/marker_progress" android:background ="@drawable/progress"
@@ -96,9 +96,4 @@ android:layout_margin="10dp"
 </RelativeLayout>
 <!--
     android:indeterminateDrawable="@drawable/progress_bar_load_more"-->
-=======
-            android:layout_width="50dp" android:layout_height="50dp"
-            android:id="@+id/marker_progress" android:background ="@drawable/progress"
-            android:layout_gravity="center"/>
-</FrameLayout>
->>>>>>> b4370a5a7592714f795e0615e85ce753b17add53
+

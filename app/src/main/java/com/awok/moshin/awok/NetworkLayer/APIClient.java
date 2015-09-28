@@ -87,9 +87,9 @@ public class APIClient {
 
         mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+updateId+"/", "PUT", dataToSend);
 
-<<<<<<< HEAD
+
     }
-=======
+
     public void userCheckAPICall(String phoneNumber) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/bengalua/check/" + phoneNumber, "GET", null);
@@ -107,7 +107,7 @@ public class APIClient {
 
     }
 
->>>>>>> b4370a5a7592714f795e0615e85ce753b17add53
+
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {
 
         @Override
