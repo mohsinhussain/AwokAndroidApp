@@ -111,16 +111,10 @@ public class HotDealsFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-
                         Toast.makeText(getActivity(), "Product Name: "+productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
                         Intent i=new Intent(getContext(), ProductDetailsView.class);
                         i.putExtra("id",productsArrayList.get(position).getId());
                         i.putExtra("productName",productsArrayList.get(position).getName());
-/*=======
-                        Toast.makeText(getActivity(), "Product Name: " + productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getContext(), ProductDetailsView.class);
-                        i.putExtra("id", productsArrayList.get(position).getId());
->>>>>>> b4370a5a7592714f795e0615e85ce753b17add53*/
                         i.putExtra(Constants.CAT_ID_INTENT, productsArrayList.get(position).getCategoryId());
                         startActivity(i);
 //                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);

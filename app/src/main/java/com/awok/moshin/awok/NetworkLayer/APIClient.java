@@ -84,12 +84,8 @@ public class APIClient {
     }
     public void updateCart(String dataToSend,String updateId) {
         mTask = new AsyncTaskWithDialog();
-
         mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+updateId+"/", "PUT", dataToSend);
-
-
     }
-
     public void userCheckAPICall(String phoneNumber) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/bengalua/check/" + phoneNumber, "GET", null);
@@ -98,16 +94,12 @@ public class APIClient {
     public void userLoginAPICall(String dataToSend) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/bengalua/login/", "POST", dataToSend);
-
     }
 
     public void useRegisterAPICall(String dataToSend) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/bengalua/register/", "POST", dataToSend);
-
     }
-
-
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {
 
         @Override
