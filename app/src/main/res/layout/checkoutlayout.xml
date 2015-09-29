@@ -108,8 +108,8 @@ android:textSize="15dp"
             android:singleLine="true"
             android:textColor="#333333"
 
-            android:cursorVisible="false"
-            android:maxLength="2"
+            android:cursorVisible="true"
+
             android:imeOptions="actionDone"
             android:imeActionLabel="Update"
             android:gravity="center"

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mainLay">
+
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:background="#eeeeee"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_margin="1dp"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Order No. #93994"
+            android:id="@+id/textView5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_below="@id/textView5"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="placed on september 29 2015"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/textView6" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/minus"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+
+
+             />
+
+
+    </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#eeeeee"
+android:layout_below="@+id/head"
+        android:id="@+id/secondLay"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_margin="1dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:id="@+id/mainImg"
+                        android:src="@drawable/test"
+                        android:scaleType="fitCenter"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp" />
+
+                    <TextView
+                        android:id="@+id/productTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="3"
+
+                        android:text="title"
+                        android:textColor="#222"
+
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_alignTop="@+id/mainImg"
+                        android:layout_toRightOf="@+id/mainImg" />
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+
+                        android:layout_marginRight="5dp"
+
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="description"
+                        android:textColor="#666"
+                        android:textStyle="bold"
+                        android:textSize="15dp"
+
+
+                        android:layout_alignBottom="@+id/sellerName"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Qty : "
+                        android:id="@+id/quantity_label"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@+id/productTitle"
+                        android:layout_toRightOf="@+id/mainImg"
+                        android:layout_toEndOf="@+id/mainImg" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+android:layout_marginLeft="5dp"
+
+                        android:textColor="#333333"
+
+
+                        android:gravity="center"
+android:text="cool"
+
+
+                        android:id="@+id/quantity"
+
+                        android:layout_alignTop="@+id/quantity_label"
+                        android:layout_toRightOf="@+id/quantity_label"
+                        android:layout_toEndOf="@+id/quantity_label" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Seller :"
+                android:id="@+id/seller_label"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/quantity_label"
+
+                android:layout_toRightOf="@+id/mainImg"
+                android:layout_toEndOf="@+id/mainImg" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="5dp"
+
+                android:textColor="#333333"
+
+
+
+
+                android:gravity="center"
+                android:text="cool"
+
+
+                android:id="@+id/sellerName"
+
+                android:layout_alignTop="@+id/seller_label"
+                android:layout_toRightOf="@+id/seller_label"
+                android:layout_toEndOf="@+id/seller_label" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/secondLay"
+        android:id="@+id/totalLay"
+        android:layout_width="match_parent"
+        android:background="#eeeeee"
+android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_margin="1dp"
+            android:background="#f1f1f1"
+            android:gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentRight="true"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Order No. #93994"
+                android:id="@+id/total" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_below="@id/total"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="placed on september 29 2015"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/shipping" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

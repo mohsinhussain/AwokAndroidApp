@@ -90,4 +90,5 @@ Introducing the world’s first 4K smartphone</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="payment_method_activity">PaymentMethodActivity</string>
+    <string name="title_activity_order_history">OrderHistory</string>
 </resources>
