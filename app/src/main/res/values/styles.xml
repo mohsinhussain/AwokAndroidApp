@@ -23,8 +23,8 @@
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">#607B8D</item>
-        <item name="android:textColorPrimary">#FFFFFF</item>
-        <item name="android:background">#C81E2B</item>
+        <item name="colorAccent">@color/header_text</item>
+        <item name="android:textColorPrimary">@color/normal_text</item>
+        <item name="android:background">@color/dialog_bg</item>
     </style>
 </resources>
