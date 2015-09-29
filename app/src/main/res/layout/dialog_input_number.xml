@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/dialog_bg"
+    android:id="@+id/parent"
+    android:layout_gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/headerTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/user_login_register"
+        android:textColor="@color/header_text"/>
+    <TextView
+        android:id="@+id/msgTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_below="@+id/headerTextView"
+        android:text="@string/enter_mobile_number"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/normal_text"/>
+
+    <LinearLayout
+        android:id="@+id/formLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/msgTextView"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:layout_height="wrap_content">
+        <!--<TextView-->
+            <!--android:id="@+id/countryCodeTextView"-->
+            <!--android:text="@string/country_code"-->
+            <!--android:padding="10dp"-->
+            <!--android:textColor="#B3B3B3"-->
+            <!--android:background="#F5F5F5"-->
+            <!--android:textSize="16sp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <EditText
+            android:id="@+id/mobileEditText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:inputType="phone"
+            android:imeOptions="actionDone"
+            android:textSize="16sp"
+            android:hint="@string/enter_mobile_number"
+            android:background="@drawable/edit_text_background_normal"/>
+
+    </LinearLayout>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:id="@+id/load_progress_bar"
+            android:indeterminateDrawable="@drawable/progress_bar_load_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            />
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_height="36dp"
+                android:layout_width="wrap_content"
+                android:padding="8dp"
+                android:background="@color/tranparent"
+                android:layout_marginRight="8dp"
+                android:text="@string/cancel"
+                android:textColor="@color/dialog_button_cancel"
+                android:textSize="16sp"
+                android:minWidth="0dp" />
+
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_height="36dp"
+                android:layout_width="wrap_content"
+                android:padding="8dp"
+                android:background="@color/tranparent"
+                android:text="@string/next"
+                android:textColor="@color/dialog_button_yes"
+                android:textSize="16sp"
+                android:minWidth="0dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/snackHolder"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tranparent">
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>

@@ -92,7 +92,9 @@ public class HotDealsFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                pageCount=1;
+                loading = true;
+                pageCount = 1;
+                previousTotal = 0;
                 refreshContent();
             }
         });

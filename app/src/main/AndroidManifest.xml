@@ -44,6 +44,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".Activities.FilterActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".Activities.SearchActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >

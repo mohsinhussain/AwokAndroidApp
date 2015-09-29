@@ -12,9 +12,9 @@
         android:id="@+id/itemCountTextView"
         android:layout_width="match_parent"
         android:padding="5dp"
-        android:background="#666"
+        android:background="#f5f5f5"
         android:layout_gravity="center"
-        android:textColor="#ccc"
+        android:textColor="#666666"
         android:visibility="gone"
         android:layout_height="wrap_content" />
 
@@ -46,17 +46,19 @@ android:layout_above="@+id/load_progress_bar"
 
     </LinearLayout>
 
+
     <Button
         android:id="@+id/goToTopButton"
-        android:padding="2dp"
         android:background="#666"
-        android:layout_gravity="center|top"
-        android:layout_marginTop="30dp"
-        android:textColor="#ccc"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:visibility="gone"
+        android:textColor="#ccc"
         android:text="@string/go_to_top"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp" />
+        android:layout_width="35dp"
+        android:layout_height="25dp" />
 
 
     <ProgressBar android:indeterminate="true"
@@ -71,15 +73,10 @@ android:layout_above="@+id/load_progress_bar"
         style="?android:attr/progressBarStyleSmall"
         android:id="@+id/load_progress_bar"
         android:indeterminateDrawable="@drawable/progress_bar_load_more"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-android:layout_margin="10dp"
-
+        android:layout_margin="10dp"
         android:layout_centerHorizontal="true"
-
-
-
         android:layout_alignParentBottom="true"
          />
 
@@ -87,8 +84,11 @@ android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:text="Loading ..."
         android:layout_margin="10dp"
+        android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content" />
+
+
 
 </RelativeLayout>

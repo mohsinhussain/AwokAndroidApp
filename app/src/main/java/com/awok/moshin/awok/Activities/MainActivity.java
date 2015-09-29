@@ -309,7 +309,7 @@ closeButton.setOnClickListener(new View.OnClickListener() {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
                    case R.id.app_cart:
-                       Intent i=new Intent(this,CheckOutActivity.class);
+                       Intent i=new Intent(this,FilterActivity.class);
                        startActivity(i);
 
         }
