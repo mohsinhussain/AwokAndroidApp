@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -106,6 +107,7 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
             //show login dialog
             inputNumberDialog = new Dialog(this, R.style.AppCompatAlertDialogStyle);
             inputNumberDialog.setCancelable(false);
+            inputNumberDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             inputNumberDialog.setContentView(R.layout.dialog_input_number);
             final EditText mobileEditText = (EditText) inputNumberDialog.findViewById(R.id.mobileEditText);
             Button cancelButton = (Button) inputNumberDialog.findViewById(R.id.cancelButton);
@@ -146,6 +148,7 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
             });
 
             inputNumberDialog.show();
+            inputNumberDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         }
 
 
@@ -212,6 +215,7 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         //show login dialog
         loginDialog = new Dialog(this, R.style.AppCompatAlertDialogStyle);
         loginDialog.setCancelable(true);
+        loginDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         loginDialog.setContentView(R.layout.dialog_login);
         final EditText passwordEditText = (EditText) loginDialog.findViewById(R.id.passwordEditText);
         Button cancelButton = (Button) loginDialog.findViewById(R.id.cancelButton);
@@ -246,17 +250,20 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         });
 
         loginDialog.show();
+        loginDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
     public void showRegister(){
         //show login dialog
         registerDialog = new Dialog(this, R.style.AppCompatAlertDialogStyle);
         registerDialog.setCancelable(true);
+        registerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         registerDialog.setContentView(R.layout.dialog_register);
         final EditText passwordEditText = (EditText) registerDialog.findViewById(R.id.passwordEditText);
         final EditText confirmPasswordEditText = (EditText) registerDialog.findViewById(R.id.confirmPasswordEditText);
         Button cancelButton = (Button) registerDialog.findViewById(R.id.cancelButton);
         Button nextButton = (Button) registerDialog.findViewById(R.id.nextButton);
+        LinearLayout buttonLayout = (LinearLayout) registerDialog.findViewById(R.id.buttonLayout);
         progressBarLogin = (ProgressBar)registerDialog.findViewById(R.id.load_progress_bar);
         // if button is clicked, close the custom dialog
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -299,6 +306,7 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         });
 
         registerDialog.show();
+        registerDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
 
