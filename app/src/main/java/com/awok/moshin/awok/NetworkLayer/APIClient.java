@@ -100,6 +100,18 @@ public class APIClient {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/bengalua/register/", "POST", dataToSend);
     }
+
+    public void OrderCheckOutCallBack(String dataToSend) {
+
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/khalid/api/order/", "POST", dataToSend);
+    }
+
+    public void OrderHistoryItemsCallBack(String userId) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+userId+"/my-orders/", "GET", null);
+    }
+
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {
 
         @Override

@@ -473,7 +473,7 @@ bottomLay.setVisibility(View.VISIBLE);
                         listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
                         listData.setProductId(jsonObjectProductDetails.getString("_id"));
                         listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
-                        listData.setRemainingStock(jsonObjectProductDetails.getString("remaining_quantity"));
+                        listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
                         prodPrice.setText((jsonObjectData.getJSONObject("data").getString("total")) + " AED");
                         overViewList.add(listData);
                     }

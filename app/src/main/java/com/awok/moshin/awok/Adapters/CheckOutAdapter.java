@@ -20,6 +20,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -63,7 +64,7 @@ import java.util.Objects;
 //
 public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHolder> {
     private List<Checkout> OverViewList = new ArrayList<Checkout>();
-    private Activity activity;
+    private Activity activity_main;
     View customView;
 
     private ArrayAdapter<CharSequence> adapter;
@@ -85,8 +86,8 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
         ConnectivityManager connMgr = (ConnectivityManager)
                 activity.getSystemService(Context.CONNECTIVITY_SERVICE);
          networkInfo = connMgr.getActiveNetworkInfo();
-        context=activity;
-        activity=activity;
+        this.context=activity;
+        this.activity_main=activity;
          lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -169,23 +170,33 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
 
       //  viewHolder.data = new CheckoutDataObjects(activity);
         /*viewHolder.countOfProducts.setAdapter(adapter);*/
-/*viewHolder.quantity.setOnClickListener(new View.OnClickListener() {
+/*viewHolder.quantity.setOnTouchListener(new View.OnTouchListener() {
     @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        String newtext=viewHolder.quantity.getText().toString();
+        viewHolder.quantity.setText("");
+        viewHolder.quantity.append(newtext);
+        //viewHolder.quantity.getText().clear();
+        return false;
+    }*/
+
+    /*@Override
     public void onClick(View v) {
-       // viewHolder.quantity.getText().clear();
-    }
-});*/
-/*viewHolder.quantity.addTextChangedListener(new TextWatcher() {
+
+    }*/
+//});
+viewHolder.quantity.addTextChangedListener(new TextWatcher() {
 
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         System.out.println("BEFOR CHANGED");
-
+//viewHolder.quantity.setText("");
 
     }
 
     @Override
+
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         System.out.println("TEXT CHANGED");
     }
@@ -193,9 +204,25 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
     @Override
     public void afterTextChanged(Editable s) {
         System.out.println("AFTER CHANGED");
+        /*if (viewHolder.quantity.getText().toString().equals("0"))
+        {
+            viewHolder.quantity.setText("1");
+        }*/
     }
-});*/
+});
+        viewHolder.quantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
 
+
+                if (!hasFocus) {
+                    if (viewHolder.quantity.getText().toString().equals("")||viewHolder.quantity.getText().toString().equals("0"))
+                    {
+                        viewHolder.quantity.setText("1");
+                    }
+                }
+            }
+        });
 
         viewHolder.quantity.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @SuppressLint("NewApi")
@@ -206,12 +233,12 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
                //if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
                // System.out.println("AFTER ID"+event.getAction());
                 //System.out.println("AFTER CHANGED"+event.getKeyCode());
-                System.out.println("AFTER CHANGED"+actionId);
+//                System.out.println("AFTER CHANGED"+event.getKeyCode());
                 System.out.println("AFTER CHANGED"+EditorInfo.IME_ACTION_DONE);
                 if(actionId == EditorInfo.IME_ACTION_UNSPECIFIED)
                 {
 
-                    if(viewHolder.quantity.getText().toString().equals(""))
+                    if(viewHolder.quantity.getText().toString().equals("")||viewHolder.quantity.getText().toString().equals("0"))
                     {
                         viewHolder.quantity.setText("1");
                     }
@@ -270,15 +297,20 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.
                             INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(activity.getParent().getCurrentFocus().getWindowToken(), 0);*/
+                            View view = activity_main.getCurrentFocus();
+                            if (view != null) {
+                                InputMethodManager imm = (InputMethodManager)activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                            }
                             if (networkInfo != null && networkInfo.isConnected()) {
 
                                 String updateId = viewHolder.prodOverviewTitle.getTag().toString();
                                 //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-                                new APIClient(activity, context, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+                                new APIClient(activity_main, context, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
 
 
                             } else {
-                                Snackbar.make(activity.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                                         .setActionTextColor(Color.RED)
                                         .show();
                             }
@@ -288,6 +320,27 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
 
                     return true;
                 }
+                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+
+                }
+                /*if (actionId == KeyEvent.KEYCODE_BACK) {
+                    // your code
+                    if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                        viewHolder.quantity.setText("1");
+                    }
+                    return true;
+                }*/
+                /*if (event.getAction() == KeyEvent.KEYCODE_BACK) {
+                    // do your stuff
+                    if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                        viewHolder.quantity.setText("1");
+                    }
+                    return false;
+                }*/
+               /* if (actionId == EditorInfo.) {
+                    performSearch();
+                    return true;
+                }*/
                 return false;
             }
         });
@@ -304,12 +357,12 @@ viewHolder.cross.setOnClickListener(new View.OnClickListener() {
 
 
                 //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-            new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall(deleteId);
+            new APIClient(activity_main, context,  new RemoveProductCallBack()).removeProductFromCartCall(deleteId);
 
 
 
         } else {
-            Snackbar.make(activity.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+            Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
                     .show();
         }
@@ -427,7 +480,7 @@ viewHolder.cross.setOnClickListener(new View.OnClickListener() {
                 //initializeData();
             } catch (Exception e) {
                 e.printStackTrace();
-                Snackbar.make(activity.findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(activity_main.findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
                         .show();
             }
@@ -453,7 +506,7 @@ viewHolder.cross.setOnClickListener(new View.OnClickListener() {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                Snackbar.make(activity.findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(activity_main.findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
                         .show();
             }
@@ -479,7 +532,19 @@ viewHolder.cross.setOnClickListener(new View.OnClickListener() {
     private void hideSoftKeyboard(){
         InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.
                 INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(activity_main.getCurrentFocus().getWindowToken(), 0);
 
 }
+
+   /* @Override
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (viewHolder.quantity.getText().toString().equals("")||viewHolder.quantity.getText().toString().equals("0"))
+            {
+                viewHolder.quantity.setText("1");
+            }
+            }
+        return false;
+    }*/
+
 }
