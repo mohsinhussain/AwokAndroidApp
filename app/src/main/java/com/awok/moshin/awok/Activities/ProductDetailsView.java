@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Fragments.HotDealsFragment;
@@ -55,6 +56,7 @@ import java.util.Map;
 public class ProductDetailsView extends AppCompatActivity{
     private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
+    ProgressBar progressBar;
     ArrayList<ProductDetailsModel> productDetailsList = new ArrayList<ProductDetailsModel>();
     ProductDetailsModel productDetails=new ProductDetailsModel();
     ProductOverview productOverview=new ProductOverview();
@@ -80,6 +82,8 @@ public class ProductDetailsView extends AppCompatActivity{
         productName=getIntent().getExtras().getString("productName");
         catId =getIntent().getExtras().getString(Constants.CAT_ID_INTENT);
         Log.v("Product DetailView", productId);
+        progressBar = (ProgressBar) findViewById(R.id.marker_progress);
+        progressBar.setVisibility(View.GONE);
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -97,6 +101,7 @@ public class ProductDetailsView extends AppCompatActivity{
         buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buyNow.setEnabled(false);
                 HashMap<String,Object> addToCartData=new HashMap<String, Object>();
 
 
@@ -221,9 +226,9 @@ productDetails.setName(mMembersJSON.getString("name"));
                 setUpTab();
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                   // progressBar.startAnimation(animation);
+                    progressBar.startAnimation(animation);
                 }
-               // progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                // initializeData();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -238,7 +243,7 @@ productDetails.setName(mMembersJSON.getString("name"));
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
-//            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
     }
 
@@ -370,6 +375,24 @@ productDetails.setName(mMembersJSON.getString("name"));
 //            progressBar.setVisibility(View.VISIBLE);
         }
     }
+
+
+
+
+
+
+
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        buyNow.setEnabled(true);
+
+    }
+
+
+
 
 
 }

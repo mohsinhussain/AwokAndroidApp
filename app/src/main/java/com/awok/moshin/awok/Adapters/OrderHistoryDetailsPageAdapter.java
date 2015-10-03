@@ -1,57 +1,38 @@
 package com.awok.moshin.awok.Adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.awok.moshin.awok.Activities.CheckOutActivity;
-import com.awok.moshin.awok.Models.Checkout;
+import com.awok.moshin.awok.Models.OrderHistoryDetailsModel;
 import com.awok.moshin.awok.Models.OrderHistoryModel;
-import com.awok.moshin.awok.NetworkLayer.APIClient;
-import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
-import com.larvalabs.svgandroid.SVG;
-
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
 /**
- * Created by shon on 9/29/2015.
+ * Created by shon on 9/30/2015.
  */
-public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder> {
-    private List<OrderHistoryModel> orderHistoryData = new ArrayList<OrderHistoryModel>();
+public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHistoryDetailsPageAdapter.ViewHolder> {
+    private List<OrderHistoryDetailsModel> orderHistoryDetailsData = new ArrayList<OrderHistoryDetailsModel>();
     private Activity activity;
     View customView;
 
@@ -64,7 +45,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     LinearLayout.LayoutParams lp;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public OrderHistoryAdapter(Activity activity,List<OrderHistoryModel> orderHistoryData) {
+    public OrderHistoryDetailsPageAdapter(Activity activity,List<OrderHistoryDetailsModel> orderHistoryDetailsData) {
 
 
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -72,7 +53,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         networkInfo = connMgr.getActiveNetworkInfo();
         this.context=activity;
         this.activity=activity;
-        this.orderHistoryData=orderHistoryData;
+        this.orderHistoryDetailsData=orderHistoryDetailsData;
         lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -84,11 +65,11 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     // Create new views (invoked by the layout manager)
     @Override
-    public OrderHistoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
+    public OrderHistoryDetailsPageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                             int viewType) {
         // create a new view
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.order_history_customlayout, null);
+                R.layout.order_history_details_custom_view, null);
 
 
         customView=itemLayoutView;
@@ -102,26 +83,29 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
 
 
-        final OrderHistoryModel item = orderHistoryData.get(position);
+        final OrderHistoryDetailsModel item = orderHistoryDetailsData.get(position);
 /*
         if(orderCheck.equals(orderHistoryData.get(position).getOrderId()))
         {*/
 
 //viewHolder.main.setVisibility(View.GONE);
-            //viewHolder.totalLay.setVisibility(View.GONE);
-            //viewHolder.title.setText(orderHistoryData.get(position).getTitle());
-           // viewHolder.quantity.setText(orderHistoryData.get(position).getQuantity());
-           // viewHolder.seller.setText(orderHistoryData.get(position).getSeller());
+        //viewHolder.totalLay.setVisibility(View.GONE);
+        //viewHolder.title.setText(orderHistoryData.get(position).getTitle());
+        // viewHolder.quantity.setText(orderHistoryData.get(position).getQuantity());
+        // viewHolder.seller.setText(orderHistoryData.get(position).getSeller());
         //viewHolder.seller.setTag(orderHistoryData.get(position).getOrderId());
-          //  viewHolder.price.setText(orderHistoryData.get(position).getPrice());
+        //  viewHolder.price.setText(orderHistoryData.get(position).getPrice());
 //viewHolder.image.setImageBitmap(base64ToBitmap(orderHistoryData.get(position).getImageData()));
-            viewHolder.orderNo.setText("Order #"+orderHistoryData.get(position).getOrderNo()+" -");
-                viewHolder.orderNo.setTag(orderHistoryData.get(position).getOrderId());
-        viewHolder.dateTime.setText("placed on "+date(orderHistoryData.get(position).getDateTime().toString()));
+        /////viewHolder.orderNo.setText("Order #"+orderHistoryData.get(position).getOrderNo()+" -");
+        /////viewHolder.dateTime.setText("placed on "+date(orderHistoryData.get(position).getDateTime().toString()));
 
-           // viewHolder.shipping.setText("In Stock : " + orderHistoryData.get(position).getShipping());
-            //orderCheck=orderHistoryData.get(position).getOrderId();
-
+        // viewHolder.shipping.setText("In Stock : " + orderHistoryData.get(position).getShipping());
+        //orderCheck=orderHistoryData.get(position).getOrderId();
+        viewHolder.image.setImageBitmap(base64ToBitmap(orderHistoryDetailsData.get(position).getImage()));
+        viewHolder.price.setText(orderHistoryDetailsData.get(position).getPrice() + " AED");
+        viewHolder.quantity.setText("X "+orderHistoryDetailsData.get(position).getQuantity());
+        System.out.print("dchkj" + orderHistoryDetailsData.get(position).getPrice());
+        viewHolder.title.setText(orderHistoryDetailsData.get(position).getTitle());
 
       /*  }
         else {
@@ -149,7 +133,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return orderHistoryData.size();
+        return orderHistoryDetailsData.size();
     }
 
 
@@ -161,7 +145,8 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         /*public TextView title,quantity,seller,price,totalPrice,shipping;
         public ImageView image;
         private RelativeLayout main,totalLay;*/
-        TextView orderNo,dateTime;
+        TextView price,quantity,title;
+        ImageView image;
 
 
 
@@ -200,10 +185,18 @@ main=(RelativeLayout)itemLayoutView
 
             shipping=(TextView)itemLayoutView
                     .findViewById(R.id.shipping);*/
-            orderNo = (TextView) itemLayoutView
-                    .findViewById(R.id.order_no);
-            dateTime = (TextView) itemLayoutView
-                    .findViewById(R.id.date_time);
+
+
+
+            image=(ImageView)itemLayoutView
+                    .findViewById(R.id.mainImg);
+
+            price = (TextView) itemLayoutView
+                    .findViewById(R.id.price);
+            quantity = (TextView) itemLayoutView
+                    .findViewById(R.id.quantity);
+            title=(TextView)itemLayoutView
+                    .findViewById(R.id.OverViewTitle);
 
         }
         @Override
@@ -211,8 +204,8 @@ main=(RelativeLayout)itemLayoutView
             System.out.println("onClick " + getPosition());
         }
     }
-    public void add(OrderHistoryModel item, int position) {
-        orderHistoryData.add(position, item);
+    public void add(OrderHistoryDetailsModel item, int position) {
+        orderHistoryDetailsData.add(position, item);
         notifyItemInserted(position);
     }
 
@@ -233,15 +226,17 @@ main=(RelativeLayout)itemLayoutView
 
     }
 
-public String date(String date)
-{
+    public String date(String date)
+    {
 
-    long time = Long.parseLong(date)   * (long) 1000;
-    Date date_value = new Date(time);
-    SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
-    format.setTimeZone(TimeZone.getTimeZone("GMT"));
-    Log.d("date", format.format(date_value));
-    return format.format(date_value).toString();
+        long time = Long.parseLong(date)   * (long) 1000;
+        Date date_value = new Date(time);
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Log.d("date", format.format(date_value));
+        return format.format(date_value).toString();
+    }
+
 }
 
-}
+

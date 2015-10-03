@@ -4,13 +4,16 @@ package com.awok.moshin.awok.Models;
  * Created by shon on 9/29/2015.
  */
 public class OrderHistoryModel {
-    public String title;
+  /*  public String title;
     public String quantity;
     public String seller;
     public String price;
     private String totalPrice;
     private String shipping;
     private String imageData;
+    private String orderId;*/
+  public String orderNo;
+    public String dateTime,orderId;
 
 
     public OrderHistoryModel()
@@ -18,7 +21,7 @@ public class OrderHistoryModel {
 
     }
 
-    public OrderHistoryModel(String title, String quantity,String seller,String price,String totalPrice,String shipping,String imageData) {
+   /* public OrderHistoryModel(String title, String quantity,String seller,String price,String totalPrice,String shipping,String imageData,String orderId) {
         this.title = title;
         this.quantity = quantity;
         this.seller=seller;
@@ -26,13 +29,21 @@ public class OrderHistoryModel {
         this.totalPrice=totalPrice;
         this.shipping=shipping;
         this.imageData=imageData;
+        this.orderId=orderId;
 
 
 
+    }*/
+
+    public OrderHistoryModel(String orderNo,String dateTime)
+    {
+        this.orderNo=orderNo;
+        this.dateTime=dateTime;
     }
 
 
-    public void setTitle(String title)
+
+   /* public void setTitle(String title)
     {
         this.title=title;
     }
@@ -130,5 +141,47 @@ public class OrderHistoryModel {
     }
 
 
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
+
+
+    public String getOrderId()
+    {
+        return orderId;
+    }*/
+
+
+
+
+   public void setOrderNo(String orderNo) {
+       this.orderNo = orderNo;
+   }
+
+
+
+    public String getOrderNo()
+    {
+        return orderNo;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+
+
+    public String getDateTime()
+    {
+        return dateTime;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 }
