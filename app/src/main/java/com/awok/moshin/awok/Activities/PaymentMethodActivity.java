@@ -16,7 +16,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.awok.moshin.awok.Fragments.NewMemberLoginFragment;
 import com.awok.moshin.awok.Fragments.SignInFragment;
 import com.awok.moshin.awok.Fragments.VisaPaymentFragment;
 import com.awok.moshin.awok.R;
@@ -82,6 +81,7 @@ public class PaymentMethodActivity extends AppCompatActivity {
                         startActivity(j);
                         mDrawerLayout.closeDrawers();
                         return true;
+
 
                     default:
                         return true;

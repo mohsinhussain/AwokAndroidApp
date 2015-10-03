@@ -80,6 +80,16 @@
             android:text="@string/login"
             android:textColor="#fff"
             android:textSize="16sp"/>
+        <Button
+            android:id="@+id/forgotPasswordButton"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:background="#0000"
+            android:padding="10dp"
+            android:text="@string/forgot_password"
+            android:textColor="#fff"
+            android:textSize="12sp"/>
     </LinearLayout>
 
 
@@ -198,9 +208,8 @@
     <ProgressBar android:indeterminate="true"
         android:layout_width="50dp" android:layout_height="50dp"
         android:id="@+id/marker_progress" android:background ="@drawable/progress_splash"
-        android:layout_marginBottom="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

@@ -1,8 +1,10 @@
 package com.awok.moshin.awok.Activities;
 
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -42,12 +44,14 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 private DrawerLayout mDrawerLayout;
 
     ActionBar ab;
     private String TAG = "Search Activity";
     private String searchString = "";
+    MenuItem searchItem;
+    SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,11 +100,12 @@ private DrawerLayout mDrawerLayout;
                         startActivity(i);
                         mDrawerLayout.closeDrawers();
                         return true;
+
                     case R.id.orderHistory:
                         Intent j=new Intent(SearchActivity.this,OrderHistory.class);
                         startActivity(j);
-                        mDrawerLayout.closeDrawers();
-                        return true;
+
+
 
 
                     default:
@@ -117,39 +122,12 @@ private DrawerLayout mDrawerLayout;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
+        searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-  /*      searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                tabLayout.setVisibility(View.VISIBLE);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                tabLayout.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                tabLayout.setVisibility(View.VISIBLE);
-
-                return false;
-            }
-        });
-
-closeButton.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        tabLayout.setVisibility(View.VISIBLE);
-    }
-});*/
-
+        searchView.setOnQueryTextListener(this);
 
         return true;
     }
@@ -170,6 +148,31 @@ closeButton.setOnClickListener(new View.OnClickListener() {
         return super.onOptionsItemSelected(item);
 
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if(query.equalsIgnoreCase("")){
+            Snackbar.make(SearchActivity.this.findViewById(android.R.id.content), "Please type some thing to search Awok", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
+        }
+        else{
+            Intent i = new Intent(SearchActivity.this, SearchActivity.class);
+            i.putExtra(Constants.SEARCH_FILTER_INTENT, query);
+            startActivity(i);
+            searchItem.collapseActionView();
+        }
+
+
+        return false;
+    }
+
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 
 

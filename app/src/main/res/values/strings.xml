@@ -25,6 +25,17 @@
     <string name="checkout_head">Xperia™ Z5 Premium
 Introducing the world’s first 4K smartphone</string>
     <string name="check_out_price">3000 AED</string>
+    <string name="enter_password">Please Enter Password</string>
+
+    <string name="please_confirm_password">Please Confirm Your Password</string>
+    <string name="password_do_not_match">Passwords do not match</string>
+    <string name="incorrect_mobile">Mobile number is incorrect</string>
+    <!--<string name="enter_password">Please Enter Password</string>-->
+    <!--<string name="enter_password">Please Enter Password</string>-->
+    <!--<string name="enter_password">Please Enter Password</string>-->
+
+
+
 
     <string name="checkout_guest_header">Checkout as a Guest</string>
     <string name="login_with_awok_header">Login with AWOK account</string>

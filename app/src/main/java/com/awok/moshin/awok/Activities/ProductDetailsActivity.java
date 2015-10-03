@@ -13,12 +13,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -31,9 +29,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Fragments.HotDealsFragment;
+import com.awok.moshin.awok.Fragments.ProductDescriptionFragment;
 import com.awok.moshin.awok.Fragments.ProductOverViewFragment;
-import com.awok.moshin.awok.Fragments.ProductSpecificationFragment;
-import com.awok.moshin.awok.Fragments.productDescription;
 
 import com.awok.moshin.awok.Models.ProductDetailsModel;
 import com.awok.moshin.awok.Models.ProductOverview;
@@ -53,7 +50,7 @@ import java.util.Map;
 /**
  * Created by shon on 9/9/2015.
  */
-public class ProductDetailsView extends AppCompatActivity{
+public class ProductDetailsActivity extends AppCompatActivity{
     private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     ProgressBar progressBar;
@@ -64,7 +61,7 @@ public class ProductDetailsView extends AppCompatActivity{
     private Button buyNow;
     Map<String,String> productSpec = new HashMap<String,String>();
     private String imageData;
-    String productId,productName;
+    String productId,productName, newPrice, oldPrice, image, description;
     String catId;
     JSONObject dataToSend;
 
@@ -78,22 +75,17 @@ public class ProductDetailsView extends AppCompatActivity{
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);*/
         Intent i=new Intent();
-        productId =getIntent().getExtras().getString("id");
-        productName=getIntent().getExtras().getString("productName");
+        productId =getIntent().getExtras().getString(Constants.PRODUCT_ID_INTENT);
+        productName=getIntent().getExtras().getString(Constants.PRODUCT_NAME_INTENT);
         catId =getIntent().getExtras().getString(Constants.CAT_ID_INTENT);
+        newPrice=getIntent().getExtras().getString(Constants.PRODUCT_PRICE_NEW_INTENT);
+        oldPrice =getIntent().getExtras().getString(Constants.PRODUCT_PRICE_OLD_INTENT);
+        image =getIntent().getExtras().getString(Constants.PRODUCT_IMAGE_INTENT);
+        description =getIntent().getExtras().getString(Constants.PRODUCT_DESCRIPTION_INTENT);
         Log.v("Product DetailView", productId);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(ProductDetailsView.this, getApplicationContext(),  new GetProductDetailsCallback()).productDetailsAPICall(productId);
-        } else {
-            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                    .setActionTextColor(Color.RED)
-                    .show();
-        }
+
 
         //productD.setName("COOL");
         //productDetails.setName("COLD");
@@ -116,7 +108,7 @@ public class ProductDetailsView extends AppCompatActivity{
                  dataToSend=new JSONObject(addToCartData);
 
 System.out.println(dataToSend.toString());
-                new APIClient(ProductDetailsView.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(dataToSend.toString());
+                new APIClient(ProductDetailsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(dataToSend.toString());
 
 
             }
@@ -124,6 +116,9 @@ System.out.println(dataToSend.toString());
         prodNewPrice=(TextView)findViewById(R.id.prod_price);
         prodOldPrice=(TextView)findViewById(R.id.prod_discountPrice);
         prodOldPrice.setPaintFlags(prodOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        prodNewPrice.setText(newPrice);
+        prodOldPrice.setText(oldPrice);
+        productDetails.setName(productName);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -137,6 +132,8 @@ System.out.println(dataToSend.toString());
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        setUpTab();
 
 
        /* NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -157,7 +154,7 @@ System.out.println(dataToSend.toString());
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),ProductDetailsView.class);
+                Intent i=new Intent(getApplicationContext(),ProductDetailsActivity.class);
                 startActivity(i);
             }
         });*/
@@ -180,72 +177,7 @@ public void setUpTab()
     tabLayout.setupWithViewPager(viewPager);
 }
 
-    public class GetProductDetailsCallback extends AsyncCallback {
-        public void onTaskComplete(String response) {
-            try {
-                JSONObject mMembersJSON;
-                mMembersJSON = new JSONObject(response);
-                System.out.println(mMembersJSON.getString("name"));
-                //JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_CATEGORY_LIST_NAME);
-                //int length = jsonArray.length();
 
-                //for(int i=0;i<length;i++){
-                    //JSONObject jsonObject = jsonArray.getJSONObject(i);
-         //           productDetailsList.add(new ProductDetailsModel(mMembersJSON.getString("name")));
-
-               // }
-                /*ProductDetailsModel productDetails=new ProductDetailsModel();
-                productDetails.setName(mMembersJSON.getString("name"));
-                productDetailsList.add(productDetails);
-
-                System.out.println("COOLGBDJH"+productDetails.getName());*/
-               /* System.out.println("COOLGBDJH");
-                productDetailsList.add(new ProductDetailsModel("COOL"));*/
-productDetails.setName(mMembersJSON.getString("name"));
-                prodNewPrice.setText(Integer.toString(mMembersJSON.getInt("new_price")) + " " + "AED");
-                prodOldPrice.setText(Integer.toString(mMembersJSON.getInt("original_price")) + " " + "AED");
-                //productDetails.setDiscPercent(mMembersJSON.getInt("discount_percentage"));
-                System.out.println("COOLGBDJH" + productDetails.getName());
-              /*  JSONObject prodSpecJson=mMembersJSON.getJSONObject("properties").getJSONObject("properties");
-                System.out.println("COOLGBDJH" + prodSpecJson);
-
-                Iterator iter = prodSpecJson.keys();
-                while(iter.hasNext()){
-                    String key = (String)iter.next();
-                    String value = prodSpecJson.getString(key);
-                    productSpec.put(key,value);
-                    System.out.println("COOLGBDJH" + productSpec);
-                }*/
-               // productD.setName("COOL");
-
-                String prodDesc=mMembersJSON.getString("description");
-                productOverview.setOverViewTitle(prodDesc);
-
-
- imageData=mMembersJSON.getString("image");
-                setUpTab();
-                if(getApplicationContext()!=null){
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
-                }
-                progressBar.setVisibility(View.GONE);
-               // initializeData();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
-                        .setActionTextColor(Color.RED)
-                        .show();
-            }
-        }
-        @Override
-        public void onTaskCancelled() {
-        }
-        @Override
-        public void onPreExecute() {
-            // TODO Auto-generated method stub
-            progressBar.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -292,10 +224,10 @@ productDetails.setName(mMembersJSON.getString("name"));
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new productDescription(productDetails,imageData), "Overview");
+        adapter.addFragment(new ProductOverViewFragment(productId, productName,image), "Overview");
        // adapter.addFragment(new ProductSpecificationFragment(productSpec), "Specifications");
         //adapter.addFragment(new ProductSpecificationFragment(), "Specifications");
-        adapter.addFragment(new ProductOverViewFragment(productOverview), "Description");
+        adapter.addFragment(new ProductDescriptionFragment(description), "Description");
         adapter.addFragment(new HotDealsFragment(catId), "Related Products");
 
 
@@ -353,7 +285,7 @@ productDetails.setName(mMembersJSON.getString("name"));
                 mMembersJSON = new JSONObject(response);
                 System.out.println(mMembersJSON);
 
-                Intent i=new Intent(ProductDetailsView.this,CheckOutActivity.class);
+                Intent i=new Intent(ProductDetailsActivity.this,CheckOutActivity.class);
                 startActivity(i);
 
 

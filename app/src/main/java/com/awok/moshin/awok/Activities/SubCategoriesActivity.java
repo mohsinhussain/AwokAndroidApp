@@ -174,11 +174,12 @@ private DrawerLayout mDrawerLayout;
                         startActivity(i);
                         mDrawerLayout.closeDrawers();
                         return true;
+
                     case R.id.orderHistory:
                         Intent j=new Intent(SubCategoriesActivity.this,OrderHistory.class);
                         startActivity(j);
-                        mDrawerLayout.closeDrawers();
-                        return true;
+
+
 
 
                     default:

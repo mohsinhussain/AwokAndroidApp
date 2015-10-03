@@ -1,15 +1,25 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.awok.moshin.awok.Fragments.ProductOverViewFragment">
+    tools:context="com.awok.moshin.awok.Fragments.ProductDescriptionFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/overViewRecyclerView"
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:textColor="@color/normal_text"
+        android:textSize="12sp"
+        android:gravity="left"
+        android:padding="24dp"
+        android:text="basjdakjsda dkaj dakjds akdshn aksdj adsjka dsja sdkja dskaj sdakj sdaskjd asd"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:scrollbars="none" />
+        android:layout_height="wrap_content" />
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/overViewRecyclerView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:scrollbars="none" />-->
 
 
 
