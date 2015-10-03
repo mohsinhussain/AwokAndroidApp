@@ -55,42 +55,40 @@
         android:layout_below="@+id/main_content"
         android:layout_height="wrap_content"
 
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
 
-        <TextView
+        <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Order History"
+android:layout_weight="1"
+
             android:layout_margin="10dp"
-            android:textStyle="bold"
-            android:id="@+id/textView2"
-            android:layout_gravity="center_horizontal" />
 
-        <TextView
+            android:id="@+id/orderStatus" />
+
+
+
+        <Spinner
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="40dp"
-            android:id="@+id/textView3" />
+                                android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:id="@+id/showall" />
 
-        <TextView
+        <!--<Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/textView4" />
+
+            android:id="@+id/orderSub" />-->
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:padding="5dp"
         android:id="@+id/overViewRecyclerView"
         android:layout_width="match_parent"
+        android:background="#ffffff"
         android:layout_below="@+id/bottomLay"
         android:layout_gravity="center"
 

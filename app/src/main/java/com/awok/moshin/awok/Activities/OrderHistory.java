@@ -1,6 +1,7 @@
 package com.awok.moshin.awok.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,7 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.awok.moshin.awok.Adapters.CheckOutAdapter;
 import com.awok.moshin.awok.Adapters.OrderHistoryAdapter;
@@ -25,6 +31,8 @@ import com.awok.moshin.awok.Models.OrderHistoryModel;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.Constants;
+import com.awok.moshin.awok.Util.RecyclerItemClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +44,9 @@ import java.util.List;
 public class OrderHistory extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
+    private TextView orderCount,orderText;
     ProgressBar progressBar;
+    private Spinner spinnerOrder,statusAll;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderHistoryModel> orderHistoryData = new ArrayList<OrderHistoryModel>();
     @Override
@@ -52,7 +62,42 @@ progressBar=(ProgressBar)findViewById(R.id.marker_progress);
 
 
 
+        spinnerOrder = (Spinner) findViewById(R.id.orderStatus);
+        statusAll = (Spinner) findViewById(R.id.showall);
 
+
+        List<String> list = new ArrayList<String>();
+        list.add("Order Completed");
+        list.add("Order Pending");
+        list.add("Order Canceled");
+
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_spinner_item,list);
+
+        dataAdapter.setDropDownViewResource
+                (android.R.layout.simple_spinner_dropdown_item);
+
+
+
+        spinnerOrder.setAdapter(dataAdapter);
+
+
+        List<String> listShow = new ArrayList<String>();
+        listShow.add("Show All");
+        listShow.add("Show Others");
+
+
+
+
+        ArrayAdapter<String> dataAdapterShow = new ArrayAdapter<String>
+                (this, android.R.layout.simple_spinner_item,listShow);
+
+        dataAdapter.setDropDownViewResource
+                (android.R.layout.simple_spinner_dropdown_item);
+
+        statusAll.setAdapter(dataAdapter);
+//orderCount=(TextView)findViewById(R.id.headTitle);
 
 
 
@@ -74,7 +119,19 @@ progressBar=(ProgressBar)findViewById(R.id.marker_progress);
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle("Order History");
 
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(OrderHistory.this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Toast.makeText(OrderHistory.this, "Product Name: " + orderHistoryData.get(position).getOrderId(), Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(OrderHistory.this, OrderHistoryDetailsPage.class);
+                        i.putExtra("OrderId", orderHistoryData.get(position).getOrderId());
 
+                        startActivity(i);
+
+                    }
+                })
+        );
 
 
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -111,9 +168,16 @@ progressBar=(ProgressBar)findViewById(R.id.marker_progress);
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                onBackPressed();
+                return true;
+
+          /*  case R.id.app_cart:
+            {
+
+            }*/
         }
 
         return super.onOptionsItemSelected(item);
@@ -134,19 +198,24 @@ progressBar=(ProgressBar)findViewById(R.id.marker_progress);
                 jsonObjectData=new JSONObject(response);
 JSONArray data=jsonObjectData.getJSONArray("data");
                 System.out.println(jsonObjectData.getJSONArray("data").length());
-
+//orderCount.setText("Your Last "+jsonObjectData.getJSONArray("data").length()+" Orders");
                 for(int i=0;i<jsonObjectData.getJSONArray("data").length();i++)
                 {
                     //JSONArray jsonArrayData=jsonObjectData.getJSONArray("data");
                     JSONObject jsonCart=jsonObjectData.getJSONArray("data").getJSONObject(i);
                     System.out.println(jsonObjectData.getJSONArray("data").getJSONObject(i).getJSONArray("cart").toString());
+                    OrderHistoryModel orderData=new OrderHistoryModel();
+                    orderData.setOrderId(jsonCart.getString("_id"));
+                    orderData.setOrderNo(jsonCart.getString("number"));
+                    orderData.setDateTime(jsonCart.getString("time_created_unix"));
+                    orderHistoryData.add(orderData);
                     //JSONObject jsonObjData=jsonObjectData.getJSONObject(jsonArrayData);
                     //for(int j=0;j<jsonArrayData.getJSONArray("cart").length();j++)
 
 
 
 
-                    for(int j=0;j<jsonCart.getJSONArray("cart").length();j++)
+                    /*for(int j=0;j<jsonCart.getJSONArray("cart").length();j++)
                     {
                         JSONObject jsonCartData=jsonCart.getJSONArray("cart").getJSONObject(j);
                         OrderHistoryModel orderData=new OrderHistoryModel();
@@ -157,9 +226,10 @@ JSONArray data=jsonObjectData.getJSONArray("data");
                         orderData.setImageData(jsonCartData.getString("image"));
                         orderData.setShipping("NA");
                         orderData.setTotalPrice("na");
+                        orderData.setOrderId(jsonCartData.getString("order_id"));
                         orderHistoryData.add(orderData);
 
-                    }
+                    }*/
 
 System.out.println("CARE"+orderHistoryData.toString());
 
@@ -173,7 +243,7 @@ System.out.println("CARE"+orderHistoryData.toString());
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                    // progressBar.startAnimation(animation);
                 }
-               // progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 //initializeData();
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
@@ -185,9 +255,9 @@ System.out.println("CARE"+orderHistoryData.toString());
                         .show();
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                 //   progressBar.startAnimation(animation);
+                    progressBar.startAnimation(animation);
                 }
-              //  progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 /*if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }*/
@@ -200,7 +270,7 @@ System.out.println("CARE"+orderHistoryData.toString());
         public void onPreExecute() {
             // TODO Auto-generated method stub
 //            if(!mSwipeRefreshLayout.isRefreshing()){
-           // progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
 //            }
 
         }

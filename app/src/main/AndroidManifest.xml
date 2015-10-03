@@ -127,6 +127,10 @@
             android:name=".Activities.OrderHistory"
             android:label="@string/title_activity_order_history" >
         </activity>
+        <activity
+            android:name=".Activities.OrderHistoryDetailsPage"
+            android:label="@string/title_activity_order_history_details_page" >
+        </activity>
     </application>
 
 </manifest>

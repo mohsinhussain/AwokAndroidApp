@@ -112,6 +112,15 @@ public class APIClient {
         mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+userId+"/my-orders/", "GET", null);
     }
 
+    public void OrderHistoryDetailsItemsCallBack(String orderId) {
+
+
+
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+orderId+"/", "GET", null);
+
+    }
+
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {
 
         @Override
