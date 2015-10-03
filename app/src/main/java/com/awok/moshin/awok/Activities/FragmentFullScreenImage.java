@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.awok.moshin.awok.R;
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 public class FragmentFullScreenImage extends AppCompatActivity {
 
@@ -101,10 +105,11 @@ int size,pos;
         public Object instantiateItem(ViewGroup container, int position) {
 
             View itemView = mLayoutInflater.inflate(R.layout.full_screen_image, container, false);
-
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
+//            BitmapDrawable bitmapDrawable =  new BitmapDrawable(base64ToBitmap(image));
+            SubsamplingScaleImageView  imageView = (SubsamplingScaleImageView) itemView.findViewById(R.id.imageView);
             System.out.println(mResources[position]);
-imageView.setImageBitmap(base64ToBitmap(image));
+            imageView.setImage(ImageSource.bitmap(base64ToBitmap(image)));
+//            base64ToBitmap(image)
             //imageView.setImageResource(mResources[position]);
 
 
