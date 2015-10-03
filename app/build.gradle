@@ -30,4 +30,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.android.support:palette-v7:23.0.1'
     compile files('libs/svg-android.jar')
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

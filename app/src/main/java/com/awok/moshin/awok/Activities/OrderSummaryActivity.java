@@ -312,6 +312,7 @@ System.out.println("RESPONSE"+response);
                                     // current activity
                                     dialog.cancel();
                                     Intent i=new Intent(OrderSummaryActivity.this,OrderHistory.class);
+                                    finish();
                                     startActivity(i);
 
                                 }
@@ -471,4 +472,8 @@ System.out.println("RESPONSE"+response);
             }
         }
     }
+
+
+
+
 }

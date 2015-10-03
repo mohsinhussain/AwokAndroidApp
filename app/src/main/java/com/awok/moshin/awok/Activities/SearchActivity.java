@@ -1,6 +1,7 @@
 package com.awok.moshin.awok.Activities;
 
 import android.app.SearchManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -86,25 +87,18 @@ private DrawerLayout mDrawerLayout;
                 switch (menuItem.getItemId()) {
                     case R.id.nav_home:
 
-//                        viewPager.setCurrentItem(0);
+                     //   viewPager.setCurrentItem(0);
                         mDrawerLayout.closeDrawers();
 
                         return true;
-                    case R.id.nav_messages:
-//                        viewPager.setCurrentItem(1);
+                    case R.id.cart:
+                        Intent i=new Intent(SearchActivity.this,CheckOutActivity.class);
+                        startActivity(i);
                         mDrawerLayout.closeDrawers();
                         return true;
-                    case R.id.nav_friends:
-//                        viewPager.setCurrentItem(2);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-
-                    case R.id.nav_discussion:
-                        /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
-                        startActivity(i);*/
-
-//                        Intent i=new Intent(getApplicationContext(),ProductDetailsView.class);
-//                        startActivity(i);
+                    case R.id.orderHistory:
+                        Intent j=new Intent(SearchActivity.this,OrderHistory.class);
+                        startActivity(j);
                         mDrawerLayout.closeDrawers();
                         return true;
 

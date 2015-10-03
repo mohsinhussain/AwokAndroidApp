@@ -59,7 +59,7 @@ private DrawerLayout mDrawerLayout;
 
 
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+       /* navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
@@ -80,8 +80,8 @@ private DrawerLayout mDrawerLayout;
                         return true;
 
                     case R.id.nav_discussion:
-                        /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
-                        startActivity(i);*/
+                        *//*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
+                        startActivity(i);*//*
 
 //                        Intent i=new Intent(getApplicationContext(),ProductDetailsView.class);
 //                        startActivity(i);
@@ -93,7 +93,7 @@ private DrawerLayout mDrawerLayout;
                         return true;
                 }
             }
-        });
+        });*/
     }
 
 

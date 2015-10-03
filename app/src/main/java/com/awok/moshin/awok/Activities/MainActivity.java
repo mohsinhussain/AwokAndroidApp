@@ -5,7 +5,13 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -32,6 +38,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -47,6 +54,7 @@ import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     ProgressBar progressBar;
+    private ImageView img;
+    public static final String AVATAR_URL = "http://lorempixel.com/200/200/people/1/";
     ViewPager viewPager;
     ArrayList<Categories> categoriesArrayList;
     private String TAG = "Main Activity";
@@ -80,8 +90,8 @@ private DrawerLayout mDrawerLayout;
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowTitleEnabled(false);
         ab.setLogo(R.drawable.awok_logo);
-
-
+        img = (ImageView)findViewById(R.id.avatar);
+        Picasso.with(this).load(AVATAR_URL).transform(new CircleTransformation()).into(img);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -118,16 +128,18 @@ private DrawerLayout mDrawerLayout;
                         mDrawerLayout.closeDrawers();
 
                         return true;
-                    case R.id.nav_messages:
-                        viewPager.setCurrentItem(1);
+                    case R.id.cart:
+                        Intent i=new Intent(MainActivity.this,CheckOutActivity.class);
+                        startActivity(i);
                         mDrawerLayout.closeDrawers();
                         return true;
-                    case R.id.nav_friends:
-                        viewPager.setCurrentItem(2);
+                    case R.id.orderHistory:
+                        Intent j=new Intent(MainActivity.this,OrderHistory.class);
+                        startActivity(j);
                         mDrawerLayout.closeDrawers();
                         return true;
 
-                    case R.id.nav_discussion:
+                   // case R.id.nav_discussion:
                         /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
                         startActivity(i);*/
                         //mDrawerLayout.closeDrawers();
@@ -136,7 +148,7 @@ private DrawerLayout mDrawerLayout;
 
                         mDrawerLayout.closeDrawer(Gravity.LEFT);*/
 
-                        return true;
+                  //      return true;
 
 
                     default:
@@ -430,6 +442,38 @@ closeButton.setOnClickListener(new View.OnClickListener() {
         }*/
    // }
 
+    public class RoundedTransformation extends Transformation {
+        private final int radius;
+        private final int margin;  // dp
 
+        // radius is corner radii in dp
+        // margin is the board in dp
+        public RoundedTransformation(final int radius, final int margin) {
+            this.radius = radius;
+            this.margin = margin;
+        }
+
+
+        public Bitmap transform(final Bitmap source) {
+            final Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+
+            Bitmap output = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(output);
+            canvas.drawRoundRect(new RectF(margin, margin, source.getWidth() - margin, source.getHeight() - margin), radius, radius, paint);
+
+            if (source != output) {
+                source.recycle();
+            }
+
+            return output;
+        }
+
+
+        public String key() {
+            return "rounded";
+        }
+    }
 
 }

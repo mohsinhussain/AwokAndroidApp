@@ -235,7 +235,7 @@ viewHolder.quantity.addTextChangedListener(new TextWatcher() {
                 //System.out.println("AFTER CHANGED"+event.getKeyCode());
 //                System.out.println("AFTER CHANGED"+event.getKeyCode());
                 System.out.println("AFTER CHANGED"+EditorInfo.IME_ACTION_DONE);
-                if(actionId == EditorInfo.IME_ACTION_UNSPECIFIED)
+                if(actionId == EditorInfo.IME_ACTION_UNSPECIFIED||actionId == EditorInfo.IME_ACTION_DONE)
                 {
 
                     if(viewHolder.quantity.getText().toString().equals("")||viewHolder.quantity.getText().toString().equals("0"))
@@ -320,9 +320,10 @@ viewHolder.quantity.addTextChangedListener(new TextWatcher() {
 
                     return true;
                 }
-                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+              /*  if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
 
-                }
+                }*/
+
                 /*if (actionId == KeyEvent.KEYCODE_BACK) {
                     // your code
                     if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
@@ -341,8 +342,14 @@ viewHolder.quantity.addTextChangedListener(new TextWatcher() {
                     performSearch();
                     return true;
                 }*/
+
+
+
                 return false;
             }
+
+
+
         });
 
 viewHolder.cross.setOnClickListener(new View.OnClickListener() {

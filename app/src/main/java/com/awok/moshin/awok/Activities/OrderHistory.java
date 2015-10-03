@@ -276,6 +276,13 @@ System.out.println("CARE"+orderHistoryData.toString());
         }
     }
 
-
+    @Override
+    public void onBackPressed()
+    {
+        Intent i=new Intent(OrderHistory.this,MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        finish();
+        startActivity(i);
+    }
 
 }
