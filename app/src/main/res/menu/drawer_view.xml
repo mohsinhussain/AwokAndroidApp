@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group>
         <item
             android:id="@+id/nav_home"
+            app:itemTextColor="#333333"
 
-            android:icon="@drawable/ic_dashboard"
+
+            android:icon="@drawable/home_icon"
             android:title="Home" />
         <item
-            android:id="@+id/nav_messages"
-            android:icon="@drawable/ic_event"
+            android:id="@+id/categories"
+            app:itemTextColor="#333333"
+            android:icon="@drawable/browse_icon"
             android:title="Browse Categories" />
         <item
-            android:id="@+id/nav_friends"
-            android:icon="@drawable/ic_headset"
+            android:id="@+id/wishlist"
+            app:itemTextColor="#333333"
+            android:icon="@drawable/wish_list_icon"
             android:title="Wish List" />
         <item
-            android:id="@+id/nav_discussion"
-            android:icon="@drawable/ic_forum"
+            android:id="@+id/cart"
+            app:itemTextColor="#333333"
+            android:icon="@drawable/cart_icon"
             android:title="Shopping Cart" />
 
         <item
-            android:id="@+id/nav_order_history"
-            android:icon="@drawable/ic_dashboard"
+            android:id="@+id/orderHistory"
+            app:itemTextColor="#333333"
+            android:icon="@drawable/order_history_icon"
             android:title="Orders History" />
 
     </group>
@@ -31,22 +37,25 @@
 
     <group android:id="@+id/sub_item_support">
         <item
-            android:id="@+id/navigation_customer_support"
+            android:id="@+id/customer_support"
             android:checked="true"
-            android:icon="@drawable/ic_dashboard"
+            app:itemTextColor="#333333"
+            android:icon="@drawable/customer_support_ico"
 
             android:title="Customer Support" />
 
 
         <item
             android:id="@+id/navigation_settings"
-            android:icon="@drawable/ic_dashboard"
+            app:itemTextColor="#333333"
+            android:icon="@drawable/setting_icon"
             android:title="Settings" />
 
 
         <item
             android:id="@+id/navigation_about_us"
-            android:icon="@drawable/ic_dashboard"
+            app:itemTextColor="#333333"
+            android:icon="@drawable/about_icon"
             android:title="About Us" />
     </group>
 
@@ -54,7 +63,8 @@
     <group android:id="@+id/sub_item_logout">
         <item
             android:id="@+id/navigation_Logout"
-            android:icon="@drawable/ic_dashboard"
+            app:itemTextColor="#333333"
+            android:icon="@drawable/logout_ico"
             android:title="Logout" />
     </group>
 

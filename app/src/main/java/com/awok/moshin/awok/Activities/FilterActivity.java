@@ -59,41 +59,7 @@ private DrawerLayout mDrawerLayout;
 
 
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true);
-                switch (menuItem.getItemId()) {
-                    case R.id.nav_home:
 
-//                        viewPager.setCurrentItem(0);
-                        mDrawerLayout.closeDrawers();
-
-                        return true;
-                    case R.id.nav_messages:
-//                        viewPager.setCurrentItem(1);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    case R.id.nav_friends:
-//                        viewPager.setCurrentItem(2);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-
-                    case R.id.nav_discussion:
-                        /*Intent i=new Intent(MainActivity.this,ProductDetailsActivity.class);
-                        startActivity(i);*/
-
-//                        Intent i=new Intent(getApplicationContext(),ProductDetailsActivity.class);
-//                        startActivity(i);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-
-
-                    default:
-                        return true;
-                }
-            }
-        });
     }
 
 

@@ -165,27 +165,21 @@ private DrawerLayout mDrawerLayout;
                 switch (menuItem.getItemId()) {
                     case R.id.nav_home:
 
-//                        viewPager.setCurrentItem(0);
+                        //   viewPager.setCurrentItem(0);
                         mDrawerLayout.closeDrawers();
 
                         return true;
-                    case R.id.nav_messages:
-//                        viewPager.setCurrentItem(1);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    case R.id.nav_friends:
-//                        viewPager.setCurrentItem(2);
+                    case R.id.cart:
+                        Intent i=new Intent(SubCategoriesActivity.this,CheckOutActivity.class);
+                        startActivity(i);
                         mDrawerLayout.closeDrawers();
                         return true;
 
-                    case R.id.nav_discussion:
-                        /*Intent i=new Intent(MainActivity.this,ProductDetailsActivity.class);
-                        startActivity(i);*/
+                    case R.id.orderHistory:
+                        Intent j=new Intent(SubCategoriesActivity.this,OrderHistory.class);
+                        startActivity(j);
 
-//                        Intent i=new Intent(getApplicationContext(),ProductDetailsActivity.class);
-//                        startActivity(i);
-                        mDrawerLayout.closeDrawers();
-                        return true;
+
 
 
                     default:

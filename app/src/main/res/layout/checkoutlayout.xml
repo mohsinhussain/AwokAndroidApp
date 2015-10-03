@@ -103,14 +103,14 @@ android:textSize="15dp"
         <EditText
             android:layout_width="50dp"
             android:layout_height="30dp"
-            android:inputType="number"
+            android:inputType="numberDecimal"
 
             android:singleLine="true"
             android:textColor="#333333"
 
             android:cursorVisible="true"
+android:maxLength="2"
 
-            android:imeOptions="actionDone"
             android:imeActionLabel="Update"
             android:gravity="center"
 
@@ -121,7 +121,9 @@ android:textSize="15dp"
             android:layout_below="@+id/OverViewTitle"
             android:layout_toRightOf="@+id/textView"
             android:layout_toEndOf="@+id/textView" />
-
+<!--
+        android:imeOptions="actionDone"
+-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

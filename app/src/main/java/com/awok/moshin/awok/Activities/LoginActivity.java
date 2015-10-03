@@ -71,25 +71,20 @@ public class LoginActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
 
                         return true;
-                    case R.id.nav_messages:
-                        viewPager.setCurrentItem(1);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    case R.id.nav_friends:
-                        viewPager.setCurrentItem(2);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-
-                    case R.id.nav_discussion:
-                        /*Intent i=new Intent(MainActivity.this,ProductDetailsActivity.class);
-                        startActivity(i);*/
-                        //mDrawerLayout.closeDrawers();
-                        Intent i=new Intent(LoginActivity.this,ProductDetailsActivity.class);
+                    case R.id.cart:
+                        Intent i=new Intent(LoginActivity.this,CheckOutActivity.class);
                         startActivity(i);
-
-                        mDrawerLayout.closeDrawer(Gravity.LEFT);
-
+                        mDrawerLayout.closeDrawers();
                         return true;
+                    case R.id.orderHistory:
+                        Intent j=new Intent(LoginActivity.this,OrderHistory.class);
+                        startActivity(j);
+                        mDrawerLayout.closeDrawers();
+                        return true;
+
+
+
+
 
 
                     default:
