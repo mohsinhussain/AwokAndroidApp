@@ -107,9 +107,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (passwordEditText.getText().toString().equalsIgnoreCase("")) {
-                    Snackbar.make(findViewById(android.R.id.content), "Please Enter Password", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
+                    passwordEditText.setError(getString(R.string.enter_password));
 
                 }
                 else{
@@ -131,21 +129,14 @@ public class SplashActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (regPasswordEditText.getText().toString().equalsIgnoreCase("")) {
-                    Snackbar.make(findViewById(android.R.id.content), "Please Enter Password", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
+                    regPasswordEditText.setError(getString(R.string.enter_password));
 
                 }
-                else if (regPasswordEditText.getText().toString().equalsIgnoreCase("")) {
-                    Snackbar.make(findViewById(android.R.id.content), "Please Confirm Your Password", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
-
+                else if (confirmPasswordEditText.getText().toString().equalsIgnoreCase("")) {
+                    confirmPasswordEditText.setError(getString(R.string.please_confirm_password));
                 }
                 else if (!regPasswordEditText.getText().toString().equalsIgnoreCase(confirmPasswordEditText.getText().toString())) {
-                    Snackbar.make(findViewById(android.R.id.content), "Your password and confirm password are not same", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
+                    confirmPasswordEditText.setError(getString(R.string.password_do_not_match));
                 }
                 else{
                     password = regPasswordEditText.getText().toString();
@@ -166,9 +157,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mobileEditText.getText().toString().equalsIgnoreCase("")) {
-                    Snackbar.make(findViewById(android.R.id.content), "Please enter your mobile number", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
+                    mobileEditText.setError(getString(R.string.enter_mobile_number));
                 } else {
                     if (mobileEditText.getText().toString().matches("^[+]?[0-9]{10,13}$")) {
                         Log.v(TAG, "phone number is correct");
@@ -176,9 +165,7 @@ public class SplashActivity extends AppCompatActivity {
                         new APIClient(SplashActivity.this, SplashActivity.this,  new CheckUserCallback()).userCheckAPICall(mobileNumber);
                     }
                     else{
-                        Snackbar.make(findViewById(android.R.id.content), "Phone number is incorrect", Snackbar.LENGTH_LONG)
-                                .setActionTextColor(Color.RED)
-                                .show();
+                        mobileEditText.setError(getString(R.string.incorrect_mobile));
                     }
 
                 }
@@ -205,21 +192,6 @@ public class SplashActivity extends AppCompatActivity {
                 new APIClient(SplashActivity.this, SplashActivity.this, new ForgotPasswordUserCallback()).userForgotPassword(dataToSend.toString());
             }
         });
-
-
-
-
-//        TranslateAnimation anim = new TranslateAnimation(0, 0, 0,300);
-//        anim.setDuration(0);
-//        anim.setFillAfter(true);
-//        logoLayout.startAnimation(anim);
-//        Animation fadeIn = new AlphaAnimation(0, 1);
-//        fadeIn.setDuration(100);
-//        fadeIn.setFillAfter(true);
-//        logoLayout.startAnimation(fadeIn);
-
-
-
 
         new Handler().postDelayed(new Runnable() {
 
@@ -266,9 +238,6 @@ public class SplashActivity extends AppCompatActivity {
 
                         }
                     });
-//                    Intent i = new Intent(SplashActivity.this, LauncherActivity.class);
-//                    startActivity(i);
-//                    finish();
                 }
 
             }

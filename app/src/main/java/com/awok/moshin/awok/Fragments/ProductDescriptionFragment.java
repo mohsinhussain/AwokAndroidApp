@@ -9,81 +9,101 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.awok.moshin.awok.Adapters.ProductOverViewAdapter;
+import com.awok.moshin.awok.Adapters.ProductSpecificationAdapter;
+import com.awok.moshin.awok.Models.ProductOverview;
+import com.awok.moshin.awok.Models.ProductSpecification;
 import com.awok.moshin.awok.R;
 
-/**
- * Created by shon on 9/10/2015.
- */
-public class ProductDescriptionFragment extends Fragment{
-    private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_color_default,prod_colorSecondary,prod_shipping,prod_shippingCost,prod_delivery,prod_deliveryTime,prod_reviews,quickDeliveryTxt,
-            prod_price,prod_discountPrice;
+import org.w3c.dom.Text;
 
-    private Button prod_buyNow;
-    private RatingBar prodRatingBar,prod_reviewRating;
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View mView = inflater.inflate(R.layout.product_body_content, container, false);
-        productTitle=(TextView)mView.findViewById(R.id.productTitle);
-        product_reviewCount=(TextView)mView.findViewById(R.id.product_reviewCount);
-        prod_warranty=(TextView)mView.findViewById(R.id.prod_warranty);
-        prod_color_default=(TextView)mView.findViewById(R.id.prod_color_default);
-        prod_color=(TextView)mView.findViewById(R.id.prod_color);
-        prod_colorSecondary=(TextView)mView.findViewById(R.id.prod_colorSecondary);
-        prod_shipping=(TextView)mView.findViewById(R.id.prod_shipping);
-        prod_shippingCost=(TextView)mView.findViewById(R.id.prod_shippingCost);
-        prod_delivery=(TextView)mView.findViewById(R.id.prod_delivery);
-        prod_deliveryTime=(TextView)mView.findViewById(R.id.prod_deliveryTime);
-        prod_reviews=(TextView)mView.findViewById(R.id.prod_reviews);
-        quickDeliveryTxt=(TextView)mView.findViewById(R.id.quickDeliveryTxt);
-        prod_price=(TextView)mView.findViewById(R.id.prod_price);
-        prod_discountPrice=(TextView)mView.findViewById(R.id.prod_discountPrice);
-        prod_buyNow=(Button)mView.findViewById(R.id.prod_buyNow);
-
-        prodRatingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
-        prod_reviewRating=(RatingBar)mView.findViewById(R.id.prod_reviewRating);
-        LayerDrawable mainRatingColor = (LayerDrawable) prodRatingBar.getProgressDrawable();
-        mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
-        mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
-        mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
+import java.util.ArrayList;
+import java.util.List;
 
 
-        LayerDrawable reviewRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
-        reviewRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
-        reviewRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
-        reviewRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
+public class ProductDescriptionFragment extends Fragment {
 
-        Typeface mainProdFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Medium.ttf");
-        productTitle.setTypeface(mainProdFont);
+    String description;
 
+//        private RecyclerView mRecyclerView;
+//        private RecyclerView.Adapter mAdapter;
+//        private RecyclerView.LayoutManager mLayoutManager;
+//        private List<ProductOverview> overViewList = new ArrayList<ProductOverview>();
 
-        Typeface innerFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Bold.ttf");
-        prod_color.setTypeface(innerFont);
-        prod_shipping.setTypeface(innerFont);
-        prod_delivery.setTypeface(innerFont);
-        prod_reviews.setTypeface(innerFont);
-
-        Typeface textFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
-        prod_color_default.setTypeface(textFont);
-        prod_colorSecondary.setTypeface(textFont);
-        prod_shippingCost.setTypeface(textFont);
-        prod_deliveryTime.setTypeface(textFont);
-
-
-        prod_price.setTypeface(innerFont);
-        prod_discountPrice.setTypeface(innerFont);
-        prod_discountPrice.setPaintFlags(prod_discountPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-        prod_buyNow.setTypeface(innerFont);
-        return mView;
+    TextView descriptionTextView;
+    public ProductDescriptionFragment(String description) {
+        this.description = description;
     }
 
-}
+
+    @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            // Inflate the layout for this fragment
+            View mView = inflater.inflate(R.layout.fragment_product_over_view, container, false);
+        descriptionTextView = (TextView) mView.findViewById(R.id.descriptionTextView);
+        descriptionTextView.setText(description);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
+//
+//            // getSupportActionBar().setIcon(R.drawable.ic_launcher);
+//
+//            // getSupportActionBar().setTitle("Android Versions");
+//
+//            // use this setting to improve performance if you know that changes
+//            // in content do not change the layout size of the RecyclerView
+//            mRecyclerView.setHasFixedSize(true);
+//
+//            // use a linear layout manager
+//            mLayoutManager = new LinearLayoutManager(getContext());
+//            mRecyclerView.setLayoutManager(mLayoutManager);
+//
+//            mAdapter = new ProductOverViewAdapter(getActivity(),overViewList);
+//            mRecyclerView.setAdapter(mAdapter);
+//
+//
+//overViewList.clear();
+//        overViewList.add(prodOverviewData);
+//           /* int i=0;
+//            for(i=0;i<=4;i++)
+//            {
+//                ProductOverview listData=new ProductOverview();
+//                listData.setOverViewText(getResources().getString(R.string.body_txt));
+//                listData.setOverViewTitle(getResources().getString(R.string.head_txt));
+//
+//                overViewList.add(listData);
+//
+//            }
+//            System.out.println("COOL"+overViewList.toString());*/
+//            mAdapter.notifyDataSetChanged();
+
+            return mView;
+        }
+
+    }
+

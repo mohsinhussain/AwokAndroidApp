@@ -1,12 +1,10 @@
 package com.awok.moshin.awok.Fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -19,20 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.awok.moshin.awok.Activities.ProductDetailsView;
+import com.awok.moshin.awok.Activities.ProductDetailsActivity;
 import com.awok.moshin.awok.Adapters.HotDealsAdapter;
-import com.awok.moshin.awok.Adapters.ProductOverViewAdapter;
-import com.awok.moshin.awok.Adapters.RelatedProductsAdapter;
-import com.awok.moshin.awok.Models.ProductOverview;
 import com.awok.moshin.awok.Models.Products;
-import com.awok.moshin.awok.Models.RelatedProductsModel;
-import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
-import com.awok.moshin.awok.Util.Constants;
 import com.awok.moshin.awok.Util.RecyclerItemClickListener;
 
 import org.json.JSONArray;
@@ -126,7 +117,7 @@ public class RelatedProductsFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Toast.makeText(getActivity(), "Product Name: " + productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getContext(), ProductDetailsView.class);
+                        Intent i = new Intent(getContext(), ProductDetailsActivity.class);
                         i.putExtra("id", productsArrayList.get(position).getId());
                         startActivity(i);
 //                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);

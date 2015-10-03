@@ -1,33 +1,23 @@
 package com.awok.moshin.awok.Activities;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
-import com.awok.moshin.awok.Fragments.BundleOffersFragment;
-import com.awok.moshin.awok.Fragments.CategoriesFragment;
-import com.awok.moshin.awok.Fragments.DailyDealsFragment;
-import com.awok.moshin.awok.Fragments.HotDealsFragment;
 import com.awok.moshin.awok.Fragments.NewMemberLoginFragment;
 import com.awok.moshin.awok.Fragments.SignInFragment;
-import com.awok.moshin.awok.Fragments.WeeklyBestSellersFragment;
 import com.awok.moshin.awok.R;
 
 import java.util.ArrayList;
@@ -91,10 +81,10 @@ public class LoginActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.nav_discussion:
-                        /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
+                        /*Intent i=new Intent(MainActivity.this,ProductDetailsActivity.class);
                         startActivity(i);*/
                         //mDrawerLayout.closeDrawers();
-                        Intent i=new Intent(LoginActivity.this,ProductDetailsView.class);
+                        Intent i=new Intent(LoginActivity.this,ProductDetailsActivity.class);
                         startActivity(i);
 
                         mDrawerLayout.closeDrawer(Gravity.LEFT);

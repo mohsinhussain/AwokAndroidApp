@@ -208,9 +208,8 @@
     <ProgressBar android:indeterminate="true"
         android:layout_width="50dp" android:layout_height="50dp"
         android:id="@+id/marker_progress" android:background ="@drawable/progress_splash"
-        android:layout_marginBottom="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

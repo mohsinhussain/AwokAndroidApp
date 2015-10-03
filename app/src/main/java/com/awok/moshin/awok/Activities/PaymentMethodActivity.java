@@ -16,7 +16,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.awok.moshin.awok.Fragments.NewMemberLoginFragment;
 import com.awok.moshin.awok.Fragments.SignInFragment;
 import com.awok.moshin.awok.Fragments.VisaPaymentFragment;
 import com.awok.moshin.awok.R;
@@ -82,10 +81,10 @@ public class PaymentMethodActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.nav_discussion:
-                        /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
+                        /*Intent i=new Intent(MainActivity.this,ProductDetailsActivity.class);
                         startActivity(i);*/
                         //mDrawerLayout.closeDrawers();
-                        Intent i=new Intent(PaymentMethodActivity.this,ProductDetailsView.class);
+                        Intent i=new Intent(PaymentMethodActivity.this,ProductDetailsActivity.class);
                         startActivity(i);
 
                         mDrawerLayout.closeDrawer(Gravity.LEFT);

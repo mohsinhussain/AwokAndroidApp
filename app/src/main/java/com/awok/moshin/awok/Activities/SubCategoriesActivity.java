@@ -179,10 +179,10 @@ private DrawerLayout mDrawerLayout;
                         return true;
 
                     case R.id.nav_discussion:
-                        /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
+                        /*Intent i=new Intent(MainActivity.this,ProductDetailsActivity.class);
                         startActivity(i);*/
 
-//                        Intent i=new Intent(getApplicationContext(),ProductDetailsView.class);
+//                        Intent i=new Intent(getApplicationContext(),ProductDetailsActivity.class);
 //                        startActivity(i);
                         mDrawerLayout.closeDrawers();
                         return true;

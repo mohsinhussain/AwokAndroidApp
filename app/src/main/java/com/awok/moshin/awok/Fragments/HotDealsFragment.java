@@ -17,29 +17,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.awok.moshin.awok.Activities.ProductDetailsView;
-import com.awok.moshin.awok.Activities.SubCategoriesActivity;
+import com.awok.moshin.awok.Activities.ProductDetailsActivity;
 import com.awok.moshin.awok.Adapters.HotDealsAdapter;
 import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
-import com.awok.moshin.awok.Util.EndlessRecyclerOnScrollListener;
 import com.awok.moshin.awok.Util.RecyclerItemClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class HotDealsFragment extends Fragment {
@@ -113,9 +107,14 @@ public class HotDealsFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent i=new Intent(getContext(), ProductDetailsView.class);
-                        i.putExtra("id",productsArrayList.get(position).getId());
-                        i.putExtra("productName",productsArrayList.get(position).getName());
+                        Intent i=new Intent(getContext(), ProductDetailsActivity.class);
+                        i.putExtra(Constants.PRODUCT_ID_INTENT,productsArrayList.get(position).getId());
+                        i.putExtra(Constants.PRODUCT_NAME_INTENT,productsArrayList.get(position).getName());
+                        i.putExtra(Constants.PRODUCT_DISCOUNT_PERCENTAGE_INTENT,productsArrayList.get(position).getDiscPercent());
+                        i.putExtra(Constants.PRODUCT_IMAGE_INTENT,productsArrayList.get(position).getImage());
+                        i.putExtra(Constants.PRODUCT_PRICE_NEW_INTENT,productsArrayList.get(position).getPriceNew());
+                        i.putExtra(Constants.PRODUCT_PRICE_OLD_INTENT,productsArrayList.get(position).getPriceOld());
+                        i.putExtra(Constants.PRODUCT_DESCRIPTION_INTENT,productsArrayList.get(position).getDescription());
                         i.putExtra(Constants.CAT_ID_INTENT, productsArrayList.get(position).getCategoryId());
                         startActivity(i);
 //                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
@@ -321,6 +320,7 @@ public class HotDealsFragment extends Fragment {
                     item.setCategoryId(jsonObject.getString("category_id"));
                     item.setPriceNew(jsonObject.getInt("new_price"));
                     item.setPriceOld(jsonObject.getInt("original_price"));
+                    item.setDescription(jsonObject.getString("description"));
                     item.setDiscPercent(jsonObject.getInt("discount_percentage"));
 //                    if (priceObject.getInt("PRICE_OLD")!=0){
 //                        item.setDiscPercent(priceObject.getInt("PERCENT"));

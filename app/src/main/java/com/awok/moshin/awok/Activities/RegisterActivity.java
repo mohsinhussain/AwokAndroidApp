@@ -81,10 +81,10 @@ public class RegisterActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.nav_discussion:
-                        *//*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
+                        *//*Intent i=new Intent(MainActivity.this,ProductDetailsActivity.class);
                         startActivity(i);*//*
                         //mDrawerLayout.closeDrawers();
-                        Intent i=new Intent(RegisterActivity.this,ProductDetailsView.class);
+                        Intent i=new Intent(RegisterActivity.this,ProductDetailsActivity.class);
                         startActivity(i);
 
                         mDrawerLayout.closeDrawer(Gravity.LEFT);

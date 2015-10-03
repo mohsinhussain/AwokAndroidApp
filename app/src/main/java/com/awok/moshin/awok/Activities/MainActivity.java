@@ -128,10 +128,10 @@ private DrawerLayout mDrawerLayout;
                         return true;
 
                     case R.id.nav_discussion:
-                        /*Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
+                        /*Intent i=new Intent(MainActivity.this,ProductDetailsActivity.class);
                         startActivity(i);*/
                         //mDrawerLayout.closeDrawers();
-                       /* Intent i=new Intent(MainActivity.this,ProductDetailsView.class);
+                       /* Intent i=new Intent(MainActivity.this,ProductDetailsActivity.class);
                         startActivity(i);
 
                         mDrawerLayout.closeDrawer(Gravity.LEFT);*/
@@ -262,38 +262,6 @@ private DrawerLayout mDrawerLayout;
 
         //searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(this);
-
-
-  /*      searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                tabLayout.setVisibility(View.VISIBLE);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                tabLayout.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                tabLayout.setVisibility(View.VISIBLE);
-
-                return false;
-            }
-        });
-
-closeButton.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        tabLayout.setVisibility(View.VISIBLE);
-    }
-});*/
-
-
         return true;
     }
 
@@ -353,17 +321,16 @@ closeButton.setOnClickListener(new View.OnClickListener() {
 
 
     @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        Snackbar.make(MainActivity.this.findViewById(android.R.id.content), "CHANGE", Snackbar.LENGTH_LONG)
-                .setActionTextColor(Color.RED)
-                .show();
-        return false;
-    }
 
 
     static class Adapter extends FragmentPagerAdapter {

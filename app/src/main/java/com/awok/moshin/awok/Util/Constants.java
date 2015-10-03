@@ -21,5 +21,12 @@ public class Constants {
     public static String USER_ID_PREFS = "userIdInPrefs";
     public static String USER_AUTH_TOKEN_PREFS = "userAuthorisationTokenInPrefs";
     public static String CAT_LIST_PREFS = "categoriesListInPrefs";
+    public static String PRODUCT_ID_INTENT = "productId";
+    public static String PRODUCT_NAME_INTENT = "productName";
+    public static String PRODUCT_DISCOUNT_PERCENTAGE_INTENT = "productDiscountPercentage";
+    public static String PRODUCT_IMAGE_INTENT = "productImage";
+    public static String PRODUCT_PRICE_NEW_INTENT = "productPrieNew";
+    public static String PRODUCT_PRICE_OLD_INTENT = "productPriceOld";
+    public static String PRODUCT_DESCRIPTION_INTENT = "productDescription";
 
 }
