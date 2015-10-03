@@ -1,11 +1,14 @@
 package com.awok.moshin.awok.Activities;
 
+import android.annotation.TargetApi;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,10 +16,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +30,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -50,7 +56,7 @@ import java.util.Map;
 /**
  * Created by shon on 9/9/2015.
  */
-public class ProductDetailsActivity extends AppCompatActivity{
+public class ProductDetailsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     ProgressBar progressBar;
@@ -64,6 +70,8 @@ public class ProductDetailsActivity extends AppCompatActivity{
     String productId,productName, newPrice, oldPrice, image, description;
     String catId;
     JSONObject dataToSend;
+    MenuItem searchItem;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,6 +244,33 @@ public void setUpTab()
 
         viewPager.setAdapter(adapter);
     }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if(query.equalsIgnoreCase("")){
+            Snackbar.make(ProductDetailsActivity.this.findViewById(android.R.id.content), "Please type some thing to search Awok", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
+        }
+        else{
+            Intent i = new Intent(ProductDetailsActivity.this, SearchActivity.class);
+            i.putExtra(Constants.SEARCH_FILTER_INTENT, query);
+            startActivity(i);
+            searchItem.collapseActionView();
+        }
+
+
+        return false;
+    }
+
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
@@ -270,7 +305,12 @@ public void setUpTab()
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_productdetails, menu);
-
+        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
+        searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(this);
 //        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 
 

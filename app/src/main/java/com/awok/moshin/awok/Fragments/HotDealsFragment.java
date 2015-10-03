@@ -274,8 +274,8 @@ public class HotDealsFragment extends Fragment {
                 if (isSearch){
                     JSONObject obj = new JSONObject(response);
                     itemCount.setVisibility(View.VISIBLE);
-                    itemCount.setText("We found "+obj.getInt("total_products")+" search results for '"+searchString+"'");
                     if(obj.getInt("status")==1){
+                        itemCount.setText("We found "+obj.getInt("total_products")+" search results for '"+searchString+"'");
                         jsonArray = obj.getJSONArray("items");
                     }
                     else{
@@ -285,6 +285,7 @@ public class HotDealsFragment extends Fragment {
                                     .show();
                         }
                         else{
+                            itemCount.setText("We found 0 search results for '"+searchString+"'");
                             Snackbar.make(getActivity().findViewById(android.R.id.content), "No such object found", Snackbar.LENGTH_LONG)
                                     .setActionTextColor(Color.RED)
                                     .show();
