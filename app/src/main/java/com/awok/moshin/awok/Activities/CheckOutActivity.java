@@ -2,6 +2,7 @@ package com.awok.moshin.awok.Activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,10 +47,10 @@ import java.util.List;
 /**
  * Created by shon on 9/14/2015.
  */
-public class CheckOutActivity extends AppCompatActivity{
+public class CheckOutActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private LinearLayout bottomLay;
-    private TextView cartEmptyText,prodPrice;
+    private TextView cartEmptyText, prodPrice;
     private RecyclerView.Adapter mAdapter;
     ProgressBar progressBar;
     String TAG = "CartActivity";
@@ -57,10 +59,11 @@ public class CheckOutActivity extends AppCompatActivity{
     String mobileNumber = "";
     String password = "";
     private List<Checkout> overViewList = new ArrayList<Checkout>();
-    String[] schoolbag = new String[]{"SHON","SHON","SONU","SHON","SONU"};
+    String[] schoolbag = new String[]{"SHON", "SHON", "SONU", "SHON", "SONU"};
     ProgressBar progressBarForm;
     ProgressBar progressBarLogin;
     Dialog inputNumberDialog;
+    Snackbar toast;
     Dialog loginDialog;
     Dialog registerDialog;
 
@@ -69,11 +72,11 @@ public class CheckOutActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
         mRecyclerView = (RecyclerView) findViewById(R.id.overViewRecyclerView);
-bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
+        bottomLay = (LinearLayout) findViewById(R.id.bottomLay);
         bottomLay.setVisibility(View.GONE);
-        cartEmptyText=(TextView)findViewById(R.id.cartEmptyText);
+        cartEmptyText = (TextView) findViewById(R.id.cartEmptyText);
         cartEmptyText.setVisibility(View.GONE);
-        prodPrice=(TextView)findViewById(R.id.prod_discountPrice);
+        prodPrice = (TextView) findViewById(R.id.prod_discountPrice);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
         mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
@@ -89,7 +92,7 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new CheckOutAdapter(CheckOutActivity.this,overViewList);
+        mAdapter = new CheckOutAdapter(CheckOutActivity.this, overViewList);
         //mRecyclerView.setAdapter(mAdapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -100,50 +103,52 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle("Cart");
-        if(mSharedPrefs.contains(Constants.USER_MOBILE_PREFS)){
+        if (mSharedPrefs.contains(Constants.USER_MOBILE_PREFS)) {
             initializeCart();
-        }
-        else{
+        } else {
             //show login dialog
             inputNumberDialog = new Dialog(this, R.style.AppCompatAlertDialogStyle);
-            inputNumberDialog.setCancelable(false);
+            inputNumberDialog.setCancelable(true);
             inputNumberDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             inputNumberDialog.setContentView(R.layout.dialog_input_number);
             final EditText mobileEditText = (EditText) inputNumberDialog.findViewById(R.id.mobileEditText);
             Button cancelButton = (Button) inputNumberDialog.findViewById(R.id.cancelButton);
             Button nextButton = (Button) inputNumberDialog.findViewById(R.id.nextButton);
-            progressBarForm = (ProgressBar)inputNumberDialog.findViewById(R.id.load_progress_bar);
+            progressBarForm = (ProgressBar) inputNumberDialog.findViewById(R.id.load_progress_bar);
             // if button is clicked, close the custom dialog
             cancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   finish();
+                    inputNumberDialog.cancel();
                 }
             });
             nextButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    LayoutInflater inflater = dialog.getLayoutInflater();
-//                    final View mDialogView = inflater.inflate(R.layout.dialog_input_number, null);
+                    LayoutInflater inflater = getWindow().getLayoutInflater();
+                    final View mDialogView = inflater.inflate(R.layout.dialog_input_number, null);
                     if (mobileEditText.getText().toString().equalsIgnoreCase("")) {
-                        Snackbar.make(findViewById(android.R.id.content),
-                                "Please enter your mobile number", Snackbar.LENGTH_LONG)
-                                .setActionTextColor(Color.RED)
-                                .show();
-
+                        mobileEditText.setError("Please enter your mobile number");
                     } else {
                         if (mobileEditText.getText().toString().matches("^[+]?[0-9]{10,13}$")) {
                             Log.v(TAG, "phone number is correct");
                             mobileNumber = mobileEditText.getText().toString();
-                            new APIClient(CheckOutActivity.this, CheckOutActivity.this,  new CheckUserCallback()).userCheckAPICall(mobileNumber);
-                        }
-                        else{
-                            Snackbar.make(findViewById(android.R.id.content), "Phone number is incorrect", Snackbar.LENGTH_LONG)
+                            new APIClient(CheckOutActivity.this, CheckOutActivity.this, new CheckUserCallback()).userCheckAPICall(mobileNumber);
+                        } else {
+                            toast.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                                     .setActionTextColor(Color.RED)
                                     .show();
+
+                            mobileEditText.setError("Phone number is incorrect");
                         }
 
                     }
+                }
+            });
+            inputNumberDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    finish();
                 }
             });
 
@@ -167,18 +172,14 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         /*mAdapter.notifyDataSetChanged();*/
 
 
-        Button b=(Button)findViewById(R.id.checkout);
+        Button b = (Button) findViewById(R.id.checkout);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(CheckOutActivity.this,OrderSummaryActivity.class);
+                Intent i = new Intent(CheckOutActivity.this, OrderSummaryActivity.class);
                 startActivity(i);
             }
         });
-
-
-
-
 
 
     }
@@ -192,7 +193,7 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
 //        }
 //    }
 
-    public void initializeCart(){
+    public void initializeCart() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -201,17 +202,18 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
                 new APIClient(getApplicationContext(), getApplicationContext(),  new GetProductsCallback()).allProductsAPICall(pageCount);
             }
             else{*/
-            new APIClient(this, getApplicationContext(),  new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
+            new APIClient(this, getApplicationContext(), new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
             // }
 
         } else {
-            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                    .setActionTextColor(Color.RED)
-                    .show();
+//            toast.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+//                    .setActionTextColor(Color.RED)
+//                    .show();
+//            toast.getView().bringToFront();
         }
     }
 
-    public void showLogin(){
+    public void showLogin() {
         //show login dialog
         loginDialog = new Dialog(this, R.style.AppCompatAlertDialogStyle);
         loginDialog.setCancelable(true);
@@ -220,7 +222,7 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         final EditText passwordEditText = (EditText) loginDialog.findViewById(R.id.passwordEditText);
         Button cancelButton = (Button) loginDialog.findViewById(R.id.cancelButton);
         Button nextButton = (Button) loginDialog.findViewById(R.id.nextButton);
-        progressBarLogin = (ProgressBar)loginDialog.findViewById(R.id.load_progress_bar);
+        progressBarLogin = (ProgressBar) loginDialog.findViewById(R.id.load_progress_bar);
         // if button is clicked, close the custom dialog
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,12 +234,12 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
             @Override
             public void onClick(View v) {
                 if (passwordEditText.getText().toString().equalsIgnoreCase("")) {
-                    Snackbar.make(findViewById(android.R.id.content), "Please Enter Password", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
+                    passwordEditText.setError("Please Enter Password");
+//                    Snackbar.make(findViewById(android.R.id.content), "Please Enter Password", Snackbar.LENGTH_LONG)
+//                            .setActionTextColor(Color.RED)
+//                            .show();
 
-                }
-                else{
+                } else {
                     password = passwordEditText.getText().toString();
                     HashMap<String, Object> userData = new HashMap<String, Object>();
                     userData.put("phone_number", mobileNumber);
@@ -246,14 +248,15 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
 
                     JSONObject dataToSend = new JSONObject(userData);
                     new APIClient(CheckOutActivity.this, CheckOutActivity.this, new loginAndRegisterUserCallback()).userLoginAPICall(dataToSend.toString());
-                }            }
+                }
+            }
         });
 
         loginDialog.show();
         loginDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    public void showRegister(){
+    public void showRegister() {
         //show login dialog
         registerDialog = new Dialog(this, R.style.AppCompatAlertDialogStyle);
         registerDialog.setCancelable(true);
@@ -264,7 +267,7 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         Button cancelButton = (Button) registerDialog.findViewById(R.id.cancelButton);
         Button nextButton = (Button) registerDialog.findViewById(R.id.nextButton);
         LinearLayout buttonLayout = (LinearLayout) registerDialog.findViewById(R.id.buttonLayout);
-        progressBarLogin = (ProgressBar)registerDialog.findViewById(R.id.load_progress_bar);
+        progressBarLogin = (ProgressBar) registerDialog.findViewById(R.id.load_progress_bar);
         // if button is clicked, close the custom dialog
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,29 +279,26 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
             @Override
             public void onClick(View v) {
                 if (passwordEditText.getText().toString().equalsIgnoreCase("")) {
-                    Snackbar.make(findViewById(android.R.id.content), "Please Enter Password", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
+                    passwordEditText.setError("Please Enter Password");
+//                    Snackbar.make(findViewById(android.R.id.content), "Please Enter Password", Snackbar.LENGTH_LONG)
+//                            .setActionTextColor(Color.RED)
+//                            .show();
 
-                }
-                else if (passwordEditText.getText().toString().equalsIgnoreCase("")) {
-                    Snackbar.make(findViewById(android.R.id.content), "Please Confirm Your Password", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
-
-                }
-                else if (!passwordEditText.getText().toString().equalsIgnoreCase(confirmPasswordEditText.getText().toString())) {
-                    Snackbar.make(findViewById(android.R.id.content), "Your password and confirm password are not same", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
-                }
-                else{
+                } else if (passwordEditText.getText().toString().equalsIgnoreCase("")) {
+                    passwordEditText.setError("Please Confirm Your Password");
+//                    Snackbar.make(findViewById(android.R.id.content), "Please Confirm Your Password", Snackbar.LENGTH_LONG)
+//                            .setActionTextColor(Color.RED)
+//                            .show();
+                } else if (!passwordEditText.getText().toString().equalsIgnoreCase(confirmPasswordEditText.getText().toString())) {
+                    passwordEditText.setError("Your password and confirm password are not same");
+//                    Snackbar.make(findViewById(android.R.id.content), "Your password and confirm password are not same", Snackbar.LENGTH_LONG)
+//                            .setActionTextColor(Color.RED)
+//                            .show();
+                } else {
                     password = passwordEditText.getText().toString();
                     HashMap<String, Object> userData = new HashMap<String, Object>();
                     userData.put("phone_number", mobileNumber);
                     userData.put("access_key", password);
-
-
                     JSONObject dataToSend = new JSONObject(userData);
                     new APIClient(CheckOutActivity.this, CheckOutActivity.this, new loginAndRegisterUserCallback()).useRegisterAPICall(dataToSend.toString());
                 }
@@ -314,12 +314,11 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         public void onTaskComplete(String response) {
             try {
                 JSONObject obj = new JSONObject(response);
-                if(obj.getBoolean("errors")) {
+                if (obj.getBoolean("errors")) {
                     Snackbar.make(findViewById(android.R.id.content), obj.getString("message"), Snackbar.LENGTH_LONG)
                             .setActionTextColor(Color.RED)
                             .show();
-                }
-                else{
+                } else {
                     SharedPreferences.Editor editor = mSharedPrefs.edit();
                     editor.putString(Constants.USER_MOBILE_PREFS, mobileNumber);
                     editor.putInt(Constants.USER_AUTH_TOKEN_PREFS, obj.getJSONObject("message").getInt("user_token"));
@@ -345,11 +344,12 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
                 e.printStackTrace();
                 progressBarLogin.setVisibility(View.GONE);
             }
-
         }
+
         @Override
         public void onTaskCancelled() {
         }
+
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
@@ -363,11 +363,10 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
         public void onTaskComplete(String response) {
             try {
                 JSONObject obj = new JSONObject(response);
-                if(obj.getInt("status")==200){
-                    if(obj.getJSONObject("message").getBoolean("register")==true){
+                if (obj.getInt("status") == 200) {
+                    if (obj.getJSONObject("message").getBoolean("register") == true) {
                         showRegister();
-                    }
-                    else{
+                    } else {
                         showLogin();
                     }
                 }
@@ -378,9 +377,11 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
             }
 
         }
+
         @Override
         public void onTaskCancelled() {
         }
+
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
@@ -391,17 +392,10 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
 
 
 
-
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_productdetails, menu);
-
-
 
 
         return true;
@@ -409,9 +403,6 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-
-
 
 
         switch (item.getItemId()) {
@@ -435,48 +426,43 @@ bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
                 jsonArray = new JSONArray(response);*/
 //                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
                 JSONObject jsonObjectData;
-                jsonObjectData=new JSONObject(response);
+                jsonObjectData = new JSONObject(response);
                 System.out.println(jsonObjectData.toString());
-               // int length = jsonObjectData.length();
+                // int length = jsonObjectData.length();
 /////////                System.out.println(jsonObjectData.getJSONObject("data"));
 ///                System.out.println(jsonObjectData.getJSONObject("data").getJSONArray("seller_cart"));
 
                 JSONArray jsonArray;
-  /////              jsonArray=jsonObjectData.getJSONObject("data").getJSONArray("seller_cart");
+                /////              jsonArray=jsonObjectData.getJSONObject("data").getJSONArray("seller_cart");
 
                 //String sellerName=jsonArray.getString("seller").toString();
-if(jsonObjectData.getString("status").equals("0"))
-{
-bottomLay.setVisibility(View.GONE);
-    cartEmptyText.setVisibility(View.VISIBLE);
-}
+                if (jsonObjectData.getString("status").equals("0")) {
+                    bottomLay.setVisibility(View.GONE);
+                    cartEmptyText.setVisibility(View.VISIBLE);
+                } else {
+                    bottomLay.setVisibility(View.VISIBLE);
+                    cartEmptyText.setVisibility(View.GONE);
+                    int length = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").length();
+                    for (int i = 0; i < length; i++) {
+                        JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").getJSONObject(i);
 
-                else
-{
-bottomLay.setVisibility(View.VISIBLE);
-    cartEmptyText.setVisibility(View.GONE);
-    int length = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").length();
-                for(int i=0;i<length;i++){
-                    JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").getJSONObject(i);
-
-                    JSONArray productDetails=jsonObject.getJSONArray("products");
-                    int lengthOfProducts = productDetails.length();
-                    for(int j=0;j<lengthOfProducts;j++)
-                    {
-                        Checkout listData=new Checkout();
-                        JSONObject jsonObjectProductDetails=productDetails.getJSONObject(j);
-                        listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
-                        //listData.setOverViewText(jsonObject.getString("total_price"));
-                        listData.setStatusId(jsonObjectData.getString("status"));
-                        listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
-                        listData.setSellerLabel(jsonObject.getString("seller"));
-                        listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
-                        listData.setProductId(jsonObjectProductDetails.getString("_id"));
-                        listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
-                        listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
-                        prodPrice.setText((jsonObjectData.getJSONObject("data").getString("total")) + " AED");
-                        overViewList.add(listData);
-                    }
+                        JSONArray productDetails = jsonObject.getJSONArray("products");
+                        int lengthOfProducts = productDetails.length();
+                        for (int j = 0; j < lengthOfProducts; j++) {
+                            Checkout listData = new Checkout();
+                            JSONObject jsonObjectProductDetails = productDetails.getJSONObject(j);
+                            listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
+                            //listData.setOverViewText(jsonObject.getString("total_price"));
+                            listData.setStatusId(jsonObjectData.getString("status"));
+                            listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
+                            listData.setSellerLabel(jsonObject.getString("seller"));
+                            listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
+                            listData.setProductId(jsonObjectProductDetails.getString("_id"));
+                            listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
+                            listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
+                            prodPrice.setText((jsonObjectData.getJSONObject("data").getString("total")) + " AED");
+                            overViewList.add(listData);
+                        }
                     /*listData.setOverViewText(getResources().getString(R.string.check_out_price));
                     listData.setOverViewTitle(getResources().getString(R.string.checkout_head));
                     listData.setSellerLabel(schoolbag[i].toString());*/
@@ -484,14 +470,14 @@ bottomLay.setVisibility(View.VISIBLE);
                     listData.setOverViewTitle(jsonObject.getString("seller"));
                     listData.setSellerLabel(jsonObject.getString("seller"));*/
 
+                    }
+
+
+                    // mAdapter.notifyAll();
+
                 }
 
-
-               // mAdapter.notifyAll();
-
-}
-
-                if(getApplicationContext()!=null){
+                if (getApplicationContext() != null) {
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     progressBar.startAnimation(animation);
                 }
@@ -505,7 +491,7 @@ bottomLay.setVisibility(View.VISIBLE);
                 Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
                         .show();
-                if(getApplicationContext()!=null){
+                if (getApplicationContext() != null) {
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     progressBar.startAnimation(animation);
                 }
@@ -515,21 +501,22 @@ bottomLay.setVisibility(View.VISIBLE);
                 }*/
             }
         }
+
         @Override
         public void onTaskCancelled() {
         }
+
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
 //            if(!mSwipeRefreshLayout.isRefreshing()){
-                progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
 //            }
 
         }
     }
 
-public void refreshData()
-{
-    new APIClient(this, getApplicationContext(),  new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
-}
+    public void refreshData() {
+        new APIClient(this, getApplicationContext(), new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
+    }
 }

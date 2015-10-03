@@ -113,7 +113,6 @@ public class HotDealsFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Toast.makeText(getActivity(), "Product Name: "+productsArrayList.get(position).getId(), Toast.LENGTH_SHORT).show();
                         Intent i=new Intent(getContext(), ProductDetailsView.class);
                         i.putExtra("id",productsArrayList.get(position).getId());
                         i.putExtra("productName",productsArrayList.get(position).getName());

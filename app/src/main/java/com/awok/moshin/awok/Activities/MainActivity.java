@@ -351,6 +351,12 @@ closeButton.setOnClickListener(new View.OnClickListener() {
         return false;
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     @Override
     public boolean onQueryTextChange(String newText) {
         Snackbar.make(MainActivity.this.findViewById(android.R.id.content), "CHANGE", Snackbar.LENGTH_LONG)

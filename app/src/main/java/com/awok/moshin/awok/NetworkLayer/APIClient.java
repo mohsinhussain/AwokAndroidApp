@@ -91,6 +91,11 @@ public class APIClient {
         mTask.execute(mContext, "http://market1.awok/bengalua/check/" + phoneNumber, "GET", null);
     }
 
+    public void userForgotPassword(String dataToSend) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/bengalua/forgot_password/", "POST", dataToSend);
+    }
+
     public void userLoginAPICall(String dataToSend) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/bengalua/login/", "POST", dataToSend);
