@@ -30,27 +30,29 @@ import java.util.List;
 public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapter.ViewHolder> {
     private List<OrderSummary> OverViewList = new ArrayList<OrderSummary>();
     private Activity activity;
-    String sellerCheck="";
+    String sellerChecZ="";
     Context mcontext;
     View customView;
     private ArrayAdapter<CharSequence> adapter;
     LinearLayout.LayoutParams lp;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public OrderSummaryAdapter(Activity activity,List<OrderSummary> overViewList) {
-        OverViewList = overViewList;
+    public OrderSummaryAdapter(Activity activity,List<OrderSummary> overViewListData) {
+        OverViewList = overViewListData;
         this.activity=activity;
         this.mcontext=activity;
+
         //adapter = ArrayAdapter.createFromResource(activity, R.array.object_array, android.R.layout.simple_spinner_item);
 
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //adapter.setDropDownViewResource(R.layout.spinner_drop_down);
-
+        //sellerCheck="";
         lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         lp.topMargin = 20;
         mcontext=activity.getApplication();
+        System.out.println("topdzfvxdfv"+sellerChecZ);
 
     }
 
@@ -80,29 +82,30 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
         //  viewHolder.data = new CheckoutDataObjects(activity);
         viewHolder.countOfProducts.setAdapter(adapter);*/
 
-
-        if(sellerCheck.equals(OverViewList.get(position).getSellerLabel()))
+        System.out.println("GOAL"+sellerChecZ);
+        if(sellerChecZ.equals(OverViewList.get(position).getSellerLabel()))
         {
 
-
-            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+" AED");
+System.out.println("top"+sellerChecZ);
+            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText() + " AED");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
             viewHolder.sellerLabel.setText(OverViewList.get(position).getSellerLabel());
             viewHolder.sellerMainLay.setVisibility(View.GONE);
             viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
             viewHolder.seperator.setVisibility(View.VISIBLE);
-
+//viewHolder.qtyText.setText("Qty :");
             viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
-            sellerCheck=OverViewList.get(position).getSellerLabel();
+            sellerChecZ=OverViewList.get(position).getSellerLabel();
 
         }
         else {
+            System.out.println("zdfbzdhnfgzd"+sellerChecZ);
             //customView.setLayoutParams(lp);
             viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+" AED");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
-
+           // viewHolder.qtyText.setText("Qty :");
             viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
 
             viewHolder.sellerLabel.setText("Seller Name : " + OverViewList.get(position).getSellerLabel());
@@ -111,7 +114,7 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
             viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
             customView.setLayoutParams(lp);
 
-            sellerCheck=OverViewList.get(position).getSellerLabel();
+            sellerChecZ=OverViewList.get(position).getSellerLabel();
         }
 
 
@@ -144,7 +147,7 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
        /* public TextView prodOverviewTitle,prodOverViewText;
         public Spinner countOfProducts;*/
         //public CheckoutDataObjects data;
-        public TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock;
+        public TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,qtyText;
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         public View seperator;
@@ -164,7 +167,8 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
                     .findViewById(R.id.overviewText);
             /*countOfProducts=(Spinner)itemLayoutView
                     .findViewById(R.id.spinner);*/
-
+qtyText=(TextView)itemLayoutView
+        .findViewById(R.id.qtyText);
             sellerMainLay=(LinearLayout)itemLayoutView
                     .findViewById(R.id.sellerMainLay);
             sellerLabel=(TextView)itemLayoutView
