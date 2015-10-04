@@ -66,6 +66,7 @@ public class CheckOutActivity extends AppCompatActivity {
     Snackbar toast;
     Dialog loginDialog;
     Dialog registerDialog;
+    TextView loginErrorTextView, registrationErrorTextView, inputNumberErrorTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +112,7 @@ public class CheckOutActivity extends AppCompatActivity {
             inputNumberDialog.setCancelable(true);
             inputNumberDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             inputNumberDialog.setContentView(R.layout.dialog_input_number);
+            inputNumberErrorTextView = (TextView)inputNumberDialog.findViewById(R.id.errorMessageTextView);
             final EditText mobileEditText = (EditText) inputNumberDialog.findViewById(R.id.mobileEditText);
             Button cancelButton = (Button) inputNumberDialog.findViewById(R.id.cancelButton);
             Button nextButton = (Button) inputNumberDialog.findViewById(R.id.nextButton);
@@ -219,6 +221,7 @@ public class CheckOutActivity extends AppCompatActivity {
         loginDialog.setCancelable(true);
         loginDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         loginDialog.setContentView(R.layout.dialog_login);
+        loginErrorTextView = (TextView)loginDialog.findViewById(R.id.errorMessageTextView);
         final EditText passwordEditText = (EditText) loginDialog.findViewById(R.id.passwordEditText);
         Button cancelButton = (Button) loginDialog.findViewById(R.id.cancelButton);
         Button nextButton = (Button) loginDialog.findViewById(R.id.nextButton);
@@ -262,6 +265,7 @@ public class CheckOutActivity extends AppCompatActivity {
         registerDialog.setCancelable(true);
         registerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         registerDialog.setContentView(R.layout.dialog_register);
+        registrationErrorTextView = (TextView)registerDialog.findViewById(R.id.errorMessageTextView);
         final EditText passwordEditText = (EditText) registerDialog.findViewById(R.id.passwordEditText);
         final EditText confirmPasswordEditText = (EditText) registerDialog.findViewById(R.id.confirmPasswordEditText);
         Button cancelButton = (Button) registerDialog.findViewById(R.id.cancelButton);
@@ -279,18 +283,18 @@ public class CheckOutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (passwordEditText.getText().toString().equalsIgnoreCase("")) {
-                    passwordEditText.setError("Please Enter Password");
+                    passwordEditText.setError(getString(R.string.enter_password));
 //                    Snackbar.make(findViewById(android.R.id.content), "Please Enter Password", Snackbar.LENGTH_LONG)
 //                            .setActionTextColor(Color.RED)
 //                            .show();
 
-                } else if (passwordEditText.getText().toString().equalsIgnoreCase("")) {
-                    passwordEditText.setError("Please Confirm Your Password");
+                } else if (confirmPasswordEditText.getText().toString().equalsIgnoreCase("")) {
+                    confirmPasswordEditText.setError(getString(R.string.confirm_password));
 //                    Snackbar.make(findViewById(android.R.id.content), "Please Confirm Your Password", Snackbar.LENGTH_LONG)
 //                            .setActionTextColor(Color.RED)
 //                            .show();
                 } else if (!passwordEditText.getText().toString().equalsIgnoreCase(confirmPasswordEditText.getText().toString())) {
-                    passwordEditText.setError("Your password and confirm password are not same");
+                    confirmPasswordEditText.setError(getString(R.string.password_do_not_match));
 //                    Snackbar.make(findViewById(android.R.id.content), "Your password and confirm password are not same", Snackbar.LENGTH_LONG)
 //                            .setActionTextColor(Color.RED)
 //                            .show();
@@ -315,9 +319,14 @@ public class CheckOutActivity extends AppCompatActivity {
             try {
                 JSONObject obj = new JSONObject(response);
                 if (obj.getBoolean("errors")) {
-                    Snackbar.make(findViewById(android.R.id.content), obj.getString("message"), Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED)
-                            .show();
+                    if ((loginDialog != null)) {
+                        loginErrorTextView.setVisibility(View.VISIBLE);
+                        loginErrorTextView.setText(obj.getString("message"));
+                    }
+                    else if ((registerDialog != null)) {
+                        registrationErrorTextView.setVisibility(View.VISIBLE);
+                        registrationErrorTextView.setText(obj.getString("message"));
+                    }
                 } else {
                     SharedPreferences.Editor editor = mSharedPrefs.edit();
                     editor.putString(Constants.USER_MOBILE_PREFS, mobileNumber);
@@ -353,7 +362,7 @@ public class CheckOutActivity extends AppCompatActivity {
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
-            progressBarLogin.setVisibility(View.VISIBLE);
+                progressBarLogin.setVisibility(View.VISIBLE);
 
         }
     }
@@ -364,6 +373,7 @@ public class CheckOutActivity extends AppCompatActivity {
             try {
                 JSONObject obj = new JSONObject(response);
                 if (obj.getInt("status") == 200) {
+                    inputNumberErrorTextView.setVisibility(View.GONE);
                     if (obj.getJSONObject("message").getBoolean("register") == true) {
                         showRegister();
                     } else {
@@ -373,6 +383,8 @@ public class CheckOutActivity extends AppCompatActivity {
                 progressBarForm.setVisibility(View.GONE);
             } catch (JSONException e) {
                 e.printStackTrace();
+                inputNumberErrorTextView.setVisibility(View.VISIBLE);
+                inputNumberErrorTextView.setText("Please check you connectivity");
                 progressBarForm.setVisibility(View.GONE);
             }
 

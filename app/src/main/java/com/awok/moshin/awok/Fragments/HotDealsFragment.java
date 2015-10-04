@@ -312,22 +312,31 @@ public class HotDealsFragment extends Fragment {
 //                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
                 int length = jsonArray.length();
 
-                for(int i=0;i<length;i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    Products item = new Products();
-                    item.setId(jsonObject.getString("id"));
-                    item.setName(jsonObject.getString("name"));
-                    item.setImage(jsonObject.getString("image"));
-                    item.setCategoryId(jsonObject.getString("category_id"));
-                    item.setPriceNew(jsonObject.getInt("new_price"));
-                    item.setPriceOld(jsonObject.getInt("original_price"));
-                    item.setDescription(jsonObject.getString("description"));
-                    item.setDiscPercent(jsonObject.getInt("discount_percentage"));
+                if(length>0){
+                    for(int i=0;i<length;i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Products item = new Products();
+                        item.setId(jsonObject.getString("id"));
+                        item.setName(jsonObject.getString("name"));
+                        item.setImage(jsonObject.getString("image"));
+                        item.setCategoryId(jsonObject.getString("category_id"));
+                        item.setPriceNew(jsonObject.getInt("new_price"));
+                        item.setPriceOld(jsonObject.getInt("original_price"));
+                        item.setDescription(jsonObject.getString("description"));
+                        item.setDiscPercent(jsonObject.getInt("discount_percentage"));
 //                    if (priceObject.getInt("PRICE_OLD")!=0){
 //                        item.setDiscPercent(priceObject.getInt("PERCENT"));
 //                    }
-                    productsArrayList.add(item);
+                        productsArrayList.add(item);
+                    }
                 }
+                else{
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), "No further items", Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+
+
 
                /* if(getActivity()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
