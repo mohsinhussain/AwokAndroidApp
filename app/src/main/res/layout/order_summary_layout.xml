@@ -22,7 +22,6 @@
                 android:id="@+id/sellerLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Seller : ABC"
                 android:gravity="center"
                 android:layout_margin="5dp"
                 />
@@ -84,15 +83,15 @@
 
 
             android:layout_below="@+id/quantity"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView" />
+            android:layout_alignLeft="@+id/qtyText"
+            android:layout_alignStart="@+id/qtyText" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Qty : "
-            android:id="@+id/textView"
+            android:id="@+id/qtyText"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/OverViewTitle"
             android:layout_toRightOf="@+id/mainImg"
@@ -111,9 +110,9 @@
             android:text=""
             android:id="@+id/quantity"
 
-            android:layout_alignTop="@+id/textView"
-            android:layout_toRightOf="@+id/textView"
-            android:layout_toEndOf="@+id/textView" />
+            android:layout_alignTop="@+id/qtyText"
+            android:layout_toRightOf="@+id/qtyText"
+            android:layout_toEndOf="@+id/qtyText" />
 
 
         <!--<TextView

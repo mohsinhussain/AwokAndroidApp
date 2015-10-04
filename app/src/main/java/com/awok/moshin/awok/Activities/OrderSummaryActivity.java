@@ -104,7 +104,7 @@ JSONObject dataToSend;
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-       //////////// mLayoutManager = new LinearLayoutManager(getApplicationContext());
+       //mLayoutManager = new LinearLayoutManager(getApplicationContext());
         MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,true);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -118,7 +118,7 @@ JSONObject dataToSend;
         // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Mobiles");
+        ab.setTitle("Order Checkout");
        /* int i=0;
         for(i=0;i<=4;i++)
         {

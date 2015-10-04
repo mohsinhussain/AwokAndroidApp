@@ -137,7 +137,7 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
         if(sellerCheck.equals(OverViewList.get(position).getSellerLabel()))
         {
 
-
+            System.out.println("top"+sellerCheck);
             viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+" AED");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
