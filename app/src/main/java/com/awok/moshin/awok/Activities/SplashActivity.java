@@ -102,6 +102,9 @@ public class SplashActivity extends AppCompatActivity {
             case 640:
                 LOGO_POSITION_OFFSET = -800;
                 break;
+            default:
+                LOGO_POSITION_OFFSET = -250;
+                break;
         }
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

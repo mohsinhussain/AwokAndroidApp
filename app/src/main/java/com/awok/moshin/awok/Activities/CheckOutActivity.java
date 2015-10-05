@@ -404,29 +404,29 @@ public class CheckOutActivity extends AppCompatActivity {
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_productdetails, menu);
-
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                //mDrawerLayout.openDrawer(GravityCompat.START);
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-
-
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_productdetails, menu);
+//
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                //mDrawerLayout.openDrawer(GravityCompat.START);
+//                onBackPressed();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//
+//
+//    }
 
 
     public class GetCartCallback extends AsyncCallback {
