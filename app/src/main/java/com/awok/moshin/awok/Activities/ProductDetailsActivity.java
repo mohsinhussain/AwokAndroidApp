@@ -102,6 +102,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
             @Override
             public void onClick(View v) {
                 buyNow.setEnabled(false);
+                buyNow.setBackgroundColor(getResources().getColor(R.color.border));
+                buyNow.setTextColor(getResources().getColor(R.color.button_text));
                 HashMap<String,Object> addToCartData=new HashMap<String, Object>();
 
 
@@ -360,6 +362,7 @@ public void setUpTab()
     public void onResume(){
         super.onResume();
         buyNow.setEnabled(true);
+        buyNow.setBackgroundColor(getResources().getColor(R.color.button_bg));
 
     }
 

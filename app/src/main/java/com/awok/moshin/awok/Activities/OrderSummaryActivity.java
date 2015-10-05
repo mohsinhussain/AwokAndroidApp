@@ -21,7 +21,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.awok.moshin.awok.Adapters.CheckOutAdapter;
 import com.awok.moshin.awok.Adapters.OrderSummaryAdapter;
@@ -42,6 +45,8 @@ import java.util.List;
 public class OrderSummaryActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private Button prod_buyNow;
+    private RelativeLayout mainLay;
+    private TextView total,shippingAmount,itemAmount;
     private RecyclerView.Adapter mAdapter;
     //private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderSummary> overViewList = new ArrayList<OrderSummary>();
@@ -53,7 +58,11 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
-
+        total=(TextView)findViewById(R.id.order_total_value);
+        shippingAmount=(TextView)findViewById(R.id.estimated_shipping_price);
+        itemAmount=(TextView)findViewById(R.id.items_total_price);
+        mainLay=(RelativeLayout)findViewById(R.id.orderSummaryMain);
+        mainLay.setVisibility(View.GONE);
 prod_buyNow=(Button)findViewById(R.id.prod_buyNow);
         prod_buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,12 +214,18 @@ JSONObject dataToSend;
                 {
                     //bottomLay.setVisibility(View.GONE);
                     //cartEmptyText.setVisibility(View.VISIBLE);
+
                 }
 
                 else
                 {
                     //bottomLay.setVisibility(View.VISIBLE);
                     //cartEmptyText.setVisibility(View.GONE);
+
+                    shippingAmount.setText((jsonObjectData.getJSONObject("data").getString("shipping")+" AED"));
+
+                    itemAmount.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
+                    total.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
                     int length = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").length();
                     for(int i=0;i<length;i++){
                         JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").getJSONObject(i);
@@ -252,6 +267,7 @@ JSONObject dataToSend;
                     progressBar.startAnimation(animation);
                 }
                 progressBar.setVisibility(View.GONE);
+                mainLay.setVisibility(View.VISIBLE);
                 //initializeData();
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
@@ -473,7 +489,11 @@ System.out.println("RESPONSE"+response);
         }
     }
 
-
+/*public void onResume()
+{
+    super.onResume();
+    mainLay.setVisibility(View.VISIBLE);
+}*/
 
 
 }

@@ -14,6 +14,7 @@ public class OrderHistoryModel {
     private String orderId;*/
   public String orderNo;
     public String dateTime,orderId;
+    private String price;
 
 
     public OrderHistoryModel()
@@ -35,7 +36,7 @@ public class OrderHistoryModel {
 
     }*/
 
-    public OrderHistoryModel(String orderNo,String dateTime)
+    public OrderHistoryModel(String orderNo,String dateTime,String price)
     {
         this.orderNo=orderNo;
         this.dateTime=dateTime;
@@ -184,4 +185,15 @@ public class OrderHistoryModel {
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+
+    public String getPrice() {
+        return price;
+    }
+
+
 }

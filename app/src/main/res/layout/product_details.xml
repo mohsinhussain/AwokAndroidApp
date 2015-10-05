@@ -63,7 +63,7 @@ android:id="@+id/bottomLay"
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+
             android:orientation="horizontal">
 
 
@@ -113,7 +113,7 @@ android:id="@+id/bottomLay"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#FF5722"
+                    android:background="@color/button_bg"
                     android:text="BUY NOW"
                     android:textColor="#FFFFFF" />
 

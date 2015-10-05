@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * Created by shon on 9/15/2015.
  */
+/*
 public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapter.ViewHolder> {
     private List<OrderSummary> OverViewList = new ArrayList<OrderSummary>();
     private Activity activity;
@@ -74,13 +75,8 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        // - get data from your itemsData at this position
-        // - replace the contents of the view with that itemsData
 
-      /*  viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText());
-        viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
-        //  viewHolder.data = new CheckoutDataObjects(activity);
-        viewHolder.countOfProducts.setAdapter(adapter);*/
+
 
         System.out.println("GOAL"+sellerChecZ);
         if(sellerChecZ.equals(OverViewList.get(position).getSellerLabel()))
@@ -94,18 +90,15 @@ System.out.println("top"+sellerChecZ);
             viewHolder.sellerMainLay.setVisibility(View.GONE);
             viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
             viewHolder.seperator.setVisibility(View.VISIBLE);
-//viewHolder.qtyText.setText("Qty :");
             viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
             sellerChecZ=OverViewList.get(position).getSellerLabel();
 
         }
         else {
             System.out.println("zdfbzdhnfgzd"+sellerChecZ);
-            //customView.setLayoutParams(lp);
             viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+" AED");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
-           // viewHolder.qtyText.setText("Qty :");
             viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
 
             viewHolder.sellerLabel.setText("Seller Name : " + OverViewList.get(position).getSellerLabel());
@@ -119,19 +112,6 @@ System.out.println("top"+sellerChecZ);
 
 
 
-        /*viewHolder.countOfProducts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Snackbar.make(view.findViewById(android.R.id.content), "Clicked", Snackbar.LENGTH_LONG)
-                        .setActionTextColor(Color.RED)
-                        .show();
-
-            }
-
-        });*/
 
     }
 
@@ -144,9 +124,7 @@ System.out.println("top"+sellerChecZ);
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-       /* public TextView prodOverviewTitle,prodOverViewText;
-        public Spinner countOfProducts;*/
-        //public CheckoutDataObjects data;
+
         public TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,qtyText;
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
@@ -155,18 +133,12 @@ System.out.println("top"+sellerChecZ);
         public TextView quantity;
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-           /* prodOverviewTitle = (TextView) itemLayoutView
-                    .findViewById(R.id.OverViewTitle);
-            prodOverViewText = (TextView) itemLayoutView
-                    .findViewById(R.id.overviewText);
-            countOfProducts=(Spinner)itemLayoutView
-                    .findViewById(R.id.spinner);*/
+
             prodOverviewTitle = (TextView) itemLayoutView
                     .findViewById(R.id.OverViewTitle);
             prodOverViewText = (TextView) itemLayoutView
                     .findViewById(R.id.overviewText);
-            /*countOfProducts=(Spinner)itemLayoutView
-                    .findViewById(R.id.spinner);*/
+
 qtyText=(TextView)itemLayoutView
         .findViewById(R.id.qtyText);
             sellerMainLay=(LinearLayout)itemLayoutView
@@ -201,4 +173,118 @@ qtyText=(TextView)itemLayoutView
 
     }
 
+}
+*/
+public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapter.ViewHolder> {
+    private List<OrderSummary> OverViewList = new ArrayList<OrderSummary>();
+    private Activity activity;
+    String sellerChecZ="";
+
+
+
+
+
+
+    Context mcontext;
+    private List<OrderSummaryAdapter> orderSummaryData;
+
+   /* public OrderSummaryAdapter(List<OrderSummary> contactList) {
+        this.orderSummaryData = orderSummaryData;
+    }*/
+
+    @Override
+    public int getItemCount() {
+        return OverViewList.size();
+    }
+
+    public OrderSummaryAdapter(Activity activity, List<OrderSummary> overViewListData) {
+
+this.OverViewList=overViewListData;
+        this.activity=activity;
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        if(OverViewList.get(position).getSellerLabel().equals(sellerChecZ)) {
+            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText() + " AED");
+            viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
+            viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
+            viewHolder.sellerLabel.setText(OverViewList.get(position).getSellerLabel());
+            viewHolder.sellerMainLay.setVisibility(View.GONE);
+            viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
+            viewHolder.seperator.setVisibility(View.VISIBLE);
+            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
+            sellerChecZ=OverViewList.get(position).getSellerLabel();
+        }
+        else
+        {
+            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+ " AED");
+            viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
+            viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
+            viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
+
+            viewHolder.sellerLabel.setText("Seller Name : " + OverViewList.get(position).getSellerLabel());
+            viewHolder.sellerMainLay.setVisibility(View.VISIBLE);
+            viewHolder.seperator.setVisibility(View.GONE);
+            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
+
+
+            sellerChecZ=OverViewList.get(position).getSellerLabel();
+        }
+    }
+
+    @Override
+    public OrderSummaryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.order_summary_layout, null);
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
+        return viewHolder;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView prodOverviewTitle, prodOverViewText, sellerLabel, stock, qtyText;
+        public Spinner countOfProducts;
+        public LinearLayout sellerMainLay;
+        public View seperator;
+        public ImageView cross, productImg;
+        public TextView quantity;
+
+        public ViewHolder(View itemLayoutView) {
+            super(itemLayoutView);
+
+            prodOverviewTitle = (TextView) itemLayoutView
+                    .findViewById(R.id.OverViewTitle);
+            prodOverViewText = (TextView) itemLayoutView
+                    .findViewById(R.id.overviewText);
+
+            qtyText = (TextView) itemLayoutView
+                    .findViewById(R.id.qtyText);
+            sellerMainLay = (LinearLayout) itemLayoutView
+                    .findViewById(R.id.sellerMainLay);
+            sellerLabel = (TextView) itemLayoutView
+                    .findViewById(R.id.sellerLabel);
+            seperator = (View) itemLayoutView
+                    .findViewById(R.id.sellerDivider);
+            productImg = (ImageView) itemLayoutView
+
+                    .findViewById(R.id.mainImg);
+
+
+            quantity = (TextView) itemLayoutView
+                    .findViewById(R.id.quantity);
+        }
+    }
+
+
+    private Bitmap base64ToBitmap(String imageString) {
+        byte[] imageAsBytes = Base64.decode(imageString.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+
+    }
+    private void hideSoftKeyboard(){
+        InputMethodManager imm = (InputMethodManager)mcontext.getSystemService(Context.
+                INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+
+    }
 }

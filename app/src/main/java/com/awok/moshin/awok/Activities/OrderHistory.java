@@ -47,6 +47,7 @@ public class OrderHistory extends AppCompatActivity {
     private TextView orderCount,orderText;
     ProgressBar progressBar;
     private Spinner spinnerOrder,statusAll;
+    private LinearLayout mainLay;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderHistoryModel> orderHistoryData = new ArrayList<OrderHistoryModel>();
     @Override
@@ -60,7 +61,8 @@ public class OrderHistory extends AppCompatActivity {
 progressBar=(ProgressBar)findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
 
-
+mainLay=(LinearLayout)findViewById(R.id.bottomLay);
+        mainLay.setVisibility(View.GONE);
 
         spinnerOrder = (Spinner) findViewById(R.id.orderStatus);
         statusAll = (Spinner) findViewById(R.id.showall);
@@ -197,6 +199,7 @@ progressBar=(ProgressBar)findViewById(R.id.marker_progress);
                 JSONObject jsonObjectData;
                 jsonObjectData=new JSONObject(response);
 JSONArray data=jsonObjectData.getJSONArray("data");
+
                 System.out.println(jsonObjectData.getJSONArray("data").length());
 //orderCount.setText("Your Last "+jsonObjectData.getJSONArray("data").length()+" Orders");
                 for(int i=0;i<jsonObjectData.getJSONArray("data").length();i++)
@@ -206,6 +209,7 @@ JSONArray data=jsonObjectData.getJSONArray("data");
                     System.out.println(jsonObjectData.getJSONArray("data").getJSONObject(i).getJSONArray("cart").toString());
                     OrderHistoryModel orderData=new OrderHistoryModel();
                     orderData.setOrderId(jsonCart.getString("_id"));
+                    //orderData.setPrice(jsonObjectData.getString("price"));
                     orderData.setOrderNo(jsonCart.getString("number"));
                     orderData.setDateTime(jsonCart.getString("time_created_unix"));
                     orderHistoryData.add(orderData);
@@ -244,6 +248,7 @@ System.out.println("CARE"+orderHistoryData.toString());
                    // progressBar.startAnimation(animation);
                 }
                 progressBar.setVisibility(View.GONE);
+                mainLay.setVisibility(View.VISIBLE);
                 //initializeData();
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();

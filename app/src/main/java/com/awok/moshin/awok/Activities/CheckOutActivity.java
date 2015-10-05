@@ -464,6 +464,8 @@ public class CheckOutActivity extends AppCompatActivity {
                             Checkout listData = new Checkout();
                             JSONObject jsonObjectProductDetails = productDetails.getJSONObject(j);
                             listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
+                            listData.setTotalPrice(jsonObjectProductDetails.getString("total_price"));
+
                             //listData.setOverViewText(jsonObject.getString("total_price"));
                             listData.setStatusId(jsonObjectData.getString("status"));
                             listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));

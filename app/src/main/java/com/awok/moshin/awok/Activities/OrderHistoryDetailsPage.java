@@ -19,7 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +48,7 @@ import java.util.TimeZone;
 public class OrderHistoryDetailsPage extends AppCompatActivity {
 private RecyclerView mRecyclerView;
 private String orderId;
+    private RelativeLayout mainLay;
     ProgressBar progressBar;
     private RecyclerView.Adapter mAdapter;
     private TextView orderTime,delTime,orderStatus,shippingAmount,totalAmount,sellerStore,sellerName;
@@ -72,7 +75,8 @@ orderId=getIntent().getExtras().getString("OrderId");
         sellerStore=(TextView)findViewById(R.id.sellerStore);
         sellerName=(TextView)findViewById(R.id.sellerName);
 
-
+mainLay=(RelativeLayout)findViewById(R.id.mainLay);
+        mainLay.setVisibility(View.GONE);
 
 
         mRecyclerView.setHasFixedSize(true);
@@ -215,6 +219,7 @@ orderId=getIntent().getExtras().getString("OrderId");
                      progressBar.startAnimation(animation);
                 }
                  progressBar.setVisibility(View.GONE);
+                mainLay.setVisibility(View.VISIBLE);
                 //initializeData();
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();

@@ -6,6 +6,8 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:id="@+id/mainLayout"
+        android:layout_above="@+id/progressLay"
         android:layout_gravity="top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,7 +25,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/activity_main_swipe_refresh_layout"
         android:layout_width="match_parent"
-android:layout_above="@+id/load_progress_bar"
+
         android:layout_height="wrap_content">
 
 
@@ -39,6 +41,7 @@ android:layout_above="@+id/load_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dealsRecyclerView"
+
 
 
         />
@@ -70,12 +73,20 @@ android:layout_above="@+id/load_progress_bar"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+<LinearLayout
+    android:id="@+id/progressLay"
 
+    android:layout_width="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_height="30dp"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
     <ProgressBar
         style="?android:attr/progressBarStyleSmall"
         android:id="@+id/load_progress_bar"
         android:indeterminateDrawable="@drawable/progress_bar_load_more"
         android:layout_width="wrap_content"
+android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_centerHorizontal="true"
@@ -91,6 +102,6 @@ android:layout_above="@+id/load_progress_bar"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content" />
 
-
+</LinearLayout>
 
 </RelativeLayout>

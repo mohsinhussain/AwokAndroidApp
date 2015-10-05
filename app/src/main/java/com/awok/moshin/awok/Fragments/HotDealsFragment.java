@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -52,10 +53,13 @@ public class HotDealsFragment extends Fragment {
     private int visibleThreshold = 5;
     private  int pageCount = 1;
     private TextView itemCount;
+
+    private LinearLayout mainLayout;
     private boolean isSearch = false;
     private Button gotoTopButton;
+    LinearLayout.LayoutParams params;
     private String searchString = null;
-    int firstVisibleItem, visibleItemCount, totalItemCount;
+    int firstVisibleItem, visibleItemCount, totalItemCount,lastVisibleItem;
     public HotDealsFragment(){}
 
     public HotDealsFragment(String categoryId)
@@ -76,6 +80,7 @@ public class HotDealsFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_hot_deals, container, false);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.dealsRecyclerView);
+        mainLayout=(LinearLayout)mView.findViewById(R.id.progressLay);
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);
         itemCount = (TextView) mView.findViewById(R.id.itemCountTextView);
         gotoTopButton = (Button) mView.findViewById(R.id.goToTopButton);
@@ -92,6 +97,17 @@ public class HotDealsFragment extends Fragment {
                 refreshContent();
             }
         });
+     //   params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,    ViewGroup.LayoutParams.WRAP_CONTENT);
+       /* params.leftMargin = 2;
+        params.rightMargin = 2;
+        params.topMargin = 2;*/
+    //    params.bottomMargin = 20;
+    //    mainLayout.setLayoutParams(params);
+      /*  lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = 20;
+        mainLayout.setLayoutParams(lp);*/
 
         mSwipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.CYAN, Color.GREEN,
                 Color.YELLOW);
@@ -147,6 +163,7 @@ public class HotDealsFragment extends Fragment {
                 visibleItemCount = mRecyclerView.getChildCount();
                 totalItemCount = mLayoutManager.getItemCount();
                 firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem = mLayoutManager.findLastCompletelyVisibleItemPosition();
 
                 if(firstVisibleItem<=6){
                     //Hide GO TO TOP
@@ -159,15 +176,18 @@ public class HotDealsFragment extends Fragment {
 
                 if (loading) {
                     if (totalItemCount > previousTotal) {
+                        //mainLayout.setVisibility(View.VISIBLE);
                         loading = false;
                         previousTotal = totalItemCount;
                     }
                 }
                 if (!loading && (totalItemCount - visibleItemCount)
                         <= (firstVisibleItem + visibleThreshold)) {
-                    // End has been reached
+
 
                     pageCount++;
+
+
                     Log.i("Hot Deals Fragment", "pageCount: " + pageCount);
 
                     // Do something
@@ -238,10 +258,11 @@ public class HotDealsFragment extends Fragment {
     private void refreshContent(){
         if(pageCount==1){
             productsArrayList = new ArrayList<Products>();
+
         }
         else
         {
-            loadMore.setVisibility(View.VISIBLE);
+
             progressBar
                     .setVisibility(View.GONE);
         }
@@ -299,6 +320,7 @@ public class HotDealsFragment extends Fragment {
                         }*/
                         progressBar.setVisibility(View.GONE);
                         loadMore.setVisibility(View.GONE);
+                        mainLayout.setVisibility(View.GONE);
                         if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
@@ -344,6 +366,7 @@ public class HotDealsFragment extends Fragment {
                 }*/
                 progressBar.setVisibility(View.GONE);
                 loadMore.setVisibility(View.GONE);
+                mainLayout.setVisibility(View.GONE);
                 initializeData();
                 if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -359,6 +382,7 @@ public class HotDealsFragment extends Fragment {
                 }*/
                 progressBar.setVisibility(View.GONE);
                 loadMore.setVisibility(View.GONE);
+                mainLayout.setVisibility(View.GONE);
                 if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
@@ -372,12 +396,8 @@ public class HotDealsFragment extends Fragment {
             // TODO Auto-generated method stub
             if(!mSwipeRefreshLayout.isRefreshing()){
                 progressBar.setVisibility(View.VISIBLE);
+
             }
-           /* else
-            {
-                //progressBar.setVisibility(View.GONE);
-                loadMore.setVisibility(View.VISIBLE);
-            }*/
 
         }
     }
