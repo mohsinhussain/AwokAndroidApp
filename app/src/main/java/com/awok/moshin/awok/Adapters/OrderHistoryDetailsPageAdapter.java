@@ -24,6 +24,7 @@ import com.awok.moshin.awok.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -104,7 +105,7 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
         viewHolder.image.setImageBitmap(base64ToBitmap(orderHistoryDetailsData.get(position).getImage()));
         viewHolder.price.setText(orderHistoryDetailsData.get(position).getPrice() + " AED");
         viewHolder.quantity.setText("X "+orderHistoryDetailsData.get(position).getQuantity());
-        System.out.print("dchkj" + orderHistoryDetailsData.get(position).getPrice());
+        System.out.print("dchkj" + orderHistoryDetailsData.get(position).getPrice()+ " AED");
         viewHolder.title.setText(orderHistoryDetailsData.get(position).getTitle());
 
       /*  }
@@ -226,7 +227,7 @@ main=(RelativeLayout)itemLayoutView
 
     }
 
-    public String date(String date)
+   /* public String date(String date)
     {
 
         long time = Long.parseLong(date)   * (long) 1000;
@@ -235,7 +236,23 @@ main=(RelativeLayout)itemLayoutView
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
         Log.d("date", format.format(date_value));
         return format.format(date_value).toString();
-    }
+    }*/
+   public String date(String date)
+   {
+
+       long time = Long.parseLong(date)   * (long) 1000;
+       Date date_value = new Date(time);
+       SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
+       // format.setTimeZone(TimeZone.getTimeZone("GMT"));
+       // System.out.println("FJHdSJD" + TimeZone.getTimeZone("GMT"));
+       Calendar cal = Calendar.getInstance();
+       TimeZone tz = cal.getTimeZone();
+       format.setTimeZone(tz);
+
+       System.out.println("Time zone" + tz.getDisplayName());
+       Log.d("date", format.format(date_value).toString());
+       return format.format(date_value).toString();
+   }
 
 }
 

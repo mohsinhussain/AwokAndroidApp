@@ -131,6 +131,10 @@
             android:name=".Activities.OrderHistoryDetailsPage"
             android:label="@string/title_activity_order_history_details_page" >
         </activity>
+        <activity
+            android:name=".Fragments.ShippingDeliveryFrag"
+            android:label="@string/title_activity_shipping_delivery_frag" >
+        </activity>
     </application>
 
 </manifest>

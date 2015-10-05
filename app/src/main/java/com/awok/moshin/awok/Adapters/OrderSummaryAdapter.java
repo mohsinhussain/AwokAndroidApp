@@ -206,6 +206,10 @@ this.OverViewList=overViewListData;
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         if(OverViewList.get(position).getSellerLabel().equals(sellerChecZ)) {
+
+            System.out.println("FIRST sellerChecZ"+sellerChecZ);
+            System.out.println("FIRST OverViewList"+OverViewList.get(position).getSellerLabel());
+
             viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText() + " AED");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
@@ -218,6 +222,9 @@ this.OverViewList=overViewListData;
         }
         else
         {
+
+            System.out.println("SECOND sellerChecZ"+sellerChecZ);
+            System.out.println("SECOND OverViewList"+OverViewList.get(position).getSellerLabel());
             viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+ " AED");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());

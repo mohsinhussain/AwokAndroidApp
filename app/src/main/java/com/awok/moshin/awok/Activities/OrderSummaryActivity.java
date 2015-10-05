@@ -44,11 +44,12 @@ import java.util.List;
 
 public class OrderSummaryActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
+    private TextView errorText;
     private Button prod_buyNow;
     private RelativeLayout mainLay;
     private TextView total,shippingAmount,itemAmount;
     private RecyclerView.Adapter mAdapter;
-    //private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderSummary> overViewList = new ArrayList<OrderSummary>();
     private ProgressBar progressBar;
     @Override
@@ -63,6 +64,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         itemAmount=(TextView)findViewById(R.id.items_total_price);
         mainLay=(RelativeLayout)findViewById(R.id.orderSummaryMain);
         mainLay.setVisibility(View.GONE);
+        errorText=(TextView)findViewById(R.id.error_text);
 prod_buyNow=(Button)findViewById(R.id.prod_buyNow);
         prod_buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +96,11 @@ JSONObject dataToSend;
                     // }
 
                 } else {
+
                     Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                             .setActionTextColor(Color.RED)
                             .show();
+
                 }
             }
         });
@@ -113,12 +117,13 @@ JSONObject dataToSend;
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-       //mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,true);
+       mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        //MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,true);
         mRecyclerView.setLayoutManager(mLayoutManager);
+       // mRecyclerView.setNestedScrollingEnabled(false);
 
         mAdapter = new OrderSummaryAdapter(OrderSummaryActivity.this,overViewList);
-        mRecyclerView.setAdapter(mAdapter);
+        //mRecyclerView.setAdapter(mAdapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -152,6 +157,7 @@ JSONObject dataToSend;
             // }
 
         } else {
+            errorText.setVisibility(View.VISIBLE);
             Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
                     .show();

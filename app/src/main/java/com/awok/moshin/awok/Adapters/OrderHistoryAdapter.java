@@ -42,6 +42,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -239,8 +240,14 @@ public String date(String date)
     long time = Long.parseLong(date)   * (long) 1000;
     Date date_value = new Date(time);
     SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
-    format.setTimeZone(TimeZone.getTimeZone("GMT"));
-    Log.d("date", format.format(date_value));
+   // format.setTimeZone(TimeZone.getTimeZone("GMT"));
+   // System.out.println("FJHdSJD" + TimeZone.getTimeZone("GMT"));
+    Calendar cal = Calendar.getInstance();
+    TimeZone tz = cal.getTimeZone();
+    format.setTimeZone(tz);
+
+    System.out.println("Time zone" + tz.getDisplayName());
+    Log.d("date", format.format(date_value).toString());
     return format.format(date_value).toString();
 }
 

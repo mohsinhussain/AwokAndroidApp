@@ -52,6 +52,7 @@ public class CheckOutActivity extends AppCompatActivity {
     private LinearLayout bottomLay;
     private TextView cartEmptyText, prodPrice;
     private RecyclerView.Adapter mAdapter;
+    private TextView errorText;
     ProgressBar progressBar;
     String TAG = "CartActivity";
     SharedPreferences mSharedPrefs;
@@ -81,6 +82,7 @@ public class CheckOutActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
         mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
+        errorText=(TextView)findViewById(R.id.error_text);
         // getSupportActionBar().setIcon(R.drawable.ic_launcher);
 
         // getSupportActionBar().setTitle("Android Versions");
@@ -212,6 +214,10 @@ public class CheckOutActivity extends AppCompatActivity {
 //                    .setActionTextColor(Color.RED)
 //                    .show();
 //            toast.getView().bringToFront();
+            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
+            errorText.setVisibility(View.VISIBLE);
         }
     }
 

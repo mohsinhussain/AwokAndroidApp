@@ -41,6 +41,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -48,6 +49,7 @@ import java.util.TimeZone;
 public class OrderHistoryDetailsPage extends AppCompatActivity {
 private RecyclerView mRecyclerView;
 private String orderId;
+    private TextView error;
     private RelativeLayout mainLay;
     ProgressBar progressBar;
     private RecyclerView.Adapter mAdapter;
@@ -79,7 +81,7 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
         mainLay.setVisibility(View.GONE);
 
 
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(false);
 
         // use a linear layout manager
         //mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -202,7 +204,7 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
                         delTime.setText(date(jsonCartData.getString("time_updated_unix")));
 
 
-                        totalAmount.setText(jsonCart.getString("price"));
+                        totalAmount.setText((jsonCart.getString("price"))+" AED");
 
                         sellerName.setText(jsonCartData.getString("seller_name"));
 
@@ -252,7 +254,7 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
         }
     }
 
-    public String date(String date)
+    /*public String date(String date)
     {
 
         long time = Long.parseLong(date)   * (long) 1000;
@@ -261,8 +263,23 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
         Log.d("date", format.format(date_value));
         return format.format(date_value).toString();
-    }
+    }*/
+    public String date(String date)
+    {
 
+        long time = Long.parseLong(date)   * (long) 1000;
+        Date date_value = new Date(time);
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
+        // format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        // System.out.println("FJHdSJD" + TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance();
+        TimeZone tz = cal.getTimeZone();
+        format.setTimeZone(tz);
+
+        System.out.println("Time zone" + tz.getDisplayName());
+        Log.d("date", format.format(date_value).toString());
+        return format.format(date_value).toString();
+    }
 
 
 

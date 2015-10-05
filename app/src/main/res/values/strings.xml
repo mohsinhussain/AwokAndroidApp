@@ -110,4 +110,5 @@ Introducing the world’s first 4K smartphone</string>
     <string name="payment_method_activity">PaymentMethodActivity</string>
     <string name="title_activity_order_history">OrderHistory</string>
     <string name="title_activity_order_history_details_page">OrderHistoryDetailsPage</string>
+    <string name="title_activity_shipping_delivery_frag">ShippingDeliveryFrag</string>
 </resources>

@@ -38,6 +38,8 @@ import com.awok.moshin.awok.Fragments.HotDealsFragment;
 import com.awok.moshin.awok.Fragments.ProductDescriptionFragment;
 import com.awok.moshin.awok.Fragments.ProductOverViewFragment;
 
+import com.awok.moshin.awok.Fragments.ReviewsFragment;
+import com.awok.moshin.awok.Fragments.ShippingDeliveryFrag;
 import com.awok.moshin.awok.Models.ProductDetailsModel;
 import com.awok.moshin.awok.Models.ProductOverview;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
@@ -109,6 +111,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
 
 
                 addToCartData.put("user_id", "55f6a9462f17f64a9b5f5ce4");
+
+                //addToCartData.put("user_id", "55f6a9e52f17f64a9b5f5ce5");
                 addToCartData.put("product_id", productId);
                 addToCartData.put("shipping_method","55f6ab5e2f17f64a9b5f5ce6");
                 addToCartData.put("quantity",1);
@@ -235,10 +239,13 @@ public void setUpTab()
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new ProductOverViewFragment(productId, productName,image), "Overview");
+        adapter.addFragment(new HotDealsFragment(catId), "Related Products");
        // adapter.addFragment(new ProductSpecificationFragment(productSpec), "Specifications");
         //adapter.addFragment(new ProductSpecificationFragment(), "Specifications");
+        adapter.addFragment(new ReviewsFragment(productName,image),"Reviews");
+        adapter.addFragment(new ShippingDeliveryFrag(),"Shipping & Delivery");
         adapter.addFragment(new ProductDescriptionFragment(description), "Description");
-        adapter.addFragment(new HotDealsFragment(catId), "Related Products");
+
 
 
 

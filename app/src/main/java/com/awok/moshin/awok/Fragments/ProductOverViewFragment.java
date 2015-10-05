@@ -116,7 +116,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         productTitle.setTypeface(mainProdFont);
 
 
-        Typeface innerFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Bold.ttf");
+        Typeface innerFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Medium.ttf");
         prod_color.setTypeface(innerFont);
         prod_shipping.setTypeface(innerFont);
         prod_delivery.setTypeface(innerFont);

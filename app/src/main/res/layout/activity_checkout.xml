@@ -146,6 +146,18 @@ android:textAppearance="?android:attr/textAppearanceLarge"
 
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/error_text"
+        android:text="Oops.. Something went wrong"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#3e3e3e"
+        android:layout_centerHorizontal="true"
+        android:layout_height="match_parent"
+        />
     <ProgressBar android:indeterminate="true"
 
         android:layout_width="50dp" android:layout_height="50dp"

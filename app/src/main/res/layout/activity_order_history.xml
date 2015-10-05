@@ -105,7 +105,18 @@ android:layout_weight="1"
         android:layout_gravity="center"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
-
+    <TextView
+        android:id="@+id/error_text"
+        android:text="Oops.. Something went wrong"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#3e3e3e"
+        android:layout_centerHorizontal="true"
+        android:layout_height="match_parent"
+        />
 </RelativeLayout>
 
 

@@ -46,6 +46,7 @@ public class OrderHistory extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private TextView orderCount,orderText;
     ProgressBar progressBar;
+    private TextView errorText;
     private Spinner spinnerOrder,statusAll;
     private LinearLayout mainLay;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -66,6 +67,8 @@ mainLay=(LinearLayout)findViewById(R.id.bottomLay);
 
         spinnerOrder = (Spinner) findViewById(R.id.orderStatus);
         statusAll = (Spinner) findViewById(R.id.showall);
+
+errorText=(TextView)findViewById(R.id.error_text);
 
 
         List<String> list = new ArrayList<String>();
@@ -151,6 +154,7 @@ mainLay=(LinearLayout)findViewById(R.id.bottomLay);
             Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
                     .show();
+            errorText.setVisibility(View.VISIBLE);
         }
 
 

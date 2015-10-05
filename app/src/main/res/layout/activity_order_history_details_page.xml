@@ -66,14 +66,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
     <RelativeLayout
+        android:gravity="center_vertical"
+
 android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/shippingHead"
+
         android:layout_width="match_parent"
 
         android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_margin="10dp"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -89,6 +93,7 @@ android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_height="wrap_content"
             android:text="Shipment Tracking"/>
@@ -104,6 +109,7 @@ android:layout_marginLeft="10dp"
     android:background="#e3e3e3"/>
 
     <RelativeLayout
+        android:gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@+id/orderView"
@@ -112,6 +118,7 @@ android:layout_marginLeft="10dp"
         android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_margin="10dp"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -156,6 +163,7 @@ android:layout_marginLeft="10dp"
         android:background="#e3e3e3"/>
 
     <RelativeLayout
+        android:gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@+id/delView"
@@ -163,6 +171,7 @@ android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
+            android:gravity="center_vertical"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -206,6 +215,7 @@ android:layout_marginLeft="10dp"
         android:background="#e3e3e3"/>
 
     <RelativeLayout
+        android:gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@+id/orderStatusView"
@@ -213,6 +223,7 @@ android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
+            android:gravity="center_vertical"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -493,13 +504,15 @@ android:textColor="#FFFFFF"
                         android:text="Store :"/>
 
                     <TextView
-android:layout_toRightOf="@+id/sellerStoreName"
                         android:layout_width="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:gravity="right"
                         android:text="Shon Prinson LLC"
-                        android:id="@+id/sellerStore" />
+                        android:id="@+id/sellerStore"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
 
 
 
@@ -550,6 +563,9 @@ android:layout_toRightOf="@+id/sellerStoreName"
                     <TextView
                         android:layout_toRightOf="@+id/sellerInfoName"
                         android:layout_width="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
