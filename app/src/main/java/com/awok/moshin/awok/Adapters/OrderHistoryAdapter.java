@@ -115,7 +115,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         //viewHolder.seller.setTag(orderHistoryData.get(position).getOrderId());
           //  viewHolder.price.setText(orderHistoryData.get(position).getPrice());
 //viewHolder.image.setImageBitmap(base64ToBitmap(orderHistoryData.get(position).getImageData()));
-            viewHolder.orderNo.setText("Order #"+orderHistoryData.get(position).getOrderNo()+" -");
+            viewHolder.orderNo.setText("Order #"+orderHistoryData.get(position).getOrderNo());
                 viewHolder.orderNo.setTag(orderHistoryData.get(position).getOrderId());
         viewHolder.dateTime.setText("placed on "+date(orderHistoryData.get(position).getDateTime().toString()));
 

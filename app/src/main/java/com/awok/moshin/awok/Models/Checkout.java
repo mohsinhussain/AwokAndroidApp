@@ -13,13 +13,14 @@ public class Checkout {
     private String statusId;
     private String quantity;
     private String remainingStock;
+    private String totalPrice;
 
     public Checkout()
     {
 
     }
 
-    public Checkout(String OverViewTitle, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String statusId,String quantity,String remainingStock) {
+    public Checkout(String OverViewTitle, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String statusId,String quantity,String remainingStock,String totalPrice) {
         this.OverViewTitle = OverViewTitle;
         this.OverViewText = OverViewText;
         this.SellerLabel=SellerLabel;
@@ -28,6 +29,7 @@ public class Checkout {
         this.statusId=statusId;
         this.quantity=quantity;
         this.remainingStock=remainingStock;
+        this.totalPrice=totalPrice;
 
     }
 
@@ -127,5 +129,15 @@ public class Checkout {
     public String getRemainingStock()
     {
         return remainingStock;
+    }
+
+    public void setTotalPrice(String totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+
+    public String getTotalPrice()
+    {
+        return totalPrice;
     }
 }

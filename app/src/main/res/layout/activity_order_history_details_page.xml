@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:background="#FFFFFF"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/mainLay"
+        android:layout_height="match_parent">
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main_content"
@@ -580,6 +584,7 @@ android:layout_toRightOf="@+id/sellerStoreName"
 
         </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>
+    </RelativeLayout>
     <ProgressBar android:indeterminate="true"
 
         android:layout_width="50dp" android:layout_height="50dp"

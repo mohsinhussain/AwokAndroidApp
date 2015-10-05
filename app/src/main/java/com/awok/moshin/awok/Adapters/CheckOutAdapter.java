@@ -138,11 +138,12 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
         {
 
             System.out.println("top"+sellerCheck);
-            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+" AED");
+            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText() + " AED X");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
             viewHolder.sellerLabel.setText(OverViewList.get(position).getSellerLabel());
             viewHolder.sellerMainLay.setVisibility(View.GONE);
+            viewHolder.totalPrice.setText("Total Price :" + OverViewList.get(position).getTotalPrice() + " AED");
             viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
             viewHolder.seperator.setVisibility(View.VISIBLE);
             viewHolder.stock.setText("In Stock : " + OverViewList.get(position).getRemainingStock());
@@ -153,7 +154,7 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
         }
         else {
             //customView.setLayoutParams(lp);
-            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+" AED");
+            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+" AED X");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
             viewHolder.stock.setText("In Stock : " + OverViewList.get(position).getRemainingStock());
@@ -161,6 +162,7 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
             viewHolder.stock.setTag(OverViewList.get(position).getRemainingStock());
             viewHolder.sellerLabel.setText("Seller Name : " + OverViewList.get(position).getSellerLabel());
             viewHolder.sellerMainLay.setVisibility(View.VISIBLE);
+            viewHolder.totalPrice.setText("Total Price :" + OverViewList.get(position).getTotalPrice() + " AED");
             viewHolder.seperator.setVisibility(View.GONE);
             viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
             customView.setLayoutParams(lp);
@@ -408,7 +410,7 @@ viewHolder.cross.setOnClickListener(new View.OnClickListener() {
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
 
-        public TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock;
+        public TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice;
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         public View seperator;
@@ -421,6 +423,8 @@ viewHolder.cross.setOnClickListener(new View.OnClickListener() {
             super(itemLayoutView);
             prodOverviewTitle = (TextView) itemLayoutView
                     .findViewById(R.id.OverViewTitle);
+            totalPrice=(TextView)itemLayoutView
+                    .findViewById(R.id.totalPrice);
             prodOverViewText = (TextView) itemLayoutView
                     .findViewById(R.id.overviewText);
             /*countOfProducts=(Spinner)itemLayoutView

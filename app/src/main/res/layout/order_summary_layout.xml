@@ -91,11 +91,11 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Qty : "
+            android:padding="8dp"
             android:id="@+id/qtyText"
-            android:layout_marginTop="5dp"
             android:layout_below="@+id/OverViewTitle"
-            android:layout_toRightOf="@+id/mainImg"
-            android:layout_toEndOf="@+id/mainImg" />
+            android:layout_alignLeft="@+id/OverViewTitle"
+            android:layout_alignStart="@+id/OverViewTitle" />
 
         <TextView
             android:layout_width="wrap_content"
