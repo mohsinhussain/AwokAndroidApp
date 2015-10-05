@@ -235,8 +235,9 @@ public void setUpTab()
         adapter.addFragment(new ProductOverViewFragment(productId, productName,image), "Overview");
        // adapter.addFragment(new ProductSpecificationFragment(productSpec), "Specifications");
         //adapter.addFragment(new ProductSpecificationFragment(), "Specifications");
+        adapter.addFragment(new HotDealsFragment(catId), "Related Products"); 
         adapter.addFragment(new ProductDescriptionFragment(description), "Description");
-        adapter.addFragment(new HotDealsFragment(catId), "Related Products");
+
 
 
 

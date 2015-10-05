@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Activities.ProductDetailsActivity;
@@ -55,6 +56,7 @@ public class HotDealsFragment extends Fragment {
     private boolean isSearch = false;
     private Button gotoTopButton;
     private String searchString = null;
+    RelativeLayout parentLayout;
     int firstVisibleItem, visibleItemCount, totalItemCount;
     public HotDealsFragment(){}
 
@@ -76,6 +78,7 @@ public class HotDealsFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_hot_deals, container, false);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.dealsRecyclerView);
+        parentLayout = (RelativeLayout) mView.findViewById(R.id.parent);
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);
         itemCount = (TextView) mView.findViewById(R.id.itemCountTextView);
         gotoTopButton = (Button) mView.findViewById(R.id.goToTopButton);
@@ -239,8 +242,7 @@ public class HotDealsFragment extends Fragment {
         if(pageCount==1){
             productsArrayList = new ArrayList<Products>();
         }
-        else
-        {
+        else {
             loadMore.setVisibility(View.VISIBLE);
             progressBar
                     .setVisibility(View.GONE);
@@ -261,7 +263,7 @@ public class HotDealsFragment extends Fragment {
             }
 
         } else {
-            Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+            Snackbar.make(mView, "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
                     .show();
         }
@@ -280,13 +282,13 @@ public class HotDealsFragment extends Fragment {
                     }
                     else{
                         if(pageCount>1){
-                            Snackbar.make(getActivity().findViewById(android.R.id.content), "No further data", Snackbar.LENGTH_LONG)
+                            Snackbar.make(mView, "No further data", Snackbar.LENGTH_LONG)
                                     .setActionTextColor(Color.RED)
                                     .show();
                         }
                         else{
                             itemCount.setText("We found 0 search results for '"+searchString+"'");
-                            Snackbar.make(getActivity().findViewById(android.R.id.content), "No such object found", Snackbar.LENGTH_LONG)
+                            Snackbar.make(mView, "No such object found", Snackbar.LENGTH_LONG)
                                     .setActionTextColor(Color.RED)
                                     .show();
 //                            Snackbar.make(getActivity().findViewById(android.R.id.content), obj.getString(obj.getString("title")), Snackbar.LENGTH_LONG)
@@ -331,7 +333,7 @@ public class HotDealsFragment extends Fragment {
                     }
                 }
                 else{
-                    Snackbar.make(getActivity().findViewById(android.R.id.content), "No further items", Snackbar.LENGTH_LONG)
+                    Snackbar.make(mView, "No further items", Snackbar.LENGTH_LONG)
                             .setActionTextColor(Color.RED)
                             .show();
                 }
@@ -350,7 +352,7 @@ public class HotDealsFragment extends Fragment {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(mView, "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
                         .show();
                 /*if(getActivity()!=null){

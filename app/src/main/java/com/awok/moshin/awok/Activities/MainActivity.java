@@ -264,6 +264,15 @@ private DrawerLayout mDrawerLayout;
 
         //searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(this);
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    searchItem.collapseActionView();
+                }
+            }
+        });
         return true;
     }
 
@@ -328,10 +337,9 @@ private DrawerLayout mDrawerLayout;
     }
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+
+
+
 
 
 
