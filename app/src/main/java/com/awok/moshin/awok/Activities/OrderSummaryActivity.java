@@ -1,12 +1,15 @@
 package com.awok.moshin.awok.Activities;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,9 +21,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -309,86 +314,47 @@ JSONObject dataToSend;
 
 
     public class GetCheckOutCallBack extends AsyncCallback {
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         public void onTaskComplete(String response) {
             try {
 System.out.println("RESPONSE"+response);
                 JSONObject jsonObjectData;
                 jsonObjectData=new JSONObject(response);
                 System.out.println("RESPONSE"+jsonObjectData.getString("status"));
+
+
+                final Dialog cartAlertDialog = new Dialog(OrderSummaryActivity.this, R.style.AppCompatAlertDialogStyle);
+                cartAlertDialog.setCancelable(true);
+                cartAlertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                cartAlertDialog.setContentView(R.layout.dialog_cart_alert);
+                TextView messageTextView = (TextView)cartAlertDialog.findViewById(R.id.msgTextView);
+                Button okButton = (Button) cartAlertDialog.findViewById(R.id.okButton);
                 if(Integer.parseInt(jsonObjectData.getString("status"))==1)
                 {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(OrderSummaryActivity.this);
-
-                    // set title
-                    alertDialogBuilder.setTitle("Cart Alert");
-
-
-
-                    // set dialog message
-                    alertDialogBuilder
-                            .setMessage("Order Placed Successfully")
-                            .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // if this button is clicked, close
-                                    // current activity
-                                    dialog.cancel();
-                                    Intent i=new Intent(OrderSummaryActivity.this,OrderHistory.class);
-                                    finish();
-                                    startActivity(i);
-
-                                }
-                            });
-                                   /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, just close
-                                            // the dialog box and do nothing
-                                            dialog.cancel();
-                                        }
-                                    });*/
-
-                    // create alert dialog
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-
-                    // show it
-                    alertDialog.show();
+                    messageTextView.setText(getString(R.string.order_placed_successfully));
+                    okButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            cartAlertDialog.cancel();
+                        }
+                    });
                 }
-                else
-                {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(OrderSummaryActivity.this);
-
-                    // set title
-                    alertDialogBuilder.setTitle("Cart Alert");
-
-
-
-                    // set dialog message
-                    alertDialogBuilder
-                            .setMessage("Order Failed !!! Please Try Later")
-                            .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // if this button is clicked, close
-                                    // current activity
-                                    dialog.cancel();
-
-
-                                }
-                            });
-                                   /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, just close
-                                            // the dialog box and do nothing
-                                            dialog.cancel();
-                                        }
-                                    });*/
-
-                    // create alert dialog
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-
-                    // show it
-                    alertDialog.show();
+                else{
+                    messageTextView.setText(getString(R.string.order_placed_failure));
+                    okButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            cartAlertDialog.cancel();
+                            Intent i=new Intent(OrderSummaryActivity.this,OrderHistory.class);
+                            finish();
+                            startActivity(i);
+                        }
+                    });
                 }
+
+
+                cartAlertDialog.show();
+                cartAlertDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
 
                 if(getApplicationContext()!=null){

@@ -4,17 +4,18 @@
     android:fromDegrees="90"
     android:pivotX="50%"
     android:pivotY="50%"
-    android:toDegrees="360">
+    android:duration="1"
+    android:toDegrees="1080">
 
     <shape
         android:innerRadiusRatio="3"
         android:shape="ring"
-        android:thicknessRatio="7.0">
+        android:thicknessRatio="15">
 
         <gradient
-            android:centerColor="#007DD6"
-            android:endColor="#007DD6"
-            android:startColor="#007DD6"
+            android:centerColor="@color/primary"
+            android:endColor="@color/primary"
+            android:startColor="@color/primary"
             android:angle="0"
             android:type="sweep"
             android:useLevel="false" />

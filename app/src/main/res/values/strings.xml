@@ -12,6 +12,9 @@
     <string name="country_code">+971</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="user_login_register">User Log In/Register</string>
+    <string name="cart_alert">Cart Alert</string>
+    <string name="copyright">&#169; Copyright 2015 Awok.com, All Rights Reserved.</string>
+
 
     <string name="login">LOGIN</string>
     <string name="enter_password_to_login">Please enter your password to login.</string>
@@ -19,7 +22,8 @@
     <string name="head_txt">Stylish Design</string>
     <string name="body_txt">A sophisticated design and practicality. The Samsung Galaxy Tab 4 (10.1") has it all. Its sleek design is accented by a luxurious back cover with a leather-like texture that adds a premium feel and classic look.</string>
     <string name="enter_mobile_number">Enter your mobile number</string>
-
+    <string name="order_placed_successfully">Your order has been placed successfully</string>
+    <string name="order_placed_failure">Your order was failed and was not placed! Please try again.</string>
     <string name="skip">Skip</string>
     <string name="verify_now">VERIFY NOW ></string>
     <string name="checkout_head">Xperia™ Z5 Premium
@@ -61,6 +65,7 @@ Introducing the world’s first 4K smartphone</string>
     <string name="expiry_date">Expiry Date</string>
     <string name="last_digits_displayed">The last 3 digits displayed on back of your credit/debit card</string>
     <string name="next">NEXT</string>
+    <string name="ok">OKAY</string>
 
     <string name="cancel">CANCEL</string>
     <string name="back">BACK</string>

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Activities.ProductDetailsActivity;
@@ -53,13 +54,13 @@ public class HotDealsFragment extends Fragment {
     private int visibleThreshold = 5;
     private  int pageCount = 1;
     private TextView itemCount;
-
+    private boolean shouldLoadMore = false;
     private LinearLayout mainLayout;
     private boolean isSearch = false;
     private Button gotoTopButton;
     LinearLayout.LayoutParams params;
     private String searchString = null;
-    int firstVisibleItem, visibleItemCount, totalItemCount,lastVisibleItem;
+    int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
     public HotDealsFragment(){}
 
     public HotDealsFragment(String categoryId)
@@ -181,6 +182,15 @@ public class HotDealsFragment extends Fragment {
                         previousTotal = totalItemCount;
                     }
                 }
+
+                Log.i(TAG, "lastVisibleItem: " + lastVisibleItem);
+                Log.i(TAG, "lastProductItem: " + (productsArrayList.size()-1));
+
+                if(shouldLoadMore && lastVisibleItem==(productsArrayList.size()-1)){
+                    loadMore.setVisibility(View.VISIBLE);
+                    mainLayout.setVisibility(View.VISIBLE);
+                }
+
                 if (!loading && (totalItemCount - visibleItemCount)
                         <= (firstVisibleItem + visibleThreshold)) {
 
@@ -260,9 +270,10 @@ public class HotDealsFragment extends Fragment {
             productsArrayList = new ArrayList<Products>();
 
         }
-        else
-        {
+//<<<<<<< HEAD
+        else {
 
+            shouldLoadMore = true;
             progressBar
                     .setVisibility(View.GONE);
         }
@@ -282,7 +293,7 @@ public class HotDealsFragment extends Fragment {
             }
 
         } else {
-            Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+            Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
                     .setActionTextColor(Color.RED)
                     .show();
         }
@@ -301,13 +312,13 @@ public class HotDealsFragment extends Fragment {
                     }
                     else{
                         if(pageCount>1){
-                            Snackbar.make(getActivity().findViewById(android.R.id.content), "No further data", Snackbar.LENGTH_LONG)
+                            Snackbar.make(getActivity().findViewById(android.R.id.content), "No further data", Snackbar.LENGTH_SHORT)
                                     .setActionTextColor(Color.RED)
                                     .show();
                         }
                         else{
                             itemCount.setText("We found 0 search results for '"+searchString+"'");
-                            Snackbar.make(getActivity().findViewById(android.R.id.content), "No such object found", Snackbar.LENGTH_LONG)
+                            Snackbar.make(getActivity().findViewById(android.R.id.content), "No such object found", Snackbar.LENGTH_SHORT)
                                     .setActionTextColor(Color.RED)
                                     .show();
 //                            Snackbar.make(getActivity().findViewById(android.R.id.content), obj.getString(obj.getString("title")), Snackbar.LENGTH_LONG)
@@ -321,6 +332,7 @@ public class HotDealsFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                         loadMore.setVisibility(View.GONE);
                         mainLayout.setVisibility(View.GONE);
+                        shouldLoadMore = false;
                         if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
@@ -353,7 +365,7 @@ public class HotDealsFragment extends Fragment {
                     }
                 }
                 else{
-                    Snackbar.make(getActivity().findViewById(android.R.id.content), "No further items", Snackbar.LENGTH_LONG)
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), "No further items", Snackbar.LENGTH_SHORT)
                             .setActionTextColor(Color.RED)
                             .show();
                 }
@@ -367,13 +379,14 @@ public class HotDealsFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 loadMore.setVisibility(View.GONE);
                 mainLayout.setVisibility(View.GONE);
+                shouldLoadMore = false;
                 initializeData();
                 if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_SHORT)
                         .setActionTextColor(Color.RED)
                         .show();
                 /*if(getActivity()!=null){
@@ -383,6 +396,7 @@ public class HotDealsFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 loadMore.setVisibility(View.GONE);
                 mainLayout.setVisibility(View.GONE);
+                shouldLoadMore = false;
                 if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }

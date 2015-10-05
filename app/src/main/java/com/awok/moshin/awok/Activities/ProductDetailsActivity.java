@@ -240,10 +240,13 @@ public void setUpTab()
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new ProductOverViewFragment(productId, productName,image), "Overview");
         adapter.addFragment(new HotDealsFragment(catId), "Related Products");
-       // adapter.addFragment(new ProductSpecificationFragment(productSpec), "Specifications");
-        //adapter.addFragment(new ProductSpecificationFragment(), "Specifications");
+
+
         adapter.addFragment(new ReviewsFragment(productName,image),"Reviews");
         adapter.addFragment(new ShippingDeliveryFrag(),"Shipping & Delivery");
+
+
+
         adapter.addFragment(new ProductDescriptionFragment(description), "Description");
 
 
