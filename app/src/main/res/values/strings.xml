@@ -107,6 +107,27 @@ Introducing the world’s first 4K smartphone</string>
         <item>10</item>
 
     </string-array>
+
+
+
+    <string-array name="currency">
+
+        <item>United Arab Emirates Dirhams (AED)</item>
+
+        <item> United States dollar (USD)</item>
+
+        <item>European Euro (EUR)</item>
+
+        <item>Japanese Yen (JPY)</item>
+
+        <item>British Pound (GBP)</item>
+
+        <item> Australian dollar	(AUD) </item>
+
+
+
+    </string-array>
+
     <string name="title_activity_order_summary">OrderSummaryActivity</string>
 
 
@@ -116,4 +137,8 @@ Introducing the world’s first 4K smartphone</string>
     <string name="title_activity_order_history">OrderHistory</string>
     <string name="title_activity_order_history_details_page">OrderHistoryDetailsPage</string>
     <string name="title_activity_shipping_delivery_frag">ShippingDeliveryFrag</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_currency_selection">CurrencySelectionActivity</string>
+    <string name="title_activity_currency_pick">CurrencyPickActivity</string>
+    <string name="seller">Seller</string>
 </resources>

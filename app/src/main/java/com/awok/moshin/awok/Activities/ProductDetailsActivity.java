@@ -356,7 +356,7 @@ public void setUpTab()
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
-//            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
     }
 

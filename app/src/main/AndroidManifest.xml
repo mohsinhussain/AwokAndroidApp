@@ -44,6 +44,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".Activities.CountryPickerExample"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".Activities.FilterActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
@@ -134,6 +139,18 @@
         <activity
             android:name=".Fragments.ShippingDeliveryFrag"
             android:label="@string/title_activity_shipping_delivery_frag" >
+        </activity>
+        <activity
+            android:name=".Activities.Settings"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".Activities.CurrencySelectionActivity"
+            android:label="@string/title_activity_currency_selection" >
+        </activity>
+        <activity
+            android:name=".Activities.CurrencyPickActivity"
+            android:label="@string/title_activity_currency_pick" >
         </activity>
     </application>
 

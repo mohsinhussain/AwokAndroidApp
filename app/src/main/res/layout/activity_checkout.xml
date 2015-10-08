@@ -42,8 +42,7 @@ android:layout_above="@+id/bottomLay"
                 android:id="@+id/overViewRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
 

@@ -2,39 +2,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-android:layout_marginRight="8dp"
-    android:background="#FFFFFF"
-    android:layout_marginLeft="8dp"
+    android:background="@color/button_text"
     android:layout_height="match_parent"
     >
 
     <RelativeLayout
+                    android:id="@+id/main"
+        android:background="#ffffff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 <LinearLayout
     android:id="@+id/sellerMainLay"
     android:layout_width="fill_parent"
-    android:background="#e0e0e0"
+    android:background="@color/button_text"
 
     android:orientation="vertical"
     android:layout_height="wrap_content">
-        <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
             android:id="@+id/sellerLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Seller : ABC"
+            android:paddingRight="20dp"
+            android:background="@drawable/custom_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="@string/seller"
+            android:maxHeight="0dp"
+            android:textColor="#ffffff"
             android:gravity="center"
+            android:textSize="12sp"
             android:layout_margin="5dp"
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/sellerNameText" />
+    </LinearLayout>
+<!--<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/edittext_color"/>-->
 
-
-       <!-- <View
-            android:id="@+id/sellerDivider"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+        <View
+            android:id="@+id/mainDivider"
             android:layout_below="@+id/sellerLabel"
             android:layout_width="match_parent"
-            android:background="#607D8B"
-            android:layout_height="1dp"/>-->
+            android:background="#eeeeee"
+            android:layout_height="1dp"/>
+</LinearLayout>
 </LinearLayout>
         <View
             android:id="@+id/sellerDivider"
@@ -45,8 +71,8 @@ android:layout_marginRight="8dp"
             android:layout_marginRight="5dp"
             android:layout_height="1dp"/>
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/mainImg"
             android:layout_below="@+id/sellerDivider"
             android:src="@drawable/test"
@@ -69,31 +95,47 @@ android:scaleType="fitCenter"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_alignTop="@+id/mainImg"
             android:layout_toRightOf="@+id/mainImg"
-            android:layout_toStartOf="@+id/cross"
-            android:layout_toLeftOf="@+id/cross" />
+
+             />
 
         <TextView
             android:id="@+id/overviewText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+android:layout_marginRight="10dp"
             android:padding="8dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="desc"
             android:textColor="#666"
 
 
-
-
             android:layout_below="@+id/OverViewTitle"
-            android:layout_alignLeft="@+id/OverViewTitle"
-            android:layout_alignStart="@+id/OverViewTitle" />
+            android:layout_toLeftOf="@+id/newPrice"
+            android:layout_toStartOf="@+id/newPrice" />
+        <TextView
+            android:id="@+id/newPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:padding="8dp"
 
+
+
+
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="desc"
+            android:textColor="@color/primary"
+
+
+            android:layout_alignTop="@+id/overviewText"
+             />
         <EditText
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:inputType="numberDecimal"
-android:layout_marginLeft="2dp"
             android:singleLine="true"
             android:textColor="#333333"
 
@@ -107,51 +149,72 @@ android:maxLength="2"
             style="@style/_EditText"
             android:id="@+id/quantity"
 
-            android:layout_below="@+id/OverViewTitle"
-            android:layout_toRightOf="@+id/overviewText"
-            android:layout_toEndOf="@+id/overviewText" />
+            android:layout_below="@+id/overviewText"
+            android:layout_toLeftOf="@+id/stock"
+            android:layout_toStartOf="@+id/stock" />
 <!--
         android:imeOptions="actionDone"
 -->
+
+<LinearLayout
+
+    android:layout_width="wrap_content"
+    android:layout_below="@+id/quantity"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/linearLayout">
+
+    <CheckBox
+        android:id="@+id/cross"
+android:button="@drawable/checkbox_btn_check_holo_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="[ REMOVE ]"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/stock"
+        android:layout_toRightOf="@+id/linearLayout"
+        android:layout_toEndOf="@+id/linearLayout" />
+
+
+
+</LinearLayout>
         <TextView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:padding="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="desc"
+            android:textColor="#666"
+            android:id="@+id/totalPrice"
+            android:layout_below="@+id/quantity"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:padding="5dp"
+            android:layout_below="@+id/quantity"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="In Stock : 25 Items"
             android:gravity="center_vertical"
+
+
             android:id="@+id/stock"
             android:textSize="10dp"
 
-            android:layout_below="@+id/totalPrice"
-            android:layout_alignRight="@+id/cross"
-            android:layout_alignEnd="@+id/cross" />
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/cross"
-android:padding="16dp"
-            android:scaleType="center"
-            android:background="@drawable/cross_icon"
-            android:layout_margin="10dp"
-            android:layout_below="@+id/sellerDivider"
+            android:layout_alignBottom="@+id/linearLayout"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-
-            android:padding="8dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="desc"
-            android:layout_marginTop="2dp"
-            android:textColor="#666"
-            android:id="@+id/totalPrice"
-            android:layout_below="@+id/overviewText"
-            android:layout_alignLeft="@+id/overviewText"
-            android:layout_alignStart="@+id/overviewText" />
 
 
         <!--<TextView
@@ -274,5 +337,159 @@ android:padding="16dp"
 
 
        </RelativeLayout>-->
+<RelativeLayout
+    android:layout_below="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
+
+
+
+
+
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/edittext_color"/>
+
+<LinearLayout
+    android:id="@+id/subtotalLay"
+    android:layout_marginTop="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="horizontal">
+
+
+
+
+
+
+    <TextView
+        android:text="Sub Total"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <TextView
+        android:text="AED 2000"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/shipLay"
+        android:layout_below="@+id/subtotalLay"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+
+
+
+
+<LinearLayout
+
+    android:layout_weight="1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+        <TextView
+            android:text="Shipping"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:text="United Arab Emirates >"
+        android:padding="2dp"
+        android:textSize="12dp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+        <TextView
+            android:text="AED 30"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+            android:layout_below="@+id/shipLay"
+        android:id="@+id/totalLay"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+
+
+
+
+
+        <TextView
+            android:text="Total"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+            android:text="AED 2000"
+            android:textColor="@color/primary"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_below="@+id/totalLay"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:layout_gravity="right"
+        android:paddingRight="5dp"
+        android:background="#FFCDD2"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/primary"
+        android:text="CHECKOUT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
+
+
+</RelativeLayout>
 </RelativeLayout>

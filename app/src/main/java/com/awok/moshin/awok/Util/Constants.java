@@ -18,6 +18,8 @@ public class Constants {
     public static String CAT_DEPTH_LEVEL_INTENT = "catDepthLevelIntent";
     public static String CAT_NAME_INTENT = "catNameIntent";
     public static String USER_MOBILE_PREFS = "userMobileNumberInPrefs";
+    public static String USER_SETTING_COUNTRY="userCountryPrefs";
+    public static String USER_COUNTRY_IMAGE_ID="userCountryImageIdPrefs";
     public static String USER_ID_PREFS = "userIdInPrefs";
     public static String USER_AUTH_TOKEN_PREFS = "userAuthorisationTokenInPrefs";
     public static String CAT_LIST_PREFS = "categoriesListInPrefs";

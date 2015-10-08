@@ -336,6 +336,9 @@ System.out.println("RESPONSE"+response);
                         @Override
                         public void onClick(View v) {
                             cartAlertDialog.cancel();
+                            Intent i=new Intent(OrderSummaryActivity.this,OrderHistory.class);
+                            finish();
+                            startActivity(i);
                         }
                     });
                 }
@@ -345,9 +348,7 @@ System.out.println("RESPONSE"+response);
                         @Override
                         public void onClick(View v) {
                             cartAlertDialog.cancel();
-                            Intent i=new Intent(OrderSummaryActivity.this,OrderHistory.class);
-                            finish();
-                            startActivity(i);
+
                         }
                     });
                 }

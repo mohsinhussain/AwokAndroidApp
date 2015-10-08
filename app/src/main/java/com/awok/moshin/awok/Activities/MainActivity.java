@@ -91,7 +91,7 @@ private DrawerLayout mDrawerLayout;
         ab.setDisplayShowTitleEnabled(false);
         ab.setLogo(R.drawable.awok_logo);
         img = (ImageView)findViewById(R.id.avatar);
-        Picasso.with(this).load(AVATAR_URL).transform(new CircleTransformation()).into(img);
+        Picasso.with(this).load(R.drawable.textimg).transform(new CircleTransformation()).into(img);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -139,7 +139,11 @@ private DrawerLayout mDrawerLayout;
                         mDrawerLayout.closeDrawers();
                         return true;
 
-
+                    case R.id.navigation_settings:
+                        Intent k=new Intent(MainActivity.this,Settings.class);
+                        startActivity(k);
+                        mDrawerLayout.closeDrawers();
+                        return true;
 
                     default:
                         return true;

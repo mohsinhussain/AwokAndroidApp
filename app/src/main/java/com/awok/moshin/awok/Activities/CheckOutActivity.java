@@ -477,6 +477,7 @@ public class CheckOutActivity extends AppCompatActivity {
                             listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
                             listData.setSellerLabel(jsonObject.getString("seller"));
                             listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
+                            listData.setOldPrice(jsonObjectProductDetails.getString("old_price"));
                             listData.setProductId(jsonObjectProductDetails.getString("_id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
                             listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
