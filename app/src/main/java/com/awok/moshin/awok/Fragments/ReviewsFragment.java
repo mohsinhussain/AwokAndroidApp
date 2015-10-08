@@ -10,13 +10,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.R;
 
 
@@ -51,10 +57,49 @@ public class ReviewsFragment extends Fragment {
         View mView = inflater.inflate(R.layout.fragment_reviews, container, false);
 
         TextView productNameView=(TextView)mView.findViewById(R.id.productTitle);
-        ImageView imgMain=(ImageView)mView.findViewById(R.id.mainImg);
+        final ImageView imgMain=(ImageView)mView.findViewById(R.id.mainImg);
+        final ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);
 
         productNameView.setText(productName);
-        imgMain.setImageBitmap(base64ToBitmap(image));
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        imageLoader.get(image, new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                progressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                if (response.getBitmap() != null) {
+                    // load image into imageview
+                    imgMain.setImageBitmap(response.getBitmap());
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+//        if(image!=null && !image.equalsIgnoreCase("")){
+//            imgMain.setImageUrl(image, imageLoader);
+//        }
+//        else{
+//            imgMain.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.default_img)));
+//        }
+//        imgMain.setImageUrl(image, imageLoader);
+//        imgMain.setErrorImageResId(R.drawable.default_img);
+//        imgMain.setImageBitmap(base64ToBitmap(image));
+//        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+//        imageLoader.get(image, new ImageLoader.ImageListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("HotDealsAdapter", "Image Load Error: " + error.getMessage());
+//            }
+//            @Override
+//            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+//                if (response.getBitmap() != null) {
+//                    // load image into imageview
+//                    imgMain.setImageBitmap(response.getBitmap());
+//                }
+//            }
+//        });
         prod_reviewRating=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
         LayerDrawable mainRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
         mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);

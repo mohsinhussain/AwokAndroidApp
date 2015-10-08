@@ -11,6 +11,7 @@ import com.awok.moshin.awok.Util.Constants;
 
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,6 +107,11 @@ public class APIClient {
         mTask.execute(mContext, "http://market1.awok/bengalua/register/", "POST", dataToSend);
     }
 
+    public void userLogoutAPICall(String phoneNumber) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/bengalua/logout/" + phoneNumber, "GET", null);
+    }
+
     public void OrderCheckOutCallBack(String dataToSend) {
 
         mTask = new AsyncTaskWithDialog();
@@ -140,6 +146,7 @@ public class APIClient {
             try {
                 Context context = (Context) parameters[CONTEXT_INDEX];
                 String url = (String) parameters[URI_INDEX];
+//                url = URLEncoder.encode(url);
                 HTTPClient client = new HTTPClient(
                         context.getSharedPreferences(Constants.PREFS_NAME, 0));
 

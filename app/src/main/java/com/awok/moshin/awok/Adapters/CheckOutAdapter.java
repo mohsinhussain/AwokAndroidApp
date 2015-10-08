@@ -34,11 +34,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.awok.moshin.awok.Activities.CheckOutActivity;
+import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.Models.CheckoutDataObjects;
 import com.awok.moshin.awok.Models.ProductOverview;
@@ -137,7 +142,7 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
         if(sellerCheck.equals(OverViewList.get(position).getSellerLabel()))
         {
 
-            System.out.println("top"+sellerCheck);
+            System.out.println("top" + sellerCheck);
             viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText() + " AED X");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
@@ -148,7 +153,30 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
             viewHolder.seperator.setVisibility(View.VISIBLE);
             viewHolder.stock.setText("In Stock : " + OverViewList.get(position).getRemainingStock());
             viewHolder.stock.setTag(OverViewList.get(position).getRemainingStock());
-            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            imageLoader.get(OverViewList.get(position).getImageBitmapString(), new ImageLoader.ImageListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                    viewHolder.loadProgressBar.setVisibility(View.GONE);
+                }
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+                        // load image into imageview
+                        viewHolder.productImg.setImageBitmap(response.getBitmap());
+                        viewHolder.loadProgressBar.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+//            if(OverViewList.get(position).getImageBitmapString()!=null && !OverViewList.get(position).getImageBitmapString().equalsIgnoreCase("")){
+//                viewHolder.productImg.setImageUrl(OverViewList.get(position).getImageBitmapString(), imageLoader);
+//            }
+//            else{
+//                viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable((R.drawable.default_img)));
+//            }
+//            viewHolder.productImg.setErrorImageResId(R.drawable.default_img);
             sellerCheck=OverViewList.get(position).getSellerLabel();
 
         }
@@ -164,7 +192,34 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
             viewHolder.sellerMainLay.setVisibility(View.VISIBLE);
             viewHolder.totalPrice.setText("Total Price :" + OverViewList.get(position).getTotalPrice() + " AED");
             viewHolder.seperator.setVisibility(View.GONE);
-            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
+//            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
+//            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            imageLoader.get(OverViewList.get(position).getImageBitmapString(), new ImageLoader.ImageListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                    viewHolder.loadProgressBar.setVisibility(View.GONE);
+                }
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+                        // load image into imageview
+                        viewHolder.productImg.setImageBitmap(response.getBitmap());
+                        viewHolder.loadProgressBar.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+//            if(OverViewList.get(position).getImageBitmapString()!=null && !OverViewList.get(position).getImageBitmapString().equalsIgnoreCase("")){
+//                viewHolder.productImg.setImageUrl(OverViewList.get(position).getImageBitmapString(), imageLoader);
+//            }
+//            else{
+//                viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable((R.drawable.default_img)));
+//            }
+//            viewHolder.productImg.setImageUrl(OverViewList.get(position).getImageBitmapString(), imageLoader);
+//            viewHolder.productImg.setErrorImageResId(R.drawable.default_img);
             customView.setLayoutParams(lp);
 
             sellerCheck=OverViewList.get(position).getSellerLabel();
@@ -414,8 +469,10 @@ viewHolder.cross.setOnClickListener(new View.OnClickListener() {
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         public View seperator;
-        public ImageView cross,productImg;
+        public ImageView cross;
+        public ImageView productImg;
         public EditText quantity;
+        public ProgressBar loadProgressBar;
 
         //public CheckoutDataObjects data;
 
@@ -440,7 +497,7 @@ viewHolder.cross.setOnClickListener(new View.OnClickListener() {
             productImg=(ImageView)itemLayoutView
 
                     .findViewById(R.id.mainImg);
-
+            loadProgressBar = (ProgressBar)itemLayoutView.findViewById(R.id.load_progress_bar);
 
             quantity=(EditText)itemLayoutView
                     .findViewById(R.id.quantity);

@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:id="@+id/load_progress_bar"
+        android:indeterminateDrawable="@drawable/progress_bar_load_more"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

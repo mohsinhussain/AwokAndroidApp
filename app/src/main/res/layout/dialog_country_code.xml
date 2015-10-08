@@ -15,7 +15,7 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/cart_alert"
+        android:text="@string/country_code_header"
         android:textColor="@color/header_text"/>
    <ListView
        android:id="@+id/codeListView"

@@ -1,5 +1,6 @@
 package com.awok.moshin.awok.Activities;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -23,9 +25,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,12 +39,15 @@ import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.CSVReader;
 import com.awok.moshin.awok.Util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +76,9 @@ public class CheckOutActivity extends AppCompatActivity {
     Dialog loginDialog;
     Dialog registerDialog;
     TextView loginErrorTextView, registrationErrorTextView, inputNumberErrorTextView;
+    ArrayList<String> countryCodes;
+    ArrayList<String> countryCodeNumbers;
+    List<String[]> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +129,40 @@ public class CheckOutActivity extends AppCompatActivity {
             final EditText mobileEditText = (EditText) inputNumberDialog.findViewById(R.id.mobileEditText);
             Button cancelButton = (Button) inputNumberDialog.findViewById(R.id.cancelButton);
             Button nextButton = (Button) inputNumberDialog.findViewById(R.id.nextButton);
+            final Button countryCodeButton = (Button) inputNumberDialog.findViewById(R.id.countryCodeButton);
             progressBarForm = (ProgressBar) inputNumberDialog.findViewById(R.id.load_progress_bar);
             // if button is clicked, close the custom dialog
+
+            populateCountryCodes();
+            countryCodeButton.setOnClickListener(new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+                @Override
+                public void onClick(View v) {
+                    //show login dialog
+                    final Dialog countryCodeDialog = new Dialog(CheckOutActivity.this, R.style.AppCompatAlertDialogStyle);
+                    countryCodeDialog.setCancelable(true);
+                    countryCodeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    countryCodeDialog.setContentView(R.layout.dialog_country_code);
+                    final ListView mList = (ListView)countryCodeDialog.findViewById(R.id.codeListView);
+
+                    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                            CheckOutActivity.this,
+                            android.R.layout.simple_list_item_1);
+                    arrayAdapter.addAll(countryCodes);
+                    mList.setAdapter(arrayAdapter);
+                    mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            countryCodeButton.setText(countryCodeNumbers.get(position));
+                            countryCodeDialog.cancel();
+                        }
+                    });
+
+                    countryCodeDialog.show();
+                    countryCodeDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                }
+            });
+
             cancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -134,9 +177,9 @@ public class CheckOutActivity extends AppCompatActivity {
                     if (mobileEditText.getText().toString().equalsIgnoreCase("")) {
                         mobileEditText.setError("Please enter your mobile number");
                     } else {
-                        if (mobileEditText.getText().toString().matches("^[+]?[0-9]{10,13}$")) {
+                        if (mobileEditText.getText().toString().matches("^[+]?[0-9]{9,12}$")) {
                             Log.v(TAG, "phone number is correct");
-                            mobileNumber = mobileEditText.getText().toString();
+                            mobileNumber =countryCodeButton.getText().toString().replace(" ", "")+mobileEditText.getText().toString();
                             new APIClient(CheckOutActivity.this, CheckOutActivity.this, new CheckUserCallback()).userCheckAPICall(mobileNumber);
                         } else {
                             toast.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
@@ -196,6 +239,38 @@ public class CheckOutActivity extends AppCompatActivity {
 //            inputNumberDialog = null;
 //        }
 //    }
+
+
+    private void populateCountryCodes(){
+        String next[] = {};
+        list = new ArrayList<String[]>();
+        countryCodeNumbers = new ArrayList<String>();
+        try {
+            CSVReader reader = new CSVReader(new InputStreamReader(getAssets().open("countrycodes.csv")));
+            for(;;) {
+                next = reader.readNext();
+                if(next != null) {
+                    list.add(next);
+                } else {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<String> countryNames = new ArrayList<String>();
+        ArrayList<String> countryAbber = new ArrayList<String>();
+        countryCodes = new ArrayList<String>();
+
+        for(int i=0; i < list.size(); i++)
+        {
+//            countryNames.add(list.get(i)[0]); // gets name
+            countryCodeNumbers.add(" +" +list.get(i)[1]); // gets abbreviation
+            countryCodes.add(list.get(i)[0] + " +" + list.get(i)[1]); // gets calling code
+
+        }
+    }
 
     public void initializeCart() {
         ConnectivityManager connMgr = (ConnectivityManager)

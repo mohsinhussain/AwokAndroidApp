@@ -21,6 +21,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +30,22 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.awok.moshin.awok.Activities.FragmentFullScreenImage;
+import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.Models.ProductDetailsModel;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.davemorrissey.labs.subscaleview.ImageSource;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +73,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
  private Button prod_buyNow;
     private RatingBar prodRatingBar,prod_reviewRating;
-    String image, productName, productId;
+    String image, baseImage,productName, productId;
 
     public ProductOverViewFragment(){
 
@@ -194,20 +201,50 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         public Object instantiateItem(ViewGroup container, final int position) {
             View itemView = mLayoutInflater.inflate(R.layout.fragment_imageslider, container, false);
 
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            final ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            final ProgressBar progressBar = (ProgressBar) itemView.findViewById(R.id.load_progress_bar);
             //imageView.setImageResource(mResources[position]);
-imageView.setImageBitmap(base64ToBitmap(image));
+//imageView.setImageBitmap(base64ToBitmap(image));
+            Log.v("overview", "imageurl: " + image);
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+
+//            if(image!=null && !image.equalsIgnoreCase("")){
+//                imageView.setImageUrl(image, imageLoader);
+//            }
+//            else{
+//                imageView.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.default_img)));
+//            }
+
+            imageLoader.get(image, new ImageLoader.ImageListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                    progressBar.setVisibility(View.GONE);
+                }
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+                        // load image into imageview
+                        imageView.setImageBitmap(response.getBitmap());
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
+            });
 
             container.addView(itemView);
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i=new Intent(getContext(), FragmentFullScreenImage.class);
-                    i.putExtra("size",mResources.length);
-                    i.putExtra("position", position);
-                    i.putExtra("image",image);
-                            startActivity(i);
+                    if(baseImage!=null){
+                        Intent i=new Intent(getContext(), FragmentFullScreenImage.class);
+                        i.putExtra("size",mResources.length);
+                        i.putExtra("position", position);
+                        i.putExtra("image",image);
+                        i.putExtra("baseImage",baseImage);
+                        startActivity(i);
+                    }
+
                 }
             });
 
@@ -232,7 +269,8 @@ imageView.setImageBitmap(base64ToBitmap(image));
 //                System.out.println("COOLGBDJH" + productDetails.getName());
 //                String prodDesc=mMembersJSON.getString("description");
 //                productOverview.setOverViewTitle(prodDesc);
-                image=mMembersJSON.getString("image");
+                image=mMembersJSON.getString("image_url");
+                baseImage=mMembersJSON.getString("image");
                 mCustomPagerAdapter.notifyDataSetChanged();
 //                if(getApplicationContext()!=null){
 //                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
