@@ -12,12 +12,15 @@
     <string name="country_code">+971</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="user_login_register">User Log In/Register</string>
+    <string name="logout">Logout</string>
     <string name="cart_alert">Cart Alert</string>
+    <string name="country_code_header">Country Code</string>
     <string name="copyright">&#169; Copyright 2015 Awok.com, All Rights Reserved.</string>
 
 
     <string name="login">LOGIN</string>
     <string name="enter_password_to_login">Please enter your password to login.</string>
+    <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="enter_password_and_confirm_password">Please enter your password and confirm password to register.</string>
     <string name="head_txt">Stylish Design</string>
     <string name="body_txt">A sophisticated design and practicality. The Samsung Galaxy Tab 4 (10.1") has it all. Its sleek design is accented by a luxurious back cover with a leather-like texture that adds a premium feel and classic look.</string>

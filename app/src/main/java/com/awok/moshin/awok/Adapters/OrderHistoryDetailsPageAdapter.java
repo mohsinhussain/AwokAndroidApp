@@ -16,8 +16,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.OrderHistoryDetailsModel;
 import com.awok.moshin.awok.Models.OrderHistoryModel;
 import com.awok.moshin.awok.R;
@@ -102,7 +107,35 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
 
         // viewHolder.shipping.setText("In Stock : " + orderHistoryData.get(position).getShipping());
         //orderCheck=orderHistoryData.get(position).getOrderId();
-        viewHolder.image.setImageBitmap(base64ToBitmap(orderHistoryDetailsData.get(position).getImage()));
+//        viewHolder.image.setImageBitmap(base64ToBitmap(orderHistoryDetailsData.get(position).getImage()));
+//        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+//        viewHolder.image.setImageUrl(orderHistoryDetailsData.get(position).getImage(), imageLoader);
+//        viewHolder.image.setErrorImageResId(R.drawable.default_img);
+//        if(orderHistoryDetailsData.get(position).getImage()!=null && !orderHistoryDetailsData.get(position).getImage().equalsIgnoreCase("")){
+//            viewHolder.image.setImageUrl(orderHistoryDetailsData.get(position).getImage(), imageLoader);
+//        }
+//        else{
+//            viewHolder.image.setImageDrawable(mContext.getResources().getDrawable((R.drawable.default_img)));
+//        }
+
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        imageLoader.get(orderHistoryDetailsData.get(position).getImage(), new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                viewHolder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                viewHolder.loadProgressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                if (response.getBitmap() != null) {
+                    // load image into imageview
+                    viewHolder.image.setImageBitmap(response.getBitmap());
+                    viewHolder.loadProgressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
         viewHolder.price.setText(orderHistoryDetailsData.get(position).getPrice() + " AED");
         viewHolder.quantity.setText("X "+orderHistoryDetailsData.get(position).getQuantity());
         System.out.print("dchkj" + orderHistoryDetailsData.get(position).getPrice()+ " AED");
@@ -148,47 +181,15 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
         private RelativeLayout main,totalLay;*/
         TextView price,quantity,title;
         ImageView image;
+        ProgressBar loadProgressBar;
 
 
 
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            /*title = (TextView) itemLayoutView
-                    .findViewById(R.id.productTitle);
-            quantity = (TextView) itemLayoutView
-                    .findViewById(R.id.quantity);
 
-image=(ImageView)itemLayoutView
-        .findViewById(R.id.mainImg);
-            seller=(TextView)itemLayoutView
-                    .findViewById(R.id.sellerName);
-
-
-            price=(TextView)itemLayoutView
-                    .findViewById(R.id.price);
-
-main=(RelativeLayout)itemLayoutView
-        .findViewById(R.id.head);
-
-
-
-
-            totalLay=(RelativeLayout)itemLayoutView
-                    .findViewById(R.id.totalLay);
-
-
-
-
-            totalPrice=(TextView)itemLayoutView
-                    .findViewById(R.id.total);
-
-
-            shipping=(TextView)itemLayoutView
-                    .findViewById(R.id.shipping);*/
-
-
-
+            loadProgressBar = (ProgressBar)itemLayoutView.findViewById(R.id.load_progress_bar);
             image=(ImageView)itemLayoutView
                     .findViewById(R.id.mainImg);
 

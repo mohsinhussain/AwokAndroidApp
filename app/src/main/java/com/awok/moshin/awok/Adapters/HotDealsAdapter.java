@@ -16,10 +16,12 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.R;
@@ -91,28 +93,28 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 //        }
 
 
-        byte[] decodedString = Base64.decode(items.get(i).getImage(), Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        holder.itemImageView.setImageBitmap(decodedByte);
+//        byte[] decodedString = Base64.decode(items.get(i).getImage(), Base64.DEFAULT);
+//        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//        holder.itemImageView.setImageBitmap(decodedByte);
 
-//        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-//
-//// If you are using normal ImageView
-//        imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("HotDealsAdapter", "Image Load Error: " + error.getMessage());
-//            }
-//
-//            @Override
-//            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-//                if (response.getBitmap() != null) {
-//                    // load image into imageview
-//                    holder.itemImageView.setImageBitmap(response.getBitmap());
-//                }
-//            }
-//        });
+//        imageLoader.get(items.get(i).getImage(), ImageLoader.getImageListener( holder.itemImageView,
+//                0, R.drawable.default_img));
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                holder.loadProgressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                if (response.getBitmap() != null) {
+                    // load image into imageview
+                    holder.itemImageView.setImageBitmap(response.getBitmap());
+                    holder.loadProgressBar.setVisibility(View.GONE);
+                }
+            }
+        });
 
 //        setAnimation(holder.container, i);
     }
@@ -159,7 +161,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         TextView discountTextView;
         ImageView itemImageView;
         LinearLayout container;
-//        TextView endsInTextView;
+        ProgressBar loadProgressBar;
 
 
         ItemViewHolder(View itemView) {
@@ -169,7 +171,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
             priceTextView = (TextView)itemView.findViewById(R.id.priceTextView);
             oldPriceTextView = (TextView)itemView.findViewById(R.id.oldPriceTextView);
             discountTextView = (TextView)itemView.findViewById(R.id.percentTextView);
-//            endsInTextView = (TextView)itemView.findViewById(R.id.endsInTextView);
+            loadProgressBar = (ProgressBar)itemView.findViewById(R.id.load_progress_bar);
             itemImageView = (ImageView)itemView.findViewById(R.id.itemImageView);
             container = (LinearLayout) itemView.findViewById(R.id.parentPanel);
         }

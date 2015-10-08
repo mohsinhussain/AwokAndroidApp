@@ -70,18 +70,34 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_height="1dp"/>
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/mainImg"
-            android:layout_below="@+id/sellerDivider"
-            android:src="@drawable/test"
-android:scaleType="fitCenter"
-            android:padding="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageHolderLayout"
+            android:layout_below="@+id/sellerDivider" >
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:id="@+id/load_progress_bar"
+                android:indeterminateDrawable="@drawable/progress_bar_load_more"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                />
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/mainImg"
+                android:src="@drawable/test"
+                android:scaleType="fitCenter"
+                android:padding="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/OverViewTitle"
@@ -93,11 +109,10 @@ android:scaleType="fitCenter"
             android:textColor="#222"
 
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_alignTop="@+id/mainImg"
-            android:layout_toRightOf="@+id/mainImg"
+            android:layout_alignTop="@+id/imageHolderLayout"
+            android:layout_toRightOf="@+id/imageHolderLayout"
 
              />
-
         <TextView
             android:id="@+id/overviewText"
             android:layout_width="wrap_content"
@@ -159,7 +174,7 @@ android:maxLength="2"
 <LinearLayout
 
     android:layout_width="wrap_content"
-    android:layout_below="@+id/quantity"
+    android:layout_below="@+id/imageHolderLayout"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/linearLayout">

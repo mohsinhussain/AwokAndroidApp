@@ -1,6 +1,7 @@
 package com.awok.moshin.awok.Activities;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -36,11 +37,16 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.awok.moshin.awok.Fragments.BundleOffersFragment;
 import com.awok.moshin.awok.Fragments.CategoriesFragment;
@@ -61,6 +67,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
@@ -75,6 +82,7 @@ private DrawerLayout mDrawerLayout;
     SharedPreferences mSharedPrefs;
     SearchView searchView;
     MenuItem searchItem;
+    ProgressBar progressBarLogout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +146,32 @@ private DrawerLayout mDrawerLayout;
                         startActivity(j);
                         mDrawerLayout.closeDrawers();
                         return true;
+                    case R.id.navigation_Logout:
+                        final Dialog logoutDialog = new Dialog(MainActivity.this, R.style.AppCompatAlertDialogStyle);
+                        logoutDialog.setCancelable(true);
+                        logoutDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        logoutDialog.setContentView(R.layout.dialog_logout);
+                        Button cancelButton = (Button) logoutDialog.findViewById(R.id.cancelButton);
+                        Button logoutButton = (Button) logoutDialog.findViewById(R.id.logoutButton);
+                        progressBarLogout = (ProgressBar) logoutDialog.findViewById(R.id.load_progress_bar);
+                        // if button is clicked, close the custom dialog
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                logoutDialog.dismiss();
+                            }
+                        });
+                        logoutButton .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String mobileNumber = mSharedPrefs.getString(Constants.USER_MOBILE_PREFS, null);
+                                new APIClient(MainActivity.this, MainActivity.this, new logoutUserCallback()).userLogoutAPICall(mobileNumber);
+                            }
+                        });
+
+                        logoutDialog.show();
+                        logoutDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
 
                     case R.id.navigation_settings:
                         Intent k=new Intent(MainActivity.this,Settings.class);
@@ -192,6 +226,40 @@ private DrawerLayout mDrawerLayout;
         }
     }
 
+    public class logoutUserCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject obj = new JSONObject(response);
+                if(obj.getBoolean("errors")) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getString("message"), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                else{
+                    SharedPreferences.Editor editor = mSharedPrefs.edit();
+                    editor.clear();
+                    editor.commit();
+                    Intent i = new Intent(MainActivity.this, SplashActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+                progressBarLogout.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressBarLogout.setVisibility(View.GONE);
+            }
+
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+            progressBar.setVisibility(View.VISIBLE);
+
+        }
+    }
 
     public class GetCategoriesCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
@@ -245,7 +313,6 @@ private DrawerLayout mDrawerLayout;
             for (int i = 0; i < size; i++){
                 adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId()), categoriesArrayList.get(i).getName());
             }
-
         }
 
         viewPager.setAdapter(adapter);

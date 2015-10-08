@@ -131,51 +131,6 @@ public class SplashActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
             public void onClick(View v) {
-//                AlertDialog.Builder builderSingle = new AlertDialog.Builder(
-//                        SplashActivity.this, R.style.AppCompatAlertDialogStyle);
-////                builderSingle.setIcon(R.drawable.ic_launcher);
-//                builderSingle.setTitle("Select your country code");
-//                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-//                        SplashActivity.this,
-//                        android.R.layout.simple_list_item_1);
-//                arrayAdapter.addAll(countryCodes);
-//                builderSingle.setNegativeButton("cancel",
-//                        new DialogInterface.OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//
-//                builderSingle.setAdapter(arrayAdapter,
-//                        new DialogInterface.OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                String strName = arrayAdapter.getItem(which);
-//                                Log.v("", "Selected Country Code: " + strName);
-//                                countryCodeButton.setText(countryCodeNumbers.get(which));
-////                                AlertDialog.Builder builderInner = new AlertDialog.Builder(
-////                                        RegisterActivity.this);
-////                                builderInner.setMessage(strName);
-////                                builderInner.setTitle("Your Selected Item is");
-////                                builderInner.setPositiveButton("Ok",
-////                                        new DialogInterface.OnClickListener() {
-////
-////                                            @Override
-////                                            public void onClick(
-////                                                    DialogInterface dialog,
-////                                                    int which) {
-////                                                dialog.dismiss();
-////                                            }
-////                                        });
-////                                builderInner.show();
-//                            }
-//                        });
-//                builderSingle.show();
-
-
                 //show login dialog
                 final Dialog countryCodeDialog = new Dialog(SplashActivity.this, R.style.AppCompatAlertDialogStyle);
                 countryCodeDialog.setCancelable(true);
@@ -244,6 +199,7 @@ public class SplashActivity extends AppCompatActivity {
                 else{
                     password = regPasswordEditText.getText().toString();
                     HashMap<String, Object> userData = new HashMap<String, Object>();
+
                     userData.put("phone_number", mobileNumber);
                     userData.put("access_key", password);
 
@@ -407,28 +363,6 @@ public class SplashActivity extends AppCompatActivity {
                 countryCodes.add(list.get(i)[0] + " +" + list.get(i)[1]); // gets calling code
 
             }
-
-
-//        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(this, R.layout.list_row_country_code_spinner, countryCodes);
-//        countryCodeSpinner.setAdapter(countryAdapter);
-//
-//// adding event to display codes when country is selected
-//
-//
-//        countryCodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> arg0, View arg1,
-//                                       int pos, long arg3) {
-//                countrycodeString = "+"+list.get(pos)[1];
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> arg0) {
-//                // TODO Auto-generated method stub
-//
-//            }
-//        });
         }
 
     public class loginAndRegisterUserCallback extends AsyncCallback {

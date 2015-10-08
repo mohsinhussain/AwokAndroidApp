@@ -222,11 +222,7 @@ main=(RelativeLayout)itemLayoutView
 
 
 
-    private Bitmap base64ToBitmap(String imageString) {
-        byte[] imageAsBytes = Base64.decode(imageString.getBytes(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
-    }
     private void hideSoftKeyboard(){
         InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.
                 INPUT_METHOD_SERVICE);

@@ -14,9 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.Models.OrderSummary;
 import com.awok.moshin.awok.R;
@@ -204,7 +209,7 @@ this.OverViewList=overViewListData;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int position) {
         if(OverViewList.get(position).getSellerLabel().equals(sellerChecZ)) {
 
             System.out.println("FIRST sellerChecZ"+sellerChecZ);
@@ -217,15 +222,42 @@ this.OverViewList=overViewListData;
             viewHolder.sellerMainLay.setVisibility(View.GONE);
             viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
             viewHolder.seperator.setVisibility(View.VISIBLE);
-            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
+//            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+//            if(OverViewList.get(position).getImageBitmapString()!=null && !OverViewList.get(position).getImageBitmapString().equalsIgnoreCase("")){
+//                viewHolder.productImg.setImageUrl(OverViewList.get(position).getImageBitmapString(), imageLoader);
+//            }
+//            else{
+//                viewHolder.productImg.setImageDrawable(mcontext.getResources().getDrawable((R.drawable.default_img)));
+//            }
+
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            imageLoader.get(OverViewList.get(position).getImageBitmapString(), new ImageLoader.ImageListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    viewHolder.productImg.setImageDrawable(activity.getResources().getDrawable(R.drawable.default_img));
+                    viewHolder.loadProgressBar.setVisibility(View.GONE);
+                }
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+                        // load image into imageview
+                        viewHolder.productImg.setImageBitmap(response.getBitmap());
+                        viewHolder.loadProgressBar.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+//            viewHolder.productImg.setImageUrl(OverViewList.get(position).getImageBitmapString(), imageLoader);
+//            viewHolder.productImg.setErrorImageResId(R.drawable.default_img);
+//            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
             sellerChecZ=OverViewList.get(position).getSellerLabel();
         }
         else
         {
 
             System.out.println("SECOND sellerChecZ"+sellerChecZ);
-            System.out.println("SECOND OverViewList"+OverViewList.get(position).getSellerLabel());
-            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText()+ " AED");
+            System.out.println("SECOND OverViewList" + OverViewList.get(position).getSellerLabel());
+            viewHolder.prodOverViewText.setText(OverViewList.get(position).getOverViewText() + " AED");
             viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
             viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
             viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
@@ -233,7 +265,32 @@ this.OverViewList=overViewListData;
             viewHolder.sellerLabel.setText("Seller Name : " + OverViewList.get(position).getSellerLabel());
             viewHolder.sellerMainLay.setVisibility(View.VISIBLE);
             viewHolder.seperator.setVisibility(View.GONE);
-            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
+//            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+//            viewHolder.productImg.setImageUrl(OverViewList.get(position).getImageBitmapString(), imageLoader);
+//            viewHolder.productImg.setErrorImageResId(R.drawable.default_img);
+//            if(OverViewList.get(position).getImageBitmapString()!=null && !OverViewList.get(position).getImageBitmapString().equalsIgnoreCase("")){
+//                viewHolder.productImg.setImageUrl(OverViewList.get(position).getImageBitmapString(), imageLoader);
+//            }
+//            else{
+//                viewHolder.productImg.setImageDrawable(activity.getResources().getDrawable((R.drawable.default_img)));
+//            }
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            imageLoader.get(OverViewList.get(position).getImageBitmapString(), new ImageLoader.ImageListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    viewHolder.productImg.setImageDrawable(activity.getResources().getDrawable(R.drawable.default_img));
+                    viewHolder.loadProgressBar.setVisibility(View.GONE);
+                }
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+                        // load image into imageview
+                        viewHolder.productImg.setImageBitmap(response.getBitmap());
+                        viewHolder.loadProgressBar.setVisibility(View.GONE);
+                    }
+                }
+            });
+//            viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
 
 
             sellerChecZ=OverViewList.get(position).getSellerLabel();
@@ -253,8 +310,10 @@ this.OverViewList=overViewListData;
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         public View seperator;
-        public ImageView cross, productImg;
+        public ImageView cross;
+        public ImageView productImg;
         public TextView quantity;
+        public ProgressBar loadProgressBar;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -275,7 +334,7 @@ this.OverViewList=overViewListData;
             productImg = (ImageView) itemLayoutView
 
                     .findViewById(R.id.mainImg);
-
+            loadProgressBar = (ProgressBar)itemLayoutView.findViewById(R.id.load_progress_bar);
 
             quantity = (TextView) itemLayoutView
                     .findViewById(R.id.quantity);
@@ -291,6 +350,7 @@ this.OverViewList=overViewListData;
     private void hideSoftKeyboard(){
         InputMethodManager imm = (InputMethodManager)mcontext.getSystemService(Context.
                 INPUT_METHOD_SERVICE);
+
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 
     }
