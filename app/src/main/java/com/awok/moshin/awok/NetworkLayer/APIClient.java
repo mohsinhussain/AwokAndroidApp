@@ -75,7 +75,7 @@ public class APIClient {
 
     public void productDetailsAPICall(String productId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/ahmed/api/webapi/public/products/show/" + productId, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/show/" + productId, "GET", null);
     }
 
     public void addToCartAPICall(String dataToSend) {

@@ -269,7 +269,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 //                System.out.println("COOLGBDJH" + productDetails.getName());
 //                String prodDesc=mMembersJSON.getString("description");
 //                productOverview.setOverViewTitle(prodDesc);
-                image=mMembersJSON.getString("image_url");
+                image=mMembersJSON.getString("image");
                 baseImage=mMembersJSON.getString("image");
                 mCustomPagerAdapter.notifyDataSetChanged();
 //                if(getApplicationContext()!=null){

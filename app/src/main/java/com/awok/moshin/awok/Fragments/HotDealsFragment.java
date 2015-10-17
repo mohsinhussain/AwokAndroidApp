@@ -115,7 +115,7 @@ public class HotDealsFragment extends Fragment {
                 Color.YELLOW);
 
 
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(false);
 
         final StaggeredGridLayoutManager mLayoutManager;
         mLayoutManager = new StaggeredGridLayoutManager(2,  1);
