@@ -43,84 +43,84 @@ public class APIClient {
 
     public void allProductsAPICall(int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/ahmed/api/webapi/public/products/getPaginatedProducts/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/ahmed/api/webapi/public/products/getPaginatedProducts/"+pageCount, "GET", null);
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
     }
 
     public void productsFromSearchAPICall(String searchFilter, int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/setti/api/search/index/"+searchFilter+"/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/setti/api/search/index/"+searchFilter+"/"+pageCount, "GET", null);
     }
 
     public void productsFromCategoryAPICall(String categoryId, int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/ahmed/api/webapi/public/products/getPaginatedProductsByCategory/"+categoryId+"/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/ahmed/api/webapi/public/products/getPaginatedProductsByCategory/"+categoryId+"/"+pageCount, "GET", null);
     }
 
     public void cartItemsCallBack(String userId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+userId+"/summary/", "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/khalid/api/cart/"+userId+"/summary/", "GET", null);
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
     }
 
     public void removeProductFromCartCall(String cartId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+cartId+"/", "DELETE", null);
+        mTask.execute(mContext, "http://172.31.23.207/khalid/api/cart/"+cartId+"/", "DELETE", null);
     }
 
     public void categoriesAPICall() {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/setti/api/sections", "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/setti/api/sections", "GET", null);
     }
 
     public void productDetailsAPICall(String productId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/ahmed/api/webapi/public/products/show/" + productId, "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/ahmed/api/webapi/public/products/show/" + productId, "GET", null);
     }
 
     public void addToCartAPICall(String dataToSend) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/cart/", "POST", dataToSend);
+        mTask.execute(mContext, "http://172.31.23.207/khalid/api/cart/", "POST", dataToSend);
 
     }
     public void updateCart(String dataToSend,String updateId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+updateId+"/", "PUT", dataToSend);
+        mTask.execute(mContext, "http://172.31.23.207/khalid/api/cart/"+updateId+"/", "PUT", dataToSend);
     }
     public void userCheckAPICall(String phoneNumber) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/bengalua/check/" + phoneNumber, "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/bengalua/check/" + phoneNumber, "GET", null);
     }
 
     public void userForgotPassword(String dataToSend) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/bengalua/forgot_password/", "POST", dataToSend);
+        mTask.execute(mContext, "http://172.31.23.207/bengalua/forgot_password/", "POST", dataToSend);
     }
 
     public void userLoginAPICall(String dataToSend) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/bengalua/login/", "POST", dataToSend);
+        mTask.execute(mContext, "http://172.31.23.207/bengalua/login/", "POST", dataToSend);
     }
 
     public void useRegisterAPICall(String dataToSend) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/bengalua/register/", "POST", dataToSend);
+        mTask.execute(mContext, "http://172.31.23.207/bengalua/register/", "POST", dataToSend);
     }
 
     public void userLogoutAPICall(String phoneNumber) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/bengalua/logout/" + phoneNumber, "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/bengalua/logout/" + phoneNumber, "GET", null);
     }
 
     public void OrderCheckOutCallBack(String dataToSend) {
 
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/order/", "POST", dataToSend);
+        mTask.execute(mContext, "http://172.31.23.207/khalid/api/order/", "POST", dataToSend);
     }
 
     public void OrderHistoryItemsCallBack(String userId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+userId+"/my-orders/", "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/khalid/api/order/"+userId+"/my-orders/", "GET", null);
     }
 
     public void OrderHistoryDetailsItemsCallBack(String orderId) {
@@ -128,8 +128,34 @@ public class APIClient {
 
 
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+orderId+"/", "GET", null);
+        mTask.execute(mContext, "http://172.31.23.207/khalid/api/order/"+orderId+"/", "GET", null);
 
+    }
+
+    public void addressCallBack(String user_id) {
+
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://172.31.23.207/setti/api/addresses/index/"+user_id, "GET", null);
+    }
+
+    public void countryCallBack() {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://172.31.23.207/setti/api/locations/index/", "GET", null);
+    }
+
+    public void StateCallBack(String country_id) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://172.31.23.207/setti/api/locations/index/"+country_id, "GET", null);
+    }
+
+    public void CityCallBack(String state_id) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://172.31.23.207/setti/api/locations/index/"+state_id, "GET", null);
+    }
+
+    public void addAddressCallBack(String userId,String dataToSend) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/addresses/index/"+userId, "POST", dataToSend);
     }
 
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {

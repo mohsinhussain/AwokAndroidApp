@@ -66,7 +66,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     ProductDetailsModel productDetails=new ProductDetailsModel();
     ProductOverview productOverview=new ProductOverview();
     private TextView prodNewPrice,prodOldPrice;
-    private Button buyNow;
+    private Button buyNow,save;
     Map<String,String> productSpec = new HashMap<String,String>();
     private String imageData;
     String productId,productName, newPrice, oldPrice, image, description;
@@ -95,6 +95,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         Log.v("Product DetailView", productId);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
+
 
 
         //productD.setName("COOL");
@@ -187,6 +188,7 @@ public void setUpTab()
     }
 
     tabLayout = (TabLayout) findViewById(R.id.tabs);
+    //tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#cd2127"));
     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     tabLayout.setupWithViewPager(viewPager);
 }

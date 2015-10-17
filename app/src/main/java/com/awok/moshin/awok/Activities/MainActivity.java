@@ -122,6 +122,8 @@ private DrawerLayout mDrawerLayout;
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabTextColors(getResources().getColor(R.color.primary),getResources().getColor(R.color.primary_dark));
+
 //        tabLayout.setupWithViewPager(viewPager);
 
 
@@ -318,6 +320,10 @@ private DrawerLayout mDrawerLayout;
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
+
+
+        //adapter.getItem(1).getFragmentManager().beginTransaction().replace(viewPager.getc, fragment).commit();
+
     }
 
 

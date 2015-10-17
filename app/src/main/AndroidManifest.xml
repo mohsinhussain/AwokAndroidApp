@@ -152,6 +152,15 @@
             android:name=".Activities.CurrencyPickActivity"
             android:label="@string/title_activity_currency_pick" >
         </activity>
+        <activity
+            android:name=".Activities.ShippingAddressActivity"
+            android:label="@string/title_activity_shipping_address" >
+        </activity>
+        <activity
+            android:name=".Activities.AddNewAddress"
+            android:windowSoftInputMode="stateAlwaysVisible"
+            android:label="@string/title_activity_add_new_address" >
+        </activity>
     </application>
 
 </manifest>

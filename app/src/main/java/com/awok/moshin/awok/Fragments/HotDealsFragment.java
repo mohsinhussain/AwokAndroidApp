@@ -1,28 +1,39 @@
 package com.awok.moshin.awok.Fragments;
 
 
+import android.annotation.TargetApi;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.awok.moshin.awok.Activities.FilterActivity;
 import com.awok.moshin.awok.Activities.ProductDetailsActivity;
 import com.awok.moshin.awok.Adapters.HotDealsAdapter;
 import com.awok.moshin.awok.Models.Products;
@@ -68,6 +79,23 @@ public class HotDealsFragment extends Fragment {
         this.categoryId = categoryId;
     }
 
+   /* public boolean onCreateOptionsMenu(Menu menu) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                System.out.println("CLICLED ITEM");
+                return true;
+            case R.id.app_cart:
+                System.out.println("CLICLED ITEM");
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
 
     public HotDealsFragment(String searchString, boolean isSearch)
     {
@@ -80,6 +108,7 @@ public class HotDealsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_hot_deals, container, false);
+        //setHasOptionsMenu(true);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.dealsRecyclerView);
         mainLayout=(LinearLayout)mView.findViewById(R.id.progressLay);
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);

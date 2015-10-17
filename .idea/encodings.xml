@@ -6,7 +6,6 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/awok/moshin/awok/Models/Country.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/awok/moshin/awok/Util/CountryPicker.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/awok/moshin/awok/Util/CountryPickerListener.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/drawable-hdpi" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/flag_ac.png" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/flag_ad.png" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/flag_ae.png" charset="windows-1252" />
@@ -256,6 +255,18 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/flag_za.png" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/flag_zm.png" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/flag_zw.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/images_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/share_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/wish_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/images_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/share_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/wish_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/images_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/share_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/wish_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/images_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/share_icon.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/wish_icon.png" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_country_picker.xml" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/country_picker.xml" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/country_row.xml" charset="windows-1252" />
