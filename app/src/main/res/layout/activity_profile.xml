@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/orderSummaryMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_content"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <!--<android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginStart="48dp"
+                app:expandedTitleMarginEnd="64dp">-->
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways"/>
+
+            <!--</android.support.design.widget.CollapsingToolbarLayout>-->
+        </android.support.design.widget.AppBarLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+   <!-- <android.support.v4.widget.NestedScrollView
+        android:layout_below="@+id/main_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomLay"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/main_content"
+        android:layout_height="match_parent">
+
+        <!--<android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp">-->
+
+    <RelativeLayout
+        android:id="@+id/profileParentLayout"
+        android:background="@color/gray_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:src="@drawable/sony"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:elevation="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="24dp"
+                android:layout_alignParentLeft="true"
+                />
+
+            <TextView
+                android:id="@+id/fullNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"
+                android:layout_alignTop="@+id/avatar"
+                android:layout_toRightOf="@+id/avatar"
+                android:textColor="@color/button_text"
+                android:layout_height="wrap_content"
+                android:text="Mohsin Hussain Butt"
+                />
+            <TextView
+                android:id="@+id/locationTextView"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textSize="16sp"
+                android:layout_below="@+id/fullNameTextView"
+                android:layout_toRightOf="@+id/avatar"
+                android:textColor="@color/profile_location_text_color"
+                android:layout_height="wrap_content"
+                android:text="Dubai, UAE"
+                />
+
+            <TextView
+                android:id="@+id/followingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Following 155"
+                android:textSize="14sp"
+                android:textColor="@color/profile_followers_text_color"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/avatar"
+                android:layout_alignBottom="@+id/avatar"
+                />
+
+            <TextView
+                android:id="@+id/followersTextView"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content"
+                android:text="Followers 1,136"
+                android:textSize="14sp"
+                android:textColor="@color/profile_followers_text_color"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/followingTextView"
+                android:layout_alignBottom="@+id/avatar"
+                />
+
+    </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/profileMenuLayout"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_below="@+id/profileParentLayout"
+            android:background="@color/button_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+                <ImageView
+                    android:id="@+id/messagesImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/messages_icon"/>
+                <TextView
+                    android:text="@string/messages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/messagesImageView"
+                    android:textSize="16sp"
+                    android:textColor="@color/normal_text"/>
+                <TextView
+                    android:id="@+id/messagesCountTextView"
+                    android:text="9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/border"></RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+                <ImageView
+                    android:id="@+id/notificationsImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/notification_icon"/>
+                <TextView
+                    android:text="@string/notifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/notificationsImageView"
+                    android:textSize="16sp"
+                    android:textColor="@color/normal_text"/>
+                <TextView
+                    android:id="@+id/notificationsValueTextView"
+                    android:text="3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/border"></RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/myOrdersImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/myorder_icon" />
+                <TextView
+                    android:text="@string/my_orders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/myOrdersImageView"
+                    android:textSize="16sp"
+                    android:textColor="@color/normal_text"/>
+                <TextView
+                    android:id="@+id/myOrdersValueTextView"
+                    android:text="No Orders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textSize="18sp"
+                    android:textColor="@color/input_hint"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/border"></RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/paymentImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/payment_method_icon" />
+                <TextView
+                    android:text="@string/payment_method"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/paymentImageView"
+                    android:textSize="16sp"
+                    android:textColor="@color/normal_text"/>
+                <TextView
+                    android:id="@+id/paymentValueTextView"
+                    android:text="Paypal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textSize="18sp"
+                    android:textColor="@color/input_hint"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/border"></RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+                <ImageView
+                    android:id="@+id/shippingAddressImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/shipping_address_icon" />
+                <TextView
+                    android:text="@string/shipping_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/shippingAddressImageView"
+                    android:textSize="16sp"
+                    android:textColor="@color/normal_text"/>
+                <ImageView
+                    android:id="@+id/shippingDetailIconImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/navdot_icon" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/border"></RelativeLayout>
+
+        </LinearLayout>
+
+
+    <!--</android.support.v7.widget.CardView>-->
+
+
+        <!--<android.support.v7.widget.RecyclerView
+                android:id="@+id/overViewRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_below="@+id/headerCart"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+                android:scrollbars="none" />-->
+
+</RelativeLayout>
+
+<!--
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+-->
+
+    <!--</android.support.v4.widget.NestedScrollView>-->
+
+
+    </RelativeLayout>
+    <ProgressBar android:indeterminate="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="50dp" android:layout_height="50dp"
+        android:id="@+id/marker_progress" android:background ="@drawable/progress"
+        android:layout_gravity="center"
+         />
+    <TextView
+        android:id="@+id/error_text"
+        android:text="Oops.. Something went wrong"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#3e3e3e"
+        android:layout_centerHorizontal="true"
+        android:layout_height="match_parent"
+       />
+</RelativeLayout>
+
+
+
+
+
+
+

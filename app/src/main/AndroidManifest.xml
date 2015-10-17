@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.awok.moshin.awok" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.awok.moshin.awok">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-sdk tools:overrideLibrary="com.liangfeizc.flowlayout" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
         android:name=".AppController"
@@ -81,6 +85,15 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+
+        <activity android:name="me.iwf.photopicker.PhotoPickerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
+
+        <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+
         <activity
             android:name=".Activities.PaymentMethodActivity"
             android:label="@string/payment_method_activity"
@@ -125,6 +138,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".Activities.ProfileActivity"
+            android:label="@string/title_activity_order_summary"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".Activities.FragmentFullScreenImage"
             android:label="@string/title_activity_order_summary" >
         </activity>
@@ -138,6 +156,10 @@
         </activity>
         <activity
             android:name=".Fragments.ShippingDeliveryFrag"
+            android:label="@string/title_activity_shipping_delivery_frag" >
+        </activity>
+        <activity
+            android:name=".Activities.EditProfileActivity"
             android:label="@string/title_activity_shipping_delivery_frag" >
         </activity>
         <activity

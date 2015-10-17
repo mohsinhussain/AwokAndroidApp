@@ -17,6 +17,14 @@
     <string name="country_code_header">Country Code</string>
     <string name="copyright">&#169; Copyright 2015 Awok.com, All Rights Reserved.</string>
 
+    <string name="messages">Messages</string>
+    <string name="notifications">Notifications</string>
+    <string name="my_orders">My Orders</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="shipping_address">Shipping Address</string>
+
+    <string name="profile_picture">Profile Picture</string>
+
 
     <string name="login">LOGIN</string>
     <string name="enter_password_to_login">Please enter your password to login.</string>
@@ -57,10 +65,13 @@ Introducing the world’s first 4K smartphone</string>
     <string name="create_your_account">Lets create your account</string>
     <string name="full_name">Full Name</string>
     <string name="your_email_address">Your Email Address</string>
+    <string name="dateOfBirth">Date of Birth</string>
+    <string name="gender">Gender</string>
+    <string name="save">SAVE</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="create_account">CREATE ACCOUNT</string>
 
-
+    <string name="enter_your_full_name">Enter your full name</string>
     <string name="full_name_on_card">Full Name on a Card</string>
     <string name="card_number">Card Number</string>
     <string name="card_digits">(The 16 digits on front of your card)</string>
@@ -83,6 +94,15 @@ Introducing the world’s first 4K smartphone</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_launcher">LauncherActivity</string>
+    <string name="gender_prompt">Select Gender</string>
+
+    <string-array name="gender_array">
+
+        <item>Male</item>
+
+        <item>Female</item>
+
+    </string-array>
 
 
 
