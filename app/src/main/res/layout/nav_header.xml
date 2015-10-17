@@ -4,11 +4,9 @@
     android:layout_height="192dp"
     android:gravity="bottom"
     android:background="@drawable/navigation_top_bg"
-
-
     android:orientation="vertical"
-
     android:padding="5dp"
+    android:id="@+id/navHeaderBackground"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
@@ -18,10 +16,10 @@
 
     <ImageView
         android:id="@+id/avatar"
-android:src="@drawable/sony"
+        android:src="@drawable/sony"
         android:layout_width="80dp"
         android:layout_height="80dp"
-android:layout_marginLeft="10dp"
+        android:layout_marginLeft="10dp"
         android:elevation="4dp"
         />
 

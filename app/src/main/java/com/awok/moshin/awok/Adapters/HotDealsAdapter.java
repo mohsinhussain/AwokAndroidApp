@@ -38,21 +38,21 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_item, parent, false);
         ItemViewHolder pvh = new ItemViewHolder(v);
         return pvh;
     }
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int i) {
-        holder.nameTextView.setText(items.get(i).getName());
+//        holder.nameTextView.setText(items.get(i).getName());
         holder.priceTextView.setText(items.get(i).getPriceNew());
 
         final int viewType = getItemViewType(i);
         switch (viewType) {
             case ITEM_WITH_DISCOUNT:
                 holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
-                holder.oldPriceTextView.setText(items.get(i).getPriceOld());
+//                holder.oldPriceTextView.setText(items.get(i).getPriceOld());
 //                holder.discountTextView.setRotation();
 
 //                holder.endsInTextView.setText("Ends in " + items.get(i).getH() + "h " + items.get(i).getI() + "m " + items.get(i).getS() + "s");
@@ -60,25 +60,25 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
             case ITEM_WITHOUT_DISCOUNT:
                 holder.discountTextView.setVisibility(View.GONE);
 //                holder.endsInTextView.setVisibility(View.GONE);
-                holder.oldPriceTextView.setVisibility(View.GONE);
+//                holder.oldPriceTextView.setVisibility(View.GONE);
                 break;
             default:
                 // Blow up in whatever way you choose.
         }
 
-        float init = 0;
-        float rotate = 315;
+//        float init = 0;
+//        float rotate = 315;
 
-        if (Build.VERSION.SDK_INT < 11) {
-
-            RotateAnimation animation = new RotateAnimation(init, rotate);
-            animation.setDuration(100);
-            animation.setFillAfter(true);
-            holder.discountTextView.startAnimation(animation);
-        } else {
-
-            holder.discountTextView.setRotation(rotate);
-        }
+//        if (Build.VERSION.SDK_INT < 11) {
+//
+//            RotateAnimation animation = new RotateAnimation(init, rotate);
+//            animation.setDuration(100);
+//            animation.setFillAfter(true);
+//            holder.discountTextView.startAnimation(animation);
+//        } else {
+//
+//            holder.discountTextView.setRotation(rotate);
+//        }
 
 
 //        if(!items.get(i).getPriceOld().equalsIgnoreCase("0 AED")){
@@ -155,9 +155,9 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         CardView mCardView;
-        TextView nameTextView;
+//        TextView nameTextView;
         TextView priceTextView;
-        TextView oldPriceTextView;
+//        TextView oldPriceTextView;
         TextView discountTextView;
         ImageView itemImageView;
         LinearLayout container;
@@ -167,9 +167,9 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         ItemViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView)itemView.findViewById(R.id.cv);
-            nameTextView = (TextView)itemView.findViewById(R.id.nameTextView);
+//            nameTextView = (TextView)itemView.findViewById(R.id.nameTextView);
             priceTextView = (TextView)itemView.findViewById(R.id.priceTextView);
-            oldPriceTextView = (TextView)itemView.findViewById(R.id.oldPriceTextView);
+//            oldPriceTextView = (TextView)itemView.findViewById(R.id.oldPriceTextView);
             discountTextView = (TextView)itemView.findViewById(R.id.percentTextView);
             loadProgressBar = (ProgressBar)itemView.findViewById(R.id.load_progress_bar);
             itemImageView = (ImageView)itemView.findViewById(R.id.itemImageView);

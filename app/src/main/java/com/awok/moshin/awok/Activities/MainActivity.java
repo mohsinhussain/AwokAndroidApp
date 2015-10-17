@@ -46,6 +46,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Fragments.BundleOffersFragment;
@@ -83,6 +84,9 @@ private DrawerLayout mDrawerLayout;
     SearchView searchView;
     MenuItem searchItem;
     ProgressBar progressBarLogout;
+    boolean isFilter;
+    Adapter adapter;
+    RelativeLayout navHeaderLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +106,7 @@ private DrawerLayout mDrawerLayout;
         Picasso.with(this).load(R.drawable.textimg).transform(new CircleTransformation()).into(img);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+        navHeaderLayout = (RelativeLayout) findViewById(R.id.navHeaderBackground);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -111,6 +115,7 @@ private DrawerLayout mDrawerLayout;
             setupDrawerContent(navigationView);
         }
 
+        isFilter = false;
 
 
 
@@ -123,6 +128,16 @@ private DrawerLayout mDrawerLayout;
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 //        tabLayout.setupWithViewPager(viewPager);
+
+
+        navHeaderLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(i);
+            }
+        });
+
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -202,7 +217,6 @@ private DrawerLayout mDrawerLayout;
                 for(int i=0;i<length;i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     categoriesArrayList.add(new Categories(jsonObject.getString("id"), jsonObject.getString("name"), jsonObject.getString("parent")));
-
                 }
                 initializeData();
             } catch (JSONException e) {
@@ -305,7 +319,7 @@ private DrawerLayout mDrawerLayout;
 
 
     private void initializeData(){
-        Adapter adapter = new Adapter(getSupportFragmentManager());
+        adapter = new Adapter(getSupportFragmentManager());
         if(viewPager!=null){
             adapter.addFragment(new HotDealsFragment(), "ALL ITEMS");
             int size = categoriesArrayList.size();
@@ -359,8 +373,12 @@ private DrawerLayout mDrawerLayout;
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
                    case R.id.app_cart:
-                       Intent i=new Intent(this,FilterActivity.class);
-                       startActivity(i);
+                       isFilter = true;
+                       adapter.notifyDataSetChanged();
+
+
+//                       Intent i=new Intent(this,FilterActivity.class);
+//                       startActivity(i);
 
         }
         return super.onOptionsItemSelected(item);
@@ -414,7 +432,7 @@ private DrawerLayout mDrawerLayout;
 
 
 
-    static class Adapter extends FragmentPagerAdapter {
+    class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
 
@@ -427,18 +445,33 @@ private DrawerLayout mDrawerLayout;
             mFragmentTitles.add(title);
         }
 
+
+
+
+
+
         @Override
         public Fragment getItem(int position) {
-            return mFragments.get(position);
+
+            if(isFilter){
+                Log.v("MainActivity", "Show filter");
+                return mFragments.get(position);
+            }
+            else{
+                return mFragments.get(position);
+            }
+
         }
 
         @Override
         public int getCount() {
+
             return mFragments.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
+
             return mFragmentTitles.get(position);
         }
     }

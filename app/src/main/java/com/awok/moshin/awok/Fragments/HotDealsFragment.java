@@ -13,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,8 +117,8 @@ public class HotDealsFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(true);
 
-        final LinearLayoutManager mLayoutManager;
-        mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        final StaggeredGridLayoutManager mLayoutManager;
+        mLayoutManager = new StaggeredGridLayoutManager(2,  1);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.addOnItemTouchListener(
@@ -163,8 +164,10 @@ public class HotDealsFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 visibleItemCount = mRecyclerView.getChildCount();
                 totalItemCount = mLayoutManager.getItemCount();
-                firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
-                lastVisibleItem = mLayoutManager.findLastCompletelyVisibleItemPosition();
+                int [] x = mLayoutManager.findFirstCompletelyVisibleItemPositions(null);
+                firstVisibleItem = x[0];
+                int [] m = mLayoutManager.findLastCompletelyVisibleItemPositions(null);
+                lastVisibleItem = m[0];
 
                 if(firstVisibleItem<=6){
                     //Hide GO TO TOP
@@ -302,6 +305,7 @@ public class HotDealsFragment extends Fragment {
     public class GetProductsCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
+                JSONObject mainObject  = null;
                 JSONArray jsonArray = null;
                 if (isSearch){
                     JSONObject obj = new JSONObject(response);
@@ -340,7 +344,8 @@ public class HotDealsFragment extends Fragment {
                     }
                 }
                 else{
-                    jsonArray = new JSONArray(response);
+                    mainObject = new JSONObject(response);
+                    jsonArray = mainObject.getJSONArray("items");
                 }
 
 //                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
@@ -350,14 +355,14 @@ public class HotDealsFragment extends Fragment {
                     for(int i=0;i<length;i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Products item = new Products();
-                        item.setId(jsonObject.getString("id"));
+                        item.setId(jsonObject.getJSONObject("_id").getString("$id"));
                         item.setName(jsonObject.getString("name"));
                         item.setImage(jsonObject.getString("image"));
                         item.setCategoryId(jsonObject.getString("category_id"));
-                        item.setPriceNew(jsonObject.getInt("new_price"));
-                        item.setPriceOld(jsonObject.getInt("original_price"));
+                        item.setPriceNew(jsonObject.getJSONObject("discount").getInt("discount_price"));
+                        item.setPriceOld(jsonObject.getInt("price"));
                         item.setDescription(jsonObject.getString("description"));
-                        item.setDiscPercent(jsonObject.getInt("discount_percentage"));
+                        item.setDiscPercent(jsonObject.getJSONObject("discount").getInt("discount_percentage"));
 //                    if (priceObject.getInt("PRICE_OLD")!=0){
 //                        item.setDiscPercent(priceObject.getInt("PERCENT"));
 //                    }

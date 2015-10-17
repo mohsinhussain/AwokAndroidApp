@@ -43,7 +43,7 @@ public class APIClient {
 
     public void allProductsAPICall(int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/ahmed/api/webapi/public/products/getPaginatedProducts/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/index/"+pageCount, "GET", null);
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
     }
 
@@ -54,7 +54,7 @@ public class APIClient {
 
     public void productsFromCategoryAPICall(String categoryId, int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/ahmed/api/webapi/public/products/getPaginatedProductsByCategory/"+categoryId+"/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/getproductsbycategory/"+categoryId+"/"+pageCount, "GET", null);
     }
 
     public void cartItemsCallBack(String userId) {

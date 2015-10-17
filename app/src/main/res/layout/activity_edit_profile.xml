@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/orderSummaryMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <!--<android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginStart="48dp"
+                app:expandedTitleMarginEnd="64dp">-->
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways"/>
+
+            <!--</android.support.design.widget.CollapsingToolbarLayout>-->
+        </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
+   <!-- <android.support.v4.widget.NestedScrollView
+        android:layout_below="@+id/main_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomLay"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/main_content"
+        android:layout_height="match_parent">
+
+        <!--<android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp">-->
+
+    <RelativeLayout
+        android:id="@+id/profileParentLayout"
+        android:background="@color/button_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:src="@drawable/sony"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:elevation="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="24dp"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/profilePictureTextView"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="18sp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/header_text"
+                android:layout_height="wrap_content"
+                android:text="@string/always_low_prices"
+                />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/avatar"
+            android:background="@color/border"></RelativeLayout>
+
+    </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/profileMenuLayout"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_below="@+id/profileParentLayout"
+            android:background="@color/button_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/full_name" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/your_email_address" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:hint="@string/mobile_number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:hint="@string/dateOfBirth" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/gender" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button android:id="@+id/btn_save"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:background="@color/button_bg"
+                android:layout_marginTop="40dp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+
+    <!--</android.support.v7.widget.CardView>-->
+
+
+        <!--<android.support.v7.widget.RecyclerView
+                android:id="@+id/overViewRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_below="@+id/headerCart"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+                android:scrollbars="none" />-->
+
+</RelativeLayout>
+
+<!--
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+-->
+
+    <!--</android.support.v4.widget.NestedScrollView>-->
+
+
+    </RelativeLayout>
+    <ProgressBar android:indeterminate="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="50dp" android:layout_height="50dp"
+        android:id="@+id/marker_progress" android:background ="@drawable/progress"
+        android:layout_gravity="center"
+         />
+    <TextView
+        android:id="@+id/error_text"
+        android:text="Oops.. Something went wrong"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#3e3e3e"
+        android:layout_centerHorizontal="true"
+        android:layout_height="match_parent"
+       />
+</RelativeLayout>
+
+
+
+
+
+
+

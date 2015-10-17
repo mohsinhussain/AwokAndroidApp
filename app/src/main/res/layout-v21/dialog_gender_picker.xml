@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/dialog_bg"
+    android:id="@+id/parent"
+    android:layout_gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/headerTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/logout"
+        android:textColor="@color/header_text"/>
+    <TextView
+        android:id="@+id/msgTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_below="@+id/headerTextView"
+        android:text="@string/logout_confirmation"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/normal_text"/>
+
+    <LinearLayout
+        android:id="@+id/formLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/msgTextView"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="8dp"
+        android:orientation="vertical">
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:id="@+id/load_progress_bar"
+            android:indeterminateDrawable="@drawable/progress_bar_load_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/errorMessageTextView"
+            android:text="error"
+            android:textColor="@color/primary"
+            android:gravity="left"
+            android:visibility="gone"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_height="36dp"
+                android:layout_width="wrap_content"
+                android:padding="8dp"
+                android:background="@color/tranparent"
+                android:layout_marginRight="8dp"
+                android:text="@string/cancel"
+                android:textColor="@color/dialog_button_cancel"
+                android:textSize="16sp"
+                android:minWidth="0dp" />
+
+
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_height="36dp"
+                android:layout_width="wrap_content"
+                android:padding="8dp"
+                android:background="@color/tranparent"
+                android:text="@string/logout"
+                android:textColor="@color/dialog_button_yes"
+                android:textSize="16sp"
+                android:minWidth="0dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/snackHolder"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tranparent">
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>
