@@ -111,10 +111,9 @@ private DrawerLayout mDrawerLayout;
 
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.menu_icon);
-        ab.setTitle("Hello World");
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setDisplayShowTitleEnabled(true);
-//        ab.setLogo(R.drawable.awok_logo);
+        ab.setDisplayShowTitleEnabled(false);
+        ab.setLogo(R.drawable.awok_logo);
 //        ab.setIcon(R.drawable.menu_icon);
         img = (ImageView)findViewById(R.id.avatar);
         Picasso.with(this).load(R.drawable.textimg).transform(new CircleTransformation()).into(img);

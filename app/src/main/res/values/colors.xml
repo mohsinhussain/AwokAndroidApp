@@ -10,6 +10,7 @@
     <color name="button_text">#FFFFFF</color>
     <color name="link_text">#777777</color>
     <color name="tranparent">#0000</color>
+    <color name="red_base">#DE352E</color>
     <color name="dialog_bg">#f5f5f5</color>
     <color name="dialog_button_yes">#e64a19</color>
     <color name="dialog_button_cancel">#666666</color>

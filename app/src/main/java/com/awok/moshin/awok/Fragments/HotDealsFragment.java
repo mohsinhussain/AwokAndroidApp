@@ -76,6 +76,7 @@ public class HotDealsFragment extends Fragment {
     ArrayList<String> tagsFilterArray = new ArrayList<String>();
     ArrayList<String> colorFilterArray = new ArrayList<String>();
     ArrayList<String> priceFilterArray = new ArrayList<String>();
+    StaggeredGridLayoutManager mLayoutManager;
     String filterString = "";
     public HotDealsFragment(){}
 
@@ -194,7 +195,6 @@ public class HotDealsFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(false);
 
-        final StaggeredGridLayoutManager mLayoutManager;
         mLayoutManager = new StaggeredGridLayoutManager(2,  1);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -508,6 +508,8 @@ public class HotDealsFragment extends Fragment {
         if (pageCount==1){
             mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
             mRecyclerView.setAdapter(mAdapter);
+            mLayoutManager = new StaggeredGridLayoutManager(2,  1);
+            mRecyclerView.setLayoutManager(mLayoutManager);
         }
         else{
             mAdapter.notifyDataSetChanged();
