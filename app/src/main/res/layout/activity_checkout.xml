@@ -38,16 +38,19 @@ android:layout_above="@+id/bottomLay"
 <!--</android.support.design.widget.CollapsingToolbarLayout>-->
         </android.support.design.widget.AppBarLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/overViewRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_gravity="center"
-
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
 
-                android:scrollbars="none" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/overViewRecyclerView"
+            android:layout_width="match_parent"
+            android:paddingBottom="5dp"
+            android:layout_gravity="center"
+
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+            android:scrollbars="none" />
 
 
 <!--
@@ -57,7 +60,220 @@ android:layout_above="@+id/bottomLay"
 
 
         </android.support.design.widget.CoordinatorLayout>
+    <!--<android.support.v4.widget.NestedScrollView
+android:background="#fcfafa"
+        android:id="@+id/nestedScroll"
+        android:layout_below="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/bottomLay"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <RelativeLayout
+                android:gravity="center_vertical"
+
+
+                android:id="@+id/shippingHead"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/overViewRecyclerView"
+        android:layout_width="match_parent"
+
+        android:layout_gravity="center"
+
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+        android:scrollbars="none"
+         />
+
+    <RelativeLayout
+
+android:id="@+id/subtotal"
+       android:layout_below="@id/overViewRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+
+
+
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/edittext_color"/>
+        <LinearLayout
+            android:id="@+id/totalLayout"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:text="Total Items in Cart  "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+
+
+
+            <TextView
+                android:text="16"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/subtotalLay"
+            android:layout_below="@+id/totalLayout"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+
+
+
+
+
+            <TextView
+                android:text="Sub Total"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+
+            <TextView
+                android:text="AED 2000"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/shipLay"
+            android:layout_below="@+id/subtotalLay"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+
+
+
+
+            <LinearLayout
+
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:text="Shipping"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:text="United Arab Emirates >"
+                    android:padding="2dp"
+                    android:textSize="12dp"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:text="AED 30"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_below="@+id/shipLay"
+            android:id="@+id/totalLay"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+
+
+
+
+
+            <TextView
+                android:text="Total"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+
+            <TextView
+                android:text="AED 2000"
+                android:textColor="@color/primary"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/totalLay"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+                </RelativeLayout>
+            </android.support.v4.widget.NestedScrollView>-->
+
     <LinearLayout
+
         android:id="@+id/bottomLay"
 android:background="#FFFFFF"
         android:layout_width="match_parent"
@@ -65,7 +281,7 @@ android:background="#FFFFFF"
         android:layout_height="wrap_content"
 
         android:orientation="vertical">
-        <TextView
+       <!-- <TextView
             android:id="@+id/plate_header"
             android:layout_width="match_parent"
 android:layout_marginTop="10dp"
@@ -119,10 +335,11 @@ android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#333333" />
 
 
-        </LinearLayout>
+        </LinearLayout>-->
 
 
         <LinearLayout
+            android:background="#fcfafa"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -130,6 +347,7 @@ android:textAppearance="?android:attr/textAppearanceLarge"
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/checkout"
+                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

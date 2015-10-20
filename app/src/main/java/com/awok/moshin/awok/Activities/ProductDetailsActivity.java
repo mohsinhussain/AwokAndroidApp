@@ -242,13 +242,13 @@ public void setUpTab()
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new ProductOverViewFragment(productId, productName,image), "Overview");
-        adapter.addFragment(new HotDealsFragment(catId), "Related Products");
+
 
 
         adapter.addFragment(new ReviewsFragment(productName,image),"Reviews");
         adapter.addFragment(new ShippingDeliveryFrag(),"Shipping & Delivery");
 
-
+        adapter.addFragment(new HotDealsFragment(catId), "Related Products");
 
         adapter.addFragment(new ProductDescriptionFragment(description), "Description");
 
@@ -343,7 +343,7 @@ public void setUpTab()
                 Intent i=new Intent(ProductDetailsActivity.this,CheckOutActivity.class);
                 startActivity(i);
 
-
+                progressBar.setVisibility(View.GONE);
 
 
             } catch (JSONException e) {

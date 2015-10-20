@@ -97,16 +97,7 @@ android:id="@+id/bottomLay"
                 android:orientation="horizontal">
 
 
-                <TextView
-                    android:id="@+id/prod_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#FFFFFF"
-                    android:gravity="center|right"
-                    android:paddingRight="5dp"
-                    android:text=""
-                    android:textColor="#F44336" />
+
 
 
                 <TextView
@@ -116,11 +107,20 @@ android:id="@+id/bottomLay"
                     android:layout_weight="1"
 
                     android:background="#FFFFFF"
+                    android:gravity="center|right"
+                    android:paddingRight="5dp"
+                    android:text=""
+                    android:textColor="#BDBDBD" />
+                <TextView
+                    android:id="@+id/prod_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
                     android:gravity="center|left"
                     android:paddingLeft="5dp"
                     android:text=""
-                    android:textColor="#BDBDBD" />
-
+                    android:textColor="#F44336" />
 
             </LinearLayout>
 

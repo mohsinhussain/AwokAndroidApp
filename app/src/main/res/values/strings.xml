@@ -170,4 +170,5 @@ Introducing the world’s first 4K smartphone</string>
     <string name="err_msg_add">Please Enter Address</string>
     <string name="err_msg_pin">Invalid PIN</string>
     <string name="err_msg_phone">Invalid Phone Number</string>
+    <string name="discount">41%</string>
 </resources>

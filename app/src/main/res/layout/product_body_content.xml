@@ -26,6 +26,9 @@
 
         <android.support.v4.view.ViewPager
             android:id="@+id/imageSlider"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:descendantFocusability="beforeDescendants"
             android:layout_width="fill_parent"
             android:layout_height="200dp">
         </android.support.v4.view.ViewPager>
@@ -87,6 +90,22 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+
+        android:textSize="10dp"
+        android:gravity="center"
+        android:id="@+id/countText"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView" />
 
 
 </RelativeLayout>
@@ -243,6 +262,7 @@
                 android:scrollbars="none" />-->
     <android.support.v7.widget.RecyclerView
         android:padding="5dp"
+
         android:id="@+id/recyclerViewRating"
 
         android:layout_width="match_parent"
