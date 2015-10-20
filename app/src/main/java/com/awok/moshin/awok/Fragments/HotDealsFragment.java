@@ -73,6 +73,11 @@ public class HotDealsFragment extends Fragment {
     LinearLayout.LayoutParams params;
     private String searchString = null;
     int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
+    ArrayList<String> tagsFilterArray = new ArrayList<String>();
+    ArrayList<String> colorFilterArray = new ArrayList<String>();
+    ArrayList<String> priceFilterArray = new ArrayList<String>();
+    StaggeredGridLayoutManager mLayoutManager;
+    String filterString = "";
     public HotDealsFragment(){}
 
     public HotDealsFragment(String categoryId)
@@ -102,6 +107,50 @@ public class HotDealsFragment extends Fragment {
     {
         this.isSearch = isSearch;
         this.searchString = searchString;
+    }
+
+    public HotDealsFragment(String categoryId, ArrayList<String> colorArray, ArrayList<String> tagArray, ArrayList<String> price, boolean isSearch)
+    {
+        this.categoryId = categoryId;
+        this.isSearch = isSearch;
+        this.tagsFilterArray = tagArray;
+        this.colorFilterArray = colorArray;
+        this.priceFilterArray = price;
+        String colorString = "";
+        if(colorFilterArray.size()>0){
+            if(categoryId!=null){
+                colorString = "&color=";
+            }else{
+                colorString = "color=";
+            }
+            for(int i=0;i<colorFilterArray.size();i++){
+                colorString = colorString+colorFilterArray.get(i)+",";
+            }
+        }
+
+        String tagString = "";
+        if(tagsFilterArray.size()>0){
+            tagString = "&tags=";
+            for(int i=0;i<tagsFilterArray.size();i++){
+                tagString = tagString+tagsFilterArray.get(i)+",";
+            }
+        }
+
+        String priceString = "";
+        if(priceFilterArray.size()>0){
+            priceString = "&price=";
+            for(int i=0;i<priceFilterArray.size();i++){
+                priceString = priceString+priceFilterArray.get(i)+",";
+            }
+        }
+
+        if(categoryId!=null){
+            searchString = "category_id="+categoryId+colorString+tagString+priceString;
+        }
+        else{
+            searchString = colorString+tagString+priceString;
+        }
+
     }
 
     @Override
@@ -146,7 +195,6 @@ public class HotDealsFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(false);
 
-        final StaggeredGridLayoutManager mLayoutManager;
         mLayoutManager = new StaggeredGridLayoutManager(2,  1);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -343,7 +391,7 @@ public class HotDealsFragment extends Fragment {
                     JSONObject obj = new JSONObject(response);
                     itemCount.setVisibility(View.VISIBLE);
                     if(obj.getInt("status")==1){
-                        itemCount.setText("We found "+obj.getInt("total_products")+" search results for '"+searchString+"'");
+//                        itemCount.setText("We found "+obj.getInt("total_products")+" search results for '"+searchString+"'");
                         jsonArray = obj.getJSONArray("items");
                     }
                     else{
@@ -382,6 +430,10 @@ public class HotDealsFragment extends Fragment {
 
 //                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
                 int length = jsonArray.length();
+                if(isSearch){
+                    itemCount.setVisibility(View.VISIBLE);
+                    itemCount.setText("We found " + length + " search results for '" + searchString + "'");
+                }
 
                 if(length>0){
                     for(int i=0;i<length;i++){
@@ -425,9 +477,9 @@ public class HotDealsFragment extends Fragment {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_SHORT)
-                        .setActionTextColor(Color.RED)
-                        .show();
+//                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_SHORT)
+//                        .setActionTextColor(Color.RED)
+//                        .show();
                 /*if(getActivity()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
                     progressBar.startAnimation(animation);
@@ -461,6 +513,8 @@ public class HotDealsFragment extends Fragment {
         if (pageCount==1){
             mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
             mRecyclerView.setAdapter(mAdapter);
+            mLayoutManager = new StaggeredGridLayoutManager(2,  1);
+            mRecyclerView.setLayoutManager(mLayoutManager);
         }
         else{
             mAdapter.notifyDataSetChanged();

@@ -52,53 +52,14 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         switch (viewType) {
             case ITEM_WITH_DISCOUNT:
                 holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
-//                holder.oldPriceTextView.setText(items.get(i).getPriceOld());
-//                holder.discountTextView.setRotation();
-
-//                holder.endsInTextView.setText("Ends in " + items.get(i).getH() + "h " + items.get(i).getI() + "m " + items.get(i).getS() + "s");
                 break;
             case ITEM_WITHOUT_DISCOUNT:
                 holder.discountTextView.setVisibility(View.GONE);
-//                holder.endsInTextView.setVisibility(View.GONE);
-//                holder.oldPriceTextView.setVisibility(View.GONE);
                 break;
             default:
                 // Blow up in whatever way you choose.
         }
 
-//        float init = 0;
-//        float rotate = 315;
-
-//        if (Build.VERSION.SDK_INT < 11) {
-//
-//            RotateAnimation animation = new RotateAnimation(init, rotate);
-//            animation.setDuration(100);
-//            animation.setFillAfter(true);
-//            holder.discountTextView.startAnimation(animation);
-//        } else {
-//
-//            holder.discountTextView.setRotation(rotate);
-//        }
-
-
-//        if(!items.get(i).getPriceOld().equalsIgnoreCase("0 AED")){
-//            holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
-//            holder.oldPriceTextView.setText(items.get(i).getPriceOld());
-//            holder.endsInTextView.setText("Ends in "+items.get(i).getH()+"h "+items.get(i).getI()+"m "+items.get(i).getS()+"s");
-//        }
-//        else{
-//            holder.discountTextView.setVisibility(View.GONE);
-//            holder.endsInTextView.setVisibility(View.GONE);
-//            holder.oldPriceTextView.setVisibility(View.GONE);
-//        }
-
-
-//        byte[] decodedString = Base64.decode(items.get(i).getImage(), Base64.DEFAULT);
-//        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//        holder.itemImageView.setImageBitmap(decodedByte);
-
-//        imageLoader.get(items.get(i).getImage(), ImageLoader.getImageListener( holder.itemImageView,
-//                0, R.drawable.default_img));
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
             @Override
@@ -121,7 +82,13 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 
     @Override
     public int getItemCount() {
-        return items.size();
+        if(items!=null){
+            return items.size();
+        }
+        else{
+            return 0;
+        }
+
     }
 
     @Override

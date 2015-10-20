@@ -1,0 +1,179 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:flowlayout="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fillViewport="true"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="60dp"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:id="@+id/colorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/colorImageView"
+                android:background="@drawable/color_icon"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/colorTextView"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="@string/color"
+                android:layout_toRightOf="@+id/colorImageView"
+                android:textColor="@color/header_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/colorclearButton"
+                android:layout_alignBottom="@+id/colorTextView"
+                android:text="Clear All"
+                android:background="#0000"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:textSize="10sp"
+                android:textColor="@color/link_text"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.liangfeizc.flowlayout.FlowLayout
+                android:id="@+id/colorFlowlayout"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/colorTextView"
+                flowlayout:vertical_spacing="10dp"
+                flowlayout:horizontal_spacing="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/tagsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/tagsImageView"
+                android:background="@drawable/tag_icon"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tagsTextView"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_toRightOf="@+id/tagsImageView"
+                android:text="Tags"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/header_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/tagsClearButton"
+                android:layout_alignBottom="@+id/tagsTextView"
+                android:text="Clear All"
+                android:background="@color/tranparent"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:textSize="10sp"
+                android:textColor="@color/link_text"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.liangfeizc.flowlayout.FlowLayout
+                android:id="@+id/tagsFlowlayout"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/tagsTextView"
+                flowlayout:vertical_spacing="10dp"
+                flowlayout:horizontal_spacing="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/priceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/priceImageView"
+            android:background="@drawable/price_icon"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/priceTextView"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_toRightOf="@+id/priceImageView"
+            android:text="Price"
+            android:textColor="@color/header_text"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/priceClearButton"
+            android:layout_alignBottom="@+id/priceTextView"
+            android:text="Clear All"
+            android:background="@color/tranparent"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:textSize="10sp"
+            android:textColor="@color/link_text"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.liangfeizc.flowlayout.FlowLayout
+            android:id="@+id/priceFlowLayout"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/priceTextView"
+            flowlayout:vertical_spacing="10dp"
+            flowlayout:horizontal_spacing="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+
+        <!--<Button-->
+            <!--android:text="APPLY"-->
+            <!--android:textColor="@color/button_text"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:textSize="24sp"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:background="@color/button_bg"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/applyButton" />-->
+
+    </LinearLayout>
+
+    </RelativeLayout>
+
+    </ScrollView>

@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:theme="@style/GalaxyZooThemeToolbarDarkOverflow"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"/>
 

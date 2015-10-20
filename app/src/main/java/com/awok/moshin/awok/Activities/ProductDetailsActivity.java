@@ -195,7 +195,7 @@ public void setUpTab()
     tabLayout = (TabLayout) findViewById(R.id.tabs);
     //tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#cd2127"));
     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-    tabLayout.setTabTextColors(getResources().getColor(R.color.primary), getResources().getColor(R.color.primary_dark));
+    tabLayout.setTabTextColors(getResources().getColor(R.color.normal_text), getResources().getColor(R.color.header_text));
     tabLayout.setupWithViewPager(viewPager);
 }
 
