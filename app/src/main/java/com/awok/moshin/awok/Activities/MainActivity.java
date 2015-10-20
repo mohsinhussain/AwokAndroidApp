@@ -110,10 +110,12 @@ private DrawerLayout mDrawerLayout;
         applyButton = (Button) findViewById(R.id.applyButton);
 
         final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+        ab.setHomeAsUpIndicator(R.drawable.menu_icon);
+        ab.setTitle("Hello World");
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setDisplayShowTitleEnabled(false);
-        ab.setLogo(R.drawable.awok_logo);
+        ab.setDisplayShowTitleEnabled(true);
+//        ab.setLogo(R.drawable.awok_logo);
+//        ab.setIcon(R.drawable.menu_icon);
         img = (ImageView)findViewById(R.id.avatar);
         Picasso.with(this).load(R.drawable.textimg).transform(new CircleTransformation()).into(img);
 
@@ -141,6 +143,9 @@ private DrawerLayout mDrawerLayout;
 //            setupViewPager(viewPager);
 //        }
 
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabTextColors(getResources().getColor(R.color.normal_text),getResources().getColor(R.color.header_text));
 
 
 

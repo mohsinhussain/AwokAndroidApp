@@ -22,9 +22,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.R;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+
+import java.util.ArrayList;
 
 public class FragmentFullScreenImage extends AppCompatActivity {
 
@@ -32,19 +37,20 @@ public class FragmentFullScreenImage extends AppCompatActivity {
     CustomPagerAdapter mCustomPagerAdapter;
     ViewPager viewPager;
      ActionBar ab;
-    int[] mResources = {R.drawable.eagle, R.drawable.horse, R.drawable.bonobo, R.drawable.wolf, R.drawable.owl};
+    //int[] mResources = {R.drawable.eagle, R.drawable.horse, R.drawable.bonobo, R.drawable.wolf, R.drawable.owl};
 int size,pos;
     String image;
-    String baseImage;
+    ArrayList<String> baseImage = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_full_screen_image);
         Intent i=getIntent();
         image=getIntent().getExtras().getString("image");
-        baseImage=getIntent().getExtras().getString("baseImage");
+        baseImage=getIntent().getExtras().getStringArrayList("baseImage");
          size=getIntent().getExtras().getInt("size");
          pos=getIntent().getExtras().getInt("position");
+        System.out.println("gvbdjfgjdz"+size);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -96,7 +102,7 @@ int size,pos;
 
         @Override
         public int getCount() {
-            return mResources.length;
+            return baseImage.size();
         }
 
         @Override
@@ -109,7 +115,7 @@ int size,pos;
 
             View itemView = mLayoutInflater.inflate(R.layout.full_screen_image, container, false);
 //            BitmapDrawable bitmapDrawable =  new BitmapDrawable(base64ToBitmap(image));
-            Log.v("FullScreenImageUrl", "FullScreenImageUrl: " + baseImage);
+            /*Log.v("FullScreenImageUrl", "FullScreenImageUrl: " + baseImage);
             SubsamplingScaleImageView  imageView = (SubsamplingScaleImageView) itemView.findViewById(R.id.imageView);
             System.out.println(mResources[position]);
             if(baseImage!=null && !baseImage.equalsIgnoreCase("")){
@@ -117,8 +123,28 @@ int size,pos;
             }
             else{
                 imageView.setImage(ImageSource.resource(R.drawable.default_img));
-            }
+            }*/
+            final SubsamplingScaleImageView  imageView = (SubsamplingScaleImageView) itemView.findViewById(R.id.imageView);
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+           // for (int i=0;i<baseImage.size();i++) {
 
+                imageLoader.get(baseImage.get(position), new ImageLoader.ImageListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        imageView.setImage(ImageSource.resource(R.drawable.default_img));
+                    }
+
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                        if (response.getBitmap() != null) {
+                            // load image into imageview
+                            imageView.setImage(ImageSource.bitmap(response.getBitmap()));
+
+
+                        }
+                    }
+                });
+          //  }
 //            base64ToBitmap(image)
             //imageView.setImageResource(mResources[position]);
 

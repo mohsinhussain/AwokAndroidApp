@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="5dp"
+
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:padding="2dp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+
+        android:text="Shon Prinson Ferrao"
+        android:id="@+id/name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:padding="2dp"
+        android:layout_below="@+id/name"
+        android:layout_height="wrap_content"
+
+        android:text="Mazaya AA1"
+        android:id="@+id/address" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:padding="2dp"
+        android:layout_below="@+id/address"
+        android:layout_height="wrap_content"
+
+        android:text="Dubai"
+        android:id="@+id/state" />
+
+    <TextView
+        android:layout_below="@+id/state"
+        android:layout_width="wrap_content"
+        android:padding="2dp"
+        android:layout_height="wrap_content"
+
+        android:text="Dubai, AE"
+        android:id="@+id/country" />
+
+    <TextView
+        android:layout_below="@+id/country"
+        android:layout_width="wrap_content"
+        android:padding="2dp"
+        android:layout_height="wrap_content"
+        android:text="5425435"
+        android:id="@+id/pin" />
+
+    <TextView
+        android:layout_below="@+id/pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="4546545464"
+        android:id="@+id/phone" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:button="@drawable/radiobuttoncolor_btn_radio_holo_light"
+        android:id="@+id/radioAddress"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+
+
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/phone"
+        android:background="@color/border"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+</RelativeLayout>

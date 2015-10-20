@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/main_content"
+            android:layout_above="@+id/bottomLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <!--<android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="?attr/colorPrimary"
+                    app:expandedTitleMarginStart="48dp"
+                    app:expandedTitleMarginEnd="64dp">-->
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:layout_collapseMode="pin"
+                    android:theme="@style/GalaxyZooThemeToolbarDarkOverflow"
+                    app:layout_scrollFlags="scroll|enterAlways"/>
+
+                <!--</android.support.design.widget.CollapsingToolbarLayout>-->
+            </android.support.design.widget.AppBarLayout>
+
+
+
+
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    <RelativeLayout  android:layout_width="match_parent"
+        android:layout_below="@id/main_content"
+        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        >
+        <RelativeLayout
+
+            android:id="@+id/buttonAdd"
+            android:background="@color/border"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+
+
+
+
+            android:gravity="center"
+
+            >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="ADD SHIPPING ADDRESS"
+                android:gravity="center"
+
+                android:id="@+id/textView6"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:layout_width="28dp"
+                android:padding="5dp"
+                android:layout_height="28dp"
+                android:id="@+id/imageView4"
+                android:layout_toLeftOf="@+id/textView6"
+                android:layout_centerVertical="true"
+                android:src="@drawable/plus"
+                 />
+        </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:padding="5dp"
+        android:layout_below="@+id/buttonAdd"
+        android:id="@+id/recyclerAddress"
+
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+
+
+        android:layout_height="match_parent"
+
+
+
+        android:scrollbars="none" />
+
+</RelativeLayout>
+</RelativeLayout>

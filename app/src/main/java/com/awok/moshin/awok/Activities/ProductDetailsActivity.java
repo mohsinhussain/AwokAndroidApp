@@ -66,7 +66,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     ProductDetailsModel productDetails=new ProductDetailsModel();
     ProductOverview productOverview=new ProductOverview();
     private TextView prodNewPrice,prodOldPrice;
-    private Button buyNow;
+    private Button buyNow,save;
     Map<String,String> productSpec = new HashMap<String,String>();
     private String imageData;
     String productId,productName, newPrice, oldPrice, image, description;
@@ -95,6 +95,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         Log.v("Product DetailView", productId);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
+
 
 
         //productD.setName("COOL");
@@ -187,7 +188,9 @@ public void setUpTab()
     }
 
     tabLayout = (TabLayout) findViewById(R.id.tabs);
+    //tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#cd2127"));
     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+    tabLayout.setTabTextColors(getResources().getColor(R.color.normal_text), getResources().getColor(R.color.header_text));
     tabLayout.setupWithViewPager(viewPager);
 }
 
@@ -239,13 +242,13 @@ public void setUpTab()
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new ProductOverViewFragment(productId, productName,image), "Overview");
-        adapter.addFragment(new HotDealsFragment(catId), "Related Products");
+
 
 
         adapter.addFragment(new ReviewsFragment(productName,image),"Reviews");
         adapter.addFragment(new ShippingDeliveryFrag(),"Shipping & Delivery");
 
-
+        adapter.addFragment(new HotDealsFragment(catId), "Related Products");
 
         adapter.addFragment(new ProductDescriptionFragment(description), "Description");
 
@@ -340,7 +343,7 @@ public void setUpTab()
                 Intent i=new Intent(ProductDetailsActivity.this,CheckOutActivity.class);
                 startActivity(i);
 
-
+                progressBar.setVisibility(View.GONE);
 
 
             } catch (JSONException e) {

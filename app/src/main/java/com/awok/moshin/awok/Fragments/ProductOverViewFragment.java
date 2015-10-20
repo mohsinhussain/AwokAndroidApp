@@ -2,6 +2,7 @@ package com.awok.moshin.awok.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,16 +19,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -39,14 +44,21 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.awok.moshin.awok.Activities.FragmentFullScreenImage;
+import com.awok.moshin.awok.Activities.ShippingAddressActivity;
+import com.awok.moshin.awok.Adapters.CheckOutAdapter;
+import com.awok.moshin.awok.Adapters.ProductOverViewRatingAdapter;
 import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.Models.ProductDetailsModel;
+import com.awok.moshin.awok.Models.productOverviewRating;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.Constants;
+import com.awok.moshin.awok.Util.LinearLayoutBridge;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,21 +69,32 @@ import java.util.List;
  * Created by shon on 9/10/2015.
  */
 public class ProductOverViewFragment extends Fragment{
+private RatingBar ratingMain;
+    private RecyclerView mRecyclerView;
 
+    private RecyclerView.Adapter mAdapter;
+    private NestedScrollView scroll;
 
+    //private RecyclerView.LayoutManager mLayoutManager;
 
     ProductDetailsModel productModel = new ProductDetailsModel();
+    List<productOverviewRating> ratingData=new ArrayList<productOverviewRating>();
 
-    static final int NUM_ITEMS = 6;
+
+
+private ImageView countButton;
+
     CustomPagerAdapter mCustomPagerAdapter;
     ViewPager viewPager;
-    int[] mResources = {R.drawable.eagle, R.drawable.horse, R.drawable.bonobo, R.drawable.wolf, R.drawable.owl};
+    ArrayList<String> mResources = new ArrayList<String>();
+    ArrayList<String> imageString = new ArrayList<String>();
+
 
 
 private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_color_default,prod_colorSecondary,prod_shipping,prod_shippingCost,prod_delivery,prod_deliveryTime,prod_reviews,quickDeliveryTxt,
-        prod_price,prod_discountPrice;
+        prod_price,prod_discountPrice,countText;
 
- private Button prod_buyNow;
+ private Button prod_buyNow,save;
     private RatingBar prodRatingBar,prod_reviewRating;
     String image, baseImage,productName, productId;
 
@@ -84,15 +107,42 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         this.productId=productId;
 
     }
+    
+    
+    public void getRatings()
+    {
+        ratingData.clear();
+        for(int i=0;i<10;i++)
+        {
+            productOverviewRating productRating=new productOverviewRating();
+            productRating.setMainText("SHON PRINSOON ferrao fvnxbvmxbvxfvn,mvnv n");
+            productRating.setName("Shon Prinson");
+            ratingData.add(productRating);
+
+
+
+        }
+
+       //mAdapter.notifyDataSetChanged();
+        mCustomPagerAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
+    }
+    
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View mView = inflater.inflate(R.layout.product_body_content, container, false);
+        mResources.add(image);
+        ratingMain=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+        viewPager = (ViewPager) mView.findViewById(R.id.imageSlider);
+        countButton=(ImageView)mView.findViewById(R.id.imageView);
         productTitle=(TextView)mView.findViewById(R.id.productTitle);
         product_reviewCount=(TextView)mView.findViewById(R.id.product_reviewCount);
-        prod_warranty=(TextView)mView.findViewById(R.id.prod_warranty);
+        scroll=(NestedScrollView)mView.findViewById(R.id.nestedScroll);
+        countText=(TextView)mView.findViewById(R.id.countText);
+        //prod_warranty=(TextView)mView.findViewById(R.id.prod_warranty);
         prod_color_default=(TextView)mView.findViewById(R.id.prod_color_default);
         prod_color=(TextView)mView.findViewById(R.id.prod_color);
         prod_colorSecondary=(TextView)mView.findViewById(R.id.prod_colorSecondary);
@@ -100,34 +150,66 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         prod_shippingCost=(TextView)mView.findViewById(R.id.prod_shippingCost);
         prod_delivery=(TextView)mView.findViewById(R.id.prod_delivery);
         prod_deliveryTime=(TextView)mView.findViewById(R.id.prod_deliveryTime);
-        prod_reviews=(TextView)mView.findViewById(R.id.prod_reviews);
-        quickDeliveryTxt=(TextView)mView.findViewById(R.id.quickDeliveryTxt);
+        //prod_reviews=(TextView)mView.findViewById(R.id.prod_reviews);
+        //quickDeliveryTxt=(TextView)mView.findViewById(R.id.quickDeliveryTxt);
         //prod_price=(TextView)mView.findViewById(R.id.prod_price);
         //prod_discountPrice=(TextView)mView.findViewById(R.id.prod_discountPrice);
    //  prod_buyNow=(Button)mView.findViewById(R.id.prod_buyNow);
 
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_MOVE && scroll != null) {
+                    scroll.requestDisallowInterceptTouchEvent(true);
+                }
+                return false;
+            }
+        });
+
+
+       mRecyclerView = (RecyclerView) mView.findViewById(R.id.recyclerViewRating);
+
+       mRecyclerView.setHasFixedSize(true);
+        //mRecyclerView.setNestedScrollingEnabled(false);
+       // int viewHeight = 100 * (10);
+      //  mRecyclerView.getLayoutParams().height = viewHeight;
+
+        // use a linear layout manager
+        //mLayoutManager = new LinearLayoutManager(getActivity());
+        //LinearLayoutBridge mLayoutManager=new LinearLayoutBridge(getActivity(),LinearLayoutManager.VERTICAL,false);
+        MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+       mRecyclerView.setLayoutManager(mLayoutManager);
+
+       mAdapter = new ProductOverViewRatingAdapter(getActivity(), ratingData);
+
+             //   scroll.fullScroll(NestedScrollView.FOCUS_UP);
+
+
+
+
                     prodRatingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
-        prod_reviewRating=(RatingBar)mView.findViewById(R.id.prod_reviewRating);
+       // prod_reviewRating=(RatingBar)mView.findViewById(R.id.prod_reviewRating);
         LayerDrawable mainRatingColor = (LayerDrawable) prodRatingBar.getProgressDrawable();
         mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
         mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
         mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
 
 
-        LayerDrawable reviewRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
-        reviewRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
-        reviewRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
-        reviewRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
+//        LayerDrawable reviewRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
+//        reviewRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
+//        reviewRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
+//        reviewRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
 
         Typeface mainProdFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Medium.ttf");
-        productTitle.setTypeface(mainProdFont);
+//        productTitle.setTypeface(mainProdFont);
 
 
         Typeface innerFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Medium.ttf");
         prod_color.setTypeface(innerFont);
         prod_shipping.setTypeface(innerFont);
         prod_delivery.setTypeface(innerFont);
-        prod_reviews.setTypeface(innerFont);
+//        prod_reviews.setTypeface(innerFont);
 
         Typeface textFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
         prod_color_default.setTypeface(textFont);
@@ -135,6 +217,14 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         prod_shippingCost.setTypeface(textFont);
         prod_deliveryTime.setTypeface(textFont);
         productTitle.setText(productName);
+        mCustomPagerAdapter = new CustomPagerAdapter(getContext());
+
+
+
+
+
+        viewPager.setAdapter(mCustomPagerAdapter);
+        mRecyclerView.setAdapter(mAdapter);
 
 //     prod_price.setTypeface(innerFont);
   //      prod_discountPrice.setTypeface(innerFont);
@@ -159,14 +249,25 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
 
 
+countButton.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
 
-        mCustomPagerAdapter = new CustomPagerAdapter(getContext());
+            Intent i = new Intent(getActivity(), ShippingAddressActivity.class);
+            startActivity(i);
+    }
+});
 
 
-        viewPager = (ViewPager) mView.findViewById(R.id.imageSlider);
-        viewPager.setAdapter(mCustomPagerAdapter);
 
-
+        /*save=(Button)mView.findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ShippingAddressActivity.class);
+                startActivity(i);
+            }
+        });*/
 
 
         return mView;
@@ -189,7 +290,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
         @Override
         public int getCount() {
-            return mResources.length;
+            return mResources.size();
         }
 
         @Override
@@ -218,7 +319,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
             imageLoader.get(image, new ImageLoader.ImageListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+//                    imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
                     progressBar.setVisibility(View.GONE);
                 }
                 @Override
@@ -238,10 +339,10 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
                 public void onClick(View v) {
                     if(baseImage!=null){
                         Intent i=new Intent(getContext(), FragmentFullScreenImage.class);
-                        i.putExtra("size",mResources.length);
+                        i.putExtra("size",mResources.size());
                         i.putExtra("position", position);
                         i.putExtra("image",image);
-                        i.putExtra("baseImage",baseImage);
+                        i.putExtra("baseImage",mResources);
                         startActivity(i);
                     }
 
@@ -260,18 +361,42 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
     public class GetProductDetailsCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
+                mResources.clear();
                 JSONObject mMembersJSON;
                 mMembersJSON = new JSONObject(response);
                 System.out.println(mMembersJSON.getString("name"));
                 productTitle.setText(mMembersJSON.getString("name"));
+                String ratingsCount=mMembersJSON.getJSONObject("rating").getString("average");
+                String count=mMembersJSON.getJSONObject("rating").getString("sum");
 //                prodNewPrice.setText(Integer.toString(mMembersJSON.getInt("new_price")) + " " + "AED");
 //                prodOldPrice.setText(Integer.toString(mMembersJSON.getInt("original_price")) + " " + "AED");
 //                System.out.println("COOLGBDJH" + productDetails.getName());
 //                String prodDesc=mMembersJSON.getString("description");
 //                productOverview.setOverViewTitle(prodDesc);
                 image=mMembersJSON.getString("image");
+                JSONArray imagesStringData=mMembersJSON.getJSONArray("images");
+                for(int i=0;i<imagesStringData.length();i++)
+                {
+                    //JSONObject data=imagesStringData.getJSONObject(i);
+                    String jsonData=imagesStringData.get(i).toString();
+imageString.add(jsonData);
+                    System.out.println(imageString);
+
+                }
+
+                //mResources=
+                ratingMain.setRating(Float.parseFloat(ratingsCount));
+                product_reviewCount.setText("(" + count + ")");
+                countText.setText(String.valueOf(imageString.size()));
                 baseImage=mMembersJSON.getString("image");
-                mCustomPagerAdapter.notifyDataSetChanged();
+                //mResources.clear();
+                mResources=imageString;
+                //getRatings();
+                getRatings();
+
+
+
+                System.out.println("dcjdfhjhxv"+mResources.toString());
 //                if(getApplicationContext()!=null){
 //                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
 //                    progressBar.startAnimation(animation);
@@ -295,4 +420,82 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         }
     }
 
+
+
+    public class MyLinearLayoutManager extends LinearLayoutManager {
+
+        public MyLinearLayoutManager(Context context, int orientation, boolean reverseLayout)    {
+            super(context, orientation, reverseLayout);
+        }
+
+        private int[] mMeasuredDimension = new int[2];
+
+        @Override
+        public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state,
+                              int widthSpec, int heightSpec) {
+            final int widthMode = View.MeasureSpec.getMode(widthSpec);
+            final int heightMode = View.MeasureSpec.getMode(heightSpec);
+            final int widthSize = View.MeasureSpec.getSize(widthSpec);
+            final int heightSize = View.MeasureSpec.getSize(heightSpec);
+            int width = 0;
+            int height = 0;
+            for (int i = 0; i < getItemCount(); i++) {
+                measureScrapChild(recycler, i,
+                        View.MeasureSpec.makeMeasureSpec(i, View.MeasureSpec.UNSPECIFIED),
+                        View.MeasureSpec.makeMeasureSpec(i, View.MeasureSpec.UNSPECIFIED),
+                        mMeasuredDimension);
+
+                if (getOrientation() == HORIZONTAL) {
+                    width = width + mMeasuredDimension[0];
+                    if (i == 0) {
+                        height = mMeasuredDimension[1];
+                    }
+                } else {
+                    height = height + mMeasuredDimension[1];
+                    if (i == 0) {
+                        width = mMeasuredDimension[0];
+                    }
+                }
+            }
+            switch (widthMode) {
+                case View.MeasureSpec.EXACTLY:
+                    width = widthSize;
+                case View.MeasureSpec.AT_MOST:
+                case View.MeasureSpec.UNSPECIFIED:
+            }
+
+            switch (heightMode) {
+                case View.MeasureSpec.EXACTLY:
+                    height = heightSize;
+                case View.MeasureSpec.AT_MOST:
+                case View.MeasureSpec.UNSPECIFIED:
+            }
+
+            setMeasuredDimension(width, height);
+        }
+
+        private void measureScrapChild(RecyclerView.Recycler recycler, int position, int widthSpec,
+                                       int heightSpec, int[] measuredDimension) {
+            View view = recycler.getViewForPosition(position);
+            if (view != null) {
+                RecyclerView.LayoutParams p = (RecyclerView.LayoutParams) view.getLayoutParams();
+                int childWidthSpec = ViewGroup.getChildMeasureSpec(widthSpec,
+                        getPaddingLeft() + getPaddingRight(), p.width);
+                int childHeightSpec = ViewGroup.getChildMeasureSpec(heightSpec,
+                        getPaddingTop() + getPaddingBottom(), p.height);
+                view.measure(childWidthSpec, childHeightSpec);
+                measuredDimension[0] = view.getMeasuredWidth() + p.leftMargin + p.rightMargin;
+                measuredDimension[1] = view.getMeasuredHeight() + p.bottomMargin + p.topMargin;
+                recycler.recycleView(view);
+            }
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        /*mCustomPagerAdapter.notifyDataSetChanged();
+        getRatings();*/
+    }
 }

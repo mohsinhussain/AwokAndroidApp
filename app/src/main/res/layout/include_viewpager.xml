@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:theme="@style/GalaxyZooThemeToolbarDarkOverflow"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_scrollFlags="scroll|enterAlways" />
 
@@ -23,6 +24,7 @@
             android:id="@+id/tabs"
             app:tabGravity="center"
             app:tabMode="scrollable"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

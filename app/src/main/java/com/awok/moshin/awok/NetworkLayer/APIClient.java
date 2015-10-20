@@ -85,7 +85,7 @@ public class APIClient {
     }
     public void updateCart(String dataToSend,String updateId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+updateId+"/", "PUT", dataToSend);
+        mTask.execute(mContext, "http://172.31.23.207/khalid/api/cart/"+updateId+"/", "PUT", dataToSend);
     }
     public void userCheckAPICall(String phoneNumber) {
         mTask = new AsyncTaskWithDialog();
@@ -124,9 +124,6 @@ public class APIClient {
     }
 
     public void OrderHistoryDetailsItemsCallBack(String orderId) {
-
-
-
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+orderId+"/", "GET", null);
 
@@ -140,6 +137,31 @@ public class APIClient {
         else{
             mTask.execute(mContext, "http://market1.awok/setti/api/search/filterscreen/", "GET", null);
         }
+    }
+    public void addressCallBack(String user_id) {
+
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/addresses/index/"+user_id, "GET", null);
+    }
+
+    public void countryCallBack() {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/locations/index/", "GET", null);
+    }
+
+    public void StateCallBack(String country_id) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/locations/index/"+country_id, "GET", null);
+    }
+
+    public void CityCallBack(String state_id) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/locations/index/"+state_id, "GET", null);
+    }
+
+    public void addAddressCallBack(String userId,String dataToSend) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/addresses/index/"+userId, "POST", dataToSend);
     }
 
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {

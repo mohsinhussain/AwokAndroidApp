@@ -10,6 +10,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
@@ -30,12 +32,14 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +81,9 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
     NetworkInfo networkInfo;
     Context context;
     Context mContext;
+    private String valueQuantity;
+    public static final int ITEM_WITH_Seller = 1;
+    public static final int ITEM_WITHOUT_SELLER = 2;
     SVG svg;
     String sellerCheck="";
     LinearLayout.LayoutParams lp;
@@ -103,6 +110,24 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
 
     }
 
+    int index = -1;
+
+    @Override
+    public int getItemViewType(int position) {
+        Log.v("Checkout adapter", "SellerLabel: "+OverViewList.get(position).getSellerLabel()+"   Seller Check: "+sellerCheck);
+        if (OverViewList.get(position).getSellerLabel().equalsIgnoreCase(sellerCheck)) {
+            Log.v("Checkout adapter", "case: WITH for position: "+position);
+            if(index==position){
+                return ITEM_WITHOUT_SELLER;
+            }
+            return ITEM_WITH_Seller;
+        }
+        else{
+            Log.v("Checkout adapter", "case: WITH for position: "+position);
+            index = position;
+            return ITEM_WITHOUT_SELLER;
+        }
+    }
     // Create new views (invoked by the layout manager)
     @Override
     public CheckOutAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
@@ -133,15 +158,78 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
 
         System.out.println("GOAL"+sellerCheck);
         System.out.println(OverViewList.get(position).getSellerLabel());*/
-
+        LayerDrawable mainRatingColor = (LayerDrawable) viewHolder.main_prodRatingBar.getProgressDrawable();
+        mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#ffcd00"), PorterDuff.Mode.SRC_ATOP);
+        mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#ffcd00"), PorterDuff.Mode.SRC_ATOP);
+        mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#e8e8e8"), PorterDuff.Mode.SRC_ATOP);
 
         // Get a drawable from the parsed SVG and set it as the drawable for the ImageView
 
         //viewHolder.productImg.setImageDrawable(svg.createPictureDrawable());
-        final Checkout item = OverViewList.get(position);
+//        final Checkout item = OverViewList.get(position);
+        System.out.println("top" + sellerCheck);
 
-        if(sellerCheck.equals(OverViewList.get(position).getSellerLabel()))
-        {
+        viewHolder.newPrice.setText("AED " + OverViewList.get(position).getOverViewText());
+        viewHolder.prodOverViewText.setText("AED " + OverViewList.get(position).getOldPrice());
+        viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
+        viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
+        //viewHolder.sellerLabel.setText(OverViewList.get(position).getSellerLabel());
+//        viewHolder.sellerMainLay.setVisibility(View.GONE);
+        //viewHolder.sellerLabel.setText("Seller Name");
+        viewHolder.totalPrice.setText("Total Price :" + OverViewList.get(position).getTotalPrice() + " AED");
+        viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
+//        viewHolder.seperator.setVisibility(View.VISIBLE);
+
+        //viewHolder.stock.setText("In Stock : " + OverViewList.get(position).getRemainingStock());
+        viewHolder.stock.setText("Free Shipping");
+        viewHolder.sellerNameText.setText("Seller :"+OverViewList.get(position).getSellerLabel());
+        viewHolder.stock.setTag(OverViewList.get(position).getRemainingStock());
+        // viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
+        viewHolder.cross.setChecked(false);
+        viewHolder.main_prodRatingBar.setRating(4);
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        imageLoader.get(OverViewList.get(position).getImageBitmapString(), new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                viewHolder.loadProgressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                if (response.getBitmap() != null) {
+                    // load image into imageview
+                    viewHolder.productImg.setImageBitmap(response.getBitmap());
+                    viewHolder.loadProgressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+//            if(OverViewList.get(position).getImageBitmapString()!=null && !OverViewList.get(position).getImageBitmapString().equalsIgnoreCase("")){
+//                viewHolder.productImg.setImageUrl(OverViewList.get(position).getImageBitmapString(), imageLoader);
+//            }
+//            else{
+//                viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable((R.drawable.default_img)));
+//            }
+//            viewHolder.productImg.setErrorImageResId(R.drawable.default_img);
+        sellerCheck=OverViewList.get(position).getSellerLabel();
+        final int viewType = getItemViewType(position);
+        switch (viewType) {
+            case ITEM_WITHOUT_SELLER:
+                viewHolder.sellerMainLay.setVisibility(View.VISIBLE);
+                viewHolder.seperator.setVisibility(View.GONE);
+
+                break;
+            case ITEM_WITH_Seller:
+                viewHolder.sellerMainLay.setVisibility(View.GONE);
+                viewHolder.seperator.setVisibility(View.VISIBLE);
+
+                break;
+            default:
+                // Blow up in whatever way you choose.
+        }
+
+        /**if(sellerCheck.equals(OverViewList.get(position).getSellerLabel()))
+            {
 
             System.out.println("top" + sellerCheck);
             viewHolder.newPrice.setText("AED " + OverViewList.get(position).getOverViewText());
@@ -154,12 +242,14 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
             viewHolder.totalPrice.setText("Total Price :" + OverViewList.get(position).getTotalPrice() + " AED");
             viewHolder.quantity.setText(OverViewList.get(position).getQuantity());
             viewHolder.seperator.setVisibility(View.VISIBLE);
+
             //viewHolder.stock.setText("In Stock : " + OverViewList.get(position).getRemainingStock());
             viewHolder.stock.setText("Free Shipping");
-            viewHolder.sellerNameText.setText(OverViewList.get(position).getSellerLabel());
+            viewHolder.sellerNameText.setText("Seller :"+OverViewList.get(position).getSellerLabel());
             viewHolder.stock.setTag(OverViewList.get(position).getRemainingStock());
              // viewHolder.productImg.setImageBitmap(base64ToBitmap(OverViewList.get(position).getImageBitmapString()));
             viewHolder.cross.setChecked(false);
+            viewHolder.main_prodRatingBar.setRating(4);
             ImageLoader imageLoader = AppController.getInstance().getImageLoader();
             imageLoader.get(OverViewList.get(position).getImageBitmapString(), new ImageLoader.ImageListener() {
                 @Override
@@ -187,7 +277,11 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
             sellerCheck=OverViewList.get(position).getSellerLabel();
 
         }
-        else {
+        else if(!sellerCheck.equals(OverViewList.get(position).getSellerLabel()))
+
+
+        {
+            System.out.println("top" + sellerCheck);
             //customView.setLayoutParams(lp);
             viewHolder.newPrice.setText("AED " + OverViewList.get(position).getOverViewText());
             viewHolder.prodOverViewText.setText("AED " + OverViewList.get(position).getOldPrice());
@@ -199,7 +293,8 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
             //viewHolder.sellerLabel.setText("Seller Name : " + OverViewList.get(position).getSellerLabel());
             //viewHolder.sellerLabel.setText("Seller Name");
             viewHolder.sellerMainLay.setVisibility(View.VISIBLE);
-            viewHolder.sellerNameText.setText(OverViewList.get(position).getSellerLabel());
+            viewHolder.main_prodRatingBar.setRating(3);
+            viewHolder.sellerNameText.setText("Seller :"+OverViewList.get(position).getSellerLabel());
             viewHolder.totalPrice.setText("Total Price :" + OverViewList.get(position).getTotalPrice() + " AED");
             viewHolder.seperator.setVisibility(View.GONE);
             viewHolder.cross.setChecked(false);
@@ -232,34 +327,208 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
 //            }
 //            viewHolder.productImg.setImageUrl(OverViewList.get(position).getImageBitmapString(), imageLoader);
 //            viewHolder.productImg.setErrorImageResId(R.drawable.default_img);
-            customView.setLayoutParams(lp);
+            //customView.setLayoutParams(lp);
 
             sellerCheck=OverViewList.get(position).getSellerLabel();
-        }
+        }**/
 
       //  viewHolder.data = new CheckoutDataObjects(activity);
         /*viewHolder.countOfProducts.setAdapter(adapter);*/
-/*viewHolder.quantity.setOnTouchListener(new View.OnTouchListener() {
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        String newtext=viewHolder.quantity.getText().toString();
-        viewHolder.quantity.setText("");
-        viewHolder.quantity.append(newtext);
-        //viewHolder.quantity.getText().clear();
-        return false;
-    }*/
-
+viewHolder.quantity.setOnTouchListener(new View.OnTouchListener() {
+                                           @Override
+                                           public boolean onTouch(View v, MotionEvent event) {
+                                               valueQuantity = viewHolder.quantity.getText().toString();
+                                              // viewHolder.quantity.setText("");
+                                               //viewHolder.quantity.append(newtext);
+                                               //viewHolder.quantity.getText().clear();
+                                               return false;
+                                           }
+                                       });
     /*@Override
     public void onClick(View v) {
 
     }*/
 //});
+
+
+
+
+        viewHolder.increment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int addQuantity=Integer.parseInt(viewHolder.quantity.getText().toString());
+                addQuantity=addQuantity+1;
+                viewHolder.quantity.setText(String.valueOf(addQuantity));
+
+                if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                    viewHolder.quantity.setText("1");
+                } else {
+                    if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
+                        System.out.println("OUT OF STOCK");
+
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                context);
+
+                        // set title
+                        alertDialogBuilder.setTitle("Cart Alert");
+
+
+                        // set dialog message
+                        alertDialogBuilder
+                                .setMessage("The Quantity is not available in Stock")
+                                .setCancelable(false)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // if this button is clicked, close
+                                        // current activity
+                                        dialog.cancel();
+                                    }
+                                });
+                                   /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            // if this button is clicked, just close
+                                            // the dialog box and do nothing
+                                            dialog.cancel();
+                                        }
+                                    });*/
+
+                        // create alert dialog
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+
+                        // show it
+                        alertDialog.show();
+
+                    } else {
+                        HashMap<String, Object> updateString = new HashMap<String, Object>();
+                        //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                        updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+
+
+                        JSONObject updateJson = new JSONObject(updateString);
+                        System.out.println("AFTER CHANGED+" + updateJson);
+                        //submit_btn.performClick();
+                   /*System.out.println("AFTER CHANGED");
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.
+                            INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(activity.getParent().getCurrentFocus().getWindowToken(), 0);*/
+                        View view = activity_main.getCurrentFocus();
+                        if (view != null) {
+                            InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
+                        if (networkInfo != null && networkInfo.isConnected()) {
+
+                            String updateId = viewHolder.prodOverviewTitle.getTag().toString();
+                            //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
+                            new APIClient(activity_main, context, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+
+
+                        } else {
+                            Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+                        }
+                    }
+                    }
+                }
+
+        });
+
+
+        viewHolder.decrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int addQuantity=Integer.parseInt(viewHolder.quantity.getText().toString());
+                addQuantity=addQuantity-1;
+                viewHolder.quantity.setText(String.valueOf(addQuantity));
+
+                if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                    viewHolder.quantity.setText("1");
+                } else {
+                    if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
+                        System.out.println("OUT OF STOCK");
+
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                context);
+
+                        // set title
+                        alertDialogBuilder.setTitle("Cart Alert");
+
+
+                        // set dialog message
+                        alertDialogBuilder
+                                .setMessage("The Quantity is not available in Stock")
+                                .setCancelable(false)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // if this button is clicked, close
+                                        // current activity
+                                        dialog.cancel();
+                                    }
+                                });
+                                   /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            // if this button is clicked, just close
+                                            // the dialog box and do nothing
+                                            dialog.cancel();
+                                        }
+                                    });*/
+
+                        // create alert dialog
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+
+                        // show it
+                        alertDialog.show();
+
+                    } else {
+                        HashMap<String, Object> updateString = new HashMap<String, Object>();
+                        //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                        updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+
+
+                        JSONObject updateJson = new JSONObject(updateString);
+                        System.out.println("AFTER CHANGED+" + updateJson);
+                        //submit_btn.performClick();
+                   /*System.out.println("AFTER CHANGED");
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.
+                            INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(activity.getParent().getCurrentFocus().getWindowToken(), 0);*/
+                        View view = activity_main.getCurrentFocus();
+                        if (view != null) {
+                            InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
+                        if (networkInfo != null && networkInfo.isConnected()) {
+
+                            String updateId = viewHolder.prodOverviewTitle.getTag().toString();
+                            //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
+                            new APIClient(activity_main, context, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+
+
+                        } else {
+                            Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+                        }
+                    }
+                }
+            }
+
+        });
+
+
+
+
+
 viewHolder.quantity.addTextChangedListener(new TextWatcher() {
 
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         System.out.println("BEFOR CHANGED");
+        //valueQuantity=viewHolder.quantity.getText().toString();
 //viewHolder.quantity.setText("");
 
     }
@@ -342,6 +611,8 @@ viewHolder.quantity.addTextChangedListener(new TextWatcher() {
 
                             // show it
                             alertDialog.show();
+
+                            viewHolder.quantity.setText(valueQuantity);
 
                         } else {
                             HashMap<String, Object> updateString = new HashMap<String, Object>();
@@ -485,10 +756,12 @@ viewHolder.cross.setVisibility(View.VISIBLE);
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         public View seperator;
+        private RatingBar main_prodRatingBar;
         public CheckBox cross;
         public ImageView productImg;
         public EditText quantity;
         public ProgressBar loadProgressBar;
+        public Button increment,decrement;
 
         //public CheckoutDataObjects data;
 
@@ -515,12 +788,17 @@ viewHolder.cross.setVisibility(View.VISIBLE);
                     .findViewById(R.id.mainImg);
             sellerNameText=(TextView)itemLayoutView
                     .findViewById(R.id.sellerNameText);
+            main_prodRatingBar=(RatingBar)itemLayoutView
+                    .findViewById(R.id.main_prodRatingBar);
 newPrice=(TextView)itemLayoutView
         .findViewById(R.id.newPrice);
             loadProgressBar = (ProgressBar)itemLayoutView.findViewById(R.id.load_progress_bar);
             quantity=(EditText)itemLayoutView
                     .findViewById(R.id.quantity);
-
+increment=(Button)itemLayoutView
+        .findViewById(R.id.quantity_inc);
+            decrement=(Button)itemLayoutView
+                    .findViewById(R.id.quantity_dec);
 
             stock=(TextView)itemLayoutView
                     .findViewById(R.id.stock);
