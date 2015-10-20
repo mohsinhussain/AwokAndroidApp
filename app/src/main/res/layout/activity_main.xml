@@ -8,8 +8,22 @@
 
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <include layout="@layout/include_viewpager"/>
-
+        <Button
+        android:text="APPLY"
+        android:textColor="@color/button_text"
+        android:layout_marginTop="15dp"
+        android:textSize="24sp"
+            android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:background="@color/primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/applyButton" />
+    </RelativeLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

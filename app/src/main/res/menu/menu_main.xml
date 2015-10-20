@@ -3,28 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
 
-
-
-    <!--item android:id="@+id/awok_logo"
-        android:title="logo"
-        android:icon="@drawable/awok_logo"
-        app:showAsAction="always"
-         />-->
-   <!-- <item
-        android:id="@+id/action_search"
-        android:title="search"
-        android:orderInCategory="200"
-
-
-        android:actionViewClass="android.support.v7.widget.SearchView"
-
-
-
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always"
-        />-->
-
-
     <item
         android:id="@+id/app_cart"
         app:showAsAction="always"
@@ -34,10 +12,22 @@
 
     <item android:id="@+id/action_search"
         android:title="Search"
+        android:orderInCategory="150"
         android:icon="@drawable/search_icon"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
-    <!--app:actionViewClass="android.support.v7.widget.SearchView"
-          android:icon="@drawable/ic_search_white_24dp"
-          app:showAsAction="ifRoom"-->
+
+    <item
+        android:icon="@drawable/white_tick_icon"
+        android:id="@+id/action_tick"
+        android:orderInCategory="50"
+        android:title="Yes"
+        app:showAsAction="always" />
+
+    <item
+        android:icon="@drawable/crossicon"
+        android:id="@+id/action_cross"
+        android:title="Cancel"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
 </menu>

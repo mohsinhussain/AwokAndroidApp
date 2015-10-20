@@ -1,6 +1,7 @@
 package com.awok.moshin.awok.Activities;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -52,8 +54,11 @@ import android.widget.TextView;
 import com.awok.moshin.awok.Fragments.BundleOffersFragment;
 import com.awok.moshin.awok.Fragments.CategoriesFragment;
 import com.awok.moshin.awok.Fragments.DailyDealsFragment;
+import com.awok.moshin.awok.Fragments.FilterFragment;
 import com.awok.moshin.awok.Fragments.Home_Fragment;
 import com.awok.moshin.awok.Fragments.HotDealsFragment;
+import com.awok.moshin.awok.Fragments.ProductOverViewFragment;
+import com.awok.moshin.awok.Fragments.SignInFragment;
 import com.awok.moshin.awok.Fragments.WeeklyBestSellersFragment;
 import com.awok.moshin.awok.Models.Categories;
 import com.awok.moshin.awok.Models.Products;
@@ -67,11 +72,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, FilterFragment.StartCommunication{
 private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     ProgressBar progressBar;
@@ -83,10 +89,15 @@ private DrawerLayout mDrawerLayout;
     SharedPreferences mSharedPrefs;
     SearchView searchView;
     MenuItem searchItem;
+    int selectedTabIndex = 0;
     ProgressBar progressBarLogout;
     boolean isFilter;
     Adapter adapter;
     RelativeLayout navHeaderLayout;
+    Button applyButton;
+    ArrayList<String> tagsFilterArray = new ArrayList<String>();
+    ArrayList<String> colorFilterArray = new ArrayList<String>();
+    ArrayList<String> priceFilterArray = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +107,7 @@ private DrawerLayout mDrawerLayout;
         progressBar.setVisibility(View.GONE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        applyButton = (Button) findViewById(R.id.applyButton);
 
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -107,8 +119,12 @@ private DrawerLayout mDrawerLayout;
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navHeaderLayout = (RelativeLayout) findViewById(R.id.navHeaderBackground);
-
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        adapter = new Adapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
@@ -125,9 +141,7 @@ private DrawerLayout mDrawerLayout;
 //            setupViewPager(viewPager);
 //        }
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-//        tabLayout.setupWithViewPager(viewPager);
+
 
 
         navHeaderLayout.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +233,7 @@ private DrawerLayout mDrawerLayout;
                     categoriesArrayList.add(new Categories(jsonObject.getString("id"), jsonObject.getString("name"), jsonObject.getString("parent")));
                 }
                 initializeData();
+                tabLayout.setupWithViewPager(viewPager);
             } catch (JSONException e) {
                 e.printStackTrace();
                 Snackbar.make(findViewById(android.R.id.content), "Categories could not be loaded", Snackbar.LENGTH_INDEFINITE)
@@ -238,6 +253,54 @@ private DrawerLayout mDrawerLayout;
                         .show();
             }
         }
+    }
+
+
+
+
+    @Override
+    public void addColor(String color) {
+        colorFilterArray.add(color);
+        System.out.println("Add Color: "+color);
+    }
+
+    @Override
+    public void removeColor(String color) {
+        for(int i=0;i<colorFilterArray.size();i++){
+            if(colorFilterArray.get(i).equalsIgnoreCase(color))
+                colorFilterArray.remove(i);
+        }
+        System.out.println("Remove Color: " + color);
+    }
+
+    @Override
+    public void addTag(String tag) {
+        tagsFilterArray.add(tag);
+        System.out.println("Add Color: "+tag);
+    }
+
+    @Override
+    public void removeTag(String tag) {
+        for(int i=0;i<tagsFilterArray.size();i++){
+            if(tagsFilterArray.get(i).equalsIgnoreCase(tag))
+                tagsFilterArray.remove(i);
+        }
+        System.out.println("Remove Color: " + tag);
+    }
+
+    @Override
+    public void addPrice(String price) {
+        priceFilterArray.add(price);
+        System.out.println("Add Price: "+price);
+    }
+
+    @Override
+    public void removePrice(String price) {
+        for(int i=0;i<priceFilterArray.size();i++){
+            if(priceFilterArray.get(i).equalsIgnoreCase(price))
+                priceFilterArray.remove(i);
+        }
+        System.out.println("Remove Color: " + price);
     }
 
     public class logoutUserCallback extends AsyncCallback {
@@ -299,6 +362,7 @@ private DrawerLayout mDrawerLayout;
                 editor.putString(Constants.CAT_LIST_PREFS, response);
                 editor.commit();
                 initializeData();
+                tabLayout.setupWithViewPager(viewPager);
             } catch (JSONException e) {
                 e.printStackTrace();
                 Snackbar.make(findViewById(android.R.id.content), "Categories could not be loaded", Snackbar.LENGTH_INDEFINITE)
@@ -316,25 +380,96 @@ private DrawerLayout mDrawerLayout;
         }
     }
 
+    private void applyFilter() {
 
+        if (viewPager != null) {
+            if(selectedTabIndex==0){
+                adapter.addFragment(new HotDealsFragment(null, colorFilterArray, tagsFilterArray, priceFilterArray, true), "ALL ITEMS");
+            }
+            else{
+                adapter.addFragment(new HotDealsFragment(), "ALL ITEMS");
+            }
+
+
+
+            int size = categoriesArrayList.size();
+
+            for (int i = 0; i < size; i++) {
+                if (selectedTabIndex == i+1) {
+                    adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId(), colorFilterArray, tagsFilterArray, priceFilterArray, true), categoriesArrayList.get(i).getName());
+                } else {
+                    adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId()), categoriesArrayList.get(i).getName());
+                }
+
+            }
+        }
+        for(int i=0;i<tabLayout.getTabCount();i++){
+            adapter.notifyChangeInPosition(i);
+        }
+        adapter.notifyDataSetChanged();
+    }
 
     private void initializeData(){
-        adapter = new Adapter(getSupportFragmentManager());
+
+//        adapter = new Adapter(getSupportFragmentManager());
         if(viewPager!=null){
-            adapter.addFragment(new HotDealsFragment(), "ALL ITEMS");
+            if(isFilter){
+                adapter.addFragment(new FilterFragment(MainActivity.this), "ALL ITEMS");
+            }
+            else{
+                adapter.addFragment(new HotDealsFragment(), "ALL ITEMS");
+            }
+
             int size = categoriesArrayList.size();
 
             for (int i = 0; i < size; i++){
-                adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId()), categoriesArrayList.get(i).getName());
+                if(isFilter){
+                    adapter.addFragment(new FilterFragment(categoriesArrayList.get(i).getId(), MainActivity.this), categoriesArrayList.get(i).getName());
+                }
+                else{
+                    adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId()), categoriesArrayList.get(i).getName());
+                }
+
             }
         }
 
-        viewPager.setAdapter(adapter);
-
-        tabLayout.setupWithViewPager(viewPager);
+        adapter.notifyChangeInPosition(0);
+        adapter.notifyChangeInPosition(1);
+        adapter.notifyDataSetChanged();
+//        tabLayout.setupWithViewPager(viewPager);
+//        TabLayout.Tab tab = tabLayout.getTabAt(selectedTabIndex);
+//        tab.select();
     }
 
 
+    static class VersionHelper
+    {
+        static void refreshActionBarMenu(Activity activity)
+        {
+            activity.invalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem tickItem = menu.findItem(R.id.action_tick);
+        MenuItem crossItem = menu.findItem(R.id.action_cross);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem filterItem = menu.findItem(R.id.app_cart);
+        if(isFilter){
+            tickItem.setEnabled(true).setVisible(true);
+            crossItem.setEnabled(true).setVisible(true);
+            searchItem.setEnabled(false).setVisible(false);
+            filterItem.setEnabled(false).setVisible(false);
+        }
+        else{
+            tickItem.setEnabled(false).setVisible(false);
+            crossItem.setEnabled(false).setVisible(false);
+            searchItem.setEnabled(true).setVisible(true);
+            filterItem.setEnabled(true).setVisible(true);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -368,17 +503,57 @@ private DrawerLayout mDrawerLayout;
 
 
 
-               switch (item.getItemId()) {
+        switch (item.getItemId()) {
             case android.R.id.home:
+            {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
-                   case R.id.app_cart:
-                       isFilter = true;
-                       adapter.notifyDataSetChanged();
+            }
 
+           case R.id.app_cart:
+           {
+               isFilter = true;
+               if (Build.VERSION.SDK_INT >= 11)
+               {
+                   VersionHelper.refreshActionBarMenu(this);
+               }
+               selectedTabIndex = tabLayout.getSelectedTabPosition();
+               System.out.println("Selected tab: "+selectedTabIndex);
+               adapter.clear();
+               initializeData();
+               applyButton.setVisibility(View.VISIBLE);
+               return true;
+           }
 
-//                       Intent i=new Intent(this,FilterActivity.class);
-//                       startActivity(i);
+           case R.id.action_tick:
+           {
+               isFilter = false;
+               if (Build.VERSION.SDK_INT >= 11)
+               {
+                   VersionHelper.refreshActionBarMenu(this);
+               }
+               selectedTabIndex = tabLayout.getSelectedTabPosition();
+               System.out.println("Selected tab: " + selectedTabIndex);
+               adapter.clear();
+               applyButton.setVisibility(View.GONE);
+               applyFilter();
+               return true;
+           }
+
+           case R.id.action_cross:
+           {
+               isFilter = false;
+               if (Build.VERSION.SDK_INT >= 11)
+               {
+                   VersionHelper.refreshActionBarMenu(this);
+               }
+               selectedTabIndex = tabLayout.getSelectedTabPosition();
+               System.out.println("Selected tab: "+selectedTabIndex);
+               adapter.clear();
+               applyButton.setVisibility(View.GONE);
+               initializeData();
+               return true;
+           }
 
         }
         return super.onOptionsItemSelected(item);
@@ -435,7 +610,7 @@ private DrawerLayout mDrawerLayout;
     class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
-
+        private long baseId = 0;
         public Adapter(FragmentManager fm) {
             super(fm);
         }
@@ -445,27 +620,25 @@ private DrawerLayout mDrawerLayout;
             mFragmentTitles.add(title);
         }
 
+        public void clear(){
+            mFragments.clear();
+            mFragmentTitles.clear();
+        }
 
-
-
-
+        //this is called when notifyDataSetChanged() is called
+        @Override
+        public int getItemPosition(Object object) {
+            // refresh all fragments when data set changed
+            return PagerAdapter.POSITION_NONE;
+        }
 
         @Override
         public Fragment getItem(int position) {
-
-            if(isFilter){
-                Log.v("MainActivity", "Show filter");
                 return mFragments.get(position);
-            }
-            else{
-                return mFragments.get(position);
-            }
-
         }
 
         @Override
         public int getCount() {
-
             return mFragments.size();
         }
 
@@ -474,11 +647,24 @@ private DrawerLayout mDrawerLayout;
 
             return mFragmentTitles.get(position);
         }
+
+        @Override
+        public long getItemId(int position) {
+            // give an ID different from position when position has been changed
+            return baseId + position;
+        }
+
+        /**
+         * Notify that the position of a fragment has been changed.
+         * Create a new ID for each position to force recreation of the fragment
+         * @param n number of items which have been changed
+         */
+        public void notifyChangeInPosition(int n) {
+            // shift the ID returned by getItemId outside the range of all previous fragments
+            baseId += getCount() + n;
+        }
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-
-    }
 
 
     /*@Override

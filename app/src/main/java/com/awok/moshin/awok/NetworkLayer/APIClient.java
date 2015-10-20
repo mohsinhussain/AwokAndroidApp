@@ -49,7 +49,7 @@ public class APIClient {
 
     public void productsFromSearchAPICall(String searchFilter, int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/setti/api/search/index/"+searchFilter+"/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/setti/api/search/index?"+searchFilter+"/"+pageCount, "GET", null);
     }
 
     public void productsFromCategoryAPICall(String categoryId, int pageCount) {
@@ -130,6 +130,16 @@ public class APIClient {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+orderId+"/", "GET", null);
 
+    }
+
+    public void dynamicFiltersAPICall(String catId) {
+        mTask = new AsyncTaskWithDialog();
+        if (catId!=null){
+            mTask.execute(mContext, "http://market1.awok/setti/api/search/filterscreen/"+catId, "GET", null);
+        }
+        else{
+            mTask.execute(mContext, "http://market1.awok/setti/api/search/filterscreen/", "GET", null);
+        }
     }
 
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {
