@@ -696,7 +696,7 @@ viewHolder.cross.setVisibility(View.VISIBLE);
                 }
     }
 });
-/*viewHolder.cross.setOnClickListener(new View.OnClickListener() {
+viewHolder.remove.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
 
@@ -721,7 +721,7 @@ viewHolder.cross.setVisibility(View.VISIBLE);
 
       //  remove(item);
     }
-});*/
+});
 
 
         /*viewHolder.countOfProducts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -752,7 +752,7 @@ viewHolder.cross.setVisibility(View.VISIBLE);
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
 
-        public TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice,newPrice,sellerNameText;
+        public TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice,newPrice,sellerNameText,remove;
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         public View seperator;
@@ -779,6 +779,8 @@ viewHolder.cross.setVisibility(View.VISIBLE);
                     .findViewById(R.id.cross);
             sellerMainLay=(LinearLayout)itemLayoutView
                     .findViewById(R.id.sellerMainLay);
+            remove=(TextView)itemLayoutView
+                    .findViewById(R.id.remove);
             sellerLabel=(TextView)itemLayoutView
                     .findViewById(R.id.sellerLabel);
             seperator=(View)itemLayoutView
@@ -809,10 +811,10 @@ increment=(Button)itemLayoutView
             System.out.println("onClick " + getPosition());
         }
     }
-    public void add(Checkout item, int position) {
+    /*public void add(Checkout item, int position) {
         OverViewList.add(position, item);
         notifyItemInserted(position);
-    }
+    }*/
 
     public void remove(Checkout item) {
         int position = OverViewList.indexOf(item);

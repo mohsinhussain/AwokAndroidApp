@@ -30,5 +30,7 @@ public class Constants {
     public static String PRODUCT_PRICE_NEW_INTENT = "productPrieNew";
     public static String PRODUCT_PRICE_OLD_INTENT = "productPriceOld";
     public static String PRODUCT_DESCRIPTION_INTENT = "productDescription";
+    public static String PRODUCT_RATING = "productRating";
+    public static String PRODUCT_RATING_COUNT = "productRatingCount";
 
 }

@@ -5,7 +5,8 @@ package com.awok.moshin.awok.Models;
  */
 
 public class Products {
-
+String rating;
+    String ratingCount;
     String id;
     String name;
     String image;
@@ -18,7 +19,7 @@ public class Products {
     public Products() {
     }
 
-    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description) {
+    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -27,6 +28,8 @@ public class Products {
         this.description = description;
         this.discPercent = discPercent;
         this.categoryId = categoryId;
+        this.rating=rating;
+        this.ratingCount=ratingCount;
     }
 
     public String getDescription() {
@@ -98,5 +101,23 @@ public class Products {
         this.discPercent = discPercent;
     }
 
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+
+    public String getRating() {
+        return rating;
+    }
+
+
+    public void setRatingCount(String ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+
+    public String getRatingCount() {
+        return ratingCount;
+    }
 
 }

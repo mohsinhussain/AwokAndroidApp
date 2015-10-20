@@ -156,6 +156,9 @@ public class HotDealsFragment extends Fragment {
                     public void onItemClick(View view, int position) {
                         Intent i=new Intent(getContext(), ProductDetailsActivity.class);
                         i.putExtra(Constants.PRODUCT_ID_INTENT,productsArrayList.get(position).getId());
+                        i.putExtra(Constants.PRODUCT_RATING,productsArrayList.get(position).getRating());
+                        i.putExtra(Constants.PRODUCT_RATING_COUNT,productsArrayList.get(position).getRatingCount());
+
                         i.putExtra(Constants.PRODUCT_NAME_INTENT,productsArrayList.get(position).getName());
                         i.putExtra(Constants.PRODUCT_DISCOUNT_PERCENTAGE_INTENT,productsArrayList.get(position).getDiscPercent());
                         i.putExtra(Constants.PRODUCT_IMAGE_INTENT,productsArrayList.get(position).getImage());
@@ -390,6 +393,8 @@ public class HotDealsFragment extends Fragment {
                         item.setCategoryId(jsonObject.getString("category_id"));
                         item.setPriceNew(jsonObject.getJSONObject("discount").getInt("discount_price"));
                         item.setPriceOld(jsonObject.getInt("price"));
+                        item.setRating(jsonObject.getJSONObject("rating").getString("average"));
+                                item.setRatingCount(jsonObject.getJSONObject("rating").getString("sum"));
                         item.setDescription(jsonObject.getString("description"));
                         item.setDiscPercent(jsonObject.getJSONObject("discount").getInt("discount_percentage"));
 //                    if (priceObject.getInt("PRICE_OLD")!=0){

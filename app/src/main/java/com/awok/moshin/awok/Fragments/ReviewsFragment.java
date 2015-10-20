@@ -33,7 +33,7 @@ public class ReviewsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String productName,image;
+    private String productName,image,rating,ratingCount;
     private String mParam2;
     private RatingBar prod_reviewRating;
 
@@ -44,9 +44,11 @@ public class ReviewsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public ReviewsFragment(String productName,String image) {
+    public ReviewsFragment(String productName,String image,String ratingValue,String ratingCountValue) {
         this.productName=productName;
         this.image=image;
+        rating=ratingValue;
+        ratingCount=ratingCountValue;
     }
 
 
@@ -57,6 +59,8 @@ public class ReviewsFragment extends Fragment {
         View mView = inflater.inflate(R.layout.fragment_reviews, container, false);
 
         TextView productNameView=(TextView)mView.findViewById(R.id.productTitle);
+        //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+        TextView ratingCounttxt=(TextView)mView.findViewById(R.id.product_reviewCount);
         final ImageView imgMain=(ImageView)mView.findViewById(R.id.mainImg);
         final ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);
 
@@ -101,6 +105,8 @@ public class ReviewsFragment extends Fragment {
 //            }
 //        });
         prod_reviewRating=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+        prod_reviewRating.setRating(Float.parseFloat(rating));
+        ratingCounttxt.setText("("+ratingCount+")");
         LayerDrawable mainRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
         mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
         mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);

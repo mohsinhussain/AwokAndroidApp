@@ -40,6 +40,7 @@ import com.awok.moshin.awok.Fragments.ProductOverViewFragment;
 
 import com.awok.moshin.awok.Fragments.ReviewsFragment;
 import com.awok.moshin.awok.Fragments.ShippingDeliveryFrag;
+import com.awok.moshin.awok.Fragments.StoreRatingFragment;
 import com.awok.moshin.awok.Models.ProductDetailsModel;
 import com.awok.moshin.awok.Models.ProductOverview;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
@@ -69,7 +70,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     private Button buyNow,save;
     Map<String,String> productSpec = new HashMap<String,String>();
     private String imageData;
-    String productId,productName, newPrice, oldPrice, image, description;
+    String productId,productName, newPrice, oldPrice, image, description,rating,ratingCount;
     String catId;
     JSONObject dataToSend;
     MenuItem searchItem;
@@ -87,6 +88,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         Intent i=new Intent();
         productId =getIntent().getExtras().getString(Constants.PRODUCT_ID_INTENT);
         productName=getIntent().getExtras().getString(Constants.PRODUCT_NAME_INTENT);
+        rating=getIntent().getExtras().getString(Constants.PRODUCT_RATING);
+        System.out.println("RATING" + rating.toString());
+        ratingCount=getIntent().getExtras().getString(Constants.PRODUCT_RATING_COUNT);
         catId =getIntent().getExtras().getString(Constants.CAT_ID_INTENT);
         newPrice=getIntent().getExtras().getString(Constants.PRODUCT_PRICE_NEW_INTENT);
         oldPrice =getIntent().getExtras().getString(Constants.PRODUCT_PRICE_OLD_INTENT);
@@ -142,7 +146,8 @@ System.out.println(dataToSend.toString());
        // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(productName);
+      //  ab.setTitle(productName);
+        ab.setTitle("Details");
 
 
 
@@ -243,14 +248,15 @@ public void setUpTab()
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new ProductOverViewFragment(productId, productName,image), "Overview");
 
-
-
-        adapter.addFragment(new ReviewsFragment(productName,image),"Reviews");
-        adapter.addFragment(new ShippingDeliveryFrag(),"Shipping & Delivery");
-
-        adapter.addFragment(new HotDealsFragment(catId), "Related Products");
-
+        adapter.addFragment(new HotDealsFragment(catId), "Related");
         adapter.addFragment(new ProductDescriptionFragment(description), "Description");
+        adapter.addFragment(new ReviewsFragment(productName,image,rating,ratingCount),"Product Rating");
+        adapter.addFragment(new ShippingDeliveryFrag(),"Shipping Info");
+        adapter.addFragment(new StoreRatingFragment(productName,image,rating,ratingCount),"Store Rating");
+
+
+
+
 
 
 

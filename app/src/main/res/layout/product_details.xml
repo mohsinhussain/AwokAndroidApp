@@ -120,12 +120,14 @@ android:id="@+id/bottomLay"
                     android:gravity="center|left"
                     android:paddingLeft="5dp"
                     android:text=""
+                    android:textSize="18dp"
                     android:textColor="#F44336" />
 
             </LinearLayout>
 
 
             <LinearLayout
+                android:background="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

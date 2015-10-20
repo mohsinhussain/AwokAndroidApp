@@ -36,6 +36,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Adapters.CheckOutAdapter;
+import com.awok.moshin.awok.Adapters.CustomAdapter;
 import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
@@ -109,8 +110,9 @@ public class CheckOutActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new CheckOutAdapter(CheckOutActivity.this, overViewList);
+        mAdapter = new CustomAdapter(CheckOutActivity.this, overViewList);
         //mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -516,6 +518,7 @@ public class CheckOutActivity extends AppCompatActivity {
     public class GetCartCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
+                String totalFlag;
                 overViewList.clear();
                 System.out.println(response);
                 /*JSONArray jsonArray;
@@ -545,11 +548,21 @@ public class CheckOutActivity extends AppCompatActivity {
                         JSONArray productDetails = jsonObject.getJSONArray("products");
                         int lengthOfProducts = productDetails.length();
                         for (int j = 0; j < lengthOfProducts; j++) {
+
+
                             Checkout listData = new Checkout();
                             JSONObject jsonObjectProductDetails = productDetails.getJSONObject(j);
+                            totalFlag=jsonObjectProductDetails.getString("seller_name").toString();
                             listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
                             listData.setTotalPrice(jsonObjectProductDetails.getString("total_price"));
-
+                                               /* if((j==0) || (jsonObjectProductDetails.getString("seller_name").equals(totalFlag)))
+                                                   {
+                                                    listData.setTotalTag("false");
+                                                }
+                                                                            else
+                                                {
+                                                    listData.setTotalTag("false");
+                                                }*/
                             //listData.setOverViewText(jsonObject.getString("total_price"));
                             listData.setStatusId(jsonObjectData.getString("status"));
                             listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
@@ -583,7 +596,7 @@ public class CheckOutActivity extends AppCompatActivity {
                 }
                 progressBar.setVisibility(View.GONE);
                 //initializeData();
-                mRecyclerView.setAdapter(mAdapter);
+                /////////////////mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
 
             } catch (JSONException e) {

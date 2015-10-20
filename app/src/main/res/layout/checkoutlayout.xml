@@ -11,7 +11,7 @@
         android:background="#ffffff"
         android:layout_width="match_parent"
 
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 <LinearLayout
     android:id="@+id/sellerMainLay"
     android:layout_width="fill_parent"
@@ -236,6 +236,7 @@ android:layout_marginTop="5dp"
     >
 
     <CheckBox
+        android:visibility="gone"
         android:id="@+id/cross"
 android:button="@drawable/checkbox_btn_check_holo_light"
         android:layout_width="wrap_content"
@@ -244,12 +245,13 @@ android:button="@drawable/checkbox_btn_check_holo_light"
 
 
     <TextView
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="12dp"
         android:text="[ REMOVE ]"
         android:textColor="#888888"
-        android:id="@+id/textView4"
+        android:id="@+id/remove"
         android:layout_below="@+id/stock"
         android:layout_toRightOf="@+id/linearLayout"
         android:layout_toEndOf="@+id/linearLayout" />
@@ -427,9 +429,9 @@ android:visibility="gone"
 
 
        </RelativeLayout>-->
-<!--
 <RelativeLayout
-
+android:id="@+id/footer"
+android:background="#fcfafa"
     android:layout_below="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -449,7 +451,7 @@ android:visibility="gone"
 
 <LinearLayout
     android:id="@+id/subtotalLay"
-    android:layout_marginTop="10dp"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
@@ -483,10 +485,11 @@ android:visibility="gone"
     <LinearLayout
         android:id="@+id/shipLay"
         android:layout_below="@+id/subtotalLay"
-        android:layout_marginTop="10dp"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
         android:orientation="horizontal">
 
 
@@ -531,12 +534,14 @@ android:visibility="gone"
 
 
     <LinearLayout
+        android:layout_marginBottom="10dp"
             android:layout_below="@+id/shipLay"
         android:id="@+id/totalLay"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
         android:orientation="horizontal">
 
 
@@ -554,7 +559,7 @@ android:visibility="gone"
 
         <TextView
             android:text="AED 2000"
-            android:textColor="@color/primary"
+            android:textColor="#ff3823"
             android:layout_weight="1"
             android:gravity="right"
             android:layout_width="wrap_content"
@@ -564,6 +569,8 @@ android:visibility="gone"
     </LinearLayout>
 
 <LinearLayout
+    android:visibility="gone"
+    android:layout_marginTop="5dp"
     android:layout_below="@+id/totalLay"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -571,18 +578,18 @@ android:visibility="gone"
 
     <Button
         android:layout_gravity="right"
-        android:paddingRight="5dp"
+android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="#FFCDD2"
-        android:layout_marginRight="20dp"
+android:layout_marginRight="10dp"
         android:textColor="@color/primary"
         android:text="CHECKOUT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="128dp"
+        android:layout_height="36dp" />
 
 
 </LinearLayout>
 
 
 </RelativeLayout>
--->
 </RelativeLayout>
