@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-android:background="#eeeeee"
+android:background="@color/primary_material_light_1"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,7 +44,8 @@ android:layout_above="@+id/bottomLay"
         <android.support.v7.widget.RecyclerView
             android:id="@+id/overViewRecyclerView"
             android:layout_width="match_parent"
-            android:paddingBottom="5dp"
+
+
             android:layout_gravity="center"
 
             android:layout_height="match_parent"
@@ -338,27 +339,223 @@ android:textAppearance="?android:attr/textAppearanceLarge"
 
         </LinearLayout>-->
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-        <LinearLayout
+
+<View
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="5dp"
+    android:background="@color/primary_material_light_1"/>
+
+
+    <LinearLayout
+        android:weightSum="100"
+        android:background="@color/border"
+        android:id="@+id/totalItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:background="@color/button_text"
+            android:layout_width="0dp"
+            android:paddingLeft="8dp"
+            android:textColor="#666666"
+            android:textSize="16dp"
+            android:layout_weight="50"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Total Items in Cart"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical" />
+
+
+        <TextView
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:id="@+id/totalItemsCount"
+            android:background="@color/button_text"
+            android:textColor="#666666"
+            android:layout_weight="50"
+
+            android:layout_width="0dp"
+            android:paddingRight="8dp"
+
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="AED 20"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="100"
+        android:background="@color/border"
+        android:id="@+id/subtotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:background="@color/button_text"
+            android:layout_width="0dp"
+            android:paddingLeft="8dp"
+            android:textColor="#666666"
+            android:textSize="16dp"
+            android:layout_weight="35"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Sub Total"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical" />
+
+
+        <TextView
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:id="@+id/subTotal"
+            android:background="@color/button_text"
+
+            android:layout_weight="65"
+            android:textColor="#666666"
+            android:layout_width="0dp"
+            android:paddingRight="8dp"
+
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="AED 20"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:weightSum="100"
+        android:background="@color/border"
+        android:id="@+id/shipping"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:background="@color/button_text"
+            android:layout_width="0dp"
+            android:paddingLeft="8dp"
+            android:textColor="#666666"
+            android:textSize="16dp"
+            android:layout_weight="35"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Shipping"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical" />
+
+
+        <TextView
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:id="@+id/shippingText"
+            android:background="@color/button_text"
+
+            android:layout_weight="65"
+            android:textColor="#666666"
+            android:layout_width="0dp"
+            android:paddingRight="8dp"
+
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="AED 20"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
+     <!--   <LinearLayout
             android:background="#fcfafa"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:orientation="horizontal">-->
+        <LinearLayout
+            android:weightSum="100"
+            android:background="@color/button_text"
+            android:id="@+id/total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_weight="60"
+                android:layout_gravity="center_vertical"
+                android:layout_height="fill_parent">
+            <TextView
+                android:background="@color/button_text"
+                android:layout_width="wrap_content"
+                android:padding="8dp"
+                android:textSize="16dp"
+                android:textColor="#666666"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Total"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|left" />
 
+                <TextView
+                    android:id="@+id/aed"
+                    android:background="@color/button_text"
+
+android:textSize="12dp"
+                    android:textColor="@color/red_base"
+                    android:layout_width="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="AED"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical|left" />
+
+            <TextView
+                android:id="@+id/totalText"
+                android:background="@color/button_text"
+
+android:paddingLeft="4dp"
+                android:textColor="@color/red_base"
+                android:layout_width="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="AED 20"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|left" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="40"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/checkout"
                 android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#e64a19"
-                android:text="CHECKOUT"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="40"
+                android:layout_margin="5dp"
+                android:background="#ff3823"
+                android:text="SECURE CHECKOUT"
                 android:textColor="#FFFFFF" />
-
+            </LinearLayout>
 
         </LinearLayout>
 

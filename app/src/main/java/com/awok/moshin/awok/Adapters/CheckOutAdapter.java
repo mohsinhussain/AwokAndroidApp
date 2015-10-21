@@ -114,7 +114,7 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        Log.v("Checkout adapter", "SellerLabel: "+OverViewList.get(position).getSellerLabel()+"   Seller Check: "+sellerCheck);
+        /*Log.v("Checkout adapter", "SellerLabel: "+OverViewList.get(position).getSellerLabel()+"   Seller Check: "+sellerCheck);
         if (OverViewList.get(position).getSellerLabel().equalsIgnoreCase(sellerCheck)) {
             Log.v("Checkout adapter", "case: WITH for position: "+position);
             if(index==position){
@@ -126,7 +126,25 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
             Log.v("Checkout adapter", "case: WITH for position: "+position);
             index = position;
             return ITEM_WITHOUT_SELLER;
+        }*/
+        if(OverViewList.get(position).getIsHeader() && OverViewList.get(position).getIsFooter())
+
+        {
+
         }
+        else  if(OverViewList.get(position).getIsHeader())
+        {
+
+        }
+        else if(OverViewList.get(position).getIsFooter())
+        {
+
+        }
+        else
+        {
+
+        }
+            return -1;
     }
     // Create new views (invoked by the layout manager)
     @Override
