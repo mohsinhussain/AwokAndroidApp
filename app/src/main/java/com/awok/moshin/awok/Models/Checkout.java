@@ -16,13 +16,15 @@ public class Checkout {
     private String totalPrice;
     private String oldPrice;
     String totalTag;
+    public Boolean isHeader;
+    public Boolean isFooter;
 
     public Checkout()
     {
 
     }
 
-    public Checkout(String OverViewTitle, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String totalTag,String statusId,String quantity,String remainingStock,String totalPrice,String oldPrice) {
+    public Checkout(String OverViewTitle,Boolean isHeader,Boolean isFooter, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String totalTag,String statusId,String quantity,String remainingStock,String totalPrice,String oldPrice) {
         this.OverViewTitle = OverViewTitle;
         this.OverViewText = OverViewText;
         this.SellerLabel=SellerLabel;
@@ -34,9 +36,26 @@ public class Checkout {
         this.totalPrice=totalPrice;
         this.oldPrice=oldPrice;
         this.totalTag=totalTag;
+        this.isFooter=isFooter;
+        this.isHeader=isHeader;
 
     }
 
+    public Boolean getIsFooter() {
+        return isFooter;
+    }
+
+    public void setIsFooter(Boolean isFooter) {
+        this.isFooter = isFooter;
+    }
+
+    public Boolean getIsHeader() {
+        return isHeader;
+    }
+
+    public void setIsHeader(Boolean isHeader) {
+        this.isHeader = isHeader;
+    }
 
     public void setOverViewTitle(String OverViewTitle)
     {
