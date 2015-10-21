@@ -52,11 +52,12 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private TextView errorText;
     private Button prod_buyNow;
     private RelativeLayout mainLay;
-    private TextView total,shippingAmount,itemAmount;
+//    private TextView total,shippingAmount,itemAmount;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderSummary> overViewList = new ArrayList<OrderSummary>();
     private ProgressBar progressBar;
+    private Button addEditAddressButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,13 +65,26 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
-        total=(TextView)findViewById(R.id.order_total_value);
-        shippingAmount=(TextView)findViewById(R.id.estimated_shipping_price);
-        itemAmount=(TextView)findViewById(R.id.items_total_price);
+//        total=(TextView)findViewById(R.id.order_total_value);
+//        shippingAmount=(TextView)findViewById(R.id.estimated_shipping_price);
+//        itemAmount=(TextView)findViewById(R.id.items_total_price);
         mainLay=(RelativeLayout)findViewById(R.id.orderSummaryMain);
         mainLay.setVisibility(View.GONE);
         errorText=(TextView)findViewById(R.id.error_text);
+
+        addEditAddressButton = (Button)findViewById(R.id.addEditAddressButton);
+
+        addEditAddressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(OrderSummaryActivity.this, ShippingAddressActivity.class);
+                startActivity(i);
+            }
+        });
+
+
 prod_buyNow=(Button)findViewById(R.id.prod_buyNow);
+
         prod_buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +151,7 @@ JSONObject dataToSend;
         // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Order Checkout");
+        ab.setTitle(getString(R.string.order_summary));
        /* int i=0;
         for(i=0;i<=4;i++)
         {
@@ -177,7 +191,7 @@ JSONObject dataToSend;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
 
 
 
@@ -233,10 +247,10 @@ JSONObject dataToSend;
                     //bottomLay.setVisibility(View.VISIBLE);
                     //cartEmptyText.setVisibility(View.GONE);
 
-                    shippingAmount.setText((jsonObjectData.getJSONObject("data").getString("shipping")+" AED"));
-
-                    itemAmount.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
-                    total.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
+//                    shippingAmount.setText((jsonObjectData.getJSONObject("data").getString("shipping")+" AED"));
+//
+//                    itemAmount.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
+//                    total.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
                     int length = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").length();
                     for(int i=0;i<length;i++){
                         JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").getJSONObject(i);

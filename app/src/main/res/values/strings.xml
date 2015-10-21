@@ -16,7 +16,12 @@
     <string name="cart_alert">Cart Alert</string>
     <string name="country_code_header">Country Code</string>
     <string name="copyright">&#169; Copyright 2015 Awok.com, All Rights Reserved.</string>
-
+    <string name="ship_to">Ship to:</string>
+    <string name="change_address">Change Address ></string>
+    <string name="add_new_address">Add New Address ></string>
+    <string name="add_shipping_address">Add Shipping Address</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="secure_checkout">Secure Checkout</string>
     <string name="messages">Messages</string>
     <string name="notifications">Notifications</string>
     <string name="my_orders">My Orders</string>
@@ -41,7 +46,8 @@
 Introducing the world’s first 4K smartphone</string>
     <string name="check_out_price">3000 AED</string>
     <string name="enter_password">Please Enter Password</string>
-
+    <string name="total">Total:</string>
+    <string name="aed">AED</string>
     <string name="please_confirm_password">Please Confirm Your Password</string>
     <string name="password_do_not_match">Passwords do not match</string>
     <string name="incorrect_mobile">Mobile number is incorrect</string>

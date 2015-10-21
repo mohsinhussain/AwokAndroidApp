@@ -5,6 +5,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <RelativeLayout
+        android:id="@+id/addressContentLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/radioAddress">
 
     <TextView
         android:layout_marginTop="5dp"
@@ -59,22 +64,44 @@
         android:text="4546545464"
         android:id="@+id/phone" />
 
+        <TextView
+            android:layout_alignTop="@+id/pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textColor="@color/dialog_button_cancel"
+            android:text="Remove"
+            android:layout_alignParentRight="true"
+            android:id="@+id/removeAddressTextView"
+            android:layout_marginTop="10dp"/>
+
+
+        <TextView
+            android:layout_above="@+id/removeAddressTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textColor="@color/dialog_button_cancel"
+            android:text="Edit"
+            android:layout_alignParentRight="true"
+            android:id="@+id/editTextView" />
+
+    </RelativeLayout>
+
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:button="@drawable/radiobuttoncolor_btn_radio_holo_light"
+        android:layout_margin="8dp"
         android:id="@+id/radioAddress"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentLeft="true" />
 
 
 
 
     <View
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/phone"
+        android:layout_below="@+id/addressContentLayout"
         android:background="@color/border"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>

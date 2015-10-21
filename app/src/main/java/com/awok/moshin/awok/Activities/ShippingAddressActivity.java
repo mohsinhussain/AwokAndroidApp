@@ -44,22 +44,15 @@ private RecyclerView list;
 
 
     private RecyclerView.Adapter mAdapter;
-private RelativeLayout add;
+    private RelativeLayout add;
     private List<ShippingAddressModel> overViewList = new ArrayList<ShippingAddressModel>();
     private RecyclerView.LayoutManager mLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shipping_address);
-
-list=(RecyclerView)findViewById(R.id.recyclerAddress);
-add=(RelativeLayout)findViewById(R.id.buttonAdd);
-
-
-
-
-
-
+        list=(RecyclerView)findViewById(R.id.recyclerAddress);
+        add=(RelativeLayout)findViewById(R.id.buttonAdd);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,8 +163,6 @@ overViewList.add(address);
                 if (jsonObjectData.getString("status").equals("0")) {
 
                 } else {
-
-
                     JSONArray address=jsonObjectData.getJSONArray("address");
 
 
@@ -197,8 +188,8 @@ overViewList.add(address);
 
 
                                     System.out.println("add1" + jData.getJSONObject("address").getString("address_line1"));
-                                    System.out.println("add2"+jData.getJSONObject("address").getString("address_line2"));
-                                    System.out.println("number" + jData.getJSONObject("address").getString("phone_number"));
+                                    System.out.println("add2" + jData.getJSONObject("address").getString("address_line2"));
+                                    System.out.println("number" + jData.getString("phone_number1"));
 
 
                                 ShippingAddressModel addressModel=new ShippingAddressModel();
@@ -207,7 +198,7 @@ overViewList.add(address);
                                 addressModel.setState(jData.getJSONObject("address").getString("address_line2"));
                                 addressModel.setCountry(jData.getString("country"));
                                 addressModel.setPin(jData.getString("postal_code"));
-                                addressModel.setPhone(jData.getJSONObject("address").getString("phone_number"));
+                                addressModel.setPhone(jData.getString("phone_number1"));
                                 addressModel.setIsSelected(false);
                                 overViewList.add(addressModel);
 
