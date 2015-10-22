@@ -96,7 +96,7 @@ public class CheckOutActivity extends AppCompatActivity {
         cartEmptyText.setVisibility(View.GONE);
         prodPrice = (TextView) findViewById(R.id.prod_discountPrice);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
         errorText=(TextView)findViewById(R.id.error_text);
         totalLay=(LinearLayout)findViewById(R.id.totalLay);

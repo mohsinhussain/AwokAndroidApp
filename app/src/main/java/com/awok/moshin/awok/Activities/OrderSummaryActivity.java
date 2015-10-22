@@ -66,7 +66,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_summary);
 
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 //        total=(TextView)findViewById(R.id.order_total_value);
 //        shippingAmount=(TextView)findViewById(R.id.estimated_shipping_price);
 //        itemAmount=(TextView)findViewById(R.id.items_total_price);
