@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -55,7 +56,7 @@ import java.util.List;
  */
 public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddressAdapter.ViewHolder> {
     private List<ShippingAddressModel> OverViewList = new ArrayList<ShippingAddressModel>();
-    private Activity activity_main;
+    private ShippingAddressActivity activity_main;
     View customView;
 
     private ArrayAdapter<CharSequence> adapter;
@@ -67,10 +68,9 @@ public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddress
     LinearLayout.LayoutParams lp;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ShippingAddressAdapter(Activity activity,List<ShippingAddressModel> overViewList) {
+    public ShippingAddressAdapter(ShippingAddressActivity activity,List<ShippingAddressModel> overViewList) {
         OverViewList = overViewList;
-
-
+        activity_main = activity;
     }
 
     // Create new views (invoked by the layout manager)
@@ -96,23 +96,36 @@ public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddress
 
 
         final int pos = position;
-
-
-viewHolder.rb.setChecked(true);
-            viewHolder.name.setText(OverViewList.get(position).getName());
-            viewHolder.address.setText(OverViewList.get(position).getAddress());
-            viewHolder.state.setText(OverViewList.get(position).getState());
-            viewHolder.country.setTag(OverViewList.get(position).getCountry());
+        viewHolder.rb.setChecked(true);
+        viewHolder.name.setText(OverViewList.get(position).getName());
+        viewHolder.address.setText(OverViewList.get(position).getAddress1());
+        viewHolder.state.setText(OverViewList.get(position).getCity()+OverViewList.get(position).getState());
+        viewHolder.country.setText(OverViewList.get(position).getCountry());
         viewHolder.pin.setText(OverViewList.get(position).getPin());
-        viewHolder.phone.setTag(OverViewList.get(position).getPhone());
-        viewHolder.rb.setChecked(OverViewList.get(position).getIsSelected());
+        viewHolder.phone.setTag(OverViewList.get(position).getPhone1());
+        viewHolder.rb.setChecked(OverViewList.get(position).isSelected());
 
+        viewHolder.removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity_main.removeAddress(OverViewList.get(pos).getId());
+                OverViewList.remove(pos);
+                notifyDataSetChanged();
+            }
+        });
+
+        viewHolder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity_main.editAddress(pos);
+            }
+        });
 
         viewHolder.rb.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 RadioButton rb = (RadioButton) v;
                 //ShippingAddressModel address = (ShippingAddressModel) rb.getTag();
-
+                activity_main.setPrimaryAddress(OverViewList.get(pos).getId());
                 //address.setIsSelected(rb.isChecked());
                 for(int i=0;i<OverViewList.size();i++) {
                     ShippingAddressModel country = OverViewList.get(i);
@@ -150,6 +163,7 @@ viewHolder.rb.setChecked(true);
 
         public TextView name,address,state,country,pin,phone;
         private RadioButton rb;
+        Button editButton, removeButton;
 
 
         //public CheckoutDataObjects data;
@@ -164,9 +178,8 @@ viewHolder.rb.setChecked(true);
                     .findViewById(R.id.state);
             rb=(RadioButton)itemLayoutView
                     .findViewById(R.id.radioAddress);
-
-
-
+            editButton = (Button)itemLayoutView.findViewById(R.id.editButton);
+            removeButton = (Button)itemLayoutView.findViewById(R.id.removeAddressButton);
 
             country = (TextView) itemLayoutView
                     .findViewById(R.id.country);

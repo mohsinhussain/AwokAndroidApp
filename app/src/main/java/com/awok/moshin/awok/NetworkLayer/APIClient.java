@@ -63,6 +63,11 @@ public class APIClient {
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
     }
 
+    public void getPrimaryAddressAPICall(String userId) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/addresses/primaryaddress//"+userId, "GET", null);
+    }
+
     public void removeProductFromCartCall(String cartId) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+cartId+"/", "DELETE", null);
@@ -145,6 +150,23 @@ public class APIClient {
         mTask.execute(mContext, "http://market1.awok/setti/api/addresses/index/"+user_id, "GET", null);
     }
 
+    public void setPrimaryAddressAPICall(String addressId) {
+
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/addresses/selectedaddress/"+addressId, "PUT", null);
+    }
+
+    public void removeAddressAPICall(String addressId) {
+
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/addresses/remove/"+addressId, "DELETE", null);
+    }
+
+    public void editAddressAPICall(String addressId, String dataToSend) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/setti/api/addresses/edit/"+addressId, "PUT", dataToSend);
+    }
+
     public void countryCallBack() {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/setti/api/locations/index/", "GET", null);
@@ -160,7 +182,7 @@ public class APIClient {
         mTask.execute(mContext, "http://market1.awok/setti/api/locations/index/"+state_id, "GET", null);
     }
 
-    public void addAddressCallBack(String userId,String dataToSend) {
+    public void addAddressAPICall(String userId, String dataToSend) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/setti/api/addresses/index/"+userId, "POST", dataToSend);
     }

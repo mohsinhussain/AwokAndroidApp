@@ -43,9 +43,9 @@
         android:layout_below="@+id/state"
         android:layout_width="wrap_content"
         android:padding="2dp"
-        android:layout_height="wrap_content"
 
         android:text="Dubai, AE"
+        android:layout_height="wrap_content"
         android:id="@+id/country" />
 
     <TextView
@@ -64,27 +64,31 @@
         android:text="4546545464"
         android:id="@+id/phone" />
 
-        <TextView
-            android:layout_alignTop="@+id/pin"
+        <Button
+            android:layout_alignBottom="@+id/phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:textColor="@color/dialog_button_cancel"
+            android:textColor="@color/input_hint"
+            android:minHeight="25dp"
+            android:background="@color/button_text"
             android:text="Remove"
+            android:gravity="left|center_vertical"
             android:layout_alignParentRight="true"
-            android:id="@+id/removeAddressTextView"
+            android:id="@+id/removeAddressButton"
             android:layout_marginTop="10dp"/>
 
 
-        <TextView
-            android:layout_above="@+id/removeAddressTextView"
+        <Button
+            android:layout_above="@+id/removeAddressButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:textColor="@color/dialog_button_cancel"
+            android:minHeight="30dp"
+            android:background="@color/button_text"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/input_hint"
             android:text="Edit"
             android:layout_alignParentRight="true"
-            android:id="@+id/editTextView" />
+            android:id="@+id/editButton" />
 
     </RelativeLayout>
 

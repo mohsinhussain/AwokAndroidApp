@@ -135,6 +135,21 @@ private DrawerLayout mDrawerLayout;
         isFilter = false;
 
 
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFilter = false;
+                if (Build.VERSION.SDK_INT >= 11)
+                {
+                    VersionHelper.refreshActionBarMenu(MainActivity.this);
+                }
+                selectedTabIndex = tabLayout.getSelectedTabPosition();
+                System.out.println("Selected tab: " + selectedTabIndex);
+                adapter.clear();
+                applyButton.setVisibility(View.GONE);
+                applyFilter();
+            }
+        });
 
 
 

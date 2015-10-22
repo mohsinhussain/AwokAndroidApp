@@ -35,6 +35,7 @@ import com.awok.moshin.awok.Adapters.CheckOutAdapter;
 import com.awok.moshin.awok.Adapters.OrderSummaryAdapter;
 import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.Models.OrderSummary;
+import com.awok.moshin.awok.Models.ShippingAddressModel;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
@@ -58,6 +59,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private List<OrderSummary> overViewList = new ArrayList<OrderSummary>();
     private ProgressBar progressBar;
     private Button addEditAddressButton;
+    LinearLayout addressDetailLayout;
+    TextView nameTextView, addressTextView, cityTextView, countryTextView, postalcodeTextView, mobileNumberTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +74,20 @@ public class OrderSummaryActivity extends AppCompatActivity {
         mainLay=(RelativeLayout)findViewById(R.id.orderSummaryMain);
         mainLay.setVisibility(View.GONE);
         errorText=(TextView)findViewById(R.id.error_text);
-
+        addressDetailLayout = (LinearLayout) findViewById(R.id.addressDetailLayout);
+        addressDetailLayout.setVisibility(View.GONE);
         addEditAddressButton = (Button)findViewById(R.id.addEditAddressButton);
+
+
+        nameTextView=(TextView)findViewById(R.id.nameTextView);
+        addressTextView=(TextView)findViewById(R.id.addressTextView);
+        cityTextView=(TextView)findViewById(R.id.cityTextView);
+        countryTextView=(TextView)findViewById(R.id.countryTextView);
+        postalcodeTextView=(TextView)findViewById(R.id.postalcodeTextView);
+        mobileNumberTextView=(TextView)findViewById(R.id.mobileNumberTextView);
+
+
+
 
         addEditAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,8 +163,6 @@ JSONObject dataToSend;
         setSupportActionBar(toolbar);
 
         final ActionBar ab = getSupportActionBar();
-        // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-        //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(getString(R.string.order_summary));
        /* int i=0;
@@ -168,13 +181,8 @@ JSONObject dataToSend;
                 getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            /*if(categoryId==null){
-                new APIClient(getApplicationContext(), getApplicationContext(),  new GetProductsCallback()).allProductsAPICall(pageCount);
-            }
-            else{*/
             new APIClient(this, getApplicationContext(),  new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
-            // }
-
+            new APIClient(this, getApplicationContext(),  new GetAddressCallback()).getPrimaryAddressAPICall("55f6a9462f17f64a9b5f5ce4");
         } else {
             errorText.setVisibility(View.VISIBLE);
             Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
@@ -184,9 +192,22 @@ JSONObject dataToSend;
     }
 
 
-
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new APIClient(this, getApplicationContext(),  new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
+            new APIClient(this, getApplicationContext(),  new GetAddressCallback()).getPrimaryAddressAPICall("55f6a9e52f17f64a9b5f5ce5");
+        } else {
+            errorText.setVisibility(View.VISIBLE);
+            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -216,6 +237,69 @@ JSONObject dataToSend;
 
 
     }
+
+
+
+    public class GetAddressCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+
+                System.out.println(response);
+
+                JSONObject jsonObjectData;
+                jsonObjectData = new JSONObject(response);
+                System.out.println(jsonObjectData.toString());
+                if (jsonObjectData.getString("status").equals("0")) {
+
+                } else {
+                    addEditAddressButton.setText(getString(R.string.change_address));
+//                    addEditAddressButton.setTextColor(getColor(R.color.input_hint));
+                    addEditAddressButton.setTextColor(getResources().getColor(R.color.input_hint));
+                    addressDetailLayout.setVisibility(View.VISIBLE);
+                    JSONObject jData=jsonObjectData.getJSONObject("address");
+                    ShippingAddressModel addressModel=new ShippingAddressModel();
+                    nameTextView.setText(jData.getString("name"));
+                    addressTextView.setText(jData.getJSONObject("address").getString("address_line1"));
+                    cityTextView.setText(jData.getString("city"));
+                    countryTextView.setText(jData.getString("country"));
+                    postalcodeTextView.setText(jData.getString("postal_code"));
+                    mobileNumberTextView.setText(jData.getString("phone_number1"));
+                }
+
+
+
+                if (getApplicationContext() != null) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                    //progressBar.startAnimation(animation);
+                }
+                //progressBar.setVisibility(View.GONE);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(Color.RED)
+                        .show();
+                if (getApplicationContext() != null) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                    // progressBar.startAnimation(animation);
+                }
+                //  progressBar.setVisibility(View.GONE);
+
+            }
+        }
+
+        @Override
+        public void onTaskCancelled() {
+        }
+
+        @Override
+        public void onPreExecute() {
+
+        }
+    }
+
+
     public class GetCartCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
