@@ -168,7 +168,7 @@ android:layout_weight="1"
             android:id="@+id/newPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
 android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"
 
@@ -195,18 +195,22 @@ android:layout_alignParentRight="true"
             <LinearLayout
                 android:layout_margin="1dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:orientation="horizontal">
             <Button
+                android:layout_gravity="center"
                 android:id="@+id/quantity_dec"
                 android:background="#eeeeee"
+                android:textColor="@color/dialog_button_cancel"
+            android:textStyle="bold"
+                android:gravity="center"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:text="-"/>
         <EditText
             android:layout_width="50dp"
 
-            android:layout_height="30dp"
+            android:layout_height="fill_parent"
             android:inputType="numberDecimal"
             android:singleLine="true"
             android:textColor="#333333"
@@ -226,8 +230,12 @@ android:maxLength="2"
             android:layout_alignRight="@+id/priceLay"
             android:layout_alignEnd="@+id/priceLay" />
             <Button
+                android:layout_gravity="center"
                 android:id="@+id/quantity_inc"
                 android:background="#eeeeee"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/dialog_button_cancel"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:text="+"/>
@@ -295,14 +303,15 @@ android:visibility="gone"
             android:layout_alignLeft="@+id/OverViewTitle"
             android:paddingRight="20dp"
             android:background="@drawable/custom_background_green"
-            android:layout_width="45dp"
+            android:layout_width="60dp"
             style="?android:attr/borderlessButtonStyle"
             android:layout_height="20dp"
             android:text="@string/discount"
             android:maxHeight="0dp"
             android:textColor="#ffffff"
             android:gravity="center"
-            android:textSize="10sp"
+
+            android:textSize="14dp"
             android:layout_margin="5dp"
             />
 
@@ -446,7 +455,7 @@ android:background="#fcfafa"
     android:layout_below="@+id/main"
     android:layout_width="match_parent"
 
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
 
 
@@ -581,6 +590,45 @@ android:background="#fcfafa"
 
         <TextView
             android:text="AED 2000"
+            android:textColor="#ff3823"
+            android:paddingBottom="5dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/totalLay"
+        android:id="@+id/fgvbxfgbf"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:orientation="horizontal">
+
+
+
+
+
+
+        <TextView
+            android:text=""
+            android:paddingBottom="5dp"
+            android:layout_weight="1"
+            android:textColor="#999999"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+            android:text=""
             android:textColor="#ff3823"
             android:paddingBottom="5dp"
             android:layout_weight="1"

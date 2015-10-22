@@ -6,9 +6,23 @@
         android:orderInCategory="100" app:showAsAction="never" />-->
 
     <item android:id="@+id/action_search"
+
         android:title="Search"
         android:icon="@drawable/search_icon"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <!--<item
+        android:id="@+id/item_samplebadge"
+        app:actionLayout="@layout/menu_badge"
+        app:showAsAction="always"
+        android:title="sample_1"/>-->
+
+    <item
+        android:id="@+id/app_cart"
+        app:showAsAction="always"
+        android:orderInCategory="200"
+        android:icon="@drawable/cart_icon"
+        android:title="Cart" />
 
 </menu>

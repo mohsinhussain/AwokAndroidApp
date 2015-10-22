@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.awok.moshin.awok.Activities.ProductDetailsActivity;
@@ -146,9 +147,18 @@ public class RelatedProductsFragment extends Fragment {
             }
 
         } else {
-            Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+           /* Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
-                    .show();
+                    .show();*/
+
+            Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
         }
         return mView;
     }
@@ -241,9 +251,18 @@ public class RelatedProductsFragment extends Fragment {
                 initializeData();
             } catch (JSONException e) {
                 e.printStackTrace();
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                /*Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
-                        .show();
+                        .show();*/
+
+                Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "Data could not be loaded", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
             }
         }
         @Override

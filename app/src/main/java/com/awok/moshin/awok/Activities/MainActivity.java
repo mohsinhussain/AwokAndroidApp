@@ -252,14 +252,17 @@ private DrawerLayout mDrawerLayout;
             if (networkInfo != null && networkInfo.isConnected()) {
                 new APIClient(MainActivity.this, MainActivity.this,  new GetCategoriesCallback()).categoriesAPICall();
             } else {
-                Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                        .setActionTextColor(Color.RED)
-                        .show();
+                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
             }
         }
     }
-
-
 
 
     @Override

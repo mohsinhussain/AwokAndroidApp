@@ -67,7 +67,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     Context mContext;
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public final TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice,newPrice,sellerNameText;
+        public final TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice,newPrice,sellerNameText,discount;
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         RelativeLayout footer;
@@ -106,6 +106,8 @@ footer=(RelativeLayout)itemLayoutView
                     .findViewById(R.id.sellerLabel);
             seperator=(View)itemLayoutView
                     .findViewById(R.id.sellerDivider);
+            discount=(TextView)itemLayoutView
+                    .findViewById(R.id.sellerLabelText);
             productImg=(ImageView)itemLayoutView
 
                     .findViewById(R.id.mainImg);
@@ -259,7 +261,7 @@ customView=v;
         viewHolder.prodOverviewTitle.setTag(mDataSet.get(position).getProductId());
         viewHolder.totalPrice.setText("Total Price :" + mDataSet.get(position).getTotalPrice() + " AED");
         viewHolder.quantity.setText(mDataSet.get(position).getQuantity());
-
+        viewHolder.discount.setText(mDataSet.get(position).getDiscount()+"%");
         viewHolder.stock.setText("Free Shipping");
         viewHolder.sellerNameText.setText(mDataSet.get(position).getSellerLabel());
         viewHolder.stock.setTag(mDataSet.get(position).getRemainingStock());

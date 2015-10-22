@@ -18,13 +18,14 @@ public class Checkout {
     String totalTag;
     public Boolean isHeader;
     public Boolean isFooter;
+    private String discount;
 
     public Checkout()
     {
 
     }
 
-    public Checkout(String OverViewTitle,Boolean isHeader,Boolean isFooter, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String totalTag,String statusId,String quantity,String remainingStock,String totalPrice,String oldPrice) {
+    public Checkout(String OverViewTitle,Boolean isHeader,Boolean isFooter,String discount, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String totalTag,String statusId,String quantity,String remainingStock,String totalPrice,String oldPrice) {
         this.OverViewTitle = OverViewTitle;
         this.OverViewText = OverViewText;
         this.SellerLabel=SellerLabel;
@@ -38,6 +39,7 @@ public class Checkout {
         this.totalTag=totalTag;
         this.isFooter=isFooter;
         this.isHeader=isHeader;
+        this.discount=discount;
 
     }
 
@@ -193,5 +195,16 @@ public class Checkout {
     {
         return totalTag;
     }
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
 
+
+
+
+
+    public String getDiscount()
+    {
+        return discount;
+    }
 }

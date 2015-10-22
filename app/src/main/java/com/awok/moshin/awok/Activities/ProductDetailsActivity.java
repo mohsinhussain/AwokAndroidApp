@@ -32,6 +32,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Fragments.HotDealsFragment;
@@ -47,6 +48,7 @@ import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -270,9 +272,17 @@ public void setUpTab()
     @Override
     public boolean onQueryTextSubmit(String query) {
         if(query.equalsIgnoreCase("")){
-            Snackbar.make(ProductDetailsActivity.this.findViewById(android.R.id.content), "Please type some thing to search Awok", Snackbar.LENGTH_LONG)
+            /*Snackbar.make(ProductDetailsActivity.this.findViewById(android.R.id.content), "Please type some thing to search Awok", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
-                    .show();
+                    .show();*/
+            Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Please type some thing to search Awok", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
         }
         else{
             Intent i = new Intent(ProductDetailsActivity.this, SearchActivity.class);
@@ -320,12 +330,36 @@ public void setUpTab()
             return mFragmentTitles.get(position);
         }
     }
+    static Button notifCount;
+    static int mNotifCount = 2;
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_productdetails, menu);
+        //View count = menu.findItem(R.id.action_search).getActionView();
+        /*notifCount = (Button) count.findViewById(R.id.notif_count);
+        notifCount.setText("2");*/
+        /*MenuItem item = menu.findItem(R.id.badge);
+        MenuItemCompat.setActionView(item, R.layout.testcount);
+        RelativeLayout notifCount = (RelativeLayout) MenuItemCompat.getActionView(item);
+
+        TextView tv = (TextView) notifCount.findViewById(R.id.actionbar_notifcation_textview);
+        tv.setText("12");*/
+        /*MenuItem item = menu.findItem(R.id.badge);
+        MenuItemCompat.setActionView(item, R.layout.testcount);
+        notifCount = (Button)MenuItemCompat.getActionView(item);
+        notifCount.setText(String.valueOf(mNotifCount));*/
+        /*int badgeCount=5;
+        if (badgeCount > 0) {
+            ActionItemBadge.update(this, menu.findItem(R.id.item_samplebadge), getDrawable(R.drawable.search_icon), ActionItemBadge.BadgeStyles.DARK_GREY, badgeCount);
+        } else {
+            ActionItemBadge.hide(menu.findItem(R.id.item_samplebadge));
+        }*/
+
+        //If you want to add your ActionItem programmatically you can do this too. You do the following:
+       ////////// new ActionItemBadgeAdder().act(this).menu(menu).title("COOL").itemDetails(0, 2, 1).showAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS).add(badgeCount);
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
         searchItem = menu.findItem(R.id.action_search);
@@ -354,9 +388,17 @@ public void setUpTab()
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                /*Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
-                        .show();
+                        .show();*/
+                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be Loaded", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
             }
         }
         @Override

@@ -191,6 +191,7 @@ public class CheckOutAdapter extends RecyclerView.Adapter<CheckOutAdapter.ViewHo
         viewHolder.prodOverViewText.setText("AED " + OverViewList.get(position).getOldPrice());
         viewHolder.prodOverviewTitle.setText(OverViewList.get(position).getOverViewTitle());
         viewHolder.prodOverviewTitle.setTag(OverViewList.get(position).getProductId());
+        viewHolder.discount.setText(OverViewList.get(position).getDiscount()+"%");
         //viewHolder.sellerLabel.setText(OverViewList.get(position).getSellerLabel());
 //        viewHolder.sellerMainLay.setVisibility(View.GONE);
         //viewHolder.sellerLabel.setText("Seller Name");
@@ -770,7 +771,7 @@ viewHolder.remove.setOnClickListener(new View.OnClickListener() {
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
 
-        public TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice,newPrice,sellerNameText,remove;
+        public TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice,newPrice,sellerNameText,remove,discount;
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         public View seperator;
@@ -791,6 +792,8 @@ viewHolder.remove.setOnClickListener(new View.OnClickListener() {
                     .findViewById(R.id.totalPrice);
             prodOverViewText = (TextView) itemLayoutView
                     .findViewById(R.id.overviewText);
+            discount=(TextView)itemLayoutView
+                    .findViewById(R.id.sellerLabelText);
             /*countOfProducts=(Spinner)itemLayoutView
                     .findViewById(R.id.spinner);*/
             cross=(CheckBox)itemLayoutView
