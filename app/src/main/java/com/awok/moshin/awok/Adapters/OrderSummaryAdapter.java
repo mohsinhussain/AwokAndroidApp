@@ -323,8 +323,8 @@ this.OverViewList=overViewListData;
             prodOverViewText = (TextView) itemLayoutView
                     .findViewById(R.id.overviewText);
 
-            qtyText = (TextView) itemLayoutView
-                    .findViewById(R.id.qtyText);
+           /* qtyText = (TextView) itemLayoutView
+                    .findViewById(R.id.qtyText);*/
             sellerMainLay = (LinearLayout) itemLayoutView
                     .findViewById(R.id.sellerMainLay);
             sellerLabel = (TextView) itemLayoutView

@@ -60,7 +60,7 @@ import java.util.List;
  */
 public class CheckOutActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private LinearLayout bottomLay;
+    private LinearLayout bottomLay,totalLay;
     private TextView cartEmptyText, prodPrice;
     private RecyclerView.Adapter mAdapter;
     private TextView errorText;
@@ -83,6 +83,7 @@ public class CheckOutActivity extends AppCompatActivity {
     ArrayList<String> countryCodes;
     ArrayList<String> countryCodeNumbers;
     List<String[]> list;
+     ActionBar ab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,9 +96,11 @@ public class CheckOutActivity extends AppCompatActivity {
         cartEmptyText.setVisibility(View.GONE);
         prodPrice = (TextView) findViewById(R.id.prod_discountPrice);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
         errorText=(TextView)findViewById(R.id.error_text);
+        totalLay=(LinearLayout)findViewById(R.id.totalLay);
+        totalLay.setVisibility(View.GONE);
         totalText=(TextView)findViewById(R.id.totalText);
         subTotalText=(TextView)findViewById(R.id.subTotal);
         shippingText=(TextView)findViewById(R.id.shippingText);
@@ -108,14 +111,18 @@ public class CheckOutActivity extends AppCompatActivity {
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        //mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        //mLayoutManager = new LinearLayoutManager(getApplicationContext());
         //MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(CheckOutActivity.this,LinearLayoutManager.VERTICAL,false);
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        //mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setHasFixedSize(false);
 
+
+        mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
         mAdapter = new CustomAdapter(CheckOutActivity.this, overViewList);
         //mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setAdapter(mAdapter);
@@ -123,11 +130,11 @@ public class CheckOutActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        final ActionBar ab = getSupportActionBar();
+         ab = getSupportActionBar();
         // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Cart");
+
         if (mSharedPrefs.contains(Constants.USER_MOBILE_PREFS)) {
             initializeCart();
         } else {
@@ -302,9 +309,22 @@ public class CheckOutActivity extends AppCompatActivity {
 //                    .setActionTextColor(Color.RED)
 //                    .show();
 //            toast.getView().bringToFront();
-            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+           /* Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
-                    .show();
+                    .show();*/
+
+
+
+            Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+
+
             errorText.setVisibility(View.VISIBLE);
         }
     }
@@ -508,19 +528,19 @@ public class CheckOutActivity extends AppCompatActivity {
 //    }
 //
 //    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                //mDrawerLayout.openDrawer(GravityCompat.START);
-//                onBackPressed();
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//
-//
-//    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+
+    }
 
 
     public class GetCartCallback extends AsyncCallback {
@@ -548,13 +568,14 @@ public class CheckOutActivity extends AppCompatActivity {
                     bottomLay.setVisibility(View.GONE);
                     cartEmptyText.setVisibility(View.VISIBLE);
                 } else {
+                    totalLay.setVisibility(View.VISIBLE);
                     bottomLay.setVisibility(View.VISIBLE);
                     cartEmptyText.setVisibility(View.GONE);
                     String totalItems=jsonObjectData.getJSONObject("data").getString("total_items");
                     String subtotal=jsonObjectData.getJSONObject("data").getString("subtotal");
                     String total=jsonObjectData.getJSONObject("data").getString("total");
                     String shipping=jsonObjectData.getJSONObject("data").getString("shipping");
-
+                    ab.setTitle("Shopping Cart ("+totalItems+")");
                     itemsCount.setText(totalItems);
                     subTotalText.setText("AED "+subtotal);
                     totalText.setText(total);
@@ -610,6 +631,7 @@ public class CheckOutActivity extends AppCompatActivity {
                             listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
                             //listData.setSellerLabel(jsonObject.getString("seller"));
                             listData.setSellerLabel(jsonObjectProductDetails.getString("seller_name"));
+                            listData.setDiscount(jsonObjectProductDetails.getString("discount_percentage"));
                             listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
                             listData.setOldPrice(jsonObjectProductDetails.getString("old_price"));
                             listData.setProductId(jsonObjectProductDetails.getString("_id"));
@@ -647,9 +669,19 @@ public class CheckOutActivity extends AppCompatActivity {
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                /*Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
-                        .show();
+                        .show();*/
+
+
+                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be loaded", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
                 if (getApplicationContext() != null) {
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     progressBar.startAnimation(animation);

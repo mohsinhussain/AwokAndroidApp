@@ -150,13 +150,24 @@ android:id="@+id/bottomLay"
 
         </LinearLayout>
     <!--</LinearLayout>-->
-    <ProgressBar android:indeterminate="true"
+    <!--android:background ="@drawable/progress"-->
+   <!-- <ProgressBar android:indeterminate="true"
 
         android:layout_width="50dp" android:layout_height="50dp"
-        android:id="@+id/marker_progress" android:background ="@drawable/progress"
+        android:id="@+id/marker_progress"
         android:layout_gravity="center"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true" />-->
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:id="@+id/marker_progress"
+        android:indeterminateDrawable="@drawable/progress_bar_load_more"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 </RelativeLayout>
 
 

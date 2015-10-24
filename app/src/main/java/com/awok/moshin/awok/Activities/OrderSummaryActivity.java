@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.awok.moshin.awok.Adapters.CheckOutAdapter;
 import com.awok.moshin.awok.Adapters.OrderSummaryAdapter;
+import com.awok.moshin.awok.Adapters.OrderSummaryCustomAdapter;
 import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.Models.OrderSummary;
 import com.awok.moshin.awok.Models.ShippingAddressModel;
@@ -43,6 +44,7 @@ import com.awok.moshin.awok.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,12 +52,12 @@ import java.util.List;
 
 public class OrderSummaryActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private TextView errorText;
+    private TextView errorText,totalValueTextView,totalPriceText,allPriceText;
     private Button prod_buyNow;
     private RelativeLayout mainLay;
 //    private TextView total,shippingAmount,itemAmount;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+ //   private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderSummary> overViewList = new ArrayList<OrderSummary>();
     private ProgressBar progressBar;
     private Button addEditAddressButton;
@@ -67,7 +69,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_summary);
 
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 //        total=(TextView)findViewById(R.id.order_total_value);
 //        shippingAmount=(TextView)findViewById(R.id.estimated_shipping_price);
 //        itemAmount=(TextView)findViewById(R.id.items_total_price);
@@ -76,6 +78,9 @@ public class OrderSummaryActivity extends AppCompatActivity {
         errorText=(TextView)findViewById(R.id.error_text);
         addressDetailLayout = (LinearLayout) findViewById(R.id.addressDetailLayout);
         addressDetailLayout.setVisibility(View.GONE);
+        totalPriceText=(TextView)findViewById(R.id.totalItemsText);
+                allPriceText=(TextView)findViewById(R.id.allItems);
+        totalValueTextView=(TextView)findViewById(R.id.totalValueTextView);
         addEditAddressButton = (Button)findViewById(R.id.addEditAddressButton);
 
 
@@ -141,6 +146,8 @@ JSONObject dataToSend;
 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.overViewRecyclerView);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setHasFixedSize(false);
 
         // getSupportActionBar().setIcon(R.drawable.ic_launcher);
 
@@ -148,15 +155,21 @@ JSONObject dataToSend;
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+       // mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-       mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        //MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,true);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-       // mRecyclerView.setNestedScrollingEnabled(false);
+      // mLayoutManager = new LinearLayoutManager(getApplicationContext());
+       // //int viewHeight = 100 * overViewList.size();
+       //mRecyclerView.getLayoutParams().height = viewHeight;
+       //MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,true);
+        mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+    // mRecyclerView.setLayoutManager(mLayoutManager);
+       /* int viewHeight = 100 * overViewList.size();
+        mRecyclerView.getLayoutParams().height = viewHeight;*/
 
-        mAdapter = new OrderSummaryAdapter(OrderSummaryActivity.this,overViewList);
+       // mRecyclerView.setNestedScrollingEnabled(true);
+
+        mAdapter = new OrderSummaryCustomAdapter(OrderSummaryActivity.this,overViewList);
         //mRecyclerView.setAdapter(mAdapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -185,10 +198,22 @@ JSONObject dataToSend;
             new APIClient(this, getApplicationContext(),  new GetAddressCallback()).getPrimaryAddressAPICall("55f6a9462f17f64a9b5f5ce4");
         } else {
             errorText.setVisibility(View.VISIBLE);
-            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+            /*Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
-                    .show();
+                    .show();*/
+
+
+            Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
         }
+
+
     }
 
 
@@ -338,23 +363,60 @@ JSONObject dataToSend;
                     int length = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").length();
                     for(int i=0;i<length;i++){
                         JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").getJSONObject(i);
-
+totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_items"));
+                        allPriceText.setText("AED "+jsonObjectData.getJSONObject("data").getString("total"));
+                        totalValueTextView.setText(jsonObjectData.getJSONObject("data").getString("total"));
                         JSONArray productDetails=jsonObject.getJSONArray("products");
                         int lengthOfProducts = productDetails.length();
                         for(int j=0;j<lengthOfProducts;j++)
                         {
                             OrderSummary listData=new OrderSummary();
-                            JSONObject jsonObjectProductDetails=productDetails.getJSONObject(j);
+                            /*JSONObject jsonObjectProductDetails=productDetails.getJSONObject(j);
                             listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
                             //listData.setOverViewText(jsonObject.getString("total_price"));
                             listData.setStatusId(jsonObjectData.getString("status"));
                             listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
-                            listData.setSellerLabel(jsonObject.getString("seller"));
+                            listData.setSellerLabel(jsonObject.getString("seller_name"));
                             listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
                             listData.setProductId(jsonObjectProductDetails.getString("_id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
+                            listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));*/
+
+
+                            JSONObject jsonObjectProductDetails = productDetails.getJSONObject(j);
+
+                            listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
+                            listData.setTotalPrice(jsonObjectProductDetails.getString("total_price"));
+
+                            if(j==0)
+                            {
+                                listData.setIsHeader(true);
+                            }
+                            else
+                            {
+                                listData.setIsHeader(false);
+                            }
+
+                            if(j==lengthOfProducts-1)
+                            {
+                                listData.setIsFooter(true);
+                            }
+                            else
+                            {
+                                listData.setIsFooter(false);
+                            }
+
+                            listData.setStatusId(jsonObjectData.getString("status"));
+                            listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
+                            listData.setDiscount(jsonObjectProductDetails.getString("discount_percentage"));
+                            listData.setSellerLabel(jsonObjectProductDetails.getString("seller_name"));
+                            listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
+                            listData.setOldPrice(jsonObjectProductDetails.getString("old_price"));
+                            listData.setProductId(jsonObjectProductDetails.getString("_id"));
+                            listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
                             listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
-                            //prodPrice.setText((jsonObjectData.getJSONObject("data").getString("total")) + " AED");
+
+
                             overViewList.add(listData);
                         }
                     /*listData.setOverViewText(getResources().getString(R.string.check_out_price));
@@ -466,9 +528,17 @@ System.out.println("RESPONSE"+response);
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+               /* Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
-                        .show();
+                        .show();*/
+                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be loaded", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     progressBar.startAnimation(animation);
@@ -491,6 +561,83 @@ System.out.println("RESPONSE"+response);
 
         }
     }
+    /*public class MyLinearLayoutManager extends LinearLayoutManager {
+
+        public MyLinearLayoutManager(Context context, int orientation, boolean reverseLayout)    {
+            super(context, orientation, reverseLayout);
+        }
+
+        private int[] mMeasuredDimension = new int[2];
+
+        @Override
+        public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state,
+                              int widthSpec, int heightSpec) {
+            final int widthMode = View.MeasureSpec.getMode(widthSpec);
+            final int heightMode = View.MeasureSpec.getMode(heightSpec);
+            final int widthSize = View.MeasureSpec.getSize(widthSpec);
+            final int heightSize = View.MeasureSpec.getSize(heightSpec);
+            int width = 0;
+            int height = 0;
+            for (int i = 0; i < getItemCount(); i++) {
+                measureScrapChild(recycler, i,
+                        View.MeasureSpec.makeMeasureSpec(i, View.MeasureSpec.UNSPECIFIED),
+                        View.MeasureSpec.makeMeasureSpec(i, View.MeasureSpec.UNSPECIFIED),
+                        mMeasuredDimension);
+
+                if (getOrientation() == HORIZONTAL) {
+                    width = width + mMeasuredDimension[0];
+                    if (i == 0) {
+                        height = mMeasuredDimension[1];
+                    }
+                } else {
+                    height = height + mMeasuredDimension[1];
+                    if (i == 0) {
+                        width = mMeasuredDimension[0];
+                    }
+                }
+            }
+            switch (widthMode) {
+                case View.MeasureSpec.EXACTLY:
+                    width = widthSize;
+                case View.MeasureSpec.AT_MOST:
+                case View.MeasureSpec.UNSPECIFIED:
+            }
+
+            switch (heightMode) {
+                case View.MeasureSpec.EXACTLY:
+                    height = heightSize;
+                case View.MeasureSpec.AT_MOST:
+                case View.MeasureSpec.UNSPECIFIED:
+            }
+
+            setMeasuredDimension(width, height);
+        }
+
+        private void measureScrapChild(RecyclerView.Recycler recycler, int position, int widthSpec,
+                                       int heightSpec, int[] measuredDimension) {
+            View view = recycler.getViewForPosition(position);
+            if (view != null) {
+                RecyclerView.LayoutParams p = (RecyclerView.LayoutParams) view.getLayoutParams();
+                int childWidthSpec = ViewGroup.getChildMeasureSpec(widthSpec,
+                        getPaddingLeft() + getPaddingRight(), p.width);
+                int childHeightSpec = ViewGroup.getChildMeasureSpec(heightSpec,
+                        getPaddingTop() + getPaddingBottom(), p.height);
+                view.measure(childWidthSpec, childHeightSpec);
+                measuredDimension[0] = view.getMeasuredWidth() + p.leftMargin + p.rightMargin;
+                measuredDimension[1] = view.getMeasuredHeight() + p.bottomMargin + p.topMargin;
+                recycler.recycleView(view);
+            }
+        }
+    }*/
+
+/*public void onResume()
+{
+    super.onResume();
+    mainLay.setVisibility(View.VISIBLE);
+}*/
+public void refreshData() {
+    new APIClient(this, getApplicationContext(), new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
+}
     public class MyLinearLayoutManager extends LinearLayoutManager {
 
         public MyLinearLayoutManager(Context context, int orientation, boolean reverseLayout)    {
@@ -560,11 +707,103 @@ System.out.println("RESPONSE"+response);
         }
     }
 
-/*public void onResume()
-{
-    super.onResume();
-    mainLay.setVisibility(View.VISIBLE);
-}*/
 
+
+
+
+    public class WrappingLinearLayoutManager extends LinearLayoutManager
+    {
+
+        public WrappingLinearLayoutManager(Context context) {
+            super(context);
+        }
+
+        private int[] mMeasuredDimension = new int[2];
+
+        @Override
+        public boolean canScrollVertically() {
+            return false;
+        }
+
+        @Override
+        public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state,
+                              int widthSpec, int heightSpec) {
+            final int widthMode = View.MeasureSpec.getMode(widthSpec);
+            final int heightMode = View.MeasureSpec.getMode(heightSpec);
+
+            final int widthSize = View.MeasureSpec.getSize(widthSpec);
+            final int heightSize = View.MeasureSpec.getSize(heightSpec);
+
+            int width = 0;
+            int height = 0;
+            for (int i = 0; i < getItemCount(); i++) {
+                if (getOrientation() == HORIZONTAL) {
+                    measureScrapChild(recycler, i,
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                            heightSpec,
+                            mMeasuredDimension);
+
+                    width = width + mMeasuredDimension[0];
+                    if (i == 0) {
+                        height = mMeasuredDimension[1];
+                    }
+                } else {
+                    measureScrapChild(recycler, i,
+                            widthSpec,
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                            mMeasuredDimension);
+
+                    height = height + mMeasuredDimension[1];
+                    if (i == 0) {
+                        width = mMeasuredDimension[0];
+                    }
+                }
+            }
+
+            switch (widthMode) {
+                case View.MeasureSpec.EXACTLY:
+                    width = widthSize;
+                case View.MeasureSpec.AT_MOST:
+                case View.MeasureSpec.UNSPECIFIED:
+            }
+
+            switch (heightMode) {
+                case View.MeasureSpec.EXACTLY:
+                    height = heightSize;
+                case View.MeasureSpec.AT_MOST:
+                case View.MeasureSpec.UNSPECIFIED:
+            }
+
+            setMeasuredDimension(width, height);
+        }
+
+        private void measureScrapChild(RecyclerView.Recycler recycler, int position, int widthSpec,
+                                       int heightSpec, int[] measuredDimension) {
+
+            View view = recycler.getViewForPosition(position);
+            if (view.getVisibility() == View.GONE) {
+                measuredDimension[0] = 0;
+                measuredDimension[1] = 0;
+                return;
+            }
+            // For adding Item Decor Insets to view
+            super.measureChildWithMargins(view, 0, 0);
+            RecyclerView.LayoutParams p = (RecyclerView.LayoutParams) view.getLayoutParams();
+            int childWidthSpec = ViewGroup.getChildMeasureSpec(
+                    widthSpec,
+                    getPaddingLeft() + getPaddingRight() + getDecoratedLeft(view) + getDecoratedRight(view),
+                    p.width);
+            int childHeightSpec = ViewGroup.getChildMeasureSpec(
+                    heightSpec,
+                    getPaddingTop() + getPaddingBottom() + getDecoratedTop(view) + getDecoratedBottom(view),
+                    p.height);
+            view.measure(childWidthSpec, childHeightSpec);
+
+            // Get decorated measurements
+            measuredDimension[0] = getDecoratedMeasuredWidth(view) + p.leftMargin + p.rightMargin;
+            measuredDimension[1] = getDecoratedMeasuredHeight(view) + p.bottomMargin + p.topMargin;
+            recycler.recycleView(view);
+        }
+    }
 
 }

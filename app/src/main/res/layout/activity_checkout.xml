@@ -7,9 +7,9 @@ android:background="@color/primary_material_light_1"
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main_content"
-android:layout_above="@+id/bottomLay"
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -41,18 +41,9 @@ android:layout_above="@+id/bottomLay"
 
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/overViewRecyclerView"
-            android:layout_width="match_parent"
 
 
-            android:layout_gravity="center"
 
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
-
-            android:scrollbars="none" />
 
 
 <!--
@@ -273,7 +264,189 @@ android:id="@+id/subtotal"
     </RelativeLayout>
                 </RelativeLayout>
             </android.support.v4.widget.NestedScrollView>-->
+    <android.support.v4.widget.NestedScrollView
+        android:layout_below="@+id/main_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomLay"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<RelativeLayout
+    android:id="@+id/recyclerView"
+    android:layout_below="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/overViewRecyclerView"
+        android:layout_width="match_parent"
+
+
+        android:layout_gravity="center"
+
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+        android:scrollbars="none" />
+
+
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/totalLay"
+        android:layout_marginTop="1dp"
+android:layout_below="@+id/overViewRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <View
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/primary_material_light_1"/>
+
+
+        <LinearLayout
+            android:weightSum="100"
+            android:background="@color/border"
+            android:id="@+id/totalItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@color/button_text"
+                android:layout_width="0dp"
+                android:paddingLeft="8dp"
+                android:textColor="#666666"
+                android:textSize="16dp"
+                android:layout_weight="50"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Total Items in Cart"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical" />
+
+
+            <TextView
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:id="@+id/totalItemsCount"
+                android:background="@color/button_text"
+                android:textColor="#666666"
+                android:layout_weight="50"
+
+                android:layout_width="0dp"
+                android:paddingRight="8dp"
+
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="AED 20"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|right" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:weightSum="100"
+            android:background="@color/border"
+            android:id="@+id/subtotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@color/button_text"
+                android:layout_width="0dp"
+                android:paddingLeft="8dp"
+                android:textColor="#666666"
+                android:textSize="16dp"
+                android:layout_weight="35"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Sub Total"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical" />
+
+
+            <TextView
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:id="@+id/subTotal"
+                android:background="@color/button_text"
+
+                android:layout_weight="65"
+                android:textColor="#666666"
+                android:layout_width="0dp"
+                android:paddingRight="8dp"
+
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="AED 20"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|right" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="100"
+            android:background="@color/border"
+            android:id="@+id/shipping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@color/button_text"
+                android:layout_width="0dp"
+                android:paddingLeft="8dp"
+                android:textColor="#666666"
+                android:textSize="16dp"
+                android:layout_weight="35"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Shipping"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical" />
+
+
+            <TextView
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:id="@+id/shippingText"
+                android:background="@color/button_text"
+
+                android:layout_weight="65"
+                android:textColor="#666666"
+                android:layout_width="0dp"
+                android:paddingRight="8dp"
+
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="AED 20"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|right" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
     <LinearLayout
 
         android:id="@+id/bottomLay"
@@ -339,207 +512,107 @@ android:textAppearance="?android:attr/textAppearanceLarge"
 
         </LinearLayout>-->
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
 
-
-<View
-    android:visibility="gone"
-    android:layout_width="match_parent"
-    android:layout_height="5dp"
-    android:background="@color/primary_material_light_1"/>
-
-
-    <LinearLayout
-        android:weightSum="100"
-        android:background="@color/border"
-        android:id="@+id/totalItems"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:background="@color/button_text"
-            android:layout_width="0dp"
-            android:paddingLeft="8dp"
-            android:textColor="#666666"
-            android:textSize="16dp"
-            android:layout_weight="50"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Total Items in Cart"
-            android:layout_height="fill_parent"
-            android:gravity="center_vertical" />
-
-
-        <TextView
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:id="@+id/totalItemsCount"
-            android:background="@color/button_text"
-            android:textColor="#666666"
-            android:layout_weight="50"
-
-            android:layout_width="0dp"
-            android:paddingRight="8dp"
-
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="AED 20"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|right" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:weightSum="100"
-        android:background="@color/border"
-        android:id="@+id/subtotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:background="@color/button_text"
-            android:layout_width="0dp"
-            android:paddingLeft="8dp"
-            android:textColor="#666666"
-            android:textSize="16dp"
-            android:layout_weight="35"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Sub Total"
-            android:layout_height="fill_parent"
-            android:gravity="center_vertical" />
-
-
-        <TextView
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:id="@+id/subTotal"
-            android:background="@color/button_text"
-
-            android:layout_weight="65"
-            android:textColor="#666666"
-            android:layout_width="0dp"
-            android:paddingRight="8dp"
-
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="AED 20"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|right" />
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:weightSum="100"
-        android:background="@color/border"
-        android:id="@+id/shipping"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:background="@color/button_text"
-            android:layout_width="0dp"
-            android:paddingLeft="8dp"
-            android:textColor="#666666"
-            android:textSize="16dp"
-            android:layout_weight="35"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Shipping"
-            android:layout_height="fill_parent"
-            android:gravity="center_vertical" />
-
-
-        <TextView
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:id="@+id/shippingText"
-            android:background="@color/button_text"
-
-            android:layout_weight="65"
-            android:textColor="#666666"
-            android:layout_width="0dp"
-            android:paddingRight="8dp"
-
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="AED 20"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|right" />
-
-
-    </LinearLayout>
-
-</LinearLayout>
      <!--   <LinearLayout
             android:background="#fcfafa"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">-->
-        <LinearLayout
+        <!--<LinearLayout
             android:weightSum="100"
             android:background="@color/button_text"
             android:id="@+id/total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_weight="60"
+
+                android:layout_height="fill_parent">-->
+
+
+        <LinearLayout
+
+            android:background="@color/button_text"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+            <RelativeLayout
+                android:layout_marginLeft="5dp"
+                android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
-                android:layout_height="fill_parent">
-            <TextView
+                android:layout_width="wrap_content"
+                android:layout_weight="50"
+                android:layout_height="20dp"
+                android:orientation="horizontal">
+
+           <!-- <TextView
+                android:layout_marginLeft="5dp"
                 android:background="@color/button_text"
                 android:layout_width="wrap_content"
-                android:padding="8dp"
+             android:layout_centerVertical="true"
                 android:textSize="16dp"
                 android:textColor="#666666"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Total"
-                android:layout_height="fill_parent"
-                android:gravity="center_vertical|left" />
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:id="@+id/textView7" />-->
+                <TextView
+
+                    android:id="@+id/totalTextView"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/total"
+                    android:layout_centerVertical="true"
+                    android:gravity="bottom"
+                    android:textSize="14sp"
+                    android:textColor="@color/dialog_button_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/aed"
                     android:background="@color/button_text"
-
-android:textSize="12dp"
-                    android:textColor="@color/red_base"
+                    android:textSize="12dp"
+                    android:textColor="#ff3823"
                     android:layout_width="wrap_content"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
+
 
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="AED"
-                    android:layout_height="fill_parent"
-                    android:gravity="center_vertical|left" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_alignBottom="@+id/totalTextView"
+                    android:layout_toRightOf="@+id/totalTextView"
+                    android:layout_toEndOf="@+id/totalTextView" />
 
             <TextView
                 android:id="@+id/totalText"
                 android:background="@color/button_text"
 
 android:paddingLeft="4dp"
-                android:textColor="@color/red_base"
+                android:textColor="#ff3823"
                 android:layout_width="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
 
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="AED 20"
-                android:layout_height="fill_parent"
-                android:gravity="center_vertical|left" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|left"
+
+                android:layout_alignBaseline="@+id/totalTextView"
+                android:layout_alignBottom="@+id/totalTextView"
+                android:layout_toRightOf="@+id/aed"
+                android:layout_toEndOf="@+id/aed" />
+            </RelativeLayout>
             <LinearLayout
                 android:layout_weight="40"
                 android:layout_width="wrap_content"
@@ -573,13 +646,22 @@ android:paddingLeft="4dp"
         android:layout_centerHorizontal="true"
         android:layout_height="match_parent"
         />
-    <ProgressBar android:indeterminate="true"
+    <!--<ProgressBar android:indeterminate="true"
 
         android:layout_width="50dp" android:layout_height="50dp"
         android:id="@+id/marker_progress" android:background ="@drawable/progress"
         android:layout_gravity="center"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true" />-->
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:id="@+id/marker_progress"
+        android:indeterminateDrawable="@drawable/progress_bar_load_more"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
     <TextView
 
         android:layout_width="wrap_content"

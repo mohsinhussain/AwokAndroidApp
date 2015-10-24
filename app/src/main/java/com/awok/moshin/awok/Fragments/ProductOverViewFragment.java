@@ -242,9 +242,18 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         if (networkInfo != null && networkInfo.isConnected()) {
             new APIClient(getActivity(), getActivity(),  new GetProductDetailsCallback()).productDetailsAPICall(productId);
         } else {
-            Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+            /*Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
-                    .show();
+                    .show();*/
+
+            Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
         }
 
 
@@ -405,9 +414,18 @@ imageString.add(jsonData);
                 // initializeData();
             } catch (JSONException e) {
                 e.printStackTrace();
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                /*Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
-                        .show();
+                        .show();*/
+
+                Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "Data could not be loaded", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
             }
         }
         @Override
