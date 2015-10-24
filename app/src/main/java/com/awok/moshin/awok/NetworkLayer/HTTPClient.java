@@ -278,20 +278,24 @@ public class HTTPClient{
 
         con.setRequestMethod("PUT");
 //        con.setRequestProperty("Cookie", oauth_cookies);
-        con.setRequestProperty("Parameters", params);
+        if(params!=null){
+            con.setRequestProperty("Parameters", params);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream ());
+            wr.writeBytes(params.toString());
+
+            wr.flush();
+            wr.close();
+        }
+
 //		if (oauth_client)
 //			con.setRequestProperty("Authorization", getAuthString());
 //        con.setRequestProperty("Content-Length", "0");
 
         //String resp = readURL(con);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream ());
-        wr.writeBytes(params.toString());
 
-        wr.flush();
-        wr.close();
 
         System.out.println("VHFGHDFHFhf" + con.getURL().toString());
-        System.out.println("VHFGHDFHFhf"+ params.toString());
+//        System.out.println("VHFGHDFHFhf"+ params.toString());
         System.out.println("GO"+con.getContentType());
         String resp = readURL(con);
         Log.v(TAG, "POST Response: " + resp);

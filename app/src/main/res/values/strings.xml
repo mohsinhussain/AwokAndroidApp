@@ -14,11 +14,13 @@
     <string name="user_login_register">User Log In/Register</string>
     <string name="logout">Logout</string>
     <string name="cart_alert">Cart Alert</string>
+    <string name="caution">Caution</string>
     <string name="country_code_header">Country Code</string>
     <string name="copyright">&#169; Copyright 2015 Awok.com, All Rights Reserved.</string>
     <string name="ship_to">Ship to:</string>
     <string name="change_address">Change Address ></string>
     <string name="add_new_address">Add New Address ></string>
+    <string name="add_new_address_header">Add New Address</string>
     <string name="add_shipping_address">Add Shipping Address</string>
     <string name="order_summary">Order Summary</string>
     <string name="secure_checkout">Secure Checkout</string>
@@ -27,7 +29,8 @@
     <string name="my_orders">My Orders</string>
     <string name="payment_method">Payment Method</string>
     <string name="shipping_address">Shipping Address</string>
-
+    <string name="address_1">Adress 1</string>
+    <string name="address_2">Add New Address</string>
     <string name="profile_picture">Profile Picture</string>
 
 

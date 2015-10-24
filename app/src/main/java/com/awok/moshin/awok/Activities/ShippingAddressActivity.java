@@ -47,6 +47,7 @@ private RecyclerView list;
     private RelativeLayout add;
     private List<ShippingAddressModel> overViewList = new ArrayList<ShippingAddressModel>();
     private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,21 +79,7 @@ private RecyclerView list;
         mAdapter = new ShippingAddressAdapter(ShippingAddressActivity.this, overViewList);
        // setDate();
 
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
 
-            new APIClient(this, getApplicationContext(), new GetAddressCallback()).addressCallBack("55f6a9e52f17f64a9b5f5ce5");
-
-
-        } else {
-
-            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                    .setActionTextColor(Color.RED)
-                    .show();
-
-        }
 
 
 
@@ -117,10 +104,32 @@ overViewList.add(address);
         list.setAdapter(mAdapter);
         //mAdapter.notifyDataSetChanged();
     }*/
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+
+            new APIClient(this, getApplicationContext(), new GetAddressCallback()).addressCallBack("55f6a9e52f17f64a9b5f5ce5");
+
+
+        } else {
+
+            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
+
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_shipping_address, menu);
+//        getMenuInflater().inflate(R.menu.menu_shipping_address, menu);
         return true;
     }
 
@@ -137,14 +146,174 @@ overViewList.add(address);
         return super.onOptionsItemSelected(item);
     }
 
+    public void editAddress(int position){
+
+        Intent i = new Intent(ShippingAddressActivity.this, AddNewAddress.class);
+        i.putExtra("id", overViewList.get(position).getId());
+        i.putExtra("name", overViewList.get(position).getName());
+        i.putExtra("address1", overViewList.get(position).getAddress1());
+        i.putExtra("address2", overViewList.get(position).getAddress2());
+        i.putExtra("country", overViewList.get(position).getCountry());
+        i.putExtra("state", overViewList.get(position).getState());
+        i.putExtra("city", overViewList.get(position).getCity());
+        i.putExtra("zip", overViewList.get(position).getPin());
+        i.putExtra("mobile1", overViewList.get(position).getPhone1());
+        i.putExtra("mobile2", overViewList.get(position).getPhone2());
+
+        startActivity(i);
+
+
+//        ConnectivityManager connMgr = (ConnectivityManager)
+//                getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+//        if (networkInfo != null && networkInfo.isConnected()) {
+//            new APIClient(this, getApplicationContext(), new EditAddresssCallback()).editAddressAPICall(addressId);
+//
+//
+//        } else {
+//
+//            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+//                    .setActionTextColor(Color.RED)
+//                    .show();
+//        }
+    }
+
+    public void removeAddress(String addressId){
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new APIClient(this, getApplicationContext(), new RemoveAddressCallback()).removeAddressAPICall(addressId);
+
+
+        } else {
+
+            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
+
+        }
+    }
+
+    public void setPrimaryAddress(String addressId){
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new APIClient(this, getApplicationContext(), new GetAddressCallback()).setPrimaryAddressAPICall(addressId);
+
+
+        } else {
+
+            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
+
+        }
+    }
+
+
+    public class EditAddresssCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+
+                System.out.println(response);
+
+                JSONObject jsonObjectData;
+                jsonObjectData = new JSONObject(response);
+                System.out.println(jsonObjectData.toString());
+                if (jsonObjectData.getString("status").equals("0")) {
+
+                } else {
+                    Snackbar.make(findViewById(android.R.id.content), jsonObjectData.getString("title"), Snackbar.LENGTH_INDEFINITE)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
 
 
 
+                if (getApplicationContext() != null) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                    //progressBar.startAnimation(animation);
+                }
+                //progressBar.setVisibility(View.GONE);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(Color.RED)
+                        .show();
+                if (getApplicationContext() != null) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                    // progressBar.startAnimation(animation);
+                }
+                //  progressBar.setVisibility(View.GONE);
+
+            }
+        }
+
+        @Override
+        public void onTaskCancelled() {
+        }
+
+        @Override
+        public void onPreExecute() {
+
+        }
+    }
+
+
+    public class RemoveAddressCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+
+                System.out.println(response);
+
+                JSONObject jsonObjectData;
+                jsonObjectData = new JSONObject(response);
+                System.out.println(jsonObjectData.toString());
+                if (jsonObjectData.getString("status").equals("0")) {
+
+                } else {
+
+                    Snackbar.make(findViewById(android.R.id.content), jsonObjectData.getString("title"), Snackbar.LENGTH_INDEFINITE)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
 
 
 
+                if (getApplicationContext() != null) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                    //progressBar.startAnimation(animation);
+                }
+                //progressBar.setVisibility(View.GONE);
 
 
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(Color.RED)
+                        .show();
+                if (getApplicationContext() != null) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                    // progressBar.startAnimation(animation);
+                }
+                //  progressBar.setVisibility(View.GONE);
+
+            }
+        }
+
+        @Override
+        public void onTaskCancelled() {
+        }
+
+        @Override
+        public void onPreExecute() {
+
+        }
+    }
 
 
 
@@ -163,46 +332,25 @@ overViewList.add(address);
                 if (jsonObjectData.getString("status").equals("0")) {
 
                 } else {
+                    overViewList.clear();
                     JSONArray address=jsonObjectData.getJSONArray("address");
-
-
-                            for(int i=0;i<address.length();i++)
-                            {
-                                JSONObject jData=address.getJSONObject(i);
-                                System.out.println("city"+jData.getString("city"));
-                                System.out.println("country"+jData.getString("country"));
-                                System.out.println("postal_code" + jData.getString("postal_code"));
-
-                                //JSONArray addressLine=jData.getJSONArray("address");
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                    System.out.println("add1" + jData.getJSONObject("address").getString("address_line1"));
-                                    System.out.println("add2" + jData.getJSONObject("address").getString("address_line2"));
-                                    System.out.println("number" + jData.getString("phone_number1"));
-
-
-                                ShippingAddressModel addressModel=new ShippingAddressModel();
-                                addressModel.setName(jData.getString("name"));
-                                addressModel.setAddress(jData.getJSONObject("address").getString("address_line1"));
-                                addressModel.setState(jData.getJSONObject("address").getString("address_line2"));
-                                addressModel.setCountry(jData.getString("country"));
-                                addressModel.setPin(jData.getString("postal_code"));
-                                addressModel.setPhone(jData.getString("phone_number1"));
-                                addressModel.setIsSelected(false);
-                                overViewList.add(addressModel);
-
-                            }
+                    for(int i=0;i<address.length();i++)
+                        {
+                            JSONObject jData=address.getJSONObject(i);
+                            ShippingAddressModel addressModel=new ShippingAddressModel();
+                            addressModel.setName(jData.getString("name"));
+                            addressModel.setId(jData.getString("id"));
+                            addressModel.setAddress1(jData.getJSONObject("address").getString("address_line1"));
+                            addressModel.setAddress2(jData.getJSONObject("address").getString("address_line2"));
+                            addressModel.setState(jData.getString("state"));
+                            addressModel.setCity(jData.getString("city"));
+                            addressModel.setCountry(jData.getString("country"));
+                            addressModel.setPin(jData.getString("postal_code"));
+                            addressModel.setPhone1(jData.getString("phone_number1"));
+                            addressModel.setPhone2(jData.getString("phone_number2"));
+                            addressModel.setIsSelected(jData.getBoolean("is_primary"));
+                            overViewList.add(addressModel);
+                        }
                     list.setAdapter(mAdapter);
                 }
 

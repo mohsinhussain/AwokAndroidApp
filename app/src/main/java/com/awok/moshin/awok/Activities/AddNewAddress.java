@@ -6,8 +6,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -23,8 +25,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import com.awok.moshin.awok.Models.Checkout;
-import com.awok.moshin.awok.Models.ShippingAddressModel;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
@@ -51,10 +51,11 @@ public class AddNewAddress extends AppCompatActivity {
     private LinearLayout stateLay;
     private LinearLayout cityLay;
     private Button clear,save;
-    private TextInputLayout inputLayoutName, inputAddress1, inputAddress2,pinLayout;
+    private TextInputLayout inputLayoutName, inputAddress1, inputAddress2,pinLayout, phone2Lay, phoneLay;
     int check=0;
+    int spinnerCountUpdate = 0;
     int stateCheck=0;
-    private EditText name,add1,add2,pin;
+    private EditText name,add1,add2,pin, phone1, phone2;
     private Spinner countrySpinner,stateSpinner,citySpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,19 +67,31 @@ public class AddNewAddress extends AppCompatActivity {
         stateSpinner=(Spinner)findViewById(R.id.state);
         citySpinner=(Spinner)findViewById(R.id.city);
         name=(EditText)findViewById(R.id.name);
+        phone1=(EditText)findViewById(R.id.phone);
+        phone2=(EditText)findViewById(R.id.phone2);
         add1=(EditText)findViewById(R.id.address1);
                 add2=(EditText)findViewById(R.id.address2);
                 pin=(EditText)findViewById(R.id.zipPostal);
 
         name.addTextChangedListener(new MyTextWatcher(name));
+        phone1.addTextChangedListener(new MyTextWatcher(phone1));
+        phone2.addTextChangedListener(new MyTextWatcher(phone2));
         add1.addTextChangedListener(new MyTextWatcher(add1));
         add2.addTextChangedListener(new MyTextWatcher(add2));
         pin.addTextChangedListener(new MyTextWatcher(pin));
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        setSupportActionBar(toolbar);
+
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setTitle(getString(R.string.add_new_address_header));
         stateLay=(LinearLayout)findViewById(R.id.stateLay);
         cityLay=(LinearLayout)findViewById(R.id.cityLay);
         inputLayoutName = (TextInputLayout) findViewById(R.id.nameLayout);
+        phoneLay = (TextInputLayout) findViewById(R.id.phoneLay);
+        phone2Lay = (TextInputLayout) findViewById(R.id.phone2Lay);
         inputAddress1 = (TextInputLayout) findViewById(R.id.addressLay);
         inputAddress2 = (TextInputLayout) findViewById(R.id.address2Lay);
         pinLayout = (TextInputLayout) findViewById(R.id.zipLay);
@@ -86,7 +99,23 @@ clear=(Button)findViewById(R.id.clear);
         save=(Button)findViewById(R.id.save);
 
 
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validateName()&&validateAddress1()&&validateAddress2()&&validPin()) {
+                    name.setText("");
+                    add1.setText("");
+                    add2.setText("");
+                    countrySpinner.setSelection(0);
+                    stateSpinner.setSelection(0);
+                    citySpinner.setSelection(0);
+                    pin.setText("");
+                    phone1.setText("");
+                    phone2.setText("");
 
+                }
+            }
+        });
 
 
 
@@ -94,7 +123,7 @@ clear=(Button)findViewById(R.id.clear);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validateName()&&!validateAddress1()&&!validateAddress2()&&!validPin()) {
+                if (validateName()&&validateAddress1()&&validateAddress2()&&validPin()) {
                     HashMap<String,Object> addNewAddress=new HashMap<String, Object>();
 
 
@@ -108,7 +137,7 @@ clear=(Button)findViewById(R.id.clear);
                     addNewAddress.put("state",stateSpinner.getSelectedItem().toString());
                     addNewAddress.put("country",countrySpinner.getSelectedItem().toString());
                     addNewAddress.put("postal_code",pin.getText().toString());
-                    addNewAddress.put("phone_number","473538547fgfdg64");
+                    addNewAddress.put("phone_number1",phone1.getText().toString());
 
                     JSONObject dataToSend=new JSONObject(addNewAddress);
 
@@ -117,8 +146,13 @@ clear=(Button)findViewById(R.id.clear);
                             getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
                     NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                     if (networkInfo != null && networkInfo.isConnected()) {
+                        if(getIntent().hasExtra("name")){
+                            new APIClient(AddNewAddress.this, getApplicationContext(), new AddNewAddressCallBack()).editAddressAPICall(getIntent().getExtras().getString("id"), dataToSend.toString());
+                        }
+                        else{
+                            new APIClient(AddNewAddress.this, getApplicationContext(), new AddNewAddressCallBack()).addAddressAPICall("55f6a9e52f17f64a9b5f5ce5", dataToSend.toString());
+                        }
 
-                        new APIClient(AddNewAddress.this, getApplicationContext(), new AddNewAddressCallBack()).addAddressCallBack("55f6a9e52f17f64a9b5f5ce5",dataToSend.toString());
 
 
                     } else {
@@ -168,6 +202,9 @@ clear=(Button)findViewById(R.id.clear);
                 android.R.layout.simple_spinner_item, listCity);
         cityDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        countrySpinner.setAdapter(dataAdapter);
+//        countrySpinner.setSelection(1);
+
 
 
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -191,11 +228,8 @@ clear=(Button)findViewById(R.id.clear);
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //countrySpinner.requestFocus();
-                //countrySpinner.setFocusable(true);
-                //countrySpinner.setFocusableInTouchMode(true);
                 check = check + 1;
-                if (check > 1) {
+                if (check >= 1) {
                     listCity.clear();
                     citySpinner.setAdapter(cityDataAdapter);
                     String country_text = countrySpinner.getSelectedItem().toString();
@@ -234,7 +268,7 @@ clear=(Button)findViewById(R.id.clear);
                         //countrySpinner.setFocusable(true);
                         //countrySpinner.setFocusableInTouchMode(true);
                         stateCheck=stateCheck+1;
-                        if(stateCheck>1)
+                        if(stateCheck>=1)
                         {
                             listCity.clear();
                             citySpinner.setAdapter(cityDataAdapter);
@@ -275,24 +309,40 @@ clear=(Button)findViewById(R.id.clear);
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(getIntent().hasExtra("name")){
+//            countrySpinner.setPrompt;
+//            stateSpinner=(Spinner)findViewById(R.id.state);
+//            citySpinner=(Spinner)findViewById(R.id.city);
+            name.setText(getIntent().getExtras().getString("name"));
+            add1.setText(getIntent().getExtras().getString("address1"));
+            add2.setText(getIntent().getExtras().getString("address2"));
+            pin.setText(getIntent().getExtras().getString("zip"));
+            phone1.setText(getIntent().getExtras().getString("mobile1"));
+            if(getIntent().getExtras().getString("mobile2")!=null && !getIntent().getExtras().getString("mobile2").equalsIgnoreCase("null")){
+                phone2.setText(getIntent().getExtras().getString("mobile2"));
+            }
+
+
+
+
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_new_address, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                onBackPressed();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -489,6 +539,29 @@ cityLay.setVisibility(View.GONE);
                         }
                         citySpinner.setAdapter(cityDataAdapter);
 
+                        String countryValue = getIntent().getExtras().getString("country");
+                        String stateValue = getIntent().getExtras().getString("state");
+                        String cityValue = getIntent().getExtras().getString("city");
+
+                        if (spinnerCountUpdate == 0) {
+                            if (!countryValue.equals(null)) {
+                                int spinnerPosition = dataAdapter.getPosition(countryValue);
+                                countrySpinner.setSelection(spinnerPosition);
+                            }
+
+                            if (!stateValue.equals(null)) {
+                                int spinnerPosition = dataAdapter.getPosition(stateValue);
+                                stateSpinner.setSelection(spinnerPosition);
+                            }
+
+                            if (!cityValue.equals(null)) {
+                                int spinnerPosition = dataAdapter.getPosition(cityValue);
+                                citySpinner.setSelection(spinnerPosition);
+                            }
+                            spinnerCountUpdate++;
+                        }
+
+
 
                     /*JSONArray country=jsonObjectData.getJSONArray("locations");
 
@@ -547,6 +620,17 @@ cityLay.setVisibility(View.GONE);
 
                 JSONObject jsonObjectData;
                 jsonObjectData = new JSONObject(response);
+                if(jsonObjectData.getInt("status")==1){
+                    Snackbar.make(findViewById(android.R.id.content), jsonObjectData.getString("title"), Snackbar.LENGTH_INDEFINITE)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                    finish();
+                }
+                else{
+                    Snackbar.make(findViewById(android.R.id.content), jsonObjectData.getString("title"), Snackbar.LENGTH_INDEFINITE)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
                 System.out.println(jsonObjectData.toString());
 
 
@@ -634,25 +718,25 @@ cityLay.setVisibility(View.GONE);
     public boolean validPin() {
 
 
-        if (pin.getText().toString().trim().isEmpty()) {
-
-
-            pinLayout.setError(getString(R.string.err_msg_phone));
-            requestFocus(pin);
-            return false;
-
-        }
-        else
-        {
-            Pattern pattern = Pattern.compile("\\d");
-            Matcher matcher = pattern.matcher(pin.getText().toString());
-
-            if (matcher.matches()) {
-
-            } else {
-                pinLayout.setError(getString(R.string.err_msg_phone));
-            }
-        }
+//        if (pin.getText().toString().trim().isEmpty()) {
+//
+//
+//            pinLayout.setError(getString(R.string.err_msg_phone));
+//            requestFocus(pin);
+//            return false;
+//
+//        }
+//        else
+//        {
+//            Pattern pattern = Pattern.compile("\\d");
+//            Matcher matcher = pattern.matcher(pin.getText().toString());
+//
+//            if (matcher.matches()) {
+//
+//            } else {
+//                pinLayout.setError(getString(R.string.err_msg_phone));
+//            }
+//        }
 
 
 

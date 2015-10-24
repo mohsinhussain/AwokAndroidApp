@@ -92,6 +92,7 @@
             android:id="@+id/ship_lay"
             android:layout_width="match_parent"
             android:gravity="center_vertical"
+            android:layout_marginBottom="10dp"
             android:layout_height="wrap_content">
 
 
@@ -125,7 +126,6 @@
             android:id="@+id/addressDetailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/nameTextView"
@@ -135,7 +135,7 @@
                 android:gravity="left"
                 android:textSize="14sp"
                 android:textColor="@color/normal_text"
-                android:text="Shiping Address will come here"
+                android:text="-"
                 />
             <TextView
                 android:id="@+id/addressTextView"
@@ -146,7 +146,7 @@
                 android:gravity="left"
                 android:textSize="14sp"
                 android:textColor="@color/dialog_button_cancel"
-                android:text="#3206, Al Mazaya Business Avenue JLT"
+                android:text="-"
                 />
             <TextView
                 android:id="@+id/cityTextView"
@@ -157,7 +157,7 @@
                 android:gravity="left"
                 android:textSize="14sp"
                 android:textColor="@color/dialog_button_cancel"
-                android:text="Dubai"
+                android:text="-"
                 />
             <TextView
                 android:id="@+id/countryTextView"
@@ -168,7 +168,7 @@
                 android:gravity="left"
                 android:textSize="14sp"
                 android:textColor="@color/dialog_button_cancel"
-                android:text="Dubai, AE"
+                android:text="-"
                 />
             <TextView
                 android:id="@+id/postalcodeTextView"
@@ -179,7 +179,7 @@
                 android:gravity="left"
                 android:textSize="14sp"
                 android:textColor="@color/dialog_button_cancel"
-                android:text="000000"
+                android:text="-"
                 />
             <TextView
                 android:id="@+id/mobileNumberTextView"
@@ -191,7 +191,7 @@
                 android:layout_marginBottom="10dp"
                 android:textSize="14sp"
                 android:textColor="@color/dialog_button_cancel"
-                android:text="+971562022892"
+                android:text="-"
                 />
             </LinearLayout>
     </LinearLayout
