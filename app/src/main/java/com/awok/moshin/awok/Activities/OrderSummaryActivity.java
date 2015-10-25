@@ -147,6 +147,7 @@ JSONObject dataToSend;
 
         mRecyclerView = (RecyclerView) findViewById(R.id.overViewRecyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.hasNestedScrollingParent();
         mRecyclerView.setHasFixedSize(false);
 
         // getSupportActionBar().setIcon(R.drawable.ic_launcher);

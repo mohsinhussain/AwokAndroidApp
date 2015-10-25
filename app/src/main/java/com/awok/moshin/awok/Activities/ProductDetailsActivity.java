@@ -42,14 +42,18 @@ import com.awok.moshin.awok.Fragments.ProductOverViewFragment;
 import com.awok.moshin.awok.Fragments.ReviewsFragment;
 import com.awok.moshin.awok.Fragments.ShippingDeliveryFrag;
 import com.awok.moshin.awok.Fragments.StoreRatingFragment;
+import com.awok.moshin.awok.Models.DescriptionModel;
+import com.awok.moshin.awok.Models.OrderSummary;
 import com.awok.moshin.awok.Models.ProductDetailsModel;
 import com.awok.moshin.awok.Models.ProductOverview;
+import com.awok.moshin.awok.Models.ProductRatingModel;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,8 +79,14 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     String productId,productName, newPrice, oldPrice, image, description,rating,ratingCount;
     String catId;
     JSONObject dataToSend;
+    JSONArray jsonDescriptionData;
+    JSONArray jsonRatingArray;
     MenuItem searchItem;
     SearchView searchView;
+    DescriptionModel descData=new DescriptionModel();
+    ProductRatingModel prodRatingData=new ProductRatingModel();
+    private List<DescriptionModel> descModel = new ArrayList<DescriptionModel>();
+    private List<ProductRatingModel> prodRating = new ArrayList<ProductRatingModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +112,24 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
 
+        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new APIClient(ProductDetailsActivity.this, getApplicationContext(),  new GetProductDetailsCallback()).productDetailsAPICall(productId);
+        } else {
+            /*Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();*/
 
+            Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+        }
 
         //productD.setName("COOL");
         //productDetails.setName("COLD");
@@ -251,8 +278,10 @@ public void setUpTab()
         adapter.addFragment(new ProductOverViewFragment(productId, productName,image), "Overview");
 
         adapter.addFragment(new HotDealsFragment(catId), "Related");
-        adapter.addFragment(new ProductDescriptionFragment(description), "Description");
-        adapter.addFragment(new ReviewsFragment(productName,image,rating,ratingCount),"Product Rating");
+        //adapter.addFragment(new ProductDescriptionFragment(description), "Description");
+        adapter.addFragment(new ProductDescriptionFragment(descModel), "Description");
+        //adapter.addFragment(new ReviewsFragment(productName,image,rating,ratingCount),"Product Rating");
+        adapter.addFragment(new ReviewsFragment(prodRating),"Product Rating");
         adapter.addFragment(new ShippingDeliveryFrag(),"Shipping Info");
         adapter.addFragment(new StoreRatingFragment(productName,image,rating,ratingCount),"Store Rating");
 
@@ -429,6 +458,93 @@ public void setUpTab()
 
 
 
+    public class GetProductDetailsCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
 
+                JSONObject mMembersJSON;
+                mMembersJSON = new JSONObject(response);
+                System.out.println("COOLGBDJH" + mMembersJSON);
+        /*        System.out.println(mMembersJSON.getString("name"));
+
+                String ratingsCount=mMembersJSON.getJSONObject("rating").getString("average");
+                String count=mMembersJSON.getJSONObject("rating").getString("sum");
+//                prodNewPrice.setText(Integer.toString(mMembersJSON.getInt("new_price")) + " " + "AED");
+//                prodOldPrice.setText(Integer.toString(mMembersJSON.getInt("original_price")) + " " + "AED");
+//                System.out.println("COOLGBDJH" + productDetails.getName());
+//                String prodDesc=mMembersJSON.getString("description");
+//                productOverview.setOverViewTitle(prodDesc);
+                image=mMembersJSON.getString("image");
+                JSONArray imagesStringData=mMembersJSON.getJSONArray("images");
+                for(int i=0;i<imagesStringData.length();i++)
+                {
+                    //JSONObject data=imagesStringData.getJSONObject(i);
+                    String jsonData=imagesStringData.get(i).toString();
+
+
+                }*/
+                 jsonDescriptionData=mMembersJSON.getJSONArray("description");
+                System.out.println("JDATA" + jsonDescriptionData.toString());
+                for(int i=0;i<jsonDescriptionData.length();i++)
+                {
+
+
+                    JSONObject data=jsonDescriptionData.getJSONObject(i);
+                    //String jsonData=imagesStringData.get(i).toString();
+                    descData.setDescHeader(data.getString("head"));
+                    descData.setDescData(data.getString("content"));
+System.out.println(data.getString("head"));
+                    System.out.println(data.getString("content"));
+descModel.add(descData);
+                }
+
+                jsonRatingArray=mMembersJSON.getJSONArray("comments");
+                for(int j=0;j<jsonRatingArray.length();j++)
+                {
+
+
+                    JSONObject dataRating=jsonRatingArray.getJSONObject(j);
+                    //String jsonData=imagesStringData.get(i).toString();
+                    prodRatingData.setContent(dataRating.getString("content"));
+                    prodRatingData.setRate(dataRating.getString("rate"));
+                    prodRatingData.setUsername(dataRating.getString("username"));
+
+                    prodRating.add(prodRatingData);
+                }
+
+
+                //mResources=
+
+//                if(getApplicationContext()!=null){
+//                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+//                    progressBar.startAnimation(animation);
+//                }
+//                progressBar.setVisibility(View.GONE);
+                // initializeData();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                /*Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(Color.RED)
+                        .show();*/
+
+                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be loaded", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+            }
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+//            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
 
 }
