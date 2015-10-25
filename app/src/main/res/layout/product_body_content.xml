@@ -30,8 +30,7 @@
             android:focusableInTouchMode="true"
             android:descendantFocusability="beforeDescendants"
             android:layout_width="fill_parent"
-            android:layout_height="360dp">
-        </android.support.v4.view.ViewPager>
+            android:layout_height="360dp"/>
 
         <!--<View
             android:layout_width="fill_parent"
@@ -66,8 +65,8 @@
     android:layout_marginRight="20dp"
     android:layout_marginEnd="20dp"
     android:layout_alignParentTop="true"
-    android:layout_toLeftOf="@+id/imageView6"
-    android:layout_toStartOf="@+id/imageView6" />
+    android:layout_toLeftOf="@+id/share"
+    android:layout_toStartOf="@+id/share" />
 
     <ImageView
         android:src="@drawable/images_icon"
@@ -84,7 +83,7 @@
         android:src="@drawable/share_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView6"
+        android:id="@+id/share"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

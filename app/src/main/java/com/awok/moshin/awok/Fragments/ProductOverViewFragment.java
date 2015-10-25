@@ -3,6 +3,8 @@ package com.awok.moshin.awok.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,6 +15,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,6 +42,7 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -82,7 +86,7 @@ private RatingBar ratingMain;
 
 
 
-private ImageView countButton;
+private ImageView countButton,share;
 
     CustomPagerAdapter mCustomPagerAdapter;
     ViewPager viewPager;
@@ -143,6 +147,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         scroll=(NestedScrollView)mView.findViewById(R.id.nestedScroll);
         countText=(TextView)mView.findViewById(R.id.countText);
         //prod_warranty=(TextView)mView.findViewById(R.id.prod_warranty);
+        share=(ImageView)mView.findViewById(R.id.share);
         prod_color_default=(TextView)mView.findViewById(R.id.prod_color_default);
         prod_color=(TextView)mView.findViewById(R.id.prod_color);
         prod_shipping=(TextView)mView.findViewById(R.id.prod_shipping);
@@ -277,14 +282,105 @@ countButton.setOnClickListener(new View.OnClickListener() {
             }
         });*/
 
-
+share.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        //share();
+        Share(getShareApplication(),"Hello Text Share");
+    }
+});
         return mView;
     }
+
+    private void share() {
+
+
+
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "Here is the share content body";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+    }
+
     private Bitmap base64ToBitmap(String imageString) {
         byte[] imageAsBytes = Base64.decode(imageString.getBytes(), Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
     }
+    private List<String> getShareApplication(){
+        List<String> mList=new ArrayList<String>();
+        mList.add("com.facebook.katana");
+        mList.add("com.twitter.android");
+        //mList.add("com.twitter.applib.PostActivity");
+        mList.add("com.google.android.gm");
+        mList.add("com.linkedin.android");
+        return mList;
+
+    }
+
+
+
+
+    private void Share(List<String> PackageName,String Text) {
+        try
+        {
+            List<Intent> targetedShareIntents = new ArrayList<Intent>();
+            Intent share = new Intent(android.content.Intent.ACTION_SEND);
+            share.setType("text/plain");
+           // List<ResolveInfo> resInfo = getActivity().getPackageManager().queryIntentActivities(share, 0);
+            PackageManager packManager = getActivity().getPackageManager();
+            List<ResolveInfo> resInfo = packManager.queryIntentActivities(share,  PackageManager.MATCH_DEFAULT_ONLY);
+            if (!resInfo.isEmpty()){
+                for (ResolveInfo info : resInfo) {
+                    Intent targetedShare = new Intent(android.content.Intent.ACTION_SEND);
+                    targetedShare.setType("text/plain"); // put here your mime type
+                    if (PackageName.contains(info.activityInfo.packageName.toLowerCase())) {
+                        targetedShare.putExtra(Intent.EXTRA_TEXT,Text);
+                        targetedShare.setPackage(info.activityInfo.packageName.toLowerCase());
+                        targetedShare.setClassName(
+                                info.activityInfo.packageName,
+                                info.activityInfo.name );
+                        targetedShareIntents.add(targetedShare);
+                    }
+                }
+                Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0), "Share");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
+                startActivity(chooserIntent);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        /*Intent tweetIntent = new Intent(Intent.ACTION_SEND);
+        tweetIntent.putExtra(Intent.EXTRA_TEXT, "This is a Test.");
+        tweetIntent.setType("text/plain");
+
+        PackageManager packManager = getActivity().getPackageManager();
+        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(tweetIntent,  PackageManager.MATCH_DEFAULT_ONLY);
+
+        boolean resolved = false;
+        for(ResolveInfo resolveInfo: resolvedInfoList){
+            if(resolveInfo.activityInfo.packageName.startsWith("com.twitter.android")){
+                tweetIntent.setClassName(
+                        resolveInfo.activityInfo.packageName,
+                        resolveInfo.activityInfo.name );
+                resolved = true;
+                break;
+            }
+        }
+        if(resolved){
+            startActivity(tweetIntent);
+        }else{
+            Toast.makeText(getActivity(), "Twitter app isn't found", Toast.LENGTH_LONG).show();
+        }*/
+    }
+
+
+
 
     class CustomPagerAdapter extends PagerAdapter {
 
