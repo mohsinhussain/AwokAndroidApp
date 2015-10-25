@@ -62,6 +62,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button addEditAddressButton;
     LinearLayout addressDetailLayout;
+    LinearLayout bottomPriceLay,bottomLay;
     TextView nameTextView, addressTextView, cityTextView, countryTextView, postalcodeTextView, mobileNumberTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
         totalValueTextView=(TextView)findViewById(R.id.totalValueTextView);
         addEditAddressButton = (Button)findViewById(R.id.addEditAddressButton);
 
-
+        bottomPriceLay=(LinearLayout)findViewById(R.id.bottomPriceLay);
+        bottomPriceLay.setVisibility(View.GONE);
+        bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
+        bottomLay.setVisibility(View.GONE);
         nameTextView=(TextView)findViewById(R.id.nameTextView);
         addressTextView=(TextView)findViewById(R.id.addressTextView);
         cityTextView=(TextView)findViewById(R.id.cityTextView);
@@ -280,8 +284,9 @@ JSONObject dataToSend;
                 jsonObjectData = new JSONObject(response);
                 System.out.println(jsonObjectData.toString());
                 if (jsonObjectData.getString("status").equals("0")) {
-
+                    //bottomPriceLay.setVisibility(View.GONE);
                 } else {
+                    //bottomPriceLay.setVisibility(View.VISIBLE);
                     addEditAddressButton.setText(getString(R.string.change_address));
 //                    addEditAddressButton.setTextColor(getColor(R.color.input_hint));
                     addEditAddressButton.setTextColor(getResources().getColor(R.color.input_hint));
@@ -351,14 +356,16 @@ JSONObject dataToSend;
                 //String sellerName=jsonArray.getString("seller").toString();
                 if(jsonObjectData.getString("status").equals("0"))
                 {
-                    //bottomLay.setVisibility(View.GONE);
+                    bottomLay.setVisibility(View.GONE);
+                    bottomPriceLay.setVisibility(View.GONE);
                     //cartEmptyText.setVisibility(View.VISIBLE);
 
                 }
 
                 else
                 {
-                    //bottomLay.setVisibility(View.VISIBLE);
+                    bottomLay.setVisibility(View.VISIBLE);
+                    bottomPriceLay.setVisibility(View.VISIBLE);
                     //cartEmptyText.setVisibility(View.GONE);
 
 //                    shippingAmount.setText((jsonObjectData.getJSONObject("data").getString("shipping")+" AED"));

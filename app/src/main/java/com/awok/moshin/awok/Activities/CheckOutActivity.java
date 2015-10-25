@@ -83,6 +83,7 @@ public class CheckOutActivity extends AppCompatActivity {
     ArrayList<String> countryCodes;
     ArrayList<String> countryCodeNumbers;
     List<String[]> list;
+    //LinearLayout totalLay;
      ActionBar ab;
     String totalItems;
 
@@ -107,7 +108,7 @@ public class CheckOutActivity extends AppCompatActivity {
         shippingText=(TextView)findViewById(R.id.shippingText);
         itemsCount=(TextView)findViewById(R.id.totalItemsCount);
         // getSupportActionBar().setIcon(R.drawable.ic_launcher);
-
+        //totalLay=(LinearLayout)findViewById(R.id.totalLay);
         // getSupportActionBar().setTitle("Android Versions");
 
         // use this setting to improve performance if you know that changes
@@ -570,6 +571,8 @@ public class CheckOutActivity extends AppCompatActivity {
                 if (jsonObjectData.getString("status").equals("0")) {
                     bottomLay.setVisibility(View.GONE);
                     cartEmptyText.setVisibility(View.VISIBLE);
+                    totalLay.setVisibility(View.GONE);
+                    ab.setTitle("Shopping Cart");
                 } else {
                     totalLay.setVisibility(View.VISIBLE);
                     bottomLay.setVisibility(View.VISIBLE);
