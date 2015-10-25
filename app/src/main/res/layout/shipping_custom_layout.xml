@@ -72,6 +72,7 @@
             android:minHeight="25dp"
             android:background="@color/button_text"
             android:text="Remove"
+            android:stateListAnimator="@null"
             android:gravity="left|center_vertical"
             android:layout_alignParentRight="true"
             android:id="@+id/removeAddressButton"
@@ -86,6 +87,7 @@
             android:background="@color/button_text"
             android:gravity="left|center_vertical"
             android:textColor="@color/input_hint"
+            android:stateListAnimator="@null"
             android:text="Edit"
             android:layout_alignParentRight="true"
             android:id="@+id/editButton" />

@@ -74,6 +74,7 @@ private RecyclerView list;
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle("Shipping Address");
+        ab.setHomeAsUpIndicator(R.drawable.back_button);
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         list.setLayoutManager(mLayoutManager);

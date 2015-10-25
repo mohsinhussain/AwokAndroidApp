@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/app_cart"
-        app:showAsAction="always"
+        app:showAsAction="always|collapseActionView"
         android:orderInCategory="150"
         android:icon="@drawable/filter_icon"
         android:title="Filter" />
