@@ -447,6 +447,7 @@ public class HotDealsFragment extends Fragment {
                         item.setId(jsonObject.getJSONObject("_id").getString("$id"));
                         item.setName(jsonObject.getString("name"));
                         item.setImage(jsonObject.getString("image"));
+                        item.setImageHeight(jsonObject.getInt("image_height"));
                         item.setCategoryId(jsonObject.getString("category_id"));
                         item.setPriceNew(jsonObject.getJSONObject("discount").getInt("discount_price"));
                         item.setPriceOld(jsonObject.getInt("price"));
@@ -518,7 +519,10 @@ public class HotDealsFragment extends Fragment {
         if (pageCount==1){
             mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
             mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setItemAnimator(null);
             mLayoutManager = new StaggeredGridLayoutManager(2,  1);
+            mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+//            mLayoutManager.offsetChildrenVertical(0);
             mRecyclerView.setLayoutManager(mLayoutManager);
         }
         else{

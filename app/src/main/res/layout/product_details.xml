@@ -30,6 +30,7 @@
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
+            app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
             </android.support.design.widget.AppBarLayout>
@@ -95,33 +96,27 @@ android:id="@+id/bottomLay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:paddingLeft="16dp"
+                android:background="#FFFFFF"
                 android:orientation="horizontal">
-
-
-
-
-
                 <TextView
                     android:id="@+id/prod_discountPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-
+                    android:textSize="12sp"
                     android:background="#FFFFFF"
                     android:gravity="center|right"
                     android:paddingRight="5dp"
                     android:text=""
-                    android:textColor="#BDBDBD" />
+                    android:textColor="@color/light_gray" />
                 <TextView
                     android:id="@+id/prod_price"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:background="#FFFFFF"
                     android:gravity="center|left"
-                    android:paddingLeft="5dp"
                     android:text=""
-                    android:textSize="18dp"
+                    android:textSize="19dp"
                     android:textColor="#F44336" />
 
             </LinearLayout>
@@ -132,15 +127,19 @@ android:id="@+id/bottomLay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_marginRight="16dp"
                 android:orientation="horizontal">
 
                 <Button
-                    android:layout_margin="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
                     android:id="@+id/prod_buyNow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="130dp"
+                    android:layout_height="44dp"
                     android:layout_weight="1"
-                    android:background="@color/button_bg"
+                    android:textSize="15dp"
+                    android:capitalize="none"
+                    android:background="@color/red_base"
                     android:text="BUY NOW"
                     android:textColor="#FFFFFF" />
 

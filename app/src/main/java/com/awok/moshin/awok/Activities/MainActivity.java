@@ -114,6 +114,7 @@ private DrawerLayout mDrawerLayout;
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowTitleEnabled(false);
         ab.setLogo(R.drawable.awok_logo);
+        ab.setIcon(R.drawable.back_button);
 //        ab.setIcon(R.drawable.menu_icon);
         img = (ImageView)findViewById(R.id.avatar);
         Picasso.with(this).load(R.drawable.textimg).transform(new CircleTransformation()).into(img);
@@ -159,8 +160,34 @@ private DrawerLayout mDrawerLayout;
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setTabTextColors(getResources().getColor(R.color.normal_text),getResources().getColor(R.color.header_text));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.normal_text), getResources().getColor(R.color.header_text));
 
+//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab selectedTab) {
+////                int tabCount = tabLayout.getTabCount();
+////                for (int i = 0; i < tabCount; i++) {
+////                    TabLayout.Tab tab = tabLayout.getTabAt(i);
+////                    View tabView = tab != null ? tab.getCustomView() : null;
+//                    if (selectedTab.getCustomView() instanceof TextView) {
+//                        ((TextView) selectedTab.getCustomView()).setTextAppearance(getApplicationContext(),R.style.TextAppearance_Tabs_Selected);
+////                        ((TextView) selectedTab.getCustomView()).setTextAppearance(getApplicationContext(), selectedTab.equals(tab)
+////                                ? R.style.TextAppearance_Tabs_Selected
+////                                : R.style.TextAppearance_Tabs);
+//                    }
+////                }
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
 
 
         navHeaderLayout.setOnClickListener(new View.OnClickListener() {
@@ -253,6 +280,25 @@ private DrawerLayout mDrawerLayout;
                 }
                 initializeData();
                 tabLayout.setupWithViewPager(viewPager);
+
+//                tabLayout.setOnTabSelectedListener(
+//                        new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+//                            @Override
+//                            public void onTabSelected(TabLayout.Tab selectedTab) {
+//                                super.onTabSelected(selectedTab);
+//                                int tabCount = tabLayout.getTabCount();
+//                                for (int i = 0; i < tabCount; i++) {
+//                                    TabLayout.Tab tab = tabLayout.getTabAt(i);
+//                                    View tabView = tab != null ? tab.getCustomView() : null;
+//                                    if (tabView instanceof TextView) {
+//                                        ((TextView) selectedTab.getCustomView()).setTextAppearance(getApplicationContext(), R.style.TextAppearance_Tabs_Selected);
+//                                        ((TextView) selectedTab.getCustomView()).setTextAppearance(getApplicationContext(), selectedTab.equals(tab) ? R.style.TextAppearance_Tabs_Selected
+//                                            : R.style.TextAppearance_Tabs);
+//                                }
+//                }
+//
+//                            }
+//                        });
             } catch (JSONException e) {
                 e.printStackTrace();
                 Snackbar.make(findViewById(android.R.id.content), "Categories could not be loaded", Snackbar.LENGTH_INDEFINITE)
@@ -278,6 +324,7 @@ private DrawerLayout mDrawerLayout;
             }
         }
     }
+
 
 
     @Override
@@ -406,10 +453,10 @@ private DrawerLayout mDrawerLayout;
 
         if (viewPager != null) {
             if(selectedTabIndex==0){
-                adapter.addFragment(new HotDealsFragment(null, colorFilterArray, tagsFilterArray, priceFilterArray, true), "ALL ITEMS");
+                adapter.addFragment(new HotDealsFragment(null, colorFilterArray, tagsFilterArray, priceFilterArray, true), "All");
             }
             else{
-                adapter.addFragment(new HotDealsFragment(), "ALL ITEMS");
+                adapter.addFragment(new HotDealsFragment(), "All");
             }
 
 
@@ -436,10 +483,10 @@ private DrawerLayout mDrawerLayout;
 //        adapter = new Adapter(getSupportFragmentManager());
         if(viewPager!=null){
             if(isFilter){
-                adapter.addFragment(new FilterFragment(MainActivity.this), "ALL ITEMS");
+                adapter.addFragment(new FilterFragment(MainActivity.this), "All");
             }
             else{
-                adapter.addFragment(new HotDealsFragment(), "ALL ITEMS");
+                adapter.addFragment(new HotDealsFragment(), "All");
             }
 
             int size = categoriesArrayList.size();

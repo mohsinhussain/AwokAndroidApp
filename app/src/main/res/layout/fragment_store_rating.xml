@@ -1,6 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
     tools:context="com.awok.moshin.awok.Fragments.ReviewsFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -15,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageHolderLayout"
+            android:layout_marginRight="8dp"
             android:layout_below="@+id/sellerDivider" >
 
             <ProgressBar
@@ -27,15 +31,10 @@
                 />
 
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="108dp"
+                android:layout_height="97dp"
                 android:id="@+id/mainImg"
-                android:src="@drawable/test"
-                android:scaleType="fitCenter"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp" />
+                android:src="@drawable/test" />
         </FrameLayout>
 
 
@@ -45,11 +44,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="3"
-            android:padding="8dp"
             android:text="title"
+            android:textStyle="bold"
             android:textColor="#222"
-
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginBottom="16dp"
+            android:textSize="14sp"
             android:layout_alignTop="@+id/imageHolderLayout"
             android:layout_toRightOf="@+id/imageHolderLayout" />
 
@@ -57,9 +56,9 @@
             android:textColor="#039BE5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="(Visit Store)"
+            android:text="Visit Store"
             android:id="@+id/textView4"
+            android:textSize="12sp"
             android:layout_below="@+id/productTitle"
             android:layout_toRightOf="@+id/imageHolderLayout"
             android:layout_toEndOf="@+id/imageHolderLayout" />
@@ -76,9 +75,7 @@
         android:orientation="vertical"
         android:layout_below="@+id/main_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp">
+        android:layout_alignParentStart="true">
 
 
 
@@ -91,6 +88,7 @@
             android:rating="2.0"
             android:stepSize="1.0"
             android:layout_marginTop="12dp"
+            android:layout_marginLeft="8dp"
             android:layout_below="@+id/main_content"
             android:layout_toRightOf="@+id/productTitle"
             android:layout_toEndOf="@+id/productTitle" />
@@ -99,11 +97,8 @@
             android:layout_width="fill_parent"
             android:padding="5dp"
             android:layout_height="fill_parent"
-
-
             android:gravity="center_horizontal"
             android:text="(1 rating)"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/link_text" />
     </LinearLayout>
 

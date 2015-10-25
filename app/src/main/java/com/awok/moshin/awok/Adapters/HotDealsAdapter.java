@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
@@ -44,7 +45,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int i) {
+    public void onBindViewHolder(final ItemViewHolder holder, final int i) {
 //        holder.nameTextView.setText(items.get(i).getName());
         holder.priceTextView.setText(items.get(i).getPriceNew());
 
@@ -59,6 +60,8 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
             default:
                 // Blow up in whatever way you choose.
         }
+
+
 
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
@@ -77,7 +80,19 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
             }
         });
 
-//        setAnimation(holder.container, i);
+
+        holder.itemImageView.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+                    public boolean onPreDraw() {
+                        int cellWidth = holder.itemImageView.getMeasuredWidth();
+                        int imageHeighFromServer = items.get(i).getImageHeight(mContext);
+                        int imageWidthFromServer = 150;
+                        int cellHeight = cellWidth*imageHeighFromServer/imageWidthFromServer;
+                        holder.itemImageView.getLayoutParams().height = cellHeight;
+                        holder.itemImageView.requestLayout();
+                        return true;
+                    }
+                });
     }
 
     @Override

@@ -30,8 +30,7 @@
             android:focusableInTouchMode="true"
             android:descendantFocusability="beforeDescendants"
             android:layout_width="fill_parent"
-            android:layout_height="350dp">
-        </android.support.v4.view.ViewPager>
+            android:layout_height="360dp"/>
 
         <!--<View
             android:layout_width="fill_parent"
@@ -146,7 +145,9 @@
             </LinearLayout>-->
 
             <LinearLayout
-                android:padding="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="8dp"
                 android:layout_below="@+id/saveShare"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
@@ -156,22 +157,22 @@
                     android:id="@+id/productTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="15sp"
+                    android:textColor="@color/normal_text"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                      />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-
-                    android:orientation="horizontal">
+                    android:layout_gravity="center_vertical">
 
                     <RatingBar
                         android:id="@+id/main_prodRatingBar"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
                         android:numStars="5"
                         android:rating="2.0"
                         android:stepSize="1.0" />
@@ -179,17 +180,17 @@
                     <TextView
                         android:id="@+id/product_reviewCount"
                         android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="center_horizontal"
-
-                        android:layout_marginLeft="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
                         android:gravity="center_vertical"
                         android:text="(1234)"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_alignTop="@+id/main_prodRatingBar"
+                        android:layout_toRightOf="@+id/main_prodRatingBar"
+                        android:textSize="14sp"
                         android:textColor="#039BE5" />
 
 
-                </LinearLayout>
+                </RelativeLayout>
 
               <!--  <TextView
                     android:id="@+id/prod_warranty"
@@ -218,24 +219,26 @@
 
                 <LinearLayout
                     android:id="@+id/reviewLay"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
 
 
                     <TextView
-                        android:layout_marginLeft="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
                         android:text="RECENT REVIEWS"/>
 
 
                     <TextView
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="15dp"
                         android:textColor="#2196f3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="12sp"
                         android:text="View All"/>
 
 
@@ -261,18 +264,10 @@
 
                 android:scrollbars="none" />-->
     <android.support.v7.widget.RecyclerView
-        android:padding="5dp"
-
         android:id="@+id/recyclerViewRating"
-
         android:layout_width="match_parent"
         android:layout_gravity="center"
-
-
         android:layout_height="match_parent"
-
-
-
         android:scrollbars="none" />
 <!--</LinearLayout>-->
 
@@ -280,61 +275,48 @@
                     android:id="@+id/prod_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="23dp"
                     android:text="COLORS"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
 
 
                     <TextView
                         android:id="@+id/prod_color_default"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Black"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-
-                    <TextView
-                        android:id="@+id/prod_colorSecondary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="White"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:text="Black, White"
+                        android:textSize="12sp" />
 
 
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="23dp">
                     <TextView
                         android:id="@+id/prod_delivery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="20dp"
                         android:text="ESTIMATED ARRIVAL"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:textStyle="bold"
+                        android:textSize="14sp"/>
 
 
 
                     <TextView
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="15dp"
                         android:textColor="#2196F3"
+                        android:textSize="14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
-                        android:layout_marginTop="20dp"
                         android:text="Details"/>
 
 
@@ -347,30 +329,28 @@
                     android:id="@+id/prod_deliveryTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="8dp"
                     android:text="2 - 4 Days"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:textSize="12sp"/>
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="23dp"
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/prod_shipping"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"
                     android:text="ESTIMATED SHIPPING"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
 
                 <TextView
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="15dp"
                     android:textColor="#2196F3"
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:layout_marginTop="20dp"
                     android:text="Details"/>
 </LinearLayout>
 
@@ -378,10 +358,10 @@
                     android:id="@+id/prod_shippingCost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:text="18 AED"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:layout_marginBottom="23dp"
+                    android:textSize="12sp"/>
 
 
 
