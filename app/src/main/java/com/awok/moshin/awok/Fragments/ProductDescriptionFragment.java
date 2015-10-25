@@ -19,8 +19,11 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.awok.moshin.awok.Adapters.DescriptionAdapter;
 import com.awok.moshin.awok.Adapters.ProductOverViewAdapter;
 import com.awok.moshin.awok.Adapters.ProductSpecificationAdapter;
+import com.awok.moshin.awok.Models.Country;
+import com.awok.moshin.awok.Models.DescriptionModel;
 import com.awok.moshin.awok.Models.ProductOverview;
 import com.awok.moshin.awok.Models.ProductSpecification;
 import com.awok.moshin.awok.R;
@@ -33,15 +36,15 @@ import java.util.List;
 
 public class ProductDescriptionFragment extends Fragment {
 
-    String description;
+   private List<DescriptionModel> description;
 
-//        private RecyclerView mRecyclerView;
-//        private RecyclerView.Adapter mAdapter;
-//        private RecyclerView.LayoutManager mLayoutManager;
-//        private List<ProductOverview> overViewList = new ArrayList<ProductOverview>();
+        private RecyclerView mRecyclerView;
+        private RecyclerView.Adapter mAdapter;
+        private RecyclerView.LayoutManager mLayoutManager;
+        //private List<ProductOverview> overViewList = new ArrayList<ProductOverview>();
 
     TextView descriptionTextView;
-    public ProductDescriptionFragment(String description) {
+    public ProductDescriptionFragment(List<DescriptionModel> description) {
         this.description = description;
     }
 
@@ -51,8 +54,8 @@ public class ProductDescriptionFragment extends Fragment {
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             View mView = inflater.inflate(R.layout.fragment_product_over_view, container, false);
-        descriptionTextView = (TextView) mView.findViewById(R.id.descriptionTextView);
-        descriptionTextView.setText(description);
+        //descriptionTextView = (TextView) mView.findViewById(R.id.descriptionTextView);
+        //descriptionTextView.setText(description);
 
 
 
@@ -69,7 +72,7 @@ public class ProductDescriptionFragment extends Fragment {
 
 
 
-//            mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
+            mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
 //
 //            // getSupportActionBar().setIcon(R.drawable.ic_launcher);
 //
@@ -77,14 +80,14 @@ public class ProductDescriptionFragment extends Fragment {
 //
 //            // use this setting to improve performance if you know that changes
 //            // in content do not change the layout size of the RecyclerView
-//            mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setHasFixedSize(true);
 //
 //            // use a linear layout manager
-//            mLayoutManager = new LinearLayoutManager(getContext());
-//            mRecyclerView.setLayoutManager(mLayoutManager);
+            mLayoutManager = new LinearLayoutManager(getContext());
+            mRecyclerView.setLayoutManager(mLayoutManager);
 //
-//            mAdapter = new ProductOverViewAdapter(getActivity(),overViewList);
-//            mRecyclerView.setAdapter(mAdapter);
+            mAdapter = new DescriptionAdapter(getActivity(),description);
+            mRecyclerView.setAdapter(mAdapter);
 //
 //
 //overViewList.clear();

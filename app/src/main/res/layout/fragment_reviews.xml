@@ -1,16 +1,23 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
     android:paddingTop="10dp"
-    tools:context="com.awok.moshin.awok.Fragments.ReviewsFragment">
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottomLay"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
+
 
 
     <RelativeLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="fill_parent">
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -151,4 +158,19 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
-</RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/bottomSeperator"
+        android:id="@+id/overViewRecyclerView"
+        android:layout_width="match_parent"
+android:padding="22dp"
+
+
+
+        android:layout_height="fill_parent"
+
+
+
+         />
+        </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
+

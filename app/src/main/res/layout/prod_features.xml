@@ -2,36 +2,41 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp">
+
+    >
 
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
 
         <TextView
+
             android:id="@+id/OverViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:maxLines="3"
-            android:padding="8dp"
+
             android:text="title"
             android:textColor="#222"
             android:textStyle="bold"
-            android:textSize="22dp" />
+            android:textSize="14sp" />
 
         <TextView
+            android:lineSpacingMultiplier = "1.5"
             android:id="@+id/overviewText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/OverViewTitle"
+android:layout_marginTop="11dp"
+            android:paddingBottom="15dp"
 
-            android:padding="8dp"
             android:text="description"
             android:textColor="#666"
-            android:textSize="14dp" />
+            android:textSize="12sp" />
 
     </RelativeLayout>
 </RelativeLayout>

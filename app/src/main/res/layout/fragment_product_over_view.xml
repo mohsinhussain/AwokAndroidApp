@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     tools:context="com.awok.moshin.awok.Fragments.ProductDescriptionFragment">
 
-    <TextView
+    <!--<TextView
         android:id="@+id/descriptionTextView"
         android:textColor="@color/normal_text"
         android:textSize="12sp"
@@ -11,15 +11,18 @@
         android:padding="24dp"
         android:text="basjdakjsda dkaj dakjds akdshn aksdj adsjka dsja sdkja dskaj sdakj sdaskjd asd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" />-->
 
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/overViewRecyclerView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_margin="5dp"-->
-        <!--android:scrollbars="none" />-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/overViewRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:scrollbars="none" />
 
 
 
