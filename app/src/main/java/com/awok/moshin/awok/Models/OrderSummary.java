@@ -18,13 +18,15 @@ public class OrderSummary {
     private String totalPrice;
     private String oldPrice;
     private String discount;
-
+    private String sellerSubTotal;
+    private String sellerShipping;
+    private String sellerTotal;
     public OrderSummary()
     {
 
     }
 
-    public OrderSummary(String OverViewTitle,Boolean isHeader,Boolean isFooter,String discount, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String totalTag,String statusId,String quantity,String remainingStock,String totalPrice,String oldPrice) {
+    public OrderSummary(String sellerSubTotal,String sellerShipping,String sellerTotal,String OverViewTitle,Boolean isHeader,Boolean isFooter,String discount, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String totalTag,String statusId,String quantity,String remainingStock,String totalPrice,String oldPrice) {
         this.OverViewTitle = OverViewTitle;
         this.OverViewText = OverViewText;
         this.SellerLabel=SellerLabel;
@@ -39,6 +41,9 @@ public class OrderSummary {
         this.isFooter=isFooter;
         this.isHeader=isHeader;
         this.discount=discount;
+        this.sellerShipping=sellerShipping;
+        this.sellerSubTotal=sellerSubTotal;
+        this.sellerTotal=sellerTotal;
 
     }
 
@@ -338,5 +343,53 @@ public class OrderSummary {
         return discount;
     }
 
+    public void setSellerSubTotal(String sellerSubTotal) {
+        this.sellerSubTotal = sellerSubTotal;
+    }
+
+
+
+
+
+    public String getSellerSubTotal()
+    {
+        return sellerSubTotal;
+    }
+
+
+
+
+
+
+    public void setSellerShipping(String sellerShipping) {
+        this.sellerShipping = sellerShipping;
+    }
+
+
+
+
+
+    public String getSellerShipping()
+    {
+        return sellerShipping;
+    }
+
+
+
+
+
+
+    public void setSellerTotal(String sellerTotal) {
+        this.sellerTotal = sellerTotal;
+    }
+
+
+
+
+
+    public String getSellerTotal()
+    {
+        return sellerTotal;
+    }
 
 }

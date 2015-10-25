@@ -18,7 +18,7 @@
         app:showAsAction="always"
         android:title="sample_1"/>-->
     <item
-        android:title="Log"
+        android:title="Count"
         android:id="@+id/badge"
         app:actionLayout="@layout/testcount"
         app:icon="@drawable/cart_icon"
@@ -29,7 +29,7 @@
         android:id="@+id/app_cart"
         app:showAsAction="always"
         android:orderInCategory="200"
-        android:icon="@drawable/cart_icon"
-        android:title="Cart" />
+        android:icon="@drawable/dispute_icon"
+        android:title="Dispute" />
 
 </menu>

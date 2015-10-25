@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.ConnectivityManager;
@@ -83,7 +84,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     JSONArray jsonDescriptionData;
     JSONArray jsonRatingArray;
     MenuItem searchItem;
+    String returnPolicies,estimatedPrice,country,estimatedDays,shipFrom;
     SearchView searchView;
+    SharedPreferences mSharedPrefs;
     View logView;
     DescriptionModel descData=new DescriptionModel();
     ProductRatingModel prodRatingData=new ProductRatingModel();
@@ -92,6 +95,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     private List<ProductRatingModel> prodRating = new ArrayList<ProductRatingModel>();
     private List<StoreRatingModel> storeRatingData = new ArrayList<StoreRatingModel>();
     String storeName,storeSum,storeAverage,storeImage,storeUrl;
+    private Button mCounter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +119,14 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         Log.v("Product DetailView", productId);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
+        mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
+
+
+
+
+
+
+
 
         ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -291,7 +303,7 @@ public void setUpTab()
         adapter.addFragment(new ProductDescriptionFragment(descModel), "Description");
         //adapter.addFragment(new ReviewsFragment(productName,image,rating,ratingCount),"Product Rating");
         adapter.addFragment(new ReviewsFragment(prodRating,productName,image,rating,ratingCount,boughtBy,savedBy),"Product Rating");
-        adapter.addFragment(new ShippingDeliveryFrag(),"Shipping Info");
+        adapter.addFragment(new ShippingDeliveryFrag(returnPolicies,estimatedPrice,country,estimatedDays,shipFrom),"Shipping Info");
         //adapter.addFragment(new StoreRatingFragment(productName,image,rating,ratingCount),"Store Rating");
         adapter.addFragment(new StoreRatingFragment(storeRatingData,storeName,storeSum,storeAverage,storeImage,storeUrl),"Store Rating");
 
@@ -408,9 +420,18 @@ public void setUpTab()
        Button notifCount = (Button) count.findViewById(R.id.notif_count);*/
 
         RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(R.id.badge).getActionView();
-        Button mCounter = (Button) badgeLayout.findViewById(R.id.button);
-        mCounter.setText("2");
+         mCounter = (Button) badgeLayout.findViewById(R.id.button);
 
+        if (mSharedPrefs.contains(Constants.APP_CART_COUNT)) {
+
+            String countCart=mSharedPrefs.getString(Constants.APP_CART_COUNT,"");
+
+            mCounter.setText(countCart);
+        }
+        else
+        {
+            mCounter.setText("0");
+        }
 
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
@@ -474,6 +495,7 @@ public void setUpTab()
     @Override
     public void onResume(){
         super.onResume();
+        invalidateOptionsMenu();
         buyNow.setEnabled(true);
         buyNow.setBackgroundColor(getResources().getColor(R.color.button_bg));
 
@@ -533,6 +555,7 @@ descModel.add(descData);
                     prodRatingData.setContent(dataRating.getString("content"));
                     prodRatingData.setRate(dataRating.getString("rate"));
                     prodRatingData.setUsername(dataRating.getString("username"));
+                    prodRatingData.setDays(dataRating.getString("days"));
 
                     prodRating.add(prodRatingData);
                 }
@@ -552,6 +575,7 @@ descModel.add(descData);
                     storeRatingModel.setUsername(jsonStroreData.getString("username"));
                     storeRatingModel.setContent(jsonStroreData.getString("content"));
                     storeRatingModel.setRate(jsonStroreData.getString("rate"));
+                    storeRatingModel.setDays(jsonStroreData.getString("days"));
 
 
 
@@ -566,6 +590,22 @@ descModel.add(descData);
 
 
                 }
+
+
+                JSONObject shippingData=mMembersJSON.getJSONObject("shipping_data");
+                 estimatedPrice=shippingData.getString("estimated_price");
+                         country=shippingData.getString("country");
+                                 estimatedDays=shippingData.getString("estimated_shipping_days");
+
+                         shipFrom=   shippingData.getString("ships_from");
+                         returnPolicies=shippingData.getString("return_policy");
+
+
+
+
+
+
+
                 setUpTab();
                 //mResources=
 

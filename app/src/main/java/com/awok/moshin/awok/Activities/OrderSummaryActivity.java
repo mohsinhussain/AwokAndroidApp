@@ -382,7 +382,37 @@ totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_ite
                             listData.setProductId(jsonObjectProductDetails.getString("_id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
                             listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));*/
+                            listData.setSellerSubTotal(jsonObject.getString("subtotal"));
 
+                            if (jsonObject.getString("shipping").equals("0"))
+                            {
+                                listData.setSellerShipping("Free");
+                            } else {
+                                listData.setSellerShipping("AED " +jsonObject.getString("shipping"));
+                            }
+
+
+                            //listData.setSellerShipping(jsonObject.getString("shipping"));
+                            listData.setSellerTotal(jsonObject.getString("total"));
+                            if(j==0)
+                            {
+                                listData.setIsHeader(true);
+                            }
+                            else
+                            {
+                                listData.setIsHeader(false);
+                            }
+
+                            if(j==lengthOfProducts-1)
+                            {
+                                listData.setIsFooter(true);
+                            }
+                            else
+                            {
+                                listData.setIsFooter(false);
+                            }
+
+                            listData.setStatusId(jsonObjectData.getString("status"));
 
                             JSONObject jsonObjectProductDetails = productDetails.getJSONObject(j);
 

@@ -498,6 +498,7 @@ android:background="#fcfafa"
 
 
     <TextView
+        android:id="@+id/sellerSubTotal"
         android:text="AED 2000"
         android:layout_weight="1"
         android:textColor="#666666"
@@ -548,6 +549,7 @@ android:background="#fcfafa"
 </LinearLayout>
 
         <TextView
+            android:id="@+id/sellerShipping"
             android:text="AED 30"
             android:layout_weight="1"
             android:gravity="right"
@@ -589,6 +591,7 @@ android:background="#fcfafa"
 
 
         <TextView
+            android:id="@+id/sellerTotal"
             android:text="AED 2000"
             android:textColor="#ff3823"
             android:paddingBottom="5dp"

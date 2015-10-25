@@ -67,7 +67,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     Context mContext;
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public final TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice,newPrice,sellerNameText,discount;
+        public final TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice,newPrice,sellerNameText,discount,sellerTotal,sellerShipping,sellerSubTotal;
         public Spinner countOfProducts;
         public LinearLayout sellerMainLay;
         RelativeLayout footer;
@@ -88,6 +88,18 @@ private TextView remove;
                     Log.d(TAG, "Element " + getPosition() + " clicked.");
                 }
             });
+sellerSubTotal=(TextView)itemLayoutView
+        .findViewById(R.id.sellerSubTotal);
+
+            sellerTotal=(TextView)itemLayoutView
+                    .findViewById(R.id.sellerTotal);
+
+
+
+
+            sellerShipping=(TextView)itemLayoutView
+                    .findViewById(R.id.sellerShipping);
+
 
             prodOverviewTitle = (TextView) itemLayoutView
                     .findViewById(R.id.OverViewTitle);
@@ -261,10 +273,13 @@ customView=v;
         viewHolder.prodOverviewTitle.setTag(mDataSet.get(position).getProductId());
         viewHolder.totalPrice.setText("Total Price :" + mDataSet.get(position).getTotalPrice() + " AED");
         viewHolder.quantity.setText(mDataSet.get(position).getQuantity());
-        viewHolder.discount.setText(mDataSet.get(position).getDiscount()+"%");
+        viewHolder.discount.setText(mDataSet.get(position).getDiscount() + "%");
         viewHolder.stock.setText("Free Shipping");
         viewHolder.sellerNameText.setText(mDataSet.get(position).getSellerLabel());
         viewHolder.stock.setTag(mDataSet.get(position).getRemainingStock());
+        viewHolder.sellerSubTotal.setText(mDataSet.get(position).getSellerSubTotal());
+        viewHolder.sellerShipping.setText(mDataSet.get(position).getSellerShipping());
+        viewHolder.sellerTotal.setText(mDataSet.get(position).getSellerTotal());
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         imageLoader.get(mDataSet.get(position).getImageBitmapString(), new ImageLoader.ImageListener() {
             @Override

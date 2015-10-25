@@ -74,7 +74,7 @@ public class ShippingAddressModel {
             return "";
         }
         else{
-            return ", "+state;
+            return state;
         }
     }
 

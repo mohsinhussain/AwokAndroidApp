@@ -84,6 +84,7 @@ public class CheckOutActivity extends AppCompatActivity {
     ArrayList<String> countryCodeNumbers;
     List<String[]> list;
      ActionBar ab;
+    String totalItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -571,7 +572,7 @@ public class CheckOutActivity extends AppCompatActivity {
                     totalLay.setVisibility(View.VISIBLE);
                     bottomLay.setVisibility(View.VISIBLE);
                     cartEmptyText.setVisibility(View.GONE);
-                    String totalItems=jsonObjectData.getJSONObject("data").getString("total_items");
+                     totalItems=jsonObjectData.getJSONObject("data").getString("total_items");
                     String subtotal=jsonObjectData.getJSONObject("data").getString("subtotal");
                     String total=jsonObjectData.getJSONObject("data").getString("total");
                     String shipping=jsonObjectData.getJSONObject("data").getString("shipping");
@@ -609,6 +610,19 @@ public class CheckOutActivity extends AppCompatActivity {
                                                     listData.setTotalTag("false");
                                                 }*/
                             //listData.setOverViewText(jsonObject.getString("total_price"));
+                              listData.setSellerSubTotal(jsonObject.getString("subtotal"));
+
+                        if (jsonObject.getString("shipping").equals("0"))
+                        {
+                            listData.setSellerShipping("Free");
+                        }
+                        else {
+                            listData.setSellerShipping("AED " +jsonObject.getString("shipping"));
+                        }
+
+
+                        //listData.setSellerShipping(jsonObject.getString("shipping"));
+                        listData.setSellerTotal(jsonObject.getString("total"));
                             if(j==0)
                             {
                                 listData.setIsHeader(true);
@@ -666,6 +680,7 @@ public class CheckOutActivity extends AppCompatActivity {
                 //initializeData();
                 /////////////////mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
+                cart_count();
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -706,6 +721,23 @@ public class CheckOutActivity extends AppCompatActivity {
 
         }
     }
+
+    private void cart_count() {
+        if (mSharedPrefs.contains(Constants.APP_CART_COUNT)) {
+            SharedPreferences.Editor editor = mSharedPrefs.edit();
+            editor.putString(Constants.APP_CART_COUNT, totalItems);
+
+            editor.commit();
+        }
+        else
+        {
+            SharedPreferences.Editor editor = mSharedPrefs.edit();
+            editor.putString(Constants.APP_CART_COUNT, totalItems);
+
+            editor.commit();
+        }
+    }
+
     public class MyLinearLayoutManager extends LinearLayoutManager {
 
         public MyLinearLayoutManager(Context context, int orientation, boolean reverseLayout)    {

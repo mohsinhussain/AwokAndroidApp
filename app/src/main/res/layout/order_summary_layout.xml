@@ -499,7 +499,8 @@
                     android:textColor="#666666"
                     android:gravity="right"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sellerSubTotal" />
 
 
             </LinearLayout>
@@ -549,7 +550,8 @@
                     android:gravity="right"
                     android:textColor="#666666"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sellerShipping" />
 
 
             </LinearLayout>
@@ -591,7 +593,8 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sellerTotal" />
 
 
             </LinearLayout>

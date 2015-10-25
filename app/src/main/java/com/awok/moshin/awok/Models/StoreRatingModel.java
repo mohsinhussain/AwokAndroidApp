@@ -9,20 +9,21 @@ package com.awok.moshin.awok.Models;
         private String rate;
         private String content;
         private String username;
+    private String days;
 
 
-
-        public StoreRatingModel()
+    public StoreRatingModel()
         {
 
         }
 
 
-        public StoreRatingModel(String rate,String content,String username)
+        public StoreRatingModel(String rate,String content,String username,String days)
         {
             this.rate=rate;
             this.content=content;
             this.username=username;
+            this.days=days;
         }
 
 
@@ -52,5 +53,14 @@ package com.awok.moshin.awok.Models;
         }
 
 
+    public void setDays(String days) {
+        this.days = days;
     }
+
+
+
+    public String getDays() {
+        return days;
+    }
+}
 

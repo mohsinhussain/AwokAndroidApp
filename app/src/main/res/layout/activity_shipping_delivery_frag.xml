@@ -74,6 +74,7 @@
 
 
             <TextView
+                android:id="@+id/shipPrice"
                 android:background="@color/button_text"
                 android:layout_marginLeft="1dp"
                 android:layout_weight="65"
@@ -133,7 +134,8 @@
                 android:textSize="14sp"
                 android:text="Ships to united arab emirates in 88 days"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:id="@+id/availability" />
 
 
         </LinearLayout>
@@ -170,6 +172,7 @@
 
 
             <TextView
+                android:id="@+id/estiShipping"
                 android:background="@color/button_text"
                 android:layout_marginLeft="1dp"
                 android:layout_weight="65"
@@ -218,6 +221,7 @@
 
 
             <TextView
+                android:id="@+id/shipsFrom"
                 android:background="@color/button_text"
                 android:layout_marginLeft="1dp"
                 android:layout_weight="65"
@@ -268,6 +272,7 @@
 
 
             <TextView
+                android:id="@+id/returnPolicy"
                 android:background="@color/button_text"
                 android:layout_marginLeft="1dp"
                 android:layout_weight="65"

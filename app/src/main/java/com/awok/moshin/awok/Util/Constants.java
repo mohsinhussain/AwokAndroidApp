@@ -32,5 +32,6 @@ public class Constants {
     public static String PRODUCT_DESCRIPTION_INTENT = "productDescription";
     public static String PRODUCT_RATING = "productRating";
     public static String PRODUCT_RATING_COUNT = "productRatingCount";
+    public static String APP_CART_COUNT = "productRatingCount";
 
 }

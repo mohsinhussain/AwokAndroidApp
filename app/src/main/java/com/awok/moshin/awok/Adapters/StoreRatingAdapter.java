@@ -61,6 +61,7 @@ import java.util.List;
             viewHolder.content.setText(OverViewList.get(position).getContent());
             viewHolder.main_prodRatingBar.setRating(Float.parseFloat(OverViewList.get(position).getRate()));
             viewHolder.user.setText(OverViewList.get(position).getUsername());
+            viewHolder.days.setText(OverViewList.get(position).getDays());
 
         }
 
@@ -73,7 +74,7 @@ import java.util.List;
         // inner class to hold a reference to each item of RecyclerView
         public static class ViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView user,content;
+            public TextView user,content,days;
             public RatingBar main_prodRatingBar;
 
             public ViewHolder(View itemLayoutView) {
@@ -83,7 +84,8 @@ import java.util.List;
                 main_prodRatingBar = (RatingBar) itemLayoutView
                         .findViewById(R.id.main_prodRatingBar);
 
-
+days=(TextView)itemLayoutView
+        .findViewById(R.id.days);
 
                 content = (TextView) itemLayoutView
                         .findViewById(R.id.content);

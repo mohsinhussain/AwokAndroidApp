@@ -54,6 +54,7 @@ public class AddNewAddress extends AppCompatActivity {
     private TextInputLayout inputLayoutName, inputAddress1, inputAddress2,pinLayout, phone2Lay, phoneLay;
     int check=0;
     int spinnerCountUpdate = 0;
+    String countryValue,stateValue,cityValue;
     int stateCheck=0;
     private EditText name,add1,add2,pin, phone1, phone2;
     private Spinner countrySpinner,stateSpinner,citySpinner;
@@ -134,7 +135,12 @@ clear=(Button)findViewById(R.id.clear);
                     addNewAddress.put("address_line1", add1.getText().toString());
                     addNewAddress.put("address_line2",add2.getText().toString());
                     addNewAddress.put("city",citySpinner.getSelectedItem().toString());
-                    addNewAddress.put("state",stateSpinner.getSelectedItem().toString());
+                    if(listState.size()>0){
+                        addNewAddress.put("state",stateSpinner.getSelectedItem().toString());
+                    }
+                    else{
+                        addNewAddress.put("state","");
+                    }
                     addNewAddress.put("country",countrySpinner.getSelectedItem().toString());
                     addNewAddress.put("postal_code",pin.getText().toString());
                     addNewAddress.put("phone_number1",phone1.getText().toString());
@@ -228,6 +234,7 @@ clear=(Button)findViewById(R.id.clear);
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 check = check + 1;
                 if (check >= 1) {
                     listCity.clear();
@@ -239,19 +246,21 @@ clear=(Button)findViewById(R.id.clear);
                     String valueCountry = countryId.get(country_text);
                     System.out.println("jhgvjhvjngv" + valueCountry);
                     NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-                    if (networkInfo != null && networkInfo.isConnected()) {
 
-                        new APIClient(AddNewAddress.this, getApplicationContext(), new GetStateCallBack()).StateCallBack(valueCountry);
+                        if (networkInfo != null && networkInfo.isConnected()) {
+
+                            new APIClient(AddNewAddress.this, getApplicationContext(), new GetStateCallBack()).StateCallBack(valueCountry);
 
 
-                    } else {
+                        } else {
 
-                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                                .setActionTextColor(Color.RED)
-                                .show();
+                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
 
+                        }
                     }
-                }
+
             }
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
@@ -278,21 +287,23 @@ clear=(Button)findViewById(R.id.clear);
                                     getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
                             String valueState = stateId.get(state_text);
                             System.out.println("jhgvjhvjngv" + valueState);
-                            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-                            if (networkInfo != null && networkInfo.isConnected()) {
 
-                                new APIClient(AddNewAddress.this, getApplicationContext(), new GetCityCallBack()).CityCallBack(valueState);
-                               // System.out.println("jhgvjhvjngv" + valueState);
+                                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                                if (networkInfo != null && networkInfo.isConnected()) {
+
+                                    new APIClient(AddNewAddress.this, getApplicationContext(), new GetCityCallBack()).CityCallBack(valueState);
+                                    // System.out.println("jhgvjhvjngv" + valueState);
 
 
-                            } else {
+                                } else {
 
-                                Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                                        .setActionTextColor(Color.RED)
-                                        .show();
+                                    Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                            .setActionTextColor(Color.RED)
+                                            .show();
 
+                                }
                             }
-                        }
+
 
 
 
@@ -384,6 +395,15 @@ System.out.println(list);
                     //progressBar.startAnimation(animation);
                 }
                 //progressBar.setVisibility(View.GONE);
+                countryValue = getIntent().getExtras().getString("country");
+                if (spinnerCountUpdate == 0) {
+                    if (!countryValue.equals(null)) {
+                        int spinnerPosition = dataAdapter.getPosition(countryValue);
+                        countrySpinner.setSelection(spinnerPosition);
+                    }
+                }
+
+
 
 
             } catch (JSONException e) {
@@ -410,6 +430,7 @@ System.out.println(list);
         }
 
     }
+
 
 
 
@@ -461,6 +482,19 @@ String locationType=jsonObjectData.getString("location_type");
                         }
                         citySpinner.setAdapter(cityDataAdapter);
                     }
+
+                    stateValue = getIntent().getExtras().getString("state");
+                    if (spinnerCountUpdate == 0) {
+                        if (getIntent().getExtras() != null) {
+                            if (!stateValue.equals(null) && listState.size() > 0) {
+                                int spinnerPosition = stateDataAdapter.getPosition(stateValue);
+                                stateSpinner.setSelection(spinnerPosition);
+                            }
+                        }
+                    }
+
+
+
 
                     /*JSONArray country=jsonObjectData.getJSONArray("locations");
 
@@ -538,30 +572,45 @@ cityLay.setVisibility(View.GONE);
                             System.out.println(listState);
                         }
                         citySpinner.setAdapter(cityDataAdapter);
+                        if( getIntent().getExtras() != null)
+                        {
 
-                        String countryValue = getIntent().getExtras().getString("country");
-                        String stateValue = getIntent().getExtras().getString("state");
-                        String cityValue = getIntent().getExtras().getString("city");
 
-                        if (spinnerCountUpdate == 0) {
-                            if (!countryValue.equals(null)) {
-                                int spinnerPosition = dataAdapter.getPosition(countryValue);
-                                countrySpinner.setSelection(spinnerPosition);
+
+                             cityValue = getIntent().getExtras().getString("city");
+
+
+                            if (spinnerCountUpdate == 0) {
+                                if (!cityValue.equals(null)) {
+                                    int spinnerPosition = cityDataAdapter.getPosition(cityValue);
+                                    citySpinner.setSelection(spinnerPosition);
+                                }
+                                spinnerCountUpdate++;
                             }
 
-                            if (!stateValue.equals(null)) {
-                                int spinnerPosition = dataAdapter.getPosition(stateValue);
-                                stateSpinner.setSelection(spinnerPosition);
-                            }
+//                        if (spinnerCountUpdate == 0) {
+//                            if (!countryValue.equals(null)) {
+//                                int spinnerPosition = dataAdapter.getPosition(countryValue);
+//                                countrySpinner.setSelection(spinnerPosition);
+//                                spinnerCountUpdate++;
+//                            }
+//                        }
 
-                            if (!cityValue.equals(null)) {
-                                int spinnerPosition = dataAdapter.getPosition(cityValue);
-                                citySpinner.setSelection(spinnerPosition);
-                            }
-                            spinnerCountUpdate++;
                         }
 
-
+//                        if( getIntent().getExtras() != null)
+//                        {
+//                           /* int countrylist.indexOf(getIntent().getExtras().getString("country"));
+//                            listState.indexOf(getIntent().getExtras().getString("state"));
+//                            listCity.indexOf(getIntent().getExtras().getString("city"));*/
+//
+//
+//                            countrySpinner.setPrompt(getIntent().getExtras().getString("country"));
+//                            stateSpinner.setPrompt(getIntent().getExtras().getString("state"));
+//                            citySpinner.setPrompt(getIntent().getExtras().getString("city"));
+//
+//
+//                        }
 
                     /*JSONArray country=jsonObjectData.getJSONArray("locations");
 
