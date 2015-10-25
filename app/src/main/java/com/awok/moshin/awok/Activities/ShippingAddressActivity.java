@@ -313,7 +313,7 @@ overViewList.add(address);
 
         @Override
         public void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE); 
+            progressBar.setVisibility(View.VISIBLE);
         }
     }
 

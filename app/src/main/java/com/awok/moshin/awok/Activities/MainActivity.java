@@ -123,6 +123,22 @@ private DrawerLayout mDrawerLayout;
         navHeaderLayout = (RelativeLayout) findViewById(R.id.navHeaderBackground);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new Adapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
