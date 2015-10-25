@@ -99,7 +99,13 @@ public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddress
         viewHolder.rb.setChecked(true);
         viewHolder.name.setText(OverViewList.get(position).getName());
         viewHolder.address.setText(OverViewList.get(position).getAddress1());
-        viewHolder.state.setText(OverViewList.get(position).getCity()+OverViewList.get(position).getState());
+        if(OverViewList.get(position).getState().equalsIgnoreCase("")){
+            viewHolder.state.setText(OverViewList.get(position).getCity());
+        }
+        else{
+            viewHolder.state.setText(OverViewList.get(position).getCity()+", "+OverViewList.get(position).getState());
+        }
+
         viewHolder.country.setText(OverViewList.get(position).getCountry());
         viewHolder.pin.setText(OverViewList.get(position).getPin());
         viewHolder.phone.setTag(OverViewList.get(position).getPhone1());

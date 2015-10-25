@@ -88,6 +88,7 @@ public class AddNewAddress extends AppCompatActivity {
         final ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(getString(R.string.add_new_address_header));
+        ab.setHomeAsUpIndicator(R.drawable.back_button);
         stateLay=(LinearLayout)findViewById(R.id.stateLay);
         cityLay=(LinearLayout)findViewById(R.id.cityLay);
         inputLayoutName = (TextInputLayout) findViewById(R.id.nameLayout);
@@ -135,7 +136,7 @@ clear=(Button)findViewById(R.id.clear);
                     addNewAddress.put("address_line1", add1.getText().toString());
                     addNewAddress.put("address_line2",add2.getText().toString());
                     addNewAddress.put("city",citySpinner.getSelectedItem().toString());
-                    if(listState.size()>0){
+                    if(stateSpinner.isShown()){
                         addNewAddress.put("state",stateSpinner.getSelectedItem().toString());
                     }
                     else{
@@ -395,13 +396,16 @@ System.out.println(list);
                     //progressBar.startAnimation(animation);
                 }
                 //progressBar.setVisibility(View.GONE);
-                countryValue = getIntent().getExtras().getString("country");
-                if (spinnerCountUpdate == 0) {
-                    if (!countryValue.equals(null)) {
-                        int spinnerPosition = dataAdapter.getPosition(countryValue);
-                        countrySpinner.setSelection(spinnerPosition);
+                if(getIntent().getExtras()!=null){
+                    countryValue = getIntent().getExtras().getString("country");
+                    if (spinnerCountUpdate == 0) {
+                        if (!countryValue.equals(null)) {
+                            int spinnerPosition = dataAdapter.getPosition(countryValue);
+                            countrySpinner.setSelection(spinnerPosition);
+                        }
                     }
                 }
+
 
 
 
@@ -483,12 +487,14 @@ String locationType=jsonObjectData.getString("location_type");
                         citySpinner.setAdapter(cityDataAdapter);
                     }
 
-                    stateValue = getIntent().getExtras().getString("state");
-                    if (spinnerCountUpdate == 0) {
-                        if (getIntent().getExtras() != null) {
-                            if (!stateValue.equals(null) && listState.size() > 0) {
-                                int spinnerPosition = stateDataAdapter.getPosition(stateValue);
-                                stateSpinner.setSelection(spinnerPosition);
+                    if(getIntent().getExtras()!=null) {
+                        stateValue = getIntent().getExtras().getString("state");
+                        if (spinnerCountUpdate == 0) {
+                            if (getIntent().getExtras() != null) {
+                                if (!stateValue.equals(null) && listState.size() > 0) {
+                                    int spinnerPosition = stateDataAdapter.getPosition(stateValue);
+                                    stateSpinner.setSelection(spinnerPosition);
+                                }
                             }
                         }
                     }
@@ -576,16 +582,17 @@ cityLay.setVisibility(View.GONE);
                         {
 
 
+                            if(getIntent().getExtras()!=null) {
+                                cityValue = getIntent().getExtras().getString("city");
 
-                             cityValue = getIntent().getExtras().getString("city");
 
-
-                            if (spinnerCountUpdate == 0) {
-                                if (!cityValue.equals(null)) {
-                                    int spinnerPosition = cityDataAdapter.getPosition(cityValue);
-                                    citySpinner.setSelection(spinnerPosition);
+                                if (spinnerCountUpdate == 0) {
+                                    if (!cityValue.equals(null)) {
+                                        int spinnerPosition = cityDataAdapter.getPosition(cityValue);
+                                        citySpinner.setSelection(spinnerPosition);
+                                    }
+                                    spinnerCountUpdate++;
                                 }
-                                spinnerCountUpdate++;
                             }
 
 //                        if (spinnerCountUpdate == 0) {

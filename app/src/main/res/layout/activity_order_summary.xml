@@ -117,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="30dp"
                 android:textSize="12sp"
+                android:stateListAnimator="@null"
                 android:textColor="@color/light_gray"
                 android:background="@color/button_text"
                 android:layout_alignParentRight="true"
@@ -250,7 +251,6 @@
                 <TextView
                     android:paddingTop="2dp"
                     android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
                     android:paddingBottom="10dp"
 
                     android:layout_weight="1"
@@ -261,7 +261,6 @@
                     android:id="@+id/totalItemsText"
                     android:paddingTop="5dp"
                     android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
                     android:paddingBottom="10dp"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -284,14 +283,18 @@
 
 
                 <TextView
-                    android:padding="10dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="ALL TOTAL"/>
                 <TextView
                     android:id="@+id/allItems"
-                    android:padding="10dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:gravity="right"
