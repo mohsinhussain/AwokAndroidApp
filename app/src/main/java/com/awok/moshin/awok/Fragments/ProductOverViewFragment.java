@@ -261,15 +261,15 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         }
 
 
-
-countButton.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-
-            Intent i = new Intent(getActivity(), ShippingAddressActivity.class);
-            startActivity(i);
-    }
-});
+//
+//countButton.setOnClickListener(new View.OnClickListener() {
+//    @Override
+//    public void onClick(View v) {
+//
+//            Intent i = new Intent(getActivity(), ShippingAddressActivity.class);
+//            startActivity(i);
+//    }
+//});
 
 
 

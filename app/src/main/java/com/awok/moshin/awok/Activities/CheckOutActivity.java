@@ -246,6 +246,7 @@ public class CheckOutActivity extends AppCompatActivity {
             }
         });
 
+        b.setTransformationMethod(null);
 
     }
 
@@ -576,9 +577,10 @@ public class CheckOutActivity extends AppCompatActivity {
                     String total=jsonObjectData.getJSONObject("data").getString("total");
                     String shipping=jsonObjectData.getJSONObject("data").getString("shipping");
                     ab.setTitle("Shopping Cart ("+totalItems+")");
+                    ab.setHomeAsUpIndicator(R.drawable.back_button);
                     itemsCount.setText(totalItems);
                     subTotalText.setText("AED "+subtotal);
-                    totalText.setText(total);
+                    totalText.setText("AED "+total);
                     if (shipping.equals("0"))
                     {
                         shippingText.setText("FREE");

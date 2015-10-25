@@ -33,6 +33,7 @@
     <string name="address_2">Add New Address</string>
     <string name="profile_picture">Profile Picture</string>
 
+    <string name="buy_now">BUY NOW</string>
 
     <string name="login">LOGIN</string>
     <string name="enter_password_to_login">Please enter your password to login.</string>
