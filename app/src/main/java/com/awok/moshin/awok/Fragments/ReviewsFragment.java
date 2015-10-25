@@ -42,7 +42,7 @@ public class ReviewsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    //private String productName,image,rating,ratingCount;
+    private String productName,image,ratingCount,ratingtxt,boughtBy,savedBy;
     private String mParam2;
     private RatingBar prod_reviewRating;
 
@@ -62,9 +62,14 @@ public class ReviewsFragment extends Fragment {
         ratingCount=ratingCountValue;
     }*/
 
-    public ReviewsFragment(List<ProductRatingModel> rating) {
-
+    public ReviewsFragment(List<ProductRatingModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String savedBy) {
+        this.productName=productName;
+        this.image=image;
+        this.ratingtxt=ratingValue;
+        ratingCount=ratingCountValue;
         this.rating=rating;
+        this.boughtBy=boughtBy;
+        this.savedBy=savedBy;
 
     }
 
@@ -74,12 +79,15 @@ public class ReviewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View mView = inflater.inflate(R.layout.fragment_reviews, container, false);
 
-       /* TextView productNameView=(TextView)mView.findViewById(R.id.productTitle);
+        TextView productNameView=(TextView)mView.findViewById(R.id.productTitle);
         //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
         TextView ratingCounttxt=(TextView)mView.findViewById(R.id.product_reviewCount);
+        TextView boughtByTxt=(TextView)mView.findViewById(R.id.textView);
+        TextView savedByTxt=(TextView)mView.findViewById(R.id.textView2);
         final ImageView imgMain=(ImageView)mView.findViewById(R.id.mainImg);
         final ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);
-
+boughtByTxt.setText("Bought By: "+boughtBy+" people");
+        savedByTxt.setText("Saved By: "+savedBy+" people");
         productNameView.setText(productName);
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         imageLoader.get(image, new ImageLoader.ImageListener() {
@@ -96,7 +104,7 @@ public class ReviewsFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 }
             }
-        });*/
+        });
 //        if(image!=null && !image.equalsIgnoreCase("")){
 //            imgMain.setImageUrl(image, imageLoader);
 //        }
@@ -120,13 +128,13 @@ public class ReviewsFragment extends Fragment {
 //                }
 //            }
 //        });
-     /*   prod_reviewRating=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
-        prod_reviewRating.setRating(Float.parseFloat(rating));
+        prod_reviewRating=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+        prod_reviewRating.setRating(Float.parseFloat(ratingtxt));
         ratingCounttxt.setText("("+ratingCount+")");
         LayerDrawable mainRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
         mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
         mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
-        mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);*/
+        mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
 //
 //            // getSupportActionBar().setIcon(R.drawable.ic_launcher);

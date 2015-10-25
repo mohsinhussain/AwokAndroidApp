@@ -17,7 +17,13 @@
         app:actionLayout="@layout/menu_badge"
         app:showAsAction="always"
         android:title="sample_1"/>-->
-
+    <item
+        android:title="Log"
+        android:id="@+id/badge"
+        app:actionLayout="@layout/testcount"
+        app:icon="@drawable/cart_icon"
+        app:showAsAction="always">
+    </item>
 
     <item
         android:id="@+id/app_cart"
