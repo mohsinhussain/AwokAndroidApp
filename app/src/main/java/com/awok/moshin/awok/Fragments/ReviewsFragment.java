@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -50,7 +51,7 @@ public class ReviewsFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private LinearLayout reviewsLayout;
     public ReviewsFragment() {
         // Required empty public constructor
     }
@@ -155,6 +156,10 @@ boughtByTxt.setText("Bought By: "+boughtBy+" people");
 //
         mAdapter = new ProductRatingAdapter(getActivity(),rating);
         mRecyclerView.setAdapter(mAdapter);
+        reviewsLayout = (LinearLayout) mView.findViewById(R.id.reviews);
+        if(rating.size()>0){
+            reviewsLayout.setVisibility(View.GONE);
+        }
         return mView;
     }
 

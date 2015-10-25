@@ -52,7 +52,7 @@ import java.util.List;
 
 public class OrderSummaryActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private TextView errorText,totalValueTextView,totalPriceText,allPriceText;
+    private TextView errorText,totalPriceText,allPriceText, totalValueTextView;
     private Button prod_buyNow;
     private RelativeLayout mainLay;
 //    private TextView total,shippingAmount,itemAmount;
@@ -101,9 +101,12 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        addEditAddressButton.setTransformationMethod(null);
 
 
 prod_buyNow=(Button)findViewById(R.id.prod_buyNow);
+
+        prod_buyNow.setTransformationMethod(null);
 
         prod_buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +182,7 @@ JSONObject dataToSend;
         final ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(getString(R.string.order_summary));
+        ab.setHomeAsUpIndicator(R.drawable.back_button);
        /* int i=0;
         for(i=0;i<=4;i++)
         {
@@ -366,7 +370,7 @@ JSONObject dataToSend;
                         JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").getJSONObject(i);
 totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_items"));
                         allPriceText.setText("AED "+jsonObjectData.getJSONObject("data").getString("total"));
-                        totalValueTextView.setText(jsonObjectData.getJSONObject("data").getString("total"));
+                        totalValueTextView.setText("AED "+jsonObjectData.getJSONObject("data").getString("total"));
                         JSONArray productDetails=jsonObject.getJSONArray("products");
                         int lengthOfProducts = productDetails.length();
                         for(int j=0;j<lengthOfProducts;j++)

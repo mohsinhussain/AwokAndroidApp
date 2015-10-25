@@ -150,6 +150,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         //productD.setName("COOL");
         //productDetails.setName("COLD");
         buyNow=(Button)findViewById(R.id.prod_buyNow);
+        buyNow.setTransformationMethod(null);
         buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

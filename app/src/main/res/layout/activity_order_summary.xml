@@ -82,7 +82,10 @@
 
     <LinearLayout
         android:id="@+id/ship_to_lay"
-        android:padding="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
         android:background="@drawable/shadow_background"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -101,10 +104,10 @@
                 android:id="@+id/ship_to_label"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:gravity="left|center_vertical"
                 android:layout_alignParentLeft="true"
-                android:text="Ship To"
+                android:text="Ship to:"
                 />
 
 
@@ -113,7 +116,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="30dp"
-                android:textColor="@color/button_bg"
+                android:textSize="12sp"
+                android:textColor="@color/light_gray"
                 android:background="@color/button_text"
                 android:layout_alignParentRight="true"
                 android:gravity="right|center_vertical"
@@ -133,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="@color/normal_text"
                 android:text="-"
                 />
@@ -144,7 +148,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="@color/dialog_button_cancel"
                 android:text="-"
                 />
@@ -155,7 +159,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="@color/dialog_button_cancel"
                 android:text="-"
                 />
@@ -166,7 +170,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="@color/dialog_button_cancel"
                 android:text="-"
                 />
@@ -177,7 +181,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="@color/dialog_button_cancel"
                 android:text="-"
                 />
@@ -189,7 +193,7 @@
                 android:layout_weight="1"
                 android:gravity="left"
                 android:layout_marginBottom="10dp"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="@color/dialog_button_cancel"
                 android:text="-"
                 />
@@ -218,12 +222,8 @@
             android:id="@+id/overViewRecyclerView"
             android:layout_below="@+id/ship_to_lay"
             android:layout_width="match_parent"
-
             android:layout_gravity="center"
             android:layout_height="match_parent"
-
-
-
             android:scrollbars="none" />
 <!--        <android.support.v7.widget.RecyclerView
             android:layout_below="@+id/shipLay"
@@ -235,18 +235,16 @@
             android:layout_below="@+id/overViewRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:orientation="vertical">
-
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="horizontal">
-
-
 
                 <TextView
                     android:paddingTop="2dp"
@@ -320,92 +318,172 @@
 
     <!--</android.support.v4.widget.NestedScrollView>-->
 </android.support.v4.widget.NestedScrollView>
-    <LinearLayout
-        android:id="@+id/bottomLay"
-        android:background="@color/button_text"
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-<RelativeLayout
-    android:layout_marginLeft="5dp"
-    android:gravity="center_vertical"
-    android:layout_gravity="center_vertical"
-    android:layout_width="wrap_content"
-    android:layout_weight="50"
-    android:layout_height="20dp"
-    android:orientation="horizontal">
-        <TextView
-
-            android:id="@+id/totalTextView"
-            android:layout_alignParentLeft="true"
-            android:text="@string/total"
-android:layout_centerVertical="true"
-android:gravity="bottom"
-            android:textSize="14sp"
-            android:textColor="@color/dialog_button_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-
-            android:id="@+id/aedTextView"
 
 
-            android:text="@string/aed"
-            android:textSize="12dp"
-android:layout_gravity="bottom"
-            android:gravity="bottom"
-            android:layout_marginLeft="8dp"
-            android:textColor="@color/button_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/totalValueTextView"
-            android:layout_toRightOf="@+id/totalTextView"
-            android:layout_toEndOf="@+id/totalTextView"
-            android:layout_marginStart="4dp" />
-        <TextView
-
-            android:layout_marginLeft="4dp"
-
-            android:id="@+id/totalValueTextView"
-
-            android:text="2,349"
-            android:textSize="16dp"
-
-
-            android:textColor="@color/button_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/totalTextView"
-            android:layout_toRightOf="@+id/aedTextView"
-            android:layout_toEndOf="@+id/aedTextView"
-            android:layout_marginStart="4dp" />
-</RelativeLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/bottomLay"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
             android:orientation="vertical">
-            <Button
-                android:id="@+id/prod_buyNow"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_alignParentRight="true"
-                android:textSize="12sp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
 
-                android:background="@color/button_bg"
-                android:text="@string/secure_checkout"
-                android:textColor="@color/button_text" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dialog_bg"/>
+
+            <RelativeLayout
+                android:background="@color/button_text"
+                android:layout_width="wrap_content"
+                android:padding="8dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="8dp"
+                    android:orientation="horizontal">
+                    <TextView
+
+                        android:id="@+id/totalTextView"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/total"
+                        android:gravity="bottom"
+                        android:textSize="12sp"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/light_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                    <TextView
+                        android:id="@+id/totalValueTextView"
+                        android:background="@color/button_text"
+                        android:textColor="#ff3823"
+                        android:layout_width="wrap_content"
+                        android:textSize="19sp"
+                        android:textStyle="bold"
+                        android:text="AED 20"
+                        android:layout_height="wrap_content"
+                        android:gravity="left" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/prod_buyNow"
+                        android:gravity="center"
+                        android:layout_width="145dp"
+                        android:layout_height="44dp"
+                        android:background="@color/red_base"
+                        android:textSize="15sp"
+                        android:text="@string/secure_checkout"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
         </LinearLayout>
 
-    </LinearLayout>
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/bottomLay"-->
+        <!--android:background="@color/button_text"-->
+        <!--android:layout_width="match_parent"-->
+
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true">-->
+<!--<RelativeLayout-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_weight="50"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:orientation="horizontal">-->
+        <!--<TextView-->
+
+            <!--android:id="@+id/totalTextView"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:text="@string/total"-->
+<!--android:layout_centerVertical="true"-->
+<!--android:gravity="bottom"-->
+            <!--android:textSize="14sp"-->
+            <!--android:textColor="@color/dialog_button_cancel"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <!--<TextView-->
+
+            <!--android:id="@+id/aedTextView"-->
+
+
+            <!--android:text="@string/aed"-->
+            <!--android:textSize="12dp"-->
+<!--android:layout_gravity="bottom"-->
+            <!--android:gravity="bottom"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:textColor="@color/button_bg"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBottom="@+id/totalValueTextView"-->
+            <!--android:layout_toRightOf="@+id/totalTextView"-->
+            <!--android:layout_toEndOf="@+id/totalTextView"-->
+            <!--android:layout_marginStart="4dp" />-->
+        <!--<TextView-->
+
+            <!--android:layout_marginLeft="4dp"-->
+
+            <!--android:id="@+id/totalValueTextView"-->
+
+            <!--android:text="2,349"-->
+            <!--android:textSize="16dp"-->
+
+
+            <!--android:textColor="@color/button_bg"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBottom="@+id/totalTextView"-->
+            <!--android:layout_toRightOf="@+id/aedTextView"-->
+            <!--android:layout_toEndOf="@+id/aedTextView"-->
+            <!--android:layout_marginStart="4dp" />-->
+<!--</RelativeLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="50"-->
+            <!--android:orientation="vertical">-->
+            <!--<Button-->
+                <!--android:id="@+id/prod_buyNow"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:textSize="12sp"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:paddingRight="10dp"-->
+
+                <!--android:background="@color/button_bg"-->
+                <!--android:text="@string/secure_checkout"-->
+                <!--android:textColor="@color/button_text" />-->
+        <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
     </RelativeLayout>
     <!--<ProgressBar android:indeterminate="true"
         android:layout_centerVertical="true"

@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="22dp">
 
     <ImageView
-        android:layout_width="100dp"
-        android:src="@drawable/sony"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:src="@drawable/customer_default_icon"
+        android:scaleType="fitCenter"
+        android:layout_height="80dp"
+        android:layout_marginLeft="16dp"
         android:id="@+id/userImg" />
 
     <TextView
-android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold"
         android:text="Small Text"
         android:id="@+id/name"
         android:textSize="14sp"
-        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_alignTop="@+id/userImg"
         android:layout_toRightOf="@+id/userImg"
-        android:layout_toEndOf="@+id/userImg"
-        android:layout_marginLeft="64dp"
-        android:layout_marginStart="64dp" />
+        android:layout_marginLeft="20dp"/>
 
     <RatingBar
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:id="@+id/main_prodRatingBar"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="36dp"
         android:numStars="5"
         android:rating="2.0"
+        android:layout_marginRight="16dp"
         android:stepSize="1.0"
+        android:progressTint="@color/rating_bar"
+        android:backgroundTint="@color/rating_bar"
+        android:secondaryProgressTint="@color/rating_bar"
         android:layout_alignBottom="@+id/name"
-        android:layout_toRightOf="@+id/name"
-        android:layout_toEndOf="@+id/name"
-        android:layout_marginStart="36dp" />
+        android:layout_alignParentRight="true" />
 
     <TextView
         android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/days"
         android:textSize="12sp"
@@ -54,16 +51,23 @@ android:paddingTop="5dp"
         android:layout_alignStart="@+id/name" />
 
     <TextView
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
+        android:text="5 days ago"
         android:textSize="14sp"
-        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
         android:id="@+id/content"
+        android:textColor="@color/light_gray"
         android:layout_below="@+id/days"
         android:layout_alignLeft="@+id/days"
         android:layout_alignStart="@+id/days" />
+
+    <View
+        android:id="@+id/bottomSeperator"
+        android:background="@color/border"
+        android:layout_below="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="22dp"
+        android:layout_height="1dp"/>
 </RelativeLayout>

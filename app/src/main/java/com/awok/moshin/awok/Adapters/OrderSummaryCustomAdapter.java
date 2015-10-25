@@ -219,8 +219,10 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
             // Create a new view.
+//            View v = LayoutInflater.from(viewGroup.getContext())
+//                    .inflate(R.layout.order_summary_layout, viewGroup, false);
             View v = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.order_summary_layout, viewGroup, false);
+                    .inflate(R.layout.checkoutlayout, viewGroup, false);
             customView=v;
             return new ViewHolder(v);
         }

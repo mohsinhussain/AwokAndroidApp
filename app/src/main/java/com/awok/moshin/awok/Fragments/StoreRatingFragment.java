@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -50,6 +51,7 @@ List<StoreRatingModel> model;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private LinearLayout reviewsLayout;
         public StoreRatingFragment() {
             // Required empty public constructor
         }
@@ -179,6 +181,10 @@ productNameView.setText(storeName);
             mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
             mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
 
+            reviewsLayout = (LinearLayout) mView.findViewById(R.id.reviews);
+            if(model.size()>0){
+                reviewsLayout.setVisibility(View.GONE);
+            }
             return mView;
         }
 
