@@ -1,5 +1,9 @@
 package com.awok.moshin.awok.Models;
 
+import android.content.Context;
+import android.util.DisplayMetrics;
+import android.util.Log;
+
 /**
  * Created by moshin on 9/7/2015.
  */
@@ -15,11 +19,12 @@ String rating;
     int discPercent;
     String description;
     String categoryId;
+    int imageHeight;
 
     public Products() {
     }
 
-    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount) {
+    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount,int imageHeight) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -30,6 +35,19 @@ String rating;
         this.categoryId = categoryId;
         this.rating=rating;
         this.ratingCount=ratingCount;
+        this.imageHeight=imageHeight;
+    }
+
+    public int getImageHeight(Context mContext) {
+        DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+        int densityDpi = (int)(metrics.density * 160f);
+        Log.v("Products", "desnsity: " + densityDpi);
+        int dp = Math.round(imageHeight / (metrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return imageHeight;
+    }
+
+    public void setImageHeight(int imageHeight) {
+        this.imageHeight = imageHeight;
     }
 
     public String getDescription() {
@@ -74,7 +92,7 @@ String rating;
 
     public String getPriceNew() {
         String price = Integer.toString(priceNew);
-        price = price+" AED";
+        price = " AED "+price;
         return price;
     }
 
@@ -84,7 +102,7 @@ String rating;
 
     public String getPriceOld() {
         String price = Integer.toString(priceOld);
-        price = price+" AED";
+        price = "AED "+price;
         return price;
     }
 

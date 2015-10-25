@@ -6,13 +6,13 @@
     <item
         android:id="@+id/app_cart"
         app:showAsAction="always"
-        android:orderInCategory="200"
+        android:orderInCategory="150"
         android:icon="@drawable/filter_icon"
         android:title="Filter" />
 
     <item android:id="@+id/action_search"
         android:title="Search"
-        android:orderInCategory="150"
+        android:orderInCategory="200"
         android:icon="@drawable/search_icon"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
@@ -25,7 +25,7 @@
         app:showAsAction="always" />
 
     <item
-        android:icon="@drawable/crossicon"
+        android:icon="@drawable/white_remove_icon"
         android:id="@+id/action_cross"
         android:title="Cancel"
         android:orderInCategory="100"

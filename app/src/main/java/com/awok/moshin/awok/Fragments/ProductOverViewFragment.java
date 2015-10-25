@@ -91,7 +91,7 @@ private ImageView countButton;
 
 
 
-private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_color_default,prod_colorSecondary,prod_shipping,prod_shippingCost,prod_delivery,prod_deliveryTime,prod_reviews,quickDeliveryTxt,
+private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_color_default,prod_shipping,prod_shippingCost,prod_delivery,prod_deliveryTime,prod_reviews,quickDeliveryTxt,
         prod_price,prod_discountPrice,countText;
 
  private Button prod_buyNow,save;
@@ -145,7 +145,6 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         //prod_warranty=(TextView)mView.findViewById(R.id.prod_warranty);
         prod_color_default=(TextView)mView.findViewById(R.id.prod_color_default);
         prod_color=(TextView)mView.findViewById(R.id.prod_color);
-        prod_colorSecondary=(TextView)mView.findViewById(R.id.prod_colorSecondary);
         prod_shipping=(TextView)mView.findViewById(R.id.prod_shipping);
         prod_shippingCost=(TextView)mView.findViewById(R.id.prod_shippingCost);
         prod_delivery=(TextView)mView.findViewById(R.id.prod_delivery);
@@ -213,7 +212,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
         Typeface textFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
         prod_color_default.setTypeface(textFont);
-        prod_colorSecondary.setTypeface(textFont);
+//        prod_colorSecondary.setTypeface(textFont);
         prod_shippingCost.setTypeface(textFont);
         prod_deliveryTime.setTypeface(textFont);
         productTitle.setText(productName);

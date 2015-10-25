@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:paddingTop="23dp"
     android:layout_height="match_parent">
     <RatingBar
-
         android:id="@+id/main_prodRatingBar"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="6dp"
         android:numStars="5"
         android:rating="2.0"
         android:stepSize="1.0" />
@@ -18,21 +15,18 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="2dp"
         android:textColor="#333333"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="12sp"
         android:text="Small Text"
         android:id="@+id/mainText" />
 
     <TextView
-        android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:textSize="10dp"
-
-        android:textColor="#999999"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/light_gray"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/name" />
 

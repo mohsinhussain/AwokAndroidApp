@@ -23,8 +23,9 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             app:tabGravity="center"
+            app:textAllCaps="false"
             app:tabMode="scrollable"
-
+            app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

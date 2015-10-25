@@ -151,6 +151,9 @@ System.out.println(dataToSend.toString());
       //  ab.setTitle(productName);
         ab.setTitle("Details");
 
+//        ab.setIcon(R.drawable.back_button);
+        ab.setHomeAsUpIndicator(R.drawable.back_button);
+
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -216,10 +219,11 @@ public void setUpTab()
                 onBackPressed();
                 return true;
 
-          /*  case R.id.app_cart:
+            case R.id.app_cart:
             {
-
-            }*/
+                Intent i = new Intent(ProductDetailsActivity.this, CheckOutActivity.class);
+                startActivity(i);
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -253,8 +257,8 @@ public void setUpTab()
         adapter.addFragment(new HotDealsFragment(catId), "Related");
         adapter.addFragment(new ProductDescriptionFragment(description), "Description");
         adapter.addFragment(new ReviewsFragment(productName,image,rating,ratingCount),"Product Rating");
-        adapter.addFragment(new ShippingDeliveryFrag(),"Shipping Info");
-        adapter.addFragment(new StoreRatingFragment(productName,image,rating,ratingCount),"Store Rating");
+        adapter.addFragment(new ShippingDeliveryFrag(), "Shipping Info");
+        adapter.addFragment(new StoreRatingFragment(productName, image, rating, ratingCount), "Store Rating");
 
 
 

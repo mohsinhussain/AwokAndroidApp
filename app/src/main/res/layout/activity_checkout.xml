@@ -281,13 +281,9 @@ android:id="@+id/subtotal"
     <android.support.v7.widget.RecyclerView
         android:id="@+id/overViewRecyclerView"
         android:layout_width="match_parent"
-
-
         android:layout_gravity="center"
-
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
 
         android:scrollbars="none" />
 
@@ -329,9 +325,8 @@ android:layout_below="@+id/overViewRecyclerView"
                 android:layout_width="0dp"
                 android:paddingLeft="8dp"
                 android:textColor="#666666"
-                android:textSize="16dp"
                 android:layout_weight="50"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="14sp"
                 android:text="Total Items in Cart"
                 android:layout_height="fill_parent"
                 android:gravity="center_vertical" />
@@ -348,7 +343,7 @@ android:layout_below="@+id/overViewRecyclerView"
                 android:layout_width="0dp"
                 android:paddingRight="8dp"
 
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="14sp"
                 android:text="AED 20"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|right" />
@@ -372,9 +367,8 @@ android:layout_below="@+id/overViewRecyclerView"
                 android:layout_width="0dp"
                 android:paddingLeft="8dp"
                 android:textColor="#666666"
-                android:textSize="16dp"
                 android:layout_weight="35"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="14sp"
                 android:text="Sub Total"
                 android:layout_height="fill_parent"
                 android:gravity="center_vertical" />
@@ -385,13 +379,11 @@ android:layout_below="@+id/overViewRecyclerView"
                 android:paddingBottom="4dp"
                 android:id="@+id/subTotal"
                 android:background="@color/button_text"
-
                 android:layout_weight="65"
                 android:textColor="#666666"
                 android:layout_width="0dp"
                 android:paddingRight="8dp"
-
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="14sp"
                 android:text="AED 20"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|right" />
@@ -414,9 +406,8 @@ android:layout_below="@+id/overViewRecyclerView"
                 android:layout_width="0dp"
                 android:paddingLeft="8dp"
                 android:textColor="#666666"
-                android:textSize="16dp"
                 android:layout_weight="35"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="14sp"
                 android:text="Shipping"
                 android:layout_height="fill_parent"
                 android:gravity="center_vertical" />
@@ -432,8 +423,7 @@ android:layout_below="@+id/overViewRecyclerView"
                 android:textColor="#666666"
                 android:layout_width="0dp"
                 android:paddingRight="8dp"
-
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="14sp"
                 android:text="AED 20"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|right" />
@@ -537,19 +527,18 @@ android:textAppearance="?android:attr/textAppearanceLarge"
 
             android:background="@color/button_text"
             android:layout_width="match_parent"
-
+            android:padding="8dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true">
             <RelativeLayout
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="8dp"
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_weight="50"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
            <!-- <TextView
@@ -571,8 +560,8 @@ android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/total"
                     android:layout_centerVertical="true"
                     android:gravity="bottom"
-                    android:textSize="14sp"
-                    android:textColor="@color/dialog_button_cancel"
+                    android:textSize="15sp"
+                    android:textColor="@color/light_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -580,17 +569,15 @@ android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/aed"
                     android:background="@color/button_text"
                     android:textSize="12dp"
-                    android:textColor="#ff3823"
+                    android:textColor="@color/red_base"
                     android:layout_width="wrap_content"
 
-
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="AED"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical|left"
 
                     android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginRight="5dp"
                     android:layout_alignBottom="@+id/totalTextView"
                     android:layout_toRightOf="@+id/totalTextView"
                     android:layout_toEndOf="@+id/totalTextView" />
@@ -598,17 +585,14 @@ android:textAppearance="?android:attr/textAppearanceLarge"
             <TextView
                 android:id="@+id/totalText"
                 android:background="@color/button_text"
-
-android:paddingLeft="4dp"
                 android:textColor="#ff3823"
                 android:layout_width="wrap_content"
-
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:text="AED 20"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|left"
 
-                android:layout_alignBaseline="@+id/totalTextView"
                 android:layout_alignBottom="@+id/totalTextView"
                 android:layout_toRightOf="@+id/aed"
                 android:layout_toEndOf="@+id/aed" />
@@ -617,6 +601,7 @@ android:paddingLeft="4dp"
                 android:layout_weight="40"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
                 android:orientation="vertical">
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/checkout"
@@ -626,7 +611,9 @@ android:paddingLeft="4dp"
                 android:layout_weight="40"
                 android:layout_margin="5dp"
                 android:background="#ff3823"
-                android:text="SECURE CHECKOUT"
+                android:capitalize="none"
+                android:textSize="15dp"
+                android:text="Secure Checkout"
                 android:textColor="#FFFFFF" />
             </LinearLayout>
 
