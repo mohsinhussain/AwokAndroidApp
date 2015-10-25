@@ -134,6 +134,7 @@ public class CheckOutActivity extends AppCompatActivity {
         // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(R.drawable.back_button);
 
         if (mSharedPrefs.contains(Constants.USER_MOBILE_PREFS)) {
             initializeCart();

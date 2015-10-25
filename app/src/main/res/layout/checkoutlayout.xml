@@ -297,7 +297,7 @@ android:visibility="gone"
             />
 
         <TextView
-            android:layout_marginLeft="8dp"
+            android:paddingLeft="4dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:layout_width="wrap_content"
@@ -447,7 +447,7 @@ android:background="#fcfafa"
 
 <RelativeLayout
     android:id="@+id/additionLay"
-    android:elevation="4dp"
+    android:elevation="10dp"
     android:padding="16dp"
     android:layout_below="@+id/borderLayuot"
     android:background="#fcfafa"
@@ -584,72 +584,50 @@ android:background="#fcfafa"
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_marginBottom="10dp"
-        android:layout_below="@+id/totalLay"
-        android:id="@+id/fgvbxfgbf"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:layout_below="@+id/totalLay"-->
+        <!--android:id="@+id/fgvbxfgbf"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingRight="10dp"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:orientation="horizontal">-->
 
 
 
 
 
 
-        <TextView
-            android:text=""
-            android:paddingBottom="5dp"
-            android:layout_weight="1"
-            android:textColor="#999999"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <!--<TextView-->
+            <!--android:text=""-->
+            <!--android:paddingBottom="5dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textColor="#999999"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
 
 
 
-        <TextView
-            android:text=""
-            android:textColor="#ff3823"
-            android:paddingBottom="5dp"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <!--<TextView-->
+            <!--android:text=""-->
+            <!--android:textColor="#ff3823"-->
+            <!--android:paddingBottom="5dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="right"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
 
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
-<LinearLayout
-
-    android:visibility="gone"
-    android:layout_marginTop="5dp"
-    android:layout_below="@+id/totalLay"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
-
-    <Button
-        android:layout_gravity="right"
-android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="#FFCDD2"
-android:layout_marginRight="10dp"
-        android:textColor="@color/primary"
-        android:text="CHECKOUT"
-        android:layout_width="128dp"
-        android:layout_height="36dp" />
-
-
-</LinearLayout>
 </RelativeLayout>
-<View
-    android:layout_below="@+id/additionLay"
-    android:layout_width="match_parent"
-    android:background="@color/primary_material_light_1"
-    android:layout_height="15dp"/>
+<!--<View-->
+    <!--android:layout_below="@+id/additionLay"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:background="@color/primary_material_light_1"-->
+    <!--android:layout_height="15dp"/>-->
 
 </RelativeLayout>
 </RelativeLayout>

@@ -102,4 +102,16 @@
         </RelativeLayout>
 
 </RelativeLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:id="@+id/marker_progress"
+        android:indeterminateDrawable="@drawable/progress_bar_load_more"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
 </RelativeLayout>

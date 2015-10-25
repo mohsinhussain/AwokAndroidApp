@@ -47,12 +47,14 @@ private RecyclerView list;
     private RelativeLayout add;
     private List<ShippingAddressModel> overViewList = new ArrayList<ShippingAddressModel>();
     private RecyclerView.LayoutManager mLayoutManager;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shipping_address);
         list=(RecyclerView)findViewById(R.id.recyclerAddress);
+        progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         add=(RelativeLayout)findViewById(R.id.buttonAdd);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -288,7 +290,7 @@ overViewList.add(address);
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     //progressBar.startAnimation(animation);
                 }
-                //progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
 
 
             } catch (JSONException e) {
@@ -300,7 +302,7 @@ overViewList.add(address);
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     // progressBar.startAnimation(animation);
                 }
-                //  progressBar.setVisibility(View.GONE);
+                  progressBar.setVisibility(View.GONE);
 
             }
         }
@@ -311,7 +313,7 @@ overViewList.add(address);
 
         @Override
         public void onPreExecute() {
-
+            progressBar.setVisibility(View.VISIBLE); 
         }
     }
 
@@ -355,12 +357,7 @@ overViewList.add(address);
                 }
 
 
-
-                if (getApplicationContext() != null) {
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    //progressBar.startAnimation(animation);
-                }
-                //progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
 
 
             } catch (JSONException e) {
@@ -368,11 +365,8 @@ overViewList.add(address);
                 Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
                         .setActionTextColor(Color.RED)
                         .show();
-                if (getApplicationContext() != null) {
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    // progressBar.startAnimation(animation);
-                }
-                //  progressBar.setVisibility(View.GONE);
+
+                  progressBar.setVisibility(View.GONE);
 
             }
         }
@@ -383,7 +377,7 @@ overViewList.add(address);
 
         @Override
         public void onPreExecute() {
-
+            progressBar.setVisibility(View.VISIBLE);
         }
     }
 
