@@ -47,6 +47,7 @@ import com.awok.moshin.awok.Models.OrderSummary;
 import com.awok.moshin.awok.Models.ProductDetailsModel;
 import com.awok.moshin.awok.Models.ProductOverview;
 import com.awok.moshin.awok.Models.ProductRatingModel;
+import com.awok.moshin.awok.Models.StoreRatingModel;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
@@ -75,7 +76,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     private TextView prodNewPrice,prodOldPrice;
     private Button buyNow,save;
     Map<String,String> productSpec = new HashMap<String,String>();
-    private String imageData;
+    private String imageData,imageProductRating,boughtBy ,savedBy;
     String productId,productName, newPrice, oldPrice, image, description,rating,ratingCount;
     String catId;
     JSONObject dataToSend;
@@ -83,11 +84,14 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     JSONArray jsonRatingArray;
     MenuItem searchItem;
     SearchView searchView;
+    View logView;
     DescriptionModel descData=new DescriptionModel();
     ProductRatingModel prodRatingData=new ProductRatingModel();
+    StoreRatingModel storeRatingModel=new StoreRatingModel();
     private List<DescriptionModel> descModel = new ArrayList<DescriptionModel>();
     private List<ProductRatingModel> prodRating = new ArrayList<ProductRatingModel>();
-
+    private List<StoreRatingModel> storeRatingData = new ArrayList<StoreRatingModel>();
+    String storeName,storeSum,storeAverage,storeImage,storeUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,7 +189,7 @@ System.out.println(dataToSend.toString());
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        setUpTab();
+
 
 
        /* NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -286,14 +290,15 @@ public void setUpTab()
         //adapter.addFragment(new ProductDescriptionFragment(description), "Description");
         adapter.addFragment(new ProductDescriptionFragment(descModel), "Description");
         //adapter.addFragment(new ReviewsFragment(productName,image,rating,ratingCount),"Product Rating");
-        adapter.addFragment(new ReviewsFragment(prodRating),"Product Rating");
+        adapter.addFragment(new ReviewsFragment(prodRating,productName,image,rating,ratingCount,boughtBy,savedBy),"Product Rating");
         adapter.addFragment(new ShippingDeliveryFrag(),"Shipping Info");
-        adapter.addFragment(new StoreRatingFragment(productName,image,rating,ratingCount),"Store Rating");
+        //adapter.addFragment(new StoreRatingFragment(productName,image,rating,ratingCount),"Store Rating");
+        adapter.addFragment(new StoreRatingFragment(storeRatingData,storeName,storeSum,storeAverage,storeImage,storeUrl),"Store Rating");
 
         //adapter.addFragment(new ProductDescriptionFragment(description), "Description");
         //adapter.addFragment(new ReviewsFragment(productName,image,rating,ratingCount),"Product Rating");
-        adapter.addFragment(new ShippingDeliveryFrag(), "Shipping Info");
-        adapter.addFragment(new StoreRatingFragment(productName, image, rating, ratingCount), "Store Rating");
+    ////////////////////////    adapter.addFragment(new ShippingDeliveryFrag(), "Shipping Info");
+        //adapter.addFragment(new StoreRatingFragment(productName, image, rating, ratingCount), "Store Rating");
 
 
 
@@ -370,8 +375,7 @@ public void setUpTab()
             return mFragmentTitles.get(position);
         }
     }
-    static Button notifCount;
-    static int mNotifCount = 2;
+
 
 
     @Override
@@ -400,6 +404,14 @@ public void setUpTab()
 
         //If you want to add your ActionItem programmatically you can do this too. You do the following:
        ////////// new ActionItemBadgeAdder().act(this).menu(menu).title("COOL").itemDetails(0, 2, 1).showAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS).add(badgeCount);
+        /*View count = menu.findItem(R.id.badge).getActionView();
+       Button notifCount = (Button) count.findViewById(R.id.notif_count);*/
+
+        RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(R.id.badge).getActionView();
+        Button mCounter = (Button) badgeLayout.findViewById(R.id.button);
+        mCounter.setText("2");
+
+
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
         searchItem = menu.findItem(R.id.action_search);
@@ -508,7 +520,9 @@ System.out.println(data.getString("head"));
                     System.out.println(data.getString("content"));
 descModel.add(descData);
                 }
-
+ //imageProductRating=mMembersJSON.getString("image");
+                 boughtBy=mMembersJSON.getString("bought_by");
+                 savedBy=mMembersJSON.getString("saved_by");
                 jsonRatingArray=mMembersJSON.getJSONArray("comments");
                 for(int j=0;j<jsonRatingArray.length();j++)
                 {
@@ -524,6 +538,35 @@ descModel.add(descData);
                 }
 
 
+                 storeName=mMembersJSON.getJSONObject("store").getString("name");
+                JSONObject storeRating=mMembersJSON.getJSONObject("store").getJSONObject("rating");
+                storeSum=storeRating.getString("sum");
+                         storeAverage=storeRating.getString("average");
+                 storeImage=mMembersJSON.getJSONObject("store").getString("image");
+                 storeUrl=mMembersJSON.getJSONObject("store").getString("store_url");
+                JSONArray storeComments=mMembersJSON.getJSONObject("store").getJSONArray("comments");
+                for(int k=0;k<storeComments.length();k++)
+                {
+
+                    JSONObject jsonStroreData=storeComments.getJSONObject(k);
+                    storeRatingModel.setUsername(jsonStroreData.getString("username"));
+                    storeRatingModel.setContent(jsonStroreData.getString("content"));
+                    storeRatingModel.setRate(jsonStroreData.getString("rate"));
+
+
+
+
+
+
+
+
+
+                    storeRatingData.add(storeRatingModel);
+
+
+
+                }
+                setUpTab();
                 //mResources=
 
 //                if(getApplicationContext()!=null){
