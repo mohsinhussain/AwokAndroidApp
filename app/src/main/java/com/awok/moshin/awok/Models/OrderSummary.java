@@ -21,12 +21,15 @@ public class OrderSummary {
     private String sellerSubTotal;
     private String sellerShipping;
     private String sellerTotal;
+    private boolean isEditable;
     public OrderSummary()
     {
 
     }
 
-    public OrderSummary(String sellerSubTotal,String sellerShipping,String sellerTotal,String OverViewTitle,Boolean isHeader,Boolean isFooter,String discount, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String totalTag,String statusId,String quantity,String remainingStock,String totalPrice,String oldPrice) {
+    public OrderSummary(String sellerSubTotal,String sellerShipping,String sellerTotal,String OverViewTitle,Boolean isHeader,Boolean isFooter,String discount,
+                        String OverViewText,String SellerLabel,String imageBitmapString,String productId,String totalTag,String statusId,String quantity,
+                        String remainingStock,String totalPrice,String oldPrice, boolean isEditable) {
         this.OverViewTitle = OverViewTitle;
         this.OverViewText = OverViewText;
         this.SellerLabel=SellerLabel;
@@ -44,7 +47,7 @@ public class OrderSummary {
         this.sellerShipping=sellerShipping;
         this.sellerSubTotal=sellerSubTotal;
         this.sellerTotal=sellerTotal;
-
+        this.isEditable=isEditable;
     }
 
 
@@ -189,6 +192,14 @@ public class OrderSummary {
             return OverViewText;
         }*/
 
+
+    public boolean isEditable() {
+        return isEditable;
+    }
+
+    public void setIsEditable(boolean isEditable) {
+        this.isEditable = isEditable;
+    }
 
     public Boolean getIsFooter() {
         return isFooter;

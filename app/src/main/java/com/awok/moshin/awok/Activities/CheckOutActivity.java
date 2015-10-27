@@ -84,8 +84,10 @@ public class CheckOutActivity extends AppCompatActivity {
     ArrayList<String> countryCodes;
     ArrayList<String> countryCodeNumbers;
     List<String[]> list;
+    //LinearLayout totalLay;
      ActionBar ab;
     String totalItems;
+    boolean allowUpdates = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +109,9 @@ public class CheckOutActivity extends AppCompatActivity {
         subTotalText=(TextView)findViewById(R.id.subTotal);
         shippingText=(TextView)findViewById(R.id.shippingText);
         itemsCount=(TextView)findViewById(R.id.totalItemsCount);
+        allowUpdates = true;
         // getSupportActionBar().setIcon(R.drawable.ic_launcher);
-
+        //totalLay=(LinearLayout)findViewById(R.id.totalLay);
         // getSupportActionBar().setTitle("Android Versions");
 
         // use this setting to improve performance if you know that changes
@@ -576,6 +579,8 @@ public class CheckOutActivity extends AppCompatActivity {
                 if (jsonObjectData.getString("status").equals("0")) {
                     bottomLay.setVisibility(View.GONE);
                     cartEmptyText.setVisibility(View.VISIBLE);
+                    totalLay.setVisibility(View.GONE);
+                    ab.setTitle("Shopping Cart");
                 } else {
                     totalLay.setVisibility(View.VISIBLE);
                     bottomLay.setVisibility(View.VISIBLE);
@@ -660,7 +665,7 @@ public class CheckOutActivity extends AppCompatActivity {
                             listData.setProductId(jsonObjectProductDetails.getString("_id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
                             listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
-
+                            listData.setIsEditable(true);
 //                            prodPrice.setText((jsonObjectData.getJSONObject("data").getString("total")) + " AED");
                             overViewList.add(listData);
 
@@ -688,6 +693,8 @@ public class CheckOutActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 //initializeData();
                 /////////////////mRecyclerView.setAdapter(mAdapter);
+//                allowUpdates = true;
+//                mAdapter.setAllowUpdate();
                 mAdapter.notifyDataSetChanged();
                 cart_count();
 

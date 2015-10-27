@@ -32,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -72,6 +73,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     ProgressBar progressBar;
+    LinearLayout progressLayout;
     ArrayList<ProductDetailsModel> productDetailsList = new ArrayList<ProductDetailsModel>();
     ProductDetailsModel productDetails=new ProductDetailsModel();
     ProductOverview productOverview=new ProductOverview();
@@ -131,7 +133,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         description =getIntent().getExtras().getString(Constants.PRODUCT_DESCRIPTION_INTENT);
         Log.v("Product DetailView", productId);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
-        progressBar.setVisibility(View.GONE);
+        progressLayout = (LinearLayout) findViewById(R.id.progressLayout);
+        progressLayout.setVisibility(View.GONE);
         mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
 
 
@@ -272,30 +275,7 @@ public void setUpTab()
 
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-
-
-
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                //mDrawerLayout.openDrawer(GravityCompat.START);
-                onBackPressed();
-                return true;
-
-            case R.id.app_cart:
-            {
-                Intent i = new Intent(ProductDetailsActivity.this, CheckOutActivity.class);
-                startActivity(i);
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
-
-
-    }
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -422,6 +402,27 @@ public void setUpTab()
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                onBackPressed();
+                return true;
+
+
+
+            case R.id.app_cart:
+            {
+                Intent i = new Intent(ProductDetailsActivity.this, CheckOutActivity.class);
+                startActivity(i);
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+
+
+    }
 
 
     @Override
@@ -453,8 +454,15 @@ public void setUpTab()
         /*View count = menu.findItem(R.id.badge).getActionView();
        Button notifCount = (Button) count.findViewById(R.id.notif_count);*/
 
-        RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(R.id.badge).getActionView();
+        RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(R.id.app_cart).getActionView();
          mCounter = (Button) badgeLayout.findViewById(R.id.button);
+        badgeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ProductDetailsActivity.this, CheckOutActivity.class);
+                startActivity(i);
+            }
+        });
 
         if (mSharedPrefs.contains(Constants.APP_CART_COUNT)) {
 
@@ -490,7 +498,7 @@ public void setUpTab()
                 Intent i=new Intent(ProductDetailsActivity.this,CheckOutActivity.class);
                 startActivity(i);
 
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
 
 
             } catch (JSONException e) {
@@ -514,7 +522,7 @@ public void setUpTab()
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
-            progressBar.setVisibility(View.VISIBLE);
+            progressLayout.setVisibility(View.VISIBLE);
         }
     }
 

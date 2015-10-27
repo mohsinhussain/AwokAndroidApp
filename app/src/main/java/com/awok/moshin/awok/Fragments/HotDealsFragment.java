@@ -55,6 +55,7 @@ public class HotDealsFragment extends Fragment {
     RecyclerView mRecyclerView;
     HotDealsAdapter mAdapter;
     View mView;
+    LinearLayout progressLayout;
     ProgressBar progressBar;
     ProgressBar loadMore;
     ArrayList<Products> productsArrayList;
@@ -162,9 +163,10 @@ public class HotDealsFragment extends Fragment {
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.dealsRecyclerView);
         mainLayout=(LinearLayout)mView.findViewById(R.id.progressLay);
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);
+        progressLayout = (LinearLayout) mView.findViewById(R.id.progressLayout);
         itemCount = (TextView) mView.findViewById(R.id.itemCountTextView);
         gotoTopButton = (Button) mView.findViewById(R.id.goToTopButton);
-        progressBar.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.GONE);
         loadMore=(ProgressBar)mView.findViewById(R.id.load_progress_bar);
         loadMore.setVisibility(View.GONE);
         mSwipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.activity_main_swipe_refresh_layout);
@@ -241,7 +243,7 @@ public class HotDealsFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 visibleItemCount = mRecyclerView.getChildCount();
                 totalItemCount = mLayoutManager.getItemCount();
                 int [] x = mLayoutManager.findFirstCompletelyVisibleItemPositions(null);
@@ -357,7 +359,7 @@ public class HotDealsFragment extends Fragment {
         else {
 
             shouldLoadMore = true;
-            progressBar
+            progressLayout
                     .setVisibility(View.GONE);
         }
 
@@ -418,7 +420,7 @@ public class HotDealsFragment extends Fragment {
                             Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
                             progressBar.startAnimation(animation);
                         }*/
-                        progressBar.setVisibility(View.GONE);
+                        progressLayout.setVisibility(View.GONE);
                         loadMore.setVisibility(View.GONE);
                         mainLayout.setVisibility(View.GONE);
                         shouldLoadMore = false;
@@ -473,7 +475,7 @@ public class HotDealsFragment extends Fragment {
                     Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
                     progressBar.startAnimation(animation);
                 }*/
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 loadMore.setVisibility(View.GONE);
                 mainLayout.setVisibility(View.GONE);
                 shouldLoadMore = false;
@@ -490,7 +492,7 @@ public class HotDealsFragment extends Fragment {
                     Animation animation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
                     progressBar.startAnimation(animation);
                 }*/
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 loadMore.setVisibility(View.GONE);
                 mainLayout.setVisibility(View.GONE);
                 shouldLoadMore = false;
@@ -505,11 +507,9 @@ public class HotDealsFragment extends Fragment {
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
-            if(!mSwipeRefreshLayout.isRefreshing()){
-                progressBar.setVisibility(View.VISIBLE);
-
+            if(!mSwipeRefreshLayout.isRefreshing() && pageCount==1){
+                progressLayout.setVisibility(View.VISIBLE);
             }
-
         }
     }
 

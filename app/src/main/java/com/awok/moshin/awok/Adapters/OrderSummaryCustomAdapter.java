@@ -324,35 +324,35 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
             viewHolder.increment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (mDataSet.get(position).isEditable()) {
+                        int addQuantity = Integer.parseInt(viewHolder.quantity.getText().toString());
+                        addQuantity = addQuantity + 1;
+                        viewHolder.quantity.setText(String.valueOf(addQuantity));
 
-                    int addQuantity = Integer.parseInt(viewHolder.quantity.getText().toString());
-                    addQuantity = addQuantity + 1;
-                    viewHolder.quantity.setText(String.valueOf(addQuantity));
+                        if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                            viewHolder.quantity.setText("1");
+                        } else {
+                            if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
+                                System.out.println("OUT OF STOCK");
 
-                    if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
-                        viewHolder.quantity.setText("1");
-                    } else {
-                        if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
-                            System.out.println("OUT OF STOCK");
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                        mContext);
 
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                                    mContext);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Cart Alert");
+                                // set title
+                                alertDialogBuilder.setTitle("Cart Alert");
 
 
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("The Quantity is not available in Stock")
-                                    .setCancelable(false)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, close
-                                            // current activity
-                                            dialog.cancel();
-                                        }
-                                    });
+                                // set dialog message
+                                alertDialogBuilder
+                                        .setMessage("The Quantity is not available in Stock")
+                                        .setCancelable(false)
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                // if this button is clicked, close
+                                                // current activity
+                                                dialog.cancel();
+                                            }
+                                        });
                                    /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // if this button is clicked, just close
@@ -361,41 +361,42 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
                                         }
                                     });*/
 
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
+                                // create alert dialog
+                                AlertDialog alertDialog = alertDialogBuilder.create();
 
-                            // show it
-                            alertDialog.show();
+                                // show it
+                                alertDialog.show();
 
-                        } else {
-                            HashMap<String, Object> updateString = new HashMap<String, Object>();
-                            //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
-                            updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                            } else {
+                                HashMap<String, Object> updateString = new HashMap<String, Object>();
+                                //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
 
 
-                            JSONObject updateJson = new JSONObject(updateString);
-                            System.out.println("AFTER CHANGED+" + updateJson);
-                            //submit_btn.performClick();
+                                JSONObject updateJson = new JSONObject(updateString);
+                                System.out.println("AFTER CHANGED+" + updateJson);
+                                //submit_btn.performClick();
                    /*System.out.println("AFTER CHANGED");
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.
                             INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(activity.getParent().getCurrentFocus().getWindowToken(), 0);*/
-                            View view = activity_main.getCurrentFocus();
-                            if (view != null) {
-                                InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                            }
-                            if (networkInfo != null && networkInfo.isConnected()) {
+                                View view = activity_main.getCurrentFocus();
+                                if (view != null) {
+                                    InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                }
+                                if (networkInfo != null && networkInfo.isConnected()) {
 
-                                String updateId = viewHolder.prodOverviewTitle.getTag().toString();
-                                //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-                                new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+                                    String updateId = viewHolder.prodOverviewTitle.getTag().toString();
+                                    //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
+                                    new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+                                    mDataSet.get(position).setIsEditable(false);
 
-
-                            } else {
-                                Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                                        .setActionTextColor(Color.RED)
-                                        .show();
+                                } else {
+                                    Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                            .setActionTextColor(Color.RED)
+                                            .show();
+                                }
                             }
                         }
                     }
@@ -407,35 +408,35 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
             viewHolder.decrement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (mDataSet.get(position).isEditable()) {
+                        int addQuantity = Integer.parseInt(viewHolder.quantity.getText().toString());
+                        addQuantity = addQuantity - 1;
+                        viewHolder.quantity.setText(String.valueOf(addQuantity));
 
-                    int addQuantity = Integer.parseInt(viewHolder.quantity.getText().toString());
-                    addQuantity = addQuantity - 1;
-                    viewHolder.quantity.setText(String.valueOf(addQuantity));
+                        if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                            viewHolder.quantity.setText("1");
+                        } else {
+                            if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
+                                System.out.println("OUT OF STOCK");
 
-                    if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
-                        viewHolder.quantity.setText("1");
-                    } else {
-                        if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
-                            System.out.println("OUT OF STOCK");
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                        mContext);
 
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                                    mContext);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Cart Alert");
+                                // set title
+                                alertDialogBuilder.setTitle("Cart Alert");
 
 
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("The Quantity is not available in Stock")
-                                    .setCancelable(false)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, close
-                                            // current activity
-                                            dialog.cancel();
-                                        }
-                                    });
+                                // set dialog message
+                                alertDialogBuilder
+                                        .setMessage("The Quantity is not available in Stock")
+                                        .setCancelable(false)
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                // if this button is clicked, close
+                                                // current activity
+                                                dialog.cancel();
+                                            }
+                                        });
                                    /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // if this button is clicked, just close
@@ -444,46 +445,46 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
                                         }
                                     });*/
 
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
+                                // create alert dialog
+                                AlertDialog alertDialog = alertDialogBuilder.create();
 
-                            // show it
-                            alertDialog.show();
+                                // show it
+                                alertDialog.show();
 
-                        } else {
-                            HashMap<String, Object> updateString = new HashMap<String, Object>();
-                            //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
-                            updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                            } else {
+                                HashMap<String, Object> updateString = new HashMap<String, Object>();
+                                //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
 
 
-                            JSONObject updateJson = new JSONObject(updateString);
-                            System.out.println("AFTER CHANGED+" + updateJson);
-                            //submit_btn.performClick();
+                                JSONObject updateJson = new JSONObject(updateString);
+                                System.out.println("AFTER CHANGED+" + updateJson);
+                                //submit_btn.performClick();
                    /*System.out.println("AFTER CHANGED");
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.
                             INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(activity.getParent().getCurrentFocus().getWindowToken(), 0);*/
-                            View view = activity_main.getCurrentFocus();
-                            if (view != null) {
-                                InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                            }
-                            if (networkInfo != null && networkInfo.isConnected()) {
+                                View view = activity_main.getCurrentFocus();
+                                if (view != null) {
+                                    InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                }
+                                if (networkInfo != null && networkInfo.isConnected()) {
 
-                                String updateId = viewHolder.prodOverviewTitle.getTag().toString();
-                                //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-                                new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+                                    String updateId = viewHolder.prodOverviewTitle.getTag().toString();
+                                    //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
+                                    new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+                                    mDataSet.get(position).setIsEditable(false);
 
-
-                            } else {
-                                Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                                        .setActionTextColor(Color.RED)
-                                        .show();
+                                } else {
+                                    Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                            .setActionTextColor(Color.RED)
+                                            .show();
+                                }
                             }
                         }
                     }
                 }
-
             });
 
 
@@ -531,39 +532,39 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
                 @SuppressLint("NewApi")
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                    //if (actionId == EditorInfo.) {
-                    //if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-                    // System.out.println("AFTER ID"+event.getAction());
-                    //System.out.println("AFTER CHANGED"+event.getKeyCode());
+                    if (mDataSet.get(position).isEditable()) {
+                        //if (actionId == EditorInfo.) {
+                        //if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+                        // System.out.println("AFTER ID"+event.getAction());
+                        //System.out.println("AFTER CHANGED"+event.getKeyCode());
 //                System.out.println("AFTER CHANGED"+event.getKeyCode());
-                    System.out.println("AFTER CHANGED" + EditorInfo.IME_ACTION_DONE);
-                    if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED || actionId == EditorInfo.IME_ACTION_DONE) {
+                        System.out.println("AFTER CHANGED" + EditorInfo.IME_ACTION_DONE);
+                        if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED || actionId == EditorInfo.IME_ACTION_DONE) {
 
-                        if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
-                            viewHolder.quantity.setText("1");
-                        } else {
-                            if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
-                                System.out.println("OUT OF STOCK");
+                            if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                                viewHolder.quantity.setText("1");
+                            } else {
+                                if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
+                                    System.out.println("OUT OF STOCK");
 
-                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                                        mContext);
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                            mContext);
 
-                                // set title
-                                alertDialogBuilder.setTitle("Cart Alert");
+                                    // set title
+                                    alertDialogBuilder.setTitle("Cart Alert");
 
 
-                                // set dialog message
-                                alertDialogBuilder
-                                        .setMessage("The Quantity is not available in Stock")
-                                        .setCancelable(false)
-                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                // if this button is clicked, close
-                                                // current activity
-                                                dialog.cancel();
-                                            }
-                                        });
+                                    // set dialog message
+                                    alertDialogBuilder
+                                            .setMessage("The Quantity is not available in Stock")
+                                            .setCancelable(false)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    // if this button is clicked, close
+                                                    // current activity
+                                                    dialog.cancel();
+                                                }
+                                            });
                                    /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // if this button is clicked, just close
@@ -572,50 +573,50 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
                                         }
                                     });*/
 
-                                // create alert dialog
-                                AlertDialog alertDialog = alertDialogBuilder.create();
+                                    // create alert dialog
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
 
-                                // show it
-                                alertDialog.show();
+                                    // show it
+                                    alertDialog.show();
 
-                                viewHolder.quantity.setText(valueQuantity);
+                                    viewHolder.quantity.setText(valueQuantity);
 
-                            } else {
-                                HashMap<String, Object> updateString = new HashMap<String, Object>();
-                                //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
-                                updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                } else {
+                                    HashMap<String, Object> updateString = new HashMap<String, Object>();
+                                    //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                    updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
 
 
-                                JSONObject updateJson = new JSONObject(updateString);
-                                System.out.println("AFTER CHANGED+" + updateJson);
-                                //submit_btn.performClick();
+                                    JSONObject updateJson = new JSONObject(updateString);
+                                    System.out.println("AFTER CHANGED+" + updateJson);
+                                    //submit_btn.performClick();
                    /*System.out.println("AFTER CHANGED");
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.
                             INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(activity.getParent().getCurrentFocus().getWindowToken(), 0);*/
-                                View view = activity_main.getCurrentFocus();
-                                if (view != null) {
-                                    InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                                }
-                                if (networkInfo != null && networkInfo.isConnected()) {
+                                    View view = activity_main.getCurrentFocus();
+                                    if (view != null) {
+                                        InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                    }
+                                    if (networkInfo != null && networkInfo.isConnected()) {
 
-                                    String updateId = viewHolder.prodOverviewTitle.getTag().toString();
-                                    //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-                                    new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+                                        String updateId = viewHolder.prodOverviewTitle.getTag().toString();
+                                        //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
+                                        new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+                                        mDataSet.get(position).setIsEditable(false);
 
-
-                                } else {
-                                    Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                                            .setActionTextColor(Color.RED)
-                                            .show();
+                                    } else {
+                                        Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                                .setActionTextColor(Color.RED)
+                                                .show();
+                                    }
                                 }
                             }
+
+
+                            return true;
                         }
-
-
-                        return true;
-                    }
               /*  if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
 
                 }*/
@@ -638,7 +639,7 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
                     performSearch();
                     return true;
                 }*/
-
+                    }
 
                     return false;
                 }

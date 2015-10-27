@@ -60,8 +60,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
  //   private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderSummary> overViewList = new ArrayList<OrderSummary>();
     private ProgressBar progressBar;
+    LinearLayout progressLayout;
     private Button addEditAddressButton;
     LinearLayout addressDetailLayout;
+    LinearLayout bottomPriceLay,bottomLay;
     TextView nameTextView, addressTextView, cityTextView, countryTextView, postalcodeTextView, mobileNumberTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_summary);
 
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
-        progressBar.setVisibility(View.VISIBLE);
+        progressLayout = (LinearLayout) findViewById(R.id.progressLayout);
+        progressLayout.setVisibility(View.VISIBLE);
 //        total=(TextView)findViewById(R.id.order_total_value);
 //        shippingAmount=(TextView)findViewById(R.id.estimated_shipping_price);
 //        itemAmount=(TextView)findViewById(R.id.items_total_price);
@@ -83,7 +86,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
         totalValueTextView=(TextView)findViewById(R.id.totalValueTextView);
         addEditAddressButton = (Button)findViewById(R.id.addEditAddressButton);
 
-
+        bottomPriceLay=(LinearLayout)findViewById(R.id.bottomPriceLay);
+        bottomPriceLay.setVisibility(View.GONE);
+        bottomLay=(LinearLayout)findViewById(R.id.bottomLay);
+        bottomLay.setVisibility(View.GONE);
         nameTextView=(TextView)findViewById(R.id.nameTextView);
         addressTextView=(TextView)findViewById(R.id.addressTextView);
         cityTextView=(TextView)findViewById(R.id.cityTextView);
@@ -280,8 +286,9 @@ JSONObject dataToSend;
                 jsonObjectData = new JSONObject(response);
                 System.out.println(jsonObjectData.toString());
                 if (jsonObjectData.getString("status").equals("0")) {
-
+                    //bottomPriceLay.setVisibility(View.GONE);
                 } else {
+                    //bottomPriceLay.setVisibility(View.VISIBLE);
                     addEditAddressButton.setText(getString(R.string.change_address));
 //                    addEditAddressButton.setTextColor(getColor(R.color.input_hint));
                     addEditAddressButton.setTextColor(getResources().getColor(R.color.input_hint));
@@ -351,14 +358,16 @@ JSONObject dataToSend;
                 //String sellerName=jsonArray.getString("seller").toString();
                 if(jsonObjectData.getString("status").equals("0"))
                 {
-                    //bottomLay.setVisibility(View.GONE);
+                    bottomLay.setVisibility(View.GONE);
+                    bottomPriceLay.setVisibility(View.GONE);
                     //cartEmptyText.setVisibility(View.VISIBLE);
 
                 }
 
                 else
                 {
-                    //bottomLay.setVisibility(View.VISIBLE);
+                    bottomLay.setVisibility(View.VISIBLE);
+                    bottomPriceLay.setVisibility(View.VISIBLE);
                     //cartEmptyText.setVisibility(View.GONE);
 
 //                    shippingAmount.setText((jsonObjectData.getJSONObject("data").getString("shipping")+" AED"));
@@ -450,7 +459,7 @@ totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_ite
                             listData.setProductId(jsonObjectProductDetails.getString("_id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
                             listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
-
+                            listData.setIsEditable(true);
 
                             overViewList.add(listData);
                         }
@@ -470,9 +479,9 @@ totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_ite
 
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 mainLay.setVisibility(View.VISIBLE);
                 //initializeData();
                 mRecyclerView.setAdapter(mAdapter);
@@ -485,9 +494,9 @@ totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_ite
                         .show();
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 /*if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }*/
@@ -500,7 +509,7 @@ totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_ite
         public void onPreExecute() {
             // TODO Auto-generated method stub
 //            if(!mSwipeRefreshLayout.isRefreshing()){
-            progressBar.setVisibility(View.VISIBLE);
+            progressLayout.setVisibility(View.VISIBLE);
 //            }
 
         }
@@ -555,9 +564,9 @@ System.out.println("RESPONSE"+response);
 
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 //initializeData();
 
 
@@ -576,9 +585,9 @@ System.out.println("RESPONSE"+response);
                 snackbar.show();
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 /*if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }*/
@@ -591,7 +600,7 @@ System.out.println("RESPONSE"+response);
         public void onPreExecute() {
             // TODO Auto-generated method stub
 //            if(!mSwipeRefreshLayout.isRefreshing()){
-            progressBar.setVisibility(View.VISIBLE);
+            progressLayout.setVisibility(View.VISIBLE);
 //            }
 
         }
