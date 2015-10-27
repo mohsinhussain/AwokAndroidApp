@@ -65,6 +65,7 @@ public class CheckOutActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private TextView errorText;
     ProgressBar progressBar;
+    LinearLayout progressLayout;
     private TextView itemsCount,totalText,subTotalText,shippingText;
     String TAG = "CartActivity";
     SharedPreferences mSharedPrefs;
@@ -99,6 +100,8 @@ public class CheckOutActivity extends AppCompatActivity {
         cartEmptyText.setVisibility(View.GONE);
         prodPrice = (TextView) findViewById(R.id.prod_discountPrice);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
+        progressLayout = (LinearLayout) findViewById(R.id.progressLayout);
+        progressLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
         errorText=(TextView)findViewById(R.id.error_text);
@@ -682,9 +685,9 @@ public class CheckOutActivity extends AppCompatActivity {
 
                 if (getApplicationContext() != null) {
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 //initializeData();
                 /////////////////mRecyclerView.setAdapter(mAdapter);
 //                allowUpdates = true;
@@ -709,9 +712,9 @@ public class CheckOutActivity extends AppCompatActivity {
                 snackbar.show();
                 if (getApplicationContext() != null) {
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 /*if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }*/
@@ -726,7 +729,7 @@ public class CheckOutActivity extends AppCompatActivity {
         public void onPreExecute() {
             // TODO Auto-generated method stub
 //            if(!mSwipeRefreshLayout.isRefreshing()){
-            progressBar.setVisibility(View.VISIBLE);
+            progressLayout.setVisibility(View.VISIBLE);
 //            }
 
         }
