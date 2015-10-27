@@ -60,6 +60,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
  //   private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderSummary> overViewList = new ArrayList<OrderSummary>();
     private ProgressBar progressBar;
+    LinearLayout progressLayout;
     private Button addEditAddressButton;
     LinearLayout addressDetailLayout;
     LinearLayout bottomPriceLay,bottomLay;
@@ -70,7 +71,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_summary);
 
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
-        progressBar.setVisibility(View.VISIBLE);
+        progressLayout = (LinearLayout) findViewById(R.id.progressLayout);
+        progressLayout.setVisibility(View.VISIBLE);
 //        total=(TextView)findViewById(R.id.order_total_value);
 //        shippingAmount=(TextView)findViewById(R.id.estimated_shipping_price);
 //        itemAmount=(TextView)findViewById(R.id.items_total_price);
@@ -457,7 +459,7 @@ totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_ite
                             listData.setProductId(jsonObjectProductDetails.getString("_id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
                             listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
-
+                            listData.setIsEditable(true);
 
                             overViewList.add(listData);
                         }
@@ -477,9 +479,9 @@ totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_ite
 
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 mainLay.setVisibility(View.VISIBLE);
                 //initializeData();
                 mRecyclerView.setAdapter(mAdapter);
@@ -492,9 +494,9 @@ totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_ite
                         .show();
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 /*if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }*/
@@ -507,7 +509,7 @@ totalPriceText.setText(jsonObjectData.getJSONObject("data").getString("total_ite
         public void onPreExecute() {
             // TODO Auto-generated method stub
 //            if(!mSwipeRefreshLayout.isRefreshing()){
-            progressBar.setVisibility(View.VISIBLE);
+            progressLayout.setVisibility(View.VISIBLE);
 //            }
 
         }
@@ -562,9 +564,9 @@ System.out.println("RESPONSE"+response);
 
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 //initializeData();
 
 
@@ -583,9 +585,9 @@ System.out.println("RESPONSE"+response);
                 snackbar.show();
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressBar.startAnimation(animation);
+                    progressLayout.startAnimation(animation);
                 }
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 /*if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }*/
@@ -598,7 +600,7 @@ System.out.println("RESPONSE"+response);
         public void onPreExecute() {
             // TODO Auto-generated method stub
 //            if(!mSwipeRefreshLayout.isRefreshing()){
-            progressBar.setVisibility(View.VISIBLE);
+            progressLayout.setVisibility(View.VISIBLE);
 //            }
 
         }

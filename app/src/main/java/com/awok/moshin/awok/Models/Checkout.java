@@ -22,13 +22,15 @@ public class Checkout {
     public Boolean isHeader;
     public Boolean isFooter;
     private String discount;
+    private boolean isEditable;
 
     public Checkout()
     {
 
     }
 
-    public Checkout(String sellerSubTotal,String sellerShipping,String sellerTotal,String OverViewTitle,Boolean isHeader,Boolean isFooter,String discount, String OverViewText,String SellerLabel,String imageBitmapString,String productId,String totalTag,String statusId,String quantity,String remainingStock,String totalPrice,String oldPrice) {
+    public Checkout(String sellerSubTotal,String sellerShipping,String sellerTotal,String OverViewTitle,Boolean isHeader,Boolean isFooter,String discount, String OverViewText,String SellerLabel,
+                    String imageBitmapString,String productId,String totalTag,String statusId,String quantity,String remainingStock,String totalPrice,String oldPrice, boolean isEditable) {
         this.OverViewTitle = OverViewTitle;
         this.OverViewText = OverViewText;
         this.SellerLabel=SellerLabel;
@@ -46,6 +48,7 @@ public class Checkout {
         this.sellerShipping=sellerShipping;
         this.sellerSubTotal=sellerSubTotal;
         this.sellerTotal=sellerTotal;
+        this.isEditable=isEditable;
 
     }
 
@@ -70,9 +73,13 @@ public class Checkout {
         this.OverViewTitle=OverViewTitle;
     }
 
+    public boolean isEditable() {
+        return isEditable;
+    }
 
-
-
+    public void setIsEditable(boolean isEditable) {
+        this.isEditable = isEditable;
+    }
 
     public void setOverViewText(String OverViewText)
     {

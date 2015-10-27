@@ -49,6 +49,8 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 //        holder.nameTextView.setText(items.get(i).getName());
         holder.priceTextView.setText(items.get(i).getPriceNew());
 
+        holder.itemImageView.setImageDrawable(null);
+
         final int viewType = getItemViewType(i);
         switch (viewType) {
             case ITEM_WITH_DISCOUNT:
