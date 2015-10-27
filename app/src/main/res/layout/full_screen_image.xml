@@ -22,6 +22,14 @@
         android:background="#FFFFFF"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:id="@+id/load_progress_bar"
+        android:indeterminateDrawable="@drawable/progress_bar_load_more"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        />
     </RelativeLayout>
 <!--
     android:src="@drawable/sony"

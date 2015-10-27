@@ -70,6 +70,7 @@
     android:padding="10dp"
     android:background="#FFFFFF"
     android:orientation="vertical">
+
     <ProgressBar
         style="?android:attr/progressBarStyle"
         android:id="@+id/load_progress_bar"
@@ -78,9 +79,7 @@
         android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-         />
-
+        android:layout_centerVertical="true" />
     <TextView
         android:layout_width="wrap_content"
         android:text="Loading ..."

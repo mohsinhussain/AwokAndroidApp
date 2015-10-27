@@ -27,6 +27,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.awok.moshin.awok.Adapters.ProductRatingAdapter;
 import com.awok.moshin.awok.Adapters.StoreRatingAdapter;
 import com.awok.moshin.awok.AppController;
+import com.awok.moshin.awok.Models.DescriptionModel;
 import com.awok.moshin.awok.Models.StoreRatingModel;
 import com.awok.moshin.awok.R;
 
@@ -56,7 +57,7 @@ List<StoreRatingModel> model;
             // Required empty public constructor
         }
 
-        public StoreRatingFragment(List<StoreRatingModel> model,String  storeName,String storeSum,String storeAverage,String storeImage,String storeUrl) {
+       /* public StoreRatingFragment(List<StoreRatingModel> model,String  storeName,String storeSum,String storeAverage,String storeImage,String storeUrl) {
          //   this.productName=productName;
           //  this.image=image;
             this.model=model;
@@ -67,7 +68,7 @@ List<StoreRatingModel> model;
             this.storeUrl=storeUrl;
           //  ratingCount=ratingCountValue;
 
-        }
+        }*/
 
 
         @Override
@@ -195,6 +196,8 @@ productNameView.setText(storeName);
         }
 
 
+
+
     public class MyLinearLayoutManager extends LinearLayoutManager {
 
         public MyLinearLayoutManager(Context context, int orientation, boolean reverseLayout)    {
@@ -263,6 +266,14 @@ productNameView.setText(storeName);
             }
         }
     }
-
+    public void call(List<StoreRatingModel> model,String  storeName,String storeSum,String storeAverage,String storeImage,String storeUrl)
+    {
+        this.model=model;
+        this.storeName=storeName;
+        this.storeSum=storeSum;
+        this.storeAverage=storeAverage;
+        this.storeImage=storeImage;
+        this.storeUrl=storeUrl;
+    }
 
 }

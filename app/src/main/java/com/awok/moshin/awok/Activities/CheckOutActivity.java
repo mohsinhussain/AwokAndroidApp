@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -119,14 +120,19 @@ public class CheckOutActivity extends AppCompatActivity {
         //MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(CheckOutActivity.this,LinearLayoutManager.VERTICAL,false);
 
         //mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setNestedScrollingEnabled(false);
+      /*  mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setHasFixedSize(false);*/
+        mRecyclerView.setNestedScrollingEnabled(true);
+       // mRecyclerView.hasNestedScrollingParent();
         mRecyclerView.setHasFixedSize(false);
 
-
         mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+       /* int viewHeight = 40 * overViewList.size();
+        mRecyclerView.getLayoutParams().height = viewHeight;*/
         mAdapter = new CustomAdapter(CheckOutActivity.this, overViewList);
         //mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setAdapter(mAdapter);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
