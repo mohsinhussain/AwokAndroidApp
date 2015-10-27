@@ -63,7 +63,7 @@ public class ReviewsFragment extends Fragment {
         ratingCount=ratingCountValue;
     }*/
 
-    public ReviewsFragment(List<ProductRatingModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String savedBy) {
+/*    public ReviewsFragment(List<ProductRatingModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String savedBy) {
         this.productName=productName;
         this.image=image;
         this.ratingtxt=ratingValue;
@@ -72,7 +72,7 @@ public class ReviewsFragment extends Fragment {
         this.boughtBy=boughtBy;
         this.savedBy=savedBy;
 
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -236,6 +236,21 @@ boughtByTxt.setText("Bought By: "+boughtBy+" people");
                 recycler.recycleView(view);
             }
         }
+    }
+
+
+
+    public void call(List<ProductRatingModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String savedBy)
+    {
+        this.productName=productName;
+        this.image=image;
+        this.ratingtxt=ratingValue;
+        ratingCount=ratingCountValue;
+        this.rating=rating;
+        this.boughtBy=boughtBy;
+        this.savedBy=savedBy;
+
+        System.out.println("MOHSIN/SHON HAS DONE IT");
     }
 
 }

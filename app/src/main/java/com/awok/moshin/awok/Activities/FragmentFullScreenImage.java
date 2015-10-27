@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
@@ -126,12 +127,14 @@ int size,pos;
             }*/
             final SubsamplingScaleImageView  imageView = (SubsamplingScaleImageView) itemView.findViewById(R.id.imageView);
             ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            final ProgressBar progressBar = (ProgressBar) itemView.findViewById(R.id.load_progress_bar);
            // for (int i=0;i<baseImage.size();i++) {
 
                 imageLoader.get(baseImage.get(position), new ImageLoader.ImageListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         imageView.setImage(ImageSource.resource(R.drawable.default_img));
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -139,6 +142,7 @@ int size,pos;
                         if (response.getBitmap() != null) {
                             // load image into imageview
                             imageView.setImage(ImageSource.bitmap(response.getBitmap()));
+                            progressBar.setVisibility(View.GONE);
 
 
                         }

@@ -50,6 +50,7 @@ import com.awok.moshin.awok.Models.ProductDetailsModel;
 import com.awok.moshin.awok.Models.ProductOverview;
 import com.awok.moshin.awok.Models.ProductRatingModel;
 import com.awok.moshin.awok.Models.StoreRatingModel;
+import com.awok.moshin.awok.Models.productOverviewRating;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
@@ -90,14 +91,26 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     SearchView searchView;
     SharedPreferences mSharedPrefs;
     View logView;
+    ViewPager calls;
+    productOverviewRating prodORating=new productOverviewRating();
     DescriptionModel descData=new DescriptionModel();
     ProductRatingModel prodRatingData=new ProductRatingModel();
     StoreRatingModel storeRatingModel=new StoreRatingModel();
     private List<DescriptionModel> descModel = new ArrayList<DescriptionModel>();
     private List<ProductRatingModel> prodRating = new ArrayList<ProductRatingModel>();
     private List<StoreRatingModel> storeRatingData = new ArrayList<StoreRatingModel>();
+    private List<productOverviewRating> prodOverViewRating=new ArrayList<productOverviewRating>();
     String storeName,storeSum,storeAverage,storeImage,storeUrl;
     private Button mCounter;
+    ProductOverViewFragment productOverViewFragment;
+    ShippingDeliveryFrag shippingDeliveryFrag;
+    ProductDescriptionFragment productDescriptionFragment;
+    ReviewsFragment reviewsFragment;
+    StoreRatingFragment storeRatingFragment;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,7 +142,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
 
 
 
-
+       // onAttach();
 
         ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -205,7 +218,7 @@ System.out.println(dataToSend.toString());
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-
+        setUpTab();
 
 
        /* NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -237,6 +250,14 @@ System.out.println(dataToSend.toString());
 
 
     }
+
+
+    public void goTo()
+    {
+        calls.setCurrentItem(4);
+    }
+
+
 public void setUpTab()
 {
     final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -249,6 +270,7 @@ public void setUpTab()
     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     tabLayout.setTabTextColors(getResources().getColor(R.color.normal_text), getResources().getColor(R.color.header_text));
     tabLayout.setupWithViewPager(viewPager);
+
 }
 
 
@@ -275,18 +297,27 @@ public void setUpTab()
 
 
     private void setupViewPager(ViewPager viewPager) {
+        calls=viewPager;
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new ProductOverViewFragment(productId, productName,image), "Overview");
+
+        productOverViewFragment=new ProductOverViewFragment(productId, productName,image);
+        //productOverViewFragment=new ProductOverViewFragment();
+        //shippingDeliveryFrag=new ShippingDeliveryFrag(returnPolicies,estimatedPrice,country,estimatedDays,shipFrom);
+        shippingDeliveryFrag=new ShippingDeliveryFrag();
+        productDescriptionFragment=new ProductDescriptionFragment();
+        reviewsFragment=new ReviewsFragment();
+        storeRatingFragment=new StoreRatingFragment();
+        adapter.addFragment(productOverViewFragment, "Overview");
 
         adapter.addFragment(new HotDealsFragment(catId), "Related");
 
         //adapter.addFragment(new ProductDescriptionFragment(description), "Description");
-        adapter.addFragment(new ProductDescriptionFragment(descModel), "Description");
+        adapter.addFragment(productDescriptionFragment, "Description");
         //adapter.addFragment(new ReviewsFragment(productName,image,rating,ratingCount),"Product Rating");
-        adapter.addFragment(new ReviewsFragment(prodRating,productName,image,rating,ratingCount,boughtBy,savedBy),"Product Rating");
-        adapter.addFragment(new ShippingDeliveryFrag(returnPolicies,estimatedPrice,country,estimatedDays,shipFrom),"Shipping Info");
+        adapter.addFragment(reviewsFragment,"Product Rating");
+        adapter.addFragment(shippingDeliveryFrag,"Shipping Info");
         //adapter.addFragment(new StoreRatingFragment(productName,image,rating,ratingCount),"Store Rating");
-        adapter.addFragment(new StoreRatingFragment(storeRatingData,storeName,storeSum,storeAverage,storeImage,storeUrl),"Store Rating");
+        adapter.addFragment(storeRatingFragment,"Store Rating");
 
         //adapter.addFragment(new ProductDescriptionFragment(description), "Description");
         //adapter.addFragment(new ReviewsFragment(productName,image,rating,ratingCount),"Product Rating");
@@ -304,6 +335,8 @@ public void setUpTab()
 
 
         viewPager.setAdapter(adapter);
+
+
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -565,7 +598,10 @@ descModel.add(descData);
                     prodRatingData.setRate(dataRating.getString("rate"));
                     prodRatingData.setUsername(dataRating.getString("username"));
                     prodRatingData.setDays(dataRating.getString("days"));
-
+                    prodORating.setMainText(dataRating.getString("content"));
+                    prodORating.setName(dataRating.getString("username"));
+                    prodORating.setRating(dataRating.getString("rate"));
+                    prodOverViewRating.add(prodORating);
                     prodRating.add(prodRatingData);
                 }
 
@@ -594,6 +630,7 @@ descModel.add(descData);
 
 
 
+
                     storeRatingData.add(storeRatingModel);
 
 
@@ -613,9 +650,17 @@ descModel.add(descData);
 
 
 
+//ShippingDeliveryFrag sf=new ShippingDeliveryFrag();
+
+          //      mCallback.onArticleSelected(2);
 
 
-                setUpTab();
+                shippingDeliveryFrag.call(returnPolicies, estimatedPrice, country, estimatedDays, shipFrom);
+                reviewsFragment.call(prodRating,productName,image,rating,ratingCount,boughtBy,savedBy);
+                productDescriptionFragment.call(descModel);
+                storeRatingFragment.call(storeRatingData,storeName,storeSum,storeAverage,storeImage,storeUrl);
+              //  productOverViewFragment.call(prodOverViewRating,productId, productName,image);
+
                 //mResources=
 
 //                if(getApplicationContext()!=null){

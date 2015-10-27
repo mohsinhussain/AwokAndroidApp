@@ -56,7 +56,7 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <ScrollView
         android:layout_below="@+id/main_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -68,7 +68,8 @@
             android:id="@+id/nestedScroll"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_above="@+id/bottomLay"
         android:layout_below="@+id/main_content"
@@ -315,13 +316,13 @@
 
 
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 <!--
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
 -->
 
     <!--</android.support.v4.widget.NestedScrollView>-->
-</android.support.v4.widget.NestedScrollView>
+</ScrollView>
 
 
         <LinearLayout

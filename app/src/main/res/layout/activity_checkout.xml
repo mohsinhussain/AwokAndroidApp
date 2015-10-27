@@ -264,38 +264,59 @@ android:id="@+id/subtotal"
     </RelativeLayout>
                 </RelativeLayout>
             </android.support.v4.widget.NestedScrollView>-->
-    <android.support.v4.widget.NestedScrollView
+    <ScrollView
         android:layout_below="@+id/main_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomLay"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-<RelativeLayout
+<LinearLayout
+    android:orientation="vertical"
     android:id="@+id/recyclerView"
-    android:layout_below="@+id/main_content"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
 
+
+    <!--android:layout_below="@+id/main_content"-->
+    <!--android:layout_above="@+id/totalLay"
+    android:layout_below="@+id/main_content"-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/overViewRecyclerView"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
+
         android:layout_height="match_parent"
+
+
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@drawable/shadow_background"
         android:scrollbars="none" />
 
 
+
+    <!--android:layout_above="@+id/bottomLay"-->
+
+
+
     <LinearLayout
+
         android:id="@+id/totalLay"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingBottom="8dp"
+
+
+
+
         android:paddingTop="8dp"
         android:background="#fff"
         android:layout_marginTop="8dp"
         android:layout_below="@+id/overViewRecyclerView"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -422,8 +443,8 @@ android:id="@+id/subtotal"
 
 
 
-</RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>
+    </ScrollView>
 
 
     <LinearLayout

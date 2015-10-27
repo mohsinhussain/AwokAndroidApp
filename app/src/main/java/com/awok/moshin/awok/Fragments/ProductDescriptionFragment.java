@@ -44,9 +44,9 @@ public class ProductDescriptionFragment extends Fragment {
         //private List<ProductOverview> overViewList = new ArrayList<ProductOverview>();
 
     TextView descriptionTextView;
-    public ProductDescriptionFragment(List<DescriptionModel> description) {
+  /*  public ProductDescriptionFragment(List<DescriptionModel> description) {
         this.description = description;
-    }
+    }*/
 
 
     @Override
@@ -107,6 +107,11 @@ public class ProductDescriptionFragment extends Fragment {
 
             return mView;
         }
+    public void call(List<DescriptionModel> description)
+    {
+        this.description = description;
 
+        System.out.println("MOHSIN/SHON HAS DONE IT");
+    }
     }
 

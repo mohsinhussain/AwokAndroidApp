@@ -41,6 +41,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.awok.moshin.awok.Activities.FragmentFullScreenImage;
+import com.awok.moshin.awok.Activities.ProductDetailsActivity;
 import com.awok.moshin.awok.Activities.ShippingAddressActivity;
 import com.awok.moshin.awok.Adapters.CheckOutAdapter;
 import com.awok.moshin.awok.Adapters.ProductOverViewRatingAdapter;
@@ -77,7 +79,7 @@ private RatingBar ratingMain;
     private RecyclerView mRecyclerView;
 
     private RecyclerView.Adapter mAdapter;
-    private NestedScrollView scroll;
+    private ScrollView scroll;
 
     //private RecyclerView.LayoutManager mLayoutManager;
 
@@ -96,7 +98,7 @@ private ImageView countButton,share;
 
 
 private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_color_default,prod_shipping,prod_shippingCost,prod_delivery,prod_deliveryTime,prod_reviews,quickDeliveryTxt,
-        prod_price,prod_discountPrice,countText;
+        prod_price,prod_discountPrice,countText,estArrival,estShipping;
 
  private Button prod_buyNow,save;
     private RatingBar prodRatingBar,prod_reviewRating;
@@ -111,7 +113,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         this.productId=productId;
 
     }
-    
+
     
     public void getRatings()
     {
@@ -144,8 +146,28 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         countButton=(ImageView)mView.findViewById(R.id.imageView);
         productTitle=(TextView)mView.findViewById(R.id.productTitle);
         product_reviewCount=(TextView)mView.findViewById(R.id.product_reviewCount);
-        scroll=(NestedScrollView)mView.findViewById(R.id.nestedScroll);
+        scroll=(ScrollView)mView.findViewById(R.id.nestedScroll);
         countText=(TextView)mView.findViewById(R.id.countText);
+        estArrival=(TextView)mView.findViewById(R.id.estimatedArrival);
+
+                estShipping=(TextView)mView.findViewById(R.id.estimatedShipping);
+
+        estArrival.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ProductDetailsActivity)getActivity()).goTo();
+                System.out.println("hjfgjhfgk");
+            }
+        });
+
+        estShipping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ProductDetailsActivity)getActivity()).goTo();
+                System.out.println("hjfgjhfgk");
+            }
+        });
+
         //prod_warranty=(TextView)mView.findViewById(R.id.prod_warranty);
         share=(ImageView)mView.findViewById(R.id.share);
         prod_color_default=(TextView)mView.findViewById(R.id.prod_color_default);
@@ -412,7 +434,7 @@ share.setOnClickListener(new View.OnClickListener() {
 //imageView.setImageBitmap(base64ToBitmap(image));
             Log.v("overview", "imageurl: " + image);
             ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-
+         //   progressBar.setVisibility(View.VISIBLE);
 //            if(image!=null && !image.equalsIgnoreCase("")){
 //                imageView.setImageUrl(image, imageLoader);
 //            }
@@ -423,7 +445,7 @@ share.setOnClickListener(new View.OnClickListener() {
             imageLoader.get(image, new ImageLoader.ImageListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-//                    imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                    imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
                     progressBar.setVisibility(View.GONE);
                 }
                 @Override
