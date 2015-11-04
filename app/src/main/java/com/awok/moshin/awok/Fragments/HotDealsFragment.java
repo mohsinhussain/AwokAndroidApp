@@ -1,6 +1,8 @@
 package com.awok.moshin.awok.Fragments;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
@@ -49,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 public class HotDealsFragment extends Fragment {
 
@@ -77,8 +80,13 @@ public class HotDealsFragment extends Fragment {
     ArrayList<String> tagsFilterArray = new ArrayList<String>();
     ArrayList<String> colorFilterArray = new ArrayList<String>();
     ArrayList<String> priceFilterArray = new ArrayList<String>();
+    ArrayList<String> sizeFilterArray = new ArrayList<String>();
+    ArrayList<String> brandFilterArray = new ArrayList<String>();
+    ArrayList<String> ratingsFilterArray = new ArrayList<String>();
     StaggeredGridLayoutManager mLayoutManager;
     String filterString = "";
+    boolean isFilter = false;
+    LinearLayout filterButtonLayout;
     public HotDealsFragment(){}
 
     public HotDealsFragment(String categoryId)
@@ -108,15 +116,39 @@ public class HotDealsFragment extends Fragment {
     {
         this.isSearch = isSearch;
         this.searchString = searchString;
+        this.searchString = "search="+searchString;
     }
 
-    public HotDealsFragment(String categoryId, ArrayList<String> colorArray, ArrayList<String> tagArray, ArrayList<String> price, boolean isSearch)
+    @Override
+    public void onPause() {
+        super.onPause();
+        isSearch = false;
+        isFilter = false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshContent();
+    }
+
+    public HotDealsFragment(String categoryId, ArrayList<String> colorArray, ArrayList<String> tagArray, ArrayList<String> price,  ArrayList<String> sizeArray, ArrayList<String> brandArray,
+                            ArrayList<String> ratingsArray,boolean isSearch, boolean isFilter)
     {
         this.categoryId = categoryId;
         this.isSearch = isSearch;
         this.tagsFilterArray = tagArray;
         this.colorFilterArray = colorArray;
         this.priceFilterArray = price;
+        this.sizeFilterArray = sizeArray;
+        this.brandFilterArray = brandArray;
+        this.ratingsFilterArray = ratingsArray;
+        this.isFilter = isFilter;
+        makeSearchString();
+    }
+
+
+    private void makeSearchString(){
         String colorString = "";
         if(colorFilterArray.size()>0){
             if(categoryId!=null){
@@ -145,13 +177,41 @@ public class HotDealsFragment extends Fragment {
             }
         }
 
-        if(categoryId!=null){
-            searchString = "category_id="+categoryId+colorString+tagString+priceString;
-        }
-        else{
-            searchString = colorString+tagString+priceString;
+
+        String sizeString = "";
+        if(sizeFilterArray.size()>0){
+            sizeString = "&size=";
+            for(int i=0;i<sizeFilterArray.size();i++){
+                sizeString = sizeString+sizeFilterArray.get(i)+",";
+            }
         }
 
+        String ratingsString = "";
+        if(ratingsFilterArray.size()>0){
+            ratingsString = "&price=";
+            for(int i=0;i<ratingsFilterArray.size();i++){
+                ratingsString = ratingsString+ratingsFilterArray.get(i)+",";
+            }
+        }
+
+        String brandString = "";
+        if(brandFilterArray.size()>0){
+            brandString = "&price=";
+            for(int i=0;i<brandFilterArray.size();i++){
+                brandString = brandString+brandFilterArray.get(i)+",";
+            }
+        }
+
+        String filterString = colorString+tagString+priceString+sizeString+ratingsString+brandString;
+
+
+        if(categoryId!=null){
+            searchString = "category_id="+categoryId+filterString;
+        }
+        else{
+            searchString = filterString;
+        }
+        System.out.println("SearchString: " + searchString);
     }
 
     @Override
@@ -160,6 +220,7 @@ public class HotDealsFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_hot_deals, container, false);
         //setHasOptionsMenu(true);
+        filterButtonLayout = (LinearLayout)mView.findViewById(R.id.filterButtonLayout);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.dealsRecyclerView);
         mainLayout=(LinearLayout)mView.findViewById(R.id.progressLay);
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);
@@ -190,6 +251,11 @@ public class HotDealsFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.topMargin = 20;
         mainLayout.setLayoutParams(lp);*/
+
+
+
+        showFilters(inflater,container);
+
 
         mSwipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.CYAN, Color.GREEN,
                 Color.YELLOW);
@@ -307,11 +373,11 @@ public class HotDealsFragment extends Fragment {
 //
 //        });
 
-        loading = true;
-        pageCount = 1;
-        previousTotal = 0;
-
-        refreshContent();
+//        loading = true;
+//        pageCount = 1;
+//        previousTotal = 0;
+//
+//        refreshContent();
 
 //            ConnectivityManager connMgr = (ConnectivityManager)
 //                    getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -337,6 +403,387 @@ public class HotDealsFragment extends Fragment {
 
             return mView;
         }
+
+
+    private void showFilters(LayoutInflater inflater, ViewGroup container){
+        if(isFilter){
+            filterButtonLayout.setVisibility(View.VISIBLE);
+            for (int i = 0; i < tagsFilterArray.size(); i++) {
+                final Button t = (Button) inflater.inflate(R.layout.filter_button_tag, container, false);
+                t.setText(tagsFilterArray.get(i));
+                t.setSingleLine(true);
+                t.setSelected(true);
+                t.setTag(i);
+                t.setTextColor(getContext().getResources().getColor(R.color.button_text));
+                t.setBackground(getResources().getDrawable(R.drawable.filter_button));
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        ((Button)v).setTextColor(getContext().getResources().getColor(R.color.dialog_button_cancel));
+                        ((Button)v).setBackground(getResources().getDrawable(R.drawable.unselected_filter_button));
+                        filterButtonLayout.animate()
+                                .translationY(-100)
+                                .alpha(0.0f)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        filterButtonLayout.removeView(v);
+                                        filterButtonLayout.animate()
+                                                .translationY(0)
+                                                .alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                                int index = (int) v.getTag();
+                                                tagsFilterArray.set(index, "");
+                                                if(filterButtonLayout.getChildCount()==0){
+                                                    searchString = "";
+                                                    filterButtonLayout.setVisibility(View.GONE);
+                                                    isFilter = false;
+                                                    isSearch = false;
+                                                    loading = true;
+                                                    pageCount = 1;
+                                                    previousTotal = 0;
+                                                    refreshContent();
+                                                    return;
+                                                }
+//                                                    System.out.println("Child View Count: "+);
+                                                makeSearchString();
+                                                loading = true;
+                                                pageCount = 1;
+                                                previousTotal = 0;
+                                                refreshContent();
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
+                    }
+                });
+                filterButtonLayout.
+                        addView(t);
+            }
+
+
+            /**PopulateColors*****************/
+            for (int i = 0; i < colorFilterArray.size(); i++) {
+                final Button t = (Button) inflater.inflate(R.layout.filter_button_tag, container, false);
+                t.setText(colorFilterArray.get(i));
+                t.setSingleLine(true);
+                t.setSelected(true);
+                t.setTag(i);
+                t.setTextColor(getContext().getResources().getColor(R.color.button_text));
+                t.setBackground(getResources().getDrawable(R.drawable.filter_button));
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        ((Button)v).setTextColor(getContext().getResources().getColor(R.color.dialog_button_cancel));
+                        ((Button)v).setBackground(getResources().getDrawable(R.drawable.unselected_filter_button));
+                        filterButtonLayout.animate()
+                                .translationY(-100)
+                                .alpha(0.0f)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        filterButtonLayout.removeView(v);
+                                        filterButtonLayout.animate()
+                                                .translationY(0)
+                                                .alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                                int index = (int) v.getTag();
+                                                colorFilterArray.set(index, "");
+                                                if(filterButtonLayout.getChildCount()==0){
+                                                    searchString = "";
+                                                    filterButtonLayout.setVisibility(View.GONE);
+                                                    isFilter = false;
+                                                    isSearch = false;
+                                                    loading = true;
+                                                    pageCount = 1;
+                                                    previousTotal = 0;
+                                                    refreshContent();
+                                                    return;
+                                                }
+//                                                    System.out.println("Child View Count: "+);
+                                                makeSearchString();
+                                                loading = true;
+                                                pageCount = 1;
+                                                previousTotal = 0;
+                                                refreshContent();
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
+                    }
+                });
+                filterButtonLayout.
+                        addView(t);
+            }
+
+
+
+            /**PopulatePrice*****************/
+            for (int i = 0; i < priceFilterArray.size(); i++) {
+                final Button t = (Button) inflater.inflate(R.layout.filter_button_tag, container, false);
+                t.setText(priceFilterArray.get(i));
+                t.setSingleLine(true);
+                t.setSelected(true);
+                t.setTag(i);
+                t.setTextColor(getContext().getResources().getColor(R.color.button_text));
+                t.setBackground(getResources().getDrawable(R.drawable.filter_button));
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        ((Button)v).setTextColor(getContext().getResources().getColor(R.color.dialog_button_cancel));
+                        ((Button)v).setBackground(getResources().getDrawable(R.drawable.unselected_filter_button));
+                        filterButtonLayout.animate()
+                                .translationY(-100)
+                                .alpha(0.0f)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        filterButtonLayout.removeView(v);
+                                        filterButtonLayout.animate()
+                                                .translationY(0)
+                                                .alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                                int index = (int) v.getTag();
+                                                priceFilterArray.set(index, "");
+                                                if(filterButtonLayout.getChildCount()==0){
+                                                    searchString = "";
+                                                    filterButtonLayout.setVisibility(View.GONE);
+                                                    isFilter = false;
+                                                    isSearch = false;
+                                                    loading = true;
+                                                    pageCount = 1;
+                                                    previousTotal = 0;
+                                                    refreshContent();
+                                                    return;
+                                                }
+//                                                    System.out.println("Child View Count: "+);
+                                                makeSearchString();
+                                                loading = true;
+                                                pageCount = 1;
+                                                previousTotal = 0;
+                                                refreshContent();
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
+                    }
+                });
+                filterButtonLayout.
+                        addView(t);
+            }
+
+
+
+
+
+            /**PopulateBRAND*****************/
+            for (int i = 0; i < brandFilterArray.size(); i++) {
+                final Button t = (Button) inflater.inflate(R.layout.filter_button_tag, container, false);
+                t.setText(brandFilterArray.get(i));
+                t.setSingleLine(true);
+                t.setSelected(true);
+                t.setTag(i);
+                t.setTextColor(getContext().getResources().getColor(R.color.button_text));
+                t.setBackground(getResources().getDrawable(R.drawable.filter_button));
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        ((Button)v).setTextColor(getContext().getResources().getColor(R.color.dialog_button_cancel));
+                        ((Button)v).setBackground(getResources().getDrawable(R.drawable.unselected_filter_button));
+                        filterButtonLayout.animate()
+                                .translationY(-100)
+                                .alpha(0.0f)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        filterButtonLayout.removeView(v);
+                                        filterButtonLayout.animate()
+                                                .translationY(0)
+                                                .alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                                int index = (int) v.getTag();
+                                                brandFilterArray.set(index, "");
+                                                if(filterButtonLayout.getChildCount()==0){
+                                                    searchString = "";
+                                                    filterButtonLayout.setVisibility(View.GONE);
+                                                    isFilter = false;
+                                                    isSearch = false;
+                                                    loading = true;
+                                                    pageCount = 1;
+                                                    previousTotal = 0;
+                                                    refreshContent();
+                                                    return;
+                                                }
+//                                                    System.out.println("Child View Count: "+);
+                                                makeSearchString();
+                                                loading = true;
+                                                pageCount = 1;
+                                                previousTotal = 0;
+                                                refreshContent();
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
+                    }
+                });
+                filterButtonLayout.
+                        addView(t);
+            }
+
+
+
+            /**PopulateSIZE*****************/
+            for (int i = 0; i < sizeFilterArray.size(); i++) {
+                final Button t = (Button) inflater.inflate(R.layout.filter_button_tag, container, false);
+                t.setText(sizeFilterArray.get(i));
+                t.setSingleLine(true);
+                t.setSelected(true);
+                t.setTag(i);
+                t.setTextColor(getContext().getResources().getColor(R.color.button_text));
+                t.setBackground(getResources().getDrawable(R.drawable.filter_button));
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        ((Button)v).setTextColor(getContext().getResources().getColor(R.color.dialog_button_cancel));
+                        ((Button)v).setBackground(getResources().getDrawable(R.drawable.unselected_filter_button));
+                        filterButtonLayout.animate()
+                                .translationY(-100)
+                                .alpha(0.0f)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        filterButtonLayout.removeView(v);
+                                        filterButtonLayout.animate()
+                                                .translationY(0)
+                                                .alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                                int index = (int) v.getTag();
+                                                sizeFilterArray.set(index, "");
+                                                if(filterButtonLayout.getChildCount()==0){
+                                                    searchString = "";
+                                                    filterButtonLayout.setVisibility(View.GONE);
+                                                    isFilter = false;
+                                                    isSearch = false;
+                                                    loading = true;
+                                                    pageCount = 1;
+                                                    previousTotal = 0;
+                                                    refreshContent();
+                                                    return;
+                                                }
+//                                                    System.out.println("Child View Count: "+);
+                                                makeSearchString();
+                                                loading = true;
+                                                pageCount = 1;
+                                                previousTotal = 0;
+                                                refreshContent();
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
+                    }
+                });
+                filterButtonLayout.
+                        addView(t);
+            }
+
+
+            /**PopulateRATINGS*****************/
+            for (int i = 0; i < ratingsFilterArray.size(); i++) {
+                final Button t = (Button) inflater.inflate(R.layout.filter_button_tag, container, false);
+                t.setText(ratingsFilterArray.get(i));
+                t.setSingleLine(true);
+                t.setSelected(true);
+                t.setTag(i);
+                t.setTextColor(getContext().getResources().getColor(R.color.button_text));
+                t.setBackground(getResources().getDrawable(R.drawable.filter_button));
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        ((Button)v).setTextColor(getContext().getResources().getColor(R.color.dialog_button_cancel));
+                        ((Button)v).setBackground(getResources().getDrawable(R.drawable.unselected_filter_button));
+                        filterButtonLayout.animate()
+                                .translationY(-100)
+                                .alpha(0.0f)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        filterButtonLayout.removeView(v);
+                                        filterButtonLayout.animate()
+                                                .translationY(0)
+                                                .alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                                int index = (int) v.getTag();
+                                                ratingsFilterArray.set(index, "");
+                                                if(filterButtonLayout.getChildCount()==0){
+                                                    searchString = "";
+                                                    filterButtonLayout.setVisibility(View.GONE);
+                                                    isFilter = false;
+                                                    isSearch = false;
+                                                    loading = true;
+                                                    pageCount = 1;
+                                                    previousTotal = 0;
+                                                    refreshContent();
+                                                    return;
+                                                }
+//                                                    System.out.println("Child View Count: "+);
+                                                makeSearchString();
+                                                loading = true;
+                                                pageCount = 1;
+                                                previousTotal = 0;
+                                                refreshContent();
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
+                    }
+                });
+                filterButtonLayout.
+                        addView(t);
+            }
+        }
+        else{
+            filterButtonLayout.setVisibility(View.GONE);
+            loading = true;
+            pageCount = 1;
+            previousTotal = 0;
+        }
+    }
 
 
     // adding 10 object creating dymically to arraylist and updating recyclerview when ever we reached last item
@@ -389,14 +836,24 @@ public class HotDealsFragment extends Fragment {
         }
     }
 
+
+
+
     public class GetProductsCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
                 JSONObject mainObject  = null;
+                JSONObject obj = null;
                 JSONArray jsonArray = null;
                 if (isSearch){
-                    JSONObject obj = new JSONObject(response);
-                    itemCount.setVisibility(View.VISIBLE);
+                    obj = new JSONObject(response);
+                    if(isFilter){
+                        itemCount.setVisibility(View.GONE);
+                    }
+                    else{
+                        itemCount.setVisibility(View.VISIBLE);
+                    }
+
                     if(obj.getInt("status")==1){
 //                        itemCount.setText("We found "+obj.getInt("total_products")+" search results for '"+searchString+"'");
                         jsonArray = obj.getJSONArray("items");
@@ -408,7 +865,12 @@ public class HotDealsFragment extends Fragment {
                                     .show();
                         }
                         else{
-                            itemCount.setText("We found 0 search results for '"+searchString+"'");
+                            if(isFilter) {
+                                itemCount.setVisibility(View.GONE);
+                            }
+                            else{
+                                itemCount.setText("We found 0 search results for '" + searchString + "'");
+                            }
                             Snackbar.make(getActivity().findViewById(android.R.id.content), "No such object found", Snackbar.LENGTH_SHORT)
                                     .setActionTextColor(Color.RED)
                                     .show();
@@ -438,8 +900,13 @@ public class HotDealsFragment extends Fragment {
 //                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
                 int length = jsonArray.length();
                 if(isSearch){
-                    itemCount.setVisibility(View.VISIBLE);
-                    itemCount.setText("We found " + length + " search results for '" + searchString + "'");
+                    if(isFilter) {
+                        itemCount.setVisibility(View.GONE);
+                    }
+                    else{
+                        itemCount.setVisibility(View.VISIBLE);
+                        itemCount.setText("We found " + obj.getInt("total_items") + " search results for '" + searchString + "'");
+                    }
                 }
 
                 if(length>0){

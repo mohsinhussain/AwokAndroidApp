@@ -98,6 +98,9 @@ private DrawerLayout mDrawerLayout;
     ArrayList<String> tagsFilterArray = new ArrayList<String>();
     ArrayList<String> colorFilterArray = new ArrayList<String>();
     ArrayList<String> priceFilterArray = new ArrayList<String>();
+    ArrayList<String> brandFilterArray = new ArrayList<String>();
+    ArrayList<String> ratingFilterArray = new ArrayList<String>();
+    ArrayList<String> sizeFilterArray = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -341,7 +344,60 @@ private DrawerLayout mDrawerLayout;
         }
     }
 
+    @Override
+    public void addSize(String size) {
+        sizeFilterArray.add(size);
+        System.out.println("Add Size: "+size);
+    }
 
+    @Override
+    public void removeSize(String size) {
+        for(int i=0;i<sizeFilterArray.size();i++){
+            if(sizeFilterArray.get(i).equalsIgnoreCase(size))
+                sizeFilterArray.remove(i);
+        }
+        System.out.println("Remove Size: " + size);
+    }
+
+    @Override
+    public void addBrand(String brand) {
+        brandFilterArray.add(brand);
+        System.out.println("Add Rating: "+brand);
+    }
+
+    @Override
+    public void removeBrand(String brand) {
+        for(int i=0;i<brandFilterArray.size();i++){
+            if(brandFilterArray.get(i).equalsIgnoreCase(brand))
+                brandFilterArray.remove(i);
+        }
+        System.out.println("Remove Brand: " + brand);
+    }
+
+    @Override
+    public void addRating(String ratings) {
+        ratingFilterArray.add(ratings);
+        System.out.println("Add Rating: "+ratings);
+    }
+
+    @Override
+    public void removeRating(String ratings) {
+        for(int i=0;i<ratingFilterArray.size();i++){
+            if(ratingFilterArray.get(i).equalsIgnoreCase(ratings))
+                ratingFilterArray.remove(i);
+        }
+        System.out.println("Remove Rating: " + ratings);
+    }
+
+    @Override
+    public void resetAll() {
+        tagsFilterArray = new ArrayList<String>();
+        colorFilterArray = new ArrayList<String>();
+        priceFilterArray = new ArrayList<String>();
+        sizeFilterArray = new ArrayList<String>();
+        ratingFilterArray = new ArrayList<String>();
+        brandFilterArray = new ArrayList<String>();
+    }
 
     @Override
     public void addColor(String color) {
@@ -387,6 +443,8 @@ private DrawerLayout mDrawerLayout;
         }
         System.out.println("Remove Color: " + price);
     }
+
+
 
     public class logoutUserCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
@@ -469,7 +527,7 @@ private DrawerLayout mDrawerLayout;
 
         if (viewPager != null) {
             if(selectedTabIndex==0){
-                adapter.addFragment(new HotDealsFragment(null, colorFilterArray, tagsFilterArray, priceFilterArray, true), "All");
+                adapter.addFragment(new HotDealsFragment(null, colorFilterArray, tagsFilterArray, priceFilterArray, sizeFilterArray, brandFilterArray, ratingFilterArray,true, true), "All");
             }
             else{
                 adapter.addFragment(new HotDealsFragment(), "All");
@@ -481,7 +539,7 @@ private DrawerLayout mDrawerLayout;
 
             for (int i = 0; i < size; i++) {
                 if (selectedTabIndex == i+1) {
-                    adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId(), colorFilterArray, tagsFilterArray, priceFilterArray, true), categoriesArrayList.get(i).getName());
+                    adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId(), colorFilterArray, tagsFilterArray, priceFilterArray,sizeFilterArray, brandFilterArray, ratingFilterArray, true, true), categoriesArrayList.get(i).getName());
                 } else {
                     adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId()), categoriesArrayList.get(i).getName());
                 }
@@ -492,6 +550,7 @@ private DrawerLayout mDrawerLayout;
             adapter.notifyChangeInPosition(i);
         }
         adapter.notifyDataSetChanged();
+        selectedTabIndex = -1;
     }
 
     private void initializeData(){

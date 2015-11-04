@@ -120,7 +120,7 @@ private DrawerLayout mDrawerLayout;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_search, menu);
 
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);

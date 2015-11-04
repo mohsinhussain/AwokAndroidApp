@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/parentPanel"
+    android:padding="8dp"
+    android:background="@drawable/spec_cell_bg_unselected"
+    >
+
+  <!--  <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardBackgroundColor="@android:color/transparent"
+        card_view:cardElevation="0dp"
+        card_view:cardCornerRadius="1dp"
+        android:id="@+id/cv"
+        >-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/childLayout"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="80dp"
+                android:id="@+id/imageHolderLayout"
+                android:layout_gravity="center_horizontal">
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleSmall"
+                    android:id="@+id/load_progress_bar"
+                    android:indeterminateDrawable="@drawable/progress_bar_load_more"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:id="@+id/colorImageView"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/colorNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rose Gold"
+                android:layout_margin="8dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+   <!-- </android.support.v7.widget.CardView>-->
+
+</LinearLayout>

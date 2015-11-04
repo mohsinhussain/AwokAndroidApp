@@ -170,6 +170,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                Intent i = new Intent(ProductDetailsActivity.this, CheckOutActivity.class);
+//                i.putExtra(Constants.PRODUCT_ID_INTENT, productId);
+//                startActivity(i);
+
+
                 buyNow.setEnabled(false);
                 buyNow.setBackgroundColor(getResources().getColor(R.color.border));
                 buyNow.setTextColor(getResources().getColor(R.color.button_text));
@@ -598,7 +604,7 @@ descModel.add(descData);
                     prodRatingData.setRate(dataRating.getString("rate"));
                     prodRatingData.setUsername(dataRating.getString("username"));
                     prodRatingData.setDays(dataRating.getString("days"));
-                    prodORating.setMainText(dataRating.getString("content"));
+                    prodORating.setMainText (dataRating.getString("content"));
                     prodORating.setName(dataRating.getString("username"));
                     prodORating.setRating(dataRating.getString("rate"));
                     prodOverViewRating.add(prodORating);
@@ -658,7 +664,7 @@ descModel.add(descData);
                 shippingDeliveryFrag.call(returnPolicies, estimatedPrice, country, estimatedDays, shipFrom);
                 reviewsFragment.call(prodRating,productName,image,rating,ratingCount,boughtBy,savedBy);
                 productDescriptionFragment.call(descModel);
-                storeRatingFragment.call(storeRatingData,storeName,storeSum,storeAverage,storeImage,storeUrl);
+                storeRatingFragment.call(storeRatingData, storeName, storeSum, storeAverage, storeImage, storeUrl);
               //  productOverViewFragment.call(prodOverViewRating,productId, productName,image);
 
                 //mResources=

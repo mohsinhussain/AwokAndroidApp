@@ -25,6 +25,7 @@
             app:tabGravity="center"
             app:textAllCaps="false"
             app:tabMode="scrollable"
+            app:elevation="0dp"
             app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

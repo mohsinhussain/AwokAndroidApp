@@ -72,6 +72,11 @@
             android:name=".Activities.SubCategoriesActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
+            </activity>
+        <activity
+            android:name=".Activities.ProductOptionsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Activities.LauncherActivity"
@@ -140,6 +145,11 @@
         <activity
             android:name=".Activities.ProfileActivity"
             android:label="@string/title_activity_order_summary"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Activities.ShippingMethodActivity"
+            android:label="Shipping Method"
             android:screenOrientation="portrait" >
         </activity>
         <activity

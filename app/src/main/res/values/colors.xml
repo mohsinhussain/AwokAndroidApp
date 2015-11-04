@@ -6,6 +6,7 @@
     <color name="light_gray">#888888</color>
     <color name="border">#EEEEEE</color>
     <color name="primary">#f2f2f2</color>
+    <color name="transparent_primary">#bbf2f2f2</color>
     <color name="primary_dark">#bdbdbd</color>
     <color name="button_bg">#FF3823</color>
     <color name="button_text">#FFFFFF</color>

@@ -21,9 +21,11 @@ public class Constants {
     public static String USER_SETTING_COUNTRY="userCountryPrefs";
     public static String USER_COUNTRY_IMAGE_ID="userCountryImageIdPrefs";
     public static String USER_ID_PREFS = "userIdInPrefs";
+    public static String SHIPPING_METHOD_PREFS = "shippingMethodInPrefs";
     public static String USER_AUTH_TOKEN_PREFS = "userAuthorisationTokenInPrefs";
     public static String CAT_LIST_PREFS = "categoriesListInPrefs";
     public static String PRODUCT_ID_INTENT = "productId";
+    public static String QUANTITY_INTENT = "quantity";
     public static String PRODUCT_NAME_INTENT = "productName";
     public static String PRODUCT_DISCOUNT_PERCENTAGE_INTENT = "productDiscountPercentage";
     public static String PRODUCT_IMAGE_INTENT = "productImage";

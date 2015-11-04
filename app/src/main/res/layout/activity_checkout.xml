@@ -291,9 +291,9 @@ android:id="@+id/subtotal"
 
         android:layout_height="match_parent"
 
+        android:background="#fff"
 
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@drawable/shadow_background"
         android:scrollbars="none" />
 
 
@@ -312,9 +312,8 @@ android:id="@+id/subtotal"
 
 
 
-        android:paddingTop="8dp"
-        android:background="#fff"
-        android:layout_marginTop="8dp"
+        android:background="@drawable/shadow_background"
+        android:paddingTop="16dp"
         android:layout_below="@+id/overViewRecyclerView"
 
         android:layout_width="match_parent"

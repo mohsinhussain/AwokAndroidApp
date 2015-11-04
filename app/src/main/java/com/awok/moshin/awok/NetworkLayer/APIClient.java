@@ -49,7 +49,7 @@ public class APIClient {
 
     public void productsFromSearchAPICall(String searchFilter, int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/setti/api/search/index?"+searchFilter+"/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/setti/api/search/index?"+searchFilter+"&pages="+pageCount, "GET", null);
     }
 
     public void productsFromCategoryAPICall(String categoryId, int pageCount) {
@@ -135,6 +135,20 @@ public class APIClient {
 
     }
 
+    public void ProductSpecsAPICall(String productId) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/v1/products/5616592d3b90a7740b000080/getproductspecs", "GET", null);
+
+    }
+
+
+    public void ShippingsAPICall(String productId, String quantity, String locationId, String variantId) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/v1/shippings/"+productId+"/product-shippings?quantity="+quantity+"&location_id="+locationId, "GET", null);
+
+    }
+
+
     public void dynamicFiltersAPICall(String catId) {
         mTask = new AsyncTaskWithDialog();
         if (catId!=null){
@@ -206,7 +220,7 @@ public class APIClient {
                         context.getSharedPreferences(Constants.PREFS_NAME, 0));
 
                 String params = (String) parameters[PARAMS_INDEX];
-                Log.v(TAG, "URL: "+url);
+                System.out.println("URL: "+url);
 
                 if (parameters[METHOD_INDEX] == "POST") {
                         postResponse = client.post(url, params);

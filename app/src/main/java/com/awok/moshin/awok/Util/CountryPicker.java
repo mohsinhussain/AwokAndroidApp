@@ -74,6 +74,8 @@ public class CountryPicker extends DialogFragment implements
 				String allCountriesCode = readEncodedJsonString(getActivity());
 				
 				JSONArray countrArray = new JSONArray(allCountriesCode);
+
+				System.out.println("countryArray = "+allCountriesCode);
 				
 				for (int i = 0; i < countrArray.length(); i++) {
 					JSONObject jsonObject = countrArray.getJSONObject(i);

@@ -283,6 +283,8 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         }
 
 
+
+
 //
 //countButton.setOnClickListener(new View.OnClickListener() {
 //    @Override
@@ -304,15 +306,15 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
             }
         });*/
 
-share.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        //share();
-        Share(getShareApplication(),"Hello Text Share");
-    }
-});
-        return mView;
-    }
+    share.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //share();
+            Share(getShareApplication(),"Hello Text Share");
+        }
+    });
+            return mView;
+        }
 
     private void share() {
 

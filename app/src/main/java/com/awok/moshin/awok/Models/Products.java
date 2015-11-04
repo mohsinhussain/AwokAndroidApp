@@ -40,9 +40,9 @@ String rating;
 
     public int getImageHeight(Context mContext) {
         DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
-        int densityDpi = (int)(metrics.density * 160f);
-        Log.v("Products", "desnsity: " + densityDpi);
-        int dp = Math.round(imageHeight / (metrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+//        int densityDpi = (int)(metrics.density * 160f);
+//        Log.v("Products", "desnsity: " + densityDpi);
+//        int dp = Math.round(imageHeight / (metrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return imageHeight;
     }
 

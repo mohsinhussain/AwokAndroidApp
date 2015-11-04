@@ -59,7 +59,7 @@ import java.util.List;
         // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
-            return OverViewList.size();
+             return OverViewList.size();
         }
 
         // inner class to hold a reference to each item of RecyclerView
