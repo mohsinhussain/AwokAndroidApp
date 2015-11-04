@@ -11,7 +11,28 @@
         android:background="#eeeeee"
 
         android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/headLayMonth"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="October 2015"/>
+
+        </LinearLayout>
+
     <RelativeLayout
+        android:layout_below="@+id/headLayMonth"
         android:layout_marginBottom="1dp"
         android:background="#ffffff"
         android:layout_width="match_parent"
@@ -24,7 +45,7 @@
             android:textStyle="bold"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text=""
+            android:text="Or5der no"
             android:id="@+id/order_no" />
 
         <TextView
@@ -32,25 +53,52 @@
             android:layout_below="@id/order_no"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
+            android:text="Datwe"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:paddingBottom="10dp"
             android:id="@+id/date_time" />
+<LinearLayout
+    android:layout_below="@+id/date_time"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/imageView2"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/detailsarrow"
-            android:layout_centerVertical="true"
+
+
+
+
+    <TextView
+
+android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Status: Ready for Shipment"
+        android:gravity="center_vertical"
+        android:id="@+id/status"
+        android:layout_alignTop="@+id/button2"
+        android:layout_toLeftOf="@+id/button2"
+        android:layout_toStartOf="@+id/button2" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:text="Details"
+            android:background="@color/primary"
+
+            android:textColor="@color/red_base"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_alignParentRight="true"
-
-
+            android:id="@+id/button2"
              />
 
 
+
+</LinearLayout>
     </RelativeLayout>
     </RelativeLayout>
     <View
@@ -72,7 +120,7 @@ android:layout_below="@+id/head"
             android:layout_margin="1dp"
             android:background="#ffffff"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">ZZZ
+            android:layout_height="wrap_content">
 
 
             <FrameLayout

@@ -43,6 +43,7 @@ import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +78,7 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
             private RatingBar main_prodRatingBar;
             private TextView remove;
             public ImageView productImg;
-            public EditText quantity;
+            public TextView quantity;
             public ProgressBar loadProgressBar;
             public Button increment,decrement;
 
@@ -130,7 +131,7 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
                 newPrice=(TextView)itemLayoutView
                         .findViewById(R.id.newPrice);
                 loadProgressBar = (ProgressBar)itemLayoutView.findViewById(R.id.load_progress_bar);
-                quantity=(EditText)itemLayoutView
+                quantity=(TextView)itemLayoutView
                         .findViewById(R.id.quantity);
                 increment=(Button)itemLayoutView
                         .findViewById(R.id.quantity_inc);
@@ -222,7 +223,7 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
 //            View v = LayoutInflater.from(viewGroup.getContext())
 //                    .inflate(R.layout.order_summary_layout, viewGroup, false);
             View v = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.checkoutlayout, viewGroup, false);
+                    .inflate(R.layout.order_summary_layout, viewGroup, false);
             customView=v;
             return new ViewHolder(v);
         }

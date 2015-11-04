@@ -181,4 +181,12 @@ Introducing the world’s first 4K smartphone</string>
     <string name="err_msg_pin">Invalid PIN</string>
     <string name="err_msg_phone">Invalid Phone Number</string>
     <string name="discount">41%</string>
+    <string name="title_activity_order_summary_filter">OrderSummaryFilter</string>
+    <string name="title_activity_dispute">DisputeActivity</string>
+    <string name="placeDispute">Place Dispute</string>
+    <string name="modifyDispute">Modify Dispute</string>
+    <string name="productPopup">Please Select a Product</string>
+    <string name="title_activity_dispute_details">DisputeDetails</string>
+    <string name="title_activity_modify_dispute">ModifyDispute</string>
+    <string name="title_activity_dispute_list">DisputeList</string>
 </resources>

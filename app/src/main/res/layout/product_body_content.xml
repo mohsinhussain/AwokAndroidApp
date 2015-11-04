@@ -26,6 +26,8 @@
 
         <android.support.v4.view.ViewPager
             android:id="@+id/imageSlider"
+            app:layout_collapseMode="parallax"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:descendantFocusability="beforeDescendants"
@@ -41,7 +43,7 @@
 
 
         <RelativeLayout
-
+android:id="@+id/layMiddle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
@@ -364,7 +366,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="18 AED"
+                    android:text="20 AED"
                     android:layout_marginBottom="23dp"
                     android:textSize="12sp"/>
 

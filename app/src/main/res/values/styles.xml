@@ -77,13 +77,13 @@
 
 
     <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
-        <item name="tabPaddingStart">12dp</item>
-        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabPaddingStart">20dp</item>
+        <item name="tabPaddingEnd">20dp</item>
 
-        <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
+
         <item name="tabIndicatorColor">@color/button_bg</item>
         <item name="tabIndicatorHeight">3dp</item>
-        <item name="tabBackground">@color/tab_background</item>
+
         <item name="tabSelectedTextColor">@color/header_text</item>
     </style>
 
@@ -94,3 +94,5 @@
 
 
 </resources>
+<!--  <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
+<item name="tabBackground">@color/primary</item>-->

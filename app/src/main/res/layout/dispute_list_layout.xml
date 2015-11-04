@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:id="@+id/mainLay">
+
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:background="#eeeeee"
+
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/headLayMonth"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="October 2015"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/footerLay"
+            android:layout_below="@+id/headLayMonth"
+            android:layout_marginBottom="1dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Or5der no"
+                android:id="@+id/order_no" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_below="@id/order_no"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Datwe"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+
+                android:id="@+id/date_time" />
+
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_below="@id/date_time"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Datwe"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/priceDetails" />
+
+            <LinearLayout
+                android:id="@+id/statusTxt"
+                android:layout_below="@+id/priceDetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+
+
+
+                <TextView
+
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Status: Ready for Shipment"
+                    android:gravity="center_vertical"
+                    android:id="@+id/status"
+                    android:layout_alignTop="@+id/button2"
+                    android:layout_toLeftOf="@+id/button2"
+                    android:layout_toStartOf="@+id/button2" />
+
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/statusTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+
+                <Button
+                    android:visibility="gone"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:text="Modify"
+                    android:background="#8ac007"
+
+                    android:textColor="#FFFFFF"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/button"
+                    />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:text="Escalate"
+                    android:background="#FF9900"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/button2"
+                    />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:text="Cancel"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/red_base"
+                    android:layout_weight="1"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/button3"
+                    />
+
+
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <View
+        android:layout_below="@+id/head"
+        android:layout_width="fill_parent"
+        android:background="#eeeeee"
+        android:layout_height="1dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#eeeeee"
+        android:layout_below="@+id/head"
+        android:visibility="gone"
+        android:id="@+id/secondLay"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:visibility="gone"
+            android:layout_margin="1dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageHolderLayout" >
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleSmall"
+                    android:id="@+id/load_progress_bar"
+                    android:indeterminateDrawable="@drawable/progress_bar_load_more"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    />
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:id="@+id/mainImg"
+                    android:src="@drawable/test"
+                    android:scaleType="fitCenter"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp" />
+            </FrameLayout>
+
+
+
+
+
+            <TextView
+                android:id="@+id/productTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+
+                android:text="title"
+                android:textColor="#222"
+
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_alignTop="@+id/imageHolderLayout"
+                android:layout_toRightOf="@+id/imageHolderLayout" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+
+                android:layout_marginRight="5dp"
+
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="description"
+                android:textColor="#666"
+                android:textStyle="bold"
+                android:textSize="15dp"
+
+
+                android:layout_alignBottom="@+id/sellerName"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Qty : "
+                android:id="@+id/quantity_label"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/productTitle"
+                android:layout_toRightOf="@+id/imageHolderLayout"
+                android:layout_toEndOf="@+id/imageHolderLayout" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="5dp"
+
+                android:textColor="#333333"
+
+
+                android:gravity="center"
+                android:text="cool"
+
+
+                android:id="@+id/quantity"
+
+                android:layout_alignTop="@+id/quantity_label"
+                android:layout_toRightOf="@+id/quantity_label"
+                android:layout_toEndOf="@+id/quantity_label" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Seller :"
+                android:id="@+id/seller_label"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/quantity_label"
+
+                android:layout_toRightOf="@+id/imageHolderLayout"
+                android:layout_toEndOf="@+id/imageHolderLayout" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="5dp"
+
+                android:textColor="#333333"
+
+
+
+
+                android:gravity="center"
+                android:text="cool"
+
+
+                android:id="@+id/sellerName"
+
+                android:layout_alignTop="@+id/seller_label"
+                android:layout_toRightOf="@+id/seller_label"
+                android:layout_toEndOf="@+id/seller_label" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/secondLay"
+        android:id="@+id/totalLay"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:background="#eeeeee"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:visibility="gone"
+            android:layout_margin="1dp"
+            android:background="#f1f1f1"
+            android:gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentRight="true"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Order No. #93994"
+                android:id="@+id/total" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_below="@id/total"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="placed on september 29 2015"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/shipping" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

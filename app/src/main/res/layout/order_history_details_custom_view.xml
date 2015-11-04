@@ -2,15 +2,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_marginRight="8dp"
+
     android:background="#FFFFFF"
-    android:layout_marginLeft="8dp"
-    android:layout_height="match_parent"
+
+    android:layout_height="wrap_content"
     >
 
     <RelativeLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <FrameLayout
@@ -53,15 +54,30 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_alignTop="@+id/imageHolderLayout"
             android:layout_toRightOf="@+id/imageHolderLayout" />
+        <LinearLayout
+            android:id="@+id/priceLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:layout_below="@+id/OverViewTitle"
+            android:layout_alignParentRight="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
+            android:text="Medium "
+            android:layout_marginRight="5dp"
+            android:id="@+id/quantity"
+             />
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-android:layout_marginTop="10dp"
 
 
-            android:textAppearance="?android:attr/textAppearanceMedium"
+
+
             android:text="description"
             android:textColor="@color/primary"
 
@@ -69,21 +85,10 @@ android:layout_marginTop="10dp"
 
 
 
-            android:layout_below="@+id/OverViewTitle"
-            android:layout_toRightOf="@+id/imageHolderLayout"
-            android:layout_toEndOf="@+id/imageHolderLayout" />
+             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:layout_marginLeft="5dp"
-            android:id="@+id/quantity"
-            android:layout_alignBottom="@+id/price"
-            android:layout_toRightOf="@+id/price"
-            android:layout_toEndOf="@+id/price" />
 
+        </LinearLayout>
 
         <!--<TextView
             android:layout_width="wrap_content"
@@ -110,9 +115,133 @@ android:layout_marginTop="10dp"
              android:layout_below="@+id/OverViewTitle"
              android:layout_alignLeft="@+id/OverViewTitle"
              android:layout_alignStart="@+id/OverViewTitle" />-->
+<LinearLayout
+    android:id="@+id/seller"
+    android:layout_alignParentRight="true"
+    android:layout_width="wrap_content"
+    android:layout_below="@+id/priceLay"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
+
+
+
+<TextView
+    android:id="@+id/sellerTxt"
+    android:padding="5dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Seller"
+
+
+    />
+
+
+
+
+
+
+</LinearLayout>
+        <LinearLayout
+            android:id="@+id/shipping"
+android:layout_below="@+id/seller"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+
+
+            <TextView
+
+                android:id="@+id/shipTxt"
+                android:text="ship"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/delivery"
+            android:gravity="right"
+            android:layout_below="@+id/shipping"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+
+
+            <TextView
+android:layout_gravity="left"
+                android:id="@+id/delTxt"
+                android:text="Delivery Estimate"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+
+                android:padding="5dp"
+                android:text="Nov 13 2015 - Dec 12 2015"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+
+
+        </LinearLayout>
     </RelativeLayout>
+
+        <LinearLayout
+
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
+
+            android:layout_width="fill_parent"
+            android:gravity="center"
+            android:background="@color/primary"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_below="@+id/mainLayout">
+
+            <TextView
+                android:id="@+id/shippingTracking"
+                android:gravity="right|center_vertical"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:textSize="14sp"
+                android:background="#0000"
+                android:text="Shipping Tracking" />
+
+            <ImageView
+                android:gravity="left|center_vertical"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="14dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="14dp"
+                android:clickable="false"
+                android:background="#0000"
+                android:src="@drawable/detailsarrow"/>
+        </LinearLayout>
+
+
 
     <!--   <RelativeLayout
            android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
@@ -74,13 +75,14 @@ import java.util.List;
 /**
  * Created by shon on 9/10/2015.
  */
-public class ProductOverViewFragment extends Fragment{
+public class ProductOverViewFragment extends Fragment  {
 private RatingBar ratingMain;
     private RecyclerView mRecyclerView;
 
     private RecyclerView.Adapter mAdapter;
     private ScrollView scroll;
-
+    RelativeLayout middle;
+    private int lastTopValue = 0;
     //private RecyclerView.LayoutManager mLayoutManager;
 
     ProductDetailsModel productModel = new ProductDetailsModel();
@@ -149,6 +151,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         scroll=(ScrollView)mView.findViewById(R.id.nestedScroll);
         countText=(TextView)mView.findViewById(R.id.countText);
         estArrival=(TextView)mView.findViewById(R.id.estimatedArrival);
+        middle=(RelativeLayout)mView.findViewById(R.id.layMiddle);
 
                 estShipping=(TextView)mView.findViewById(R.id.estimatedShipping);
 
@@ -345,7 +348,15 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
     }
 
-
+    /*@Override
+    public void onScroll(RelativeLayout view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        Rect rect = new Rect();
+        viewPager.getLocalVisibleRect(rect);
+        if (lastTopValue != rect.top) {
+            lastTopValue = rect.top;
+            viewPager.setY((float) (rect.top / 2.0));
+        }
+    }*/
 
 
     private void Share(List<String> PackageName,String Text) {
