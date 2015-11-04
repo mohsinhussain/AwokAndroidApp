@@ -2,6 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.awok.moshin.awok.Activities.OrderHistory">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item
+        android:id="@+id/app_cart"
+        app:showAsAction="always|collapseActionView"
+
+        android:icon="@drawable/filter_icon"
+        android:title="Filter" />
 </menu>

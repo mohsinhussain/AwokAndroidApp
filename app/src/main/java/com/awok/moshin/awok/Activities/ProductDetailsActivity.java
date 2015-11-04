@@ -417,6 +417,18 @@ public void setUpTab()
                 Intent i = new Intent(ProductDetailsActivity.this, CheckOutActivity.class);
                 startActivity(i);
             }
+
+
+            case R.id.badge:
+            {
+                Intent i = new Intent(ProductDetailsActivity.this, DisputeList.class);
+                i.putExtra("user_id","55f6a9462f17f64a9b5f5ce4");
+                startActivity(i);
+            }
+
+
+
+
         }
 
         return super.onOptionsItemSelected(item);

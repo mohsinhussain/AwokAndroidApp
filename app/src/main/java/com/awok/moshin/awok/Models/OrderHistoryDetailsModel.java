@@ -12,6 +12,9 @@ public class OrderHistoryDetailsModel {
     private String title;
     private String    orderTime;
     private String delTime;
+    private String seller;
+    private String shipping;
+    private String shippingStatus;
 
 
     public OrderHistoryDetailsModel()
@@ -19,12 +22,16 @@ public class OrderHistoryDetailsModel {
 
     }
 
-    public OrderHistoryDetailsModel(String image, String price,String quantity,String title) {
+    public OrderHistoryDetailsModel(String image, String price,String quantity,String title,String seller, String shipping,String shippingStatus,String delTime) {
         this.image = image;
         this.price = price;
         this.quantity=quantity;
         this.title=title;
         this.orderTime=orderTime;
+        this.delTime=delTime;
+        this.seller=seller;
+        this.shipping=shipping;
+        this.shippingStatus=shippingStatus;
         this.delTime=delTime;
 
 
@@ -92,6 +99,64 @@ public class OrderHistoryDetailsModel {
     public String getTitle()
     {
         return title;
+    }
+
+
+
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+
+
+
+
+
+    public String getSeller()
+    {
+        return seller;
+    }
+
+
+
+
+    public void setShipping(String shipping) {
+        this.shipping = shipping;
+    }
+
+
+
+
+
+
+    public String getShipping()
+    {
+        return shipping;
+    }
+
+    public void setShippingStatus(String shippingStatus) {
+        this.shippingStatus = shippingStatus;
+    }
+
+
+
+
+
+
+
+    public String getShippingStatus()
+    {
+        return shippingStatus;
+    }
+
+    public void setDelTime(String delTime) {
+        this.delTime = delTime;
+    }
+
+    public String getDelTime()
+    {
+        return delTime;
     }
 
 /*    public void setOrderTime(String orderTime) {

@@ -48,6 +48,9 @@ public class OrderHistory extends AppCompatActivity {
     ProgressBar progressBar;
     private TextView errorText;
     private Spinner spinnerOrder,statusAll;
+    private String id="";
+            private String from="";
+    private String to="";
     private LinearLayout mainLay;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderHistoryModel> orderHistoryData = new ArrayList<OrderHistoryModel>();
@@ -63,7 +66,7 @@ progressBar=(ProgressBar)findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
 
 mainLay=(LinearLayout)findViewById(R.id.bottomLay);
-        mainLay.setVisibility(View.GONE);
+      //  mainLay.setVisibility(View.GONE);
 
         spinnerOrder = (Spinner) findViewById(R.id.orderStatus);
         statusAll = (Spinner) findViewById(R.id.showall);
@@ -147,7 +150,7 @@ errorText=(TextView)findViewById(R.id.error_text);
                 new APIClient(getApplicationContext(), getApplicationContext(),  new GetProductsCallback()).allProductsAPICall(pageCount);
             }
             else{*/
-            new APIClient(this, getApplicationContext(),  new GetHistoryCallback()).OrderHistoryItemsCallBack("55f6a9462f17f64a9b5f5ce4");
+            new APIClient(this, getApplicationContext(),  new GetHistoryCallback()).OrderHistoryItemsCallBack("55f6a9462f17f64a9b5f5ce4",id,from,to);
             // }
 
         } else {
@@ -180,6 +183,17 @@ errorText=(TextView)findViewById(R.id.error_text);
                 onBackPressed();
                 return true;
 
+
+
+            case R.id.app_cart:
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                Intent i=new Intent(OrderHistory.this,OrderSummaryFilter.class);
+                startActivityForResult(i, 1);
+
+                return true;
+
+
+
           /*  case R.id.app_cart:
             {
 
@@ -198,29 +212,46 @@ errorText=(TextView)findViewById(R.id.error_text);
     public class GetHistoryCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
-
+orderHistoryData.clear();
                 System.out.println(response);
                 JSONObject jsonObjectData;
                 jsonObjectData=new JSONObject(response);
-JSONArray data=jsonObjectData.getJSONArray("data");
+                System.out.println(jsonObjectData.toString());
+                JSONObject dataJson=jsonObjectData.getJSONObject("data");
+JSONArray data=dataJson.getJSONArray("grouped_orders");
 
-                System.out.println(jsonObjectData.getJSONArray("data").length());
+//                System.out.println(jsonObjectData.getJSONArray("data").length());
 //orderCount.setText("Your Last "+jsonObjectData.getJSONArray("data").length()+" Orders");
-                for(int i=0;i<jsonObjectData.getJSONArray("data").length();i++)
-                {
+                for(int i=0;i<data.length();i++) {
                     //JSONArray jsonArrayData=jsonObjectData.getJSONArray("data");
-                    JSONObject jsonCart=jsonObjectData.getJSONArray("data").getJSONObject(i);
-                    System.out.println(jsonObjectData.getJSONArray("data").getJSONObject(i).getJSONArray("cart").toString());
-                    OrderHistoryModel orderData=new OrderHistoryModel();
-                    orderData.setOrderId(jsonCart.getString("_id"));
-                    //orderData.setPrice(jsonObjectData.getString("price"));
-                    orderData.setOrderNo(jsonCart.getString("number"));
-                    orderData.setDateTime(jsonCart.getString("time_created_unix"));
-                    orderHistoryData.add(orderData);
-                    //JSONObject jsonObjData=jsonObjectData.getJSONObject(jsonArrayData);
-                    //for(int j=0;j<jsonArrayData.getJSONArray("cart").length();j++)
+                    JSONObject jsonCart=data.getJSONObject(i);
+                  //  System.out.println(jsonObjectData.getJSONArray("data").getJSONObject(i).getJSONArray("cart").toString());
 
+                  //  orderData.setIsHeader(true);
+                    for(int j=0;j<jsonCart.getJSONArray("orders").length();j++) {
+                        OrderHistoryModel orderData=new OrderHistoryModel();
 
+                        orderData.setHeader(jsonCart.getString("timeframe"));
+JSONObject jsonOrders=jsonCart.getJSONArray("orders").getJSONObject(j);
+                        orderData.setOrderId(jsonOrders.getString("_id"));
+                        //orderData.setPrice(jsonObjectData.getString("price"));
+                        orderData.setOrderNo(jsonOrders.getString("number"));
+                        orderData.setDateTime(jsonOrders.getString("time_created_unix"));
+                        if (j==0)
+                        {
+                            System.out.println("SHOW");
+                            orderData.setIsHeader(true);
+                        }
+                        else
+                        {
+                            System.out.println("SHOW NO");
+                            orderData.setIsHeader(false);
+                        }
+                        orderHistoryData.add(orderData);
+                        //JSONObject jsonObjData=jsonObjectData.getJSONObject(jsonArrayData);
+                        //for(int j=0;j<jsonArrayData.getJSONArray("cart").length();j++)
+
+                    }
 
 
                     /*for(int j=0;j<jsonCart.getJSONArray("cart").length();j++)
@@ -239,7 +270,8 @@ JSONArray data=jsonObjectData.getJSONArray("data");
 
                     }*/
 
-System.out.println("CARE"+orderHistoryData.toString());
+                    System.out.println("CARE" +orderHistoryData.toString());
+                   // System.out.println("CARE" +orderData.toString());
 
 
 
@@ -252,7 +284,7 @@ System.out.println("CARE"+orderHistoryData.toString());
                    // progressBar.startAnimation(animation);
                 }
                 progressBar.setVisibility(View.GONE);
-                mainLay.setVisibility(View.VISIBLE);
+                //mainLay.setVisibility(View.VISIBLE);
                 //initializeData();
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
@@ -292,6 +324,51 @@ System.out.println("CARE"+orderHistoryData.toString());
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         finish();
         startActivity(i);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && data != null) {
+            if (data.getExtras().containsKey("statusId")) {
+                System.out.println("Status" + data.getExtras().getString("statusId").toString());
+                id = data.getExtras().getString("statusId").toString();
+
+            }
+            if (data.getExtras().containsKey("From")) {
+                System.out.println("From" + data.getExtras().getString("From").toString());
+                from = data.getExtras().getString("From").toString();
+            }
+            if (data.getExtras().containsKey("To")) {
+
+
+                System.out.println("To" + data.getExtras().getString("To").toString());
+                to = data.getExtras().getString("To").toString();
+
+
+            }
+            ConnectivityManager connMgr = (ConnectivityManager)
+                    getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+            /*if(categoryId==null){
+                new APIClient(getApplicationContext(), getApplicationContext(),  new GetProductsCallback()).allProductsAPICall(pageCount);
+            }
+            else{*/
+                new APIClient(this, getApplicationContext(),  new GetHistoryCallback()).OrderHistoryItemsCallBack("55f6a9462f17f64a9b5f5ce4",id,from,to);
+                // }
+
+            } else {
+                Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED)
+                        .show();
+                errorText.setVisibility(View.VISIBLE);
+            }
+        }
+        if (resultCode == RESULT_CANCELED)
+        {
+
+        }
     }
 
 }

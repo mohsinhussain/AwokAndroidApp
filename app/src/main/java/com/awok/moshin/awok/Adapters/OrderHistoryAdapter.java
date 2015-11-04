@@ -55,7 +55,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     private List<OrderHistoryModel> orderHistoryData = new ArrayList<OrderHistoryModel>();
     private Activity activity;
     View customView;
-
+    private final int SHOW_HEADER=0,NO_SHOW=1;
     private ArrayAdapter<CharSequence> adapter;
     NetworkInfo networkInfo;
     Context context;
@@ -107,6 +107,35 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 /*
         if(orderCheck.equals(orderHistoryData.get(position).getOrderId()))
         {*/
+
+
+
+
+        /*switch (viewHolder.getItemViewType()) {
+
+
+            case SHOW_HEADER:
+
+                viewHolder.headLayMonth.setVisibility(View.VISIBLE);
+
+                break;
+
+
+            case NO_SHOW:
+                viewHolder.headLayMonth.setVisibility(View.GONE);
+                break;
+        }*/
+System.out.println("ISHEADER" + orderHistoryData.get(position).getIsHeader());
+
+if (orderHistoryData.get(position).getIsHeader())
+{
+    viewHolder.headLayMonth.setVisibility(View.VISIBLE);
+}
+        else
+{
+    viewHolder.headLayMonth.setVisibility(View.GONE);
+}
+
 
 //viewHolder.main.setVisibility(View.GONE);
             //viewHolder.totalLay.setVisibility(View.GONE);
@@ -163,6 +192,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         public ImageView image;
         private RelativeLayout main,totalLay;*/
         TextView orderNo,dateTime;
+        LinearLayout headLayMonth;
 
 
 
@@ -205,6 +235,8 @@ main=(RelativeLayout)itemLayoutView
                     .findViewById(R.id.order_no);
             dateTime = (TextView) itemLayoutView
                     .findViewById(R.id.date_time);
+            headLayMonth=(LinearLayout)itemLayoutView
+                    .findViewById(R.id.headLayMonth);
 
         }
         @Override
@@ -229,7 +261,36 @@ main=(RelativeLayout)itemLayoutView
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 
     }
+    @Override
+    public int getItemViewType(int position) {
+        /*Log.v("Checkout adapter", "SellerLabel: "+OverViewList.get(position).getSellerLabel()+"   Seller Check: "+sellerCheck);
+        if (OverViewList.get(position).getSellerLabel().equalsIgnoreCase(sellerCheck)) {
+            Log.v("Checkout adapter", "case: WITH for position: "+position);
+            if(index==position){
+                return ITEM_WITHOUT_SELLER;
+            }
+            return ITEM_WITH_Seller;
+        }
+        else{
+            Log.v("Checkout adapter", "case: WITH for position: "+position);
+            index = position;
+            return ITEM_WITHOUT_SELLER;
+        }*/
+        if(orderHistoryData.get(position).getIsHeader())
 
+        {
+            System.out.println("SHOW");
+return SHOW_HEADER;
+        }
+
+
+        else
+        {
+            System.out.println("NO SHOW");
+return NO_SHOW;
+        }
+
+    }
 public String date(String date)
 {
 

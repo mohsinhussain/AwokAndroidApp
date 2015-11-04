@@ -176,6 +176,7 @@ private DrawerLayout mDrawerLayout;
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setBackgroundColor(getResources().getColor(R.color.primary));
         tabLayout.setTabTextColors(getResources().getColor(R.color.normal_text), getResources().getColor(R.color.header_text));
 
 //        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -265,7 +266,9 @@ private DrawerLayout mDrawerLayout;
 
 
                     case R.id.navigation_settings:
-                        Intent k=new Intent(MainActivity.this,Settings.class);
+                        /*Intent k=new Intent(MainActivity.this,Settings.class);
+                        startActivity(k);*/
+                        Intent k=new Intent(MainActivity.this,DisputeActivity.class);
                         startActivity(k);
                         mDrawerLayout.closeDrawers();
                         return true;

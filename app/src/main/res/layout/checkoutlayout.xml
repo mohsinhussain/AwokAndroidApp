@@ -204,7 +204,7 @@
             android:textColor="#333333"
 
             android:cursorVisible="true"
-android:maxLength="2"
+android:maxLength="3"
 
             android:imeActionLabel="Update"
             android:gravity="center"

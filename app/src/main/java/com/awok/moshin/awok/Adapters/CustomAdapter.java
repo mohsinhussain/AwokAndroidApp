@@ -31,6 +31,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -493,6 +494,7 @@ customView=v;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 System.out.println("BEFOR CHANGED");
+
                 //valueQuantity=viewHolder.quantity.getText().toString();
 //viewHolder.quantity.setText("");
 
@@ -507,10 +509,10 @@ customView=v;
             @Override
             public void afterTextChanged(Editable s) {
                 System.out.println("AFTER CHANGED");
-        /*if (viewHolder.quantity.getText().toString().equals("0"))
+        if (viewHolder.quantity.getText().toString().equals("0"))
         {
             viewHolder.quantity.setText("1");
-        }*/
+        }
             }
         });
         viewHolder.quantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -520,7 +522,7 @@ customView=v;
 
                 if (!hasFocus) {
                     if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
-                        viewHolder.quantity.setText("1");
+                        viewHolder.quantity.setText(valueQuantity);
                     }
                 }
             }
@@ -696,9 +698,28 @@ customView=v;
     public int getItemCount() {
         return mDataSet.size();
     }
+    /*@Override
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            // Do your thing.
+            return true;  // So it is not propagated.
+        }
+        return dispatchKeyEvent(event);
+    }
+    @Override
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+            Toast.makeText(activity_main, "BACK", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onKeyPreIme(keyCode, event);
+    }*/
 
 
-
+/*public void onBackPressed() {
+    // It's expensive, if running turn it off.
+    System.out.println("fdjhzdj");
+}*/
     public void remove(Checkout item) {
         int position = mDataSet.indexOf(item);
         mDataSet.remove(position);
@@ -770,4 +791,11 @@ customView=v;
             //progressBar.setVisibility(View.VISIBLE);
         }
     }
+
+
+
+
+
+
+
 }

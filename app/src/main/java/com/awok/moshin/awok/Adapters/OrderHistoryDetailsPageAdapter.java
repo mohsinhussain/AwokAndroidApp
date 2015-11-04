@@ -137,9 +137,11 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
 
 
         viewHolder.price.setText(orderHistoryDetailsData.get(position).getPrice() + " AED");
-        viewHolder.quantity.setText("X "+orderHistoryDetailsData.get(position).getQuantity());
-        System.out.print("dchkj" + orderHistoryDetailsData.get(position).getPrice()+ " AED");
+        viewHolder.quantity.setText(orderHistoryDetailsData.get(position).getQuantity()+"X ");
+
         viewHolder.title.setText(orderHistoryDetailsData.get(position).getTitle());
+        viewHolder.seller.setText(orderHistoryDetailsData.get(position).getShipping());
+        viewHolder.shipping.setTag(orderHistoryDetailsData.get(position).getTitle());
 
       /*  }
         else {
@@ -179,7 +181,7 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
         /*public TextView title,quantity,seller,price,totalPrice,shipping;
         public ImageView image;
         private RelativeLayout main,totalLay;*/
-        TextView price,quantity,title;
+        TextView price,quantity,title,seller,shipping;
         ImageView image;
         ProgressBar loadProgressBar;
 
@@ -199,6 +201,10 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
                     .findViewById(R.id.quantity);
             title=(TextView)itemLayoutView
                     .findViewById(R.id.OverViewTitle);
+            seller=(TextView)itemLayoutView
+                    .findViewById(R.id.sellerTxt);
+            shipping=(TextView)itemLayoutView
+                    .findViewById(R.id.shippingTracking);
 
         }
         @Override

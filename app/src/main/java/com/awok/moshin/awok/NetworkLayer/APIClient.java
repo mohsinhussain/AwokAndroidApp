@@ -124,9 +124,9 @@ public class APIClient {
         mTask.execute(mContext, "http://market1.awok/khalid/api/order/", "POST", dataToSend);
     }
 
-    public void OrderHistoryItemsCallBack(String userId) {
+    public void OrderHistoryItemsCallBack(String userId,String id,String from,String to) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+userId+"/my-orders/", "GET", null);
+        mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+userId+"/my-orders/?"+"status=&date_from="+from+"&date_to="+to, "GET", null);
     }
 
     public void OrderHistoryDetailsItemsCallBack(String orderId) {
@@ -185,6 +185,36 @@ public class APIClient {
     public void addAddressAPICall(String userId, String dataToSend) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/setti/api/addresses/index/"+userId, "POST", dataToSend);
+    }
+
+    public void orderStatusCallBack() {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/khalid/api/order-status/", "GET", null);
+    }
+
+    public void disputeOpenCallBack(String cartId,String dataToSend) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/v1/disputes/"+cartId+"/open", "POST", dataToSend);
+    }
+
+    public void disputeDetailsCallBack(String cart_id) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/v1/disputes/"+cart_id+"/get", "GET", null);
+    }
+
+    public void disputeModifyCallBack(String cartId, String s) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/v1/disputes/"+cartId+"/edit", "PUT", s);
+    }
+
+    public void disputeCancelCallBack(String disputeId) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/v1/disputes/"+disputeId+"/canceldispute", "PUT", null);
+    }
+
+    public void DisputeListCallBack(String s) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/v1/disputes/"+s+"/disputeList", "GET", null);
     }
 
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {

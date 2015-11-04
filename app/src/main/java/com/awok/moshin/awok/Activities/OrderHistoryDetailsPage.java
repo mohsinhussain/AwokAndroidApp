@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -43,7 +44,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class OrderHistoryDetailsPage extends AppCompatActivity {
@@ -52,22 +55,42 @@ private String orderId;
     private TextView error;
     private RelativeLayout mainLay;
     ProgressBar progressBar;
+    private Button disputeOpen;
     private RecyclerView.Adapter mAdapter;
     private TextView orderTime,delTime,orderStatus,shippingAmount,totalAmount,sellerStore,sellerName;
-
+    HashMap<String,String> productUniqueId;
     //private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderHistoryDetailsModel> orderHistoryDetailsData = new ArrayList<OrderHistoryDetailsModel>();
-
+private  String cart_id,status,price,orderDisputeId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history_details_page);
-
+//        productUniqueId.clear();
         mRecyclerView = (RecyclerView) findViewById(R.id.overViewRecyclerView);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressBar.setVisibility(View.GONE);
-
+disputeOpen=(Button)findViewById(R.id.disputeButton);
+        disputeOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(OrderHistoryDetailsPage.this,DisputeActivity.class);
+                i.putExtra("id",orderDisputeId);
+                i.putExtra("cartId",cart_id);
+                i.putExtra("uniqueId",productUniqueId);
+                for (Map.Entry<String,String> entry : productUniqueId.entrySet()) {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    System.out.println("Before Sending: "+key+ " "+value+"\n");
+                    // do stuff
+                }
+                i.putExtra("price",price);
+                i.putExtra("status",status);
+                startActivity(i);
+            }
+        });
 orderId=getIntent().getExtras().getString("OrderId");
+        System.out.println("ORDER" + orderId);
 
     orderTime=(TextView)findViewById(R.id.orderTimeDate);
         delTime=(TextView)findViewById(R.id.delTimeDate);
@@ -81,12 +104,11 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
         mainLay.setVisibility(View.GONE);
 
 
+        mRecyclerView.setNestedScrollingEnabled(true);
+        // mRecyclerView.hasNestedScrollingParent();
         mRecyclerView.setHasFixedSize(false);
 
-        // use a linear layout manager
-        //mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,true);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
 
         mAdapter = new OrderHistoryDetailsPageAdapter(OrderHistoryDetailsPage.this,orderHistoryDetailsData);
         //mRecyclerView.setAdapter(mAdapter);
@@ -189,6 +211,7 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
                     //JSONArray jsonArrayData=jsonObjectData.getJSONArray("data");
                     JSONObject jsonCart = jsonObjectData.getJSONObject("data");
                 System.out.println(jsonCart.toString());
+                productUniqueId=new HashMap<>();
                     for(int j=0;j<jsonCart.getJSONArray("cart").length();j++) {
                         JSONObject jsonCartData = jsonCart.getJSONArray("cart").getJSONObject(j);
 
@@ -198,17 +221,23 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
                         orderData.setPrice(jsonCartData.getString("total_price"));
                         orderData.setQuantity(jsonCartData.getString("quantity"));
                         orderData.setTitle(jsonCartData.getString("product_name"));
+                        orderData.setSeller(jsonCartData.getString("seller_name"));
+                        orderData.setShipping(jsonCartData.getString("seller_name"));
+                        orderData.setShippingStatus(jsonCartData.getString("seller_name"));
+                                orderData.setDelTime(jsonCartData.getString("seller_name"));
                         /*orderData.setOrderTime(jsonCartData.getString("time_created_unix"));
                         orderData.setDelTime(jsonCartData.getString("time_updated_unix"));*/
                         orderTime.setText(date(jsonCartData.getString("time_created_unix")));
                         delTime.setText(date(jsonCartData.getString("time_updated_unix")));
+                        productUniqueId.put(jsonCartData.getString("product_name"), jsonCartData.getString("_id"));
 
-
-                        totalAmount.setText((jsonCart.getString("price"))+" AED");
+                        totalAmount.setText((jsonCart.getString("price")) + " AED");
 
                         sellerName.setText(jsonCartData.getString("seller_name"));
-
-
+ cart_id=jsonCart.getString("_id");
+                        status=jsonCart.getString("status");
+                        price=jsonCart.getString("price");
+                        orderDisputeId=jsonCart.getString("number");
 
                         orderHistoryDetailsData.add(orderData);
                         System.out.println(orderHistoryDetailsData.toString());

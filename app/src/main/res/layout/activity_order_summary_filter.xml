@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#eeeeee"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_content"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <!--<android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginStart="48dp"
+                app:expandedTitleMarginEnd="64dp">-->
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                android:theme="@style/GalaxyZooThemeToolbarDarkOverflow"
+                app:layout_scrollFlags="scroll|enterAlways"/>
+
+            <!--</android.support.design.widget.CollapsingToolbarLayout>-->
+        </android.support.design.widget.AppBarLayout>
+
+
+
+
+        <!--
+                android:layout_marginLeft="8dp"
+        -->
+
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+
+
+
+    <LinearLayout
+        android:layout_below="@+id/main_content"
+        android:id="@+id/byDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+
+
+<TextView
+    android:padding="5dp"
+    android:background="@color/primary"
+    android:id="@+id/dateBy"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="By Date" />
+
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+android:layout_below="@+id/byDate"
+        android:id="@+id/bottomLay"
+        android:background="#FFFFFF"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical">
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+
+
+
+
+    <TextView
+        android:layout_weight="1"
+        android:text="From"
+
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+
+        android:layout_weight="1"
+        android:layout_margin="20dp"
+        android:text="To"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+</LinearLayout>
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:background="@color/border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:paddingLeft="10dp"
+            android:layout_margin="1dp"
+            android:background="#FFFFFF"
+
+            android:drawableRight="@drawable/arrowspinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+android:text="dfjkhfl"
+            android:gravity="left|center_vertical"
+
+
+            android:id="@+id/orderStatus" />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/border"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:paddingLeft="10dp"
+            android:layout_margin="1dp"
+            android:background="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+
+            android:drawableRight="@drawable/arrowspinner"
+            android:gravity="left|center_vertical"
+            android:text="dfjkhfl"
+
+            android:id="@+id/showall" />
+        </LinearLayout>
+</LinearLayout>
+        <!--<Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/orderSub" />-->
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/bottomLay"
+        android:id="@+id/statusMain"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+
+
+        <TextView
+            android:padding="5dp"
+            android:background="@color/primary"
+            android:id="@+id/statusTxt"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="By Status" />
+
+
+
+
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+android:layout_above="@+id/bottomLayStatus"
+        android:padding="5dp"
+        android:id="@+id/overViewRecyclerView"
+        android:layout_width="match_parent"
+        android:background="#ffffff"
+        android:layout_below="@+id/statusMain"
+        android:layout_gravity="center"
+
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+        android:scrollbars="none" />
+
+    <TextView
+        android:id="@+id/error_text"
+        android:text="Oops.. Something went wrong"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#3e3e3e"
+        android:layout_centerHorizontal="true"
+        android:layout_height="match_parent"
+        />
+    <RelativeLayout
+        android:id="@+id/bottomLayStatus"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:background="#FFFFFF"
+        android:orientation="horizontal">
+
+
+
+
+
+        <LinearLayout
+            android:background="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/apply"
+                android:layout_width="130dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:capitalize="none"
+                android:background="@color/red_base"
+                android:text="Apply"
+                android:textColor="#FFFFFF" />
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
+
+
+
+
+
+
+

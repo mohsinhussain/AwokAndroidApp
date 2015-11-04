@@ -1,26 +1,20 @@
 package com.awok.moshin.awok.Models;
 
 /**
- * Created by shon on 9/29/2015.
+ * Created by shon on 11/4/2015.
  */
-public class OrderHistoryModel {
-  /*  public String title;
-    public String quantity;
-    public String seller;
-    public String price;
-    private String totalPrice;
-    private String shipping;
-    private String imageData;
-    private String orderId;*/
-  public String orderNo;
-    public String dateTime,orderId;
+public class DisputeListModel {
+
+
+    public String orderNo;
+    public String dateTime, orderId;
     private String price;
+    private  String  status;
     private boolean isHeader;
     private String header;
 
 
-    public OrderHistoryModel()
-    {
+    public DisputeListModel() {
 
     }
 
@@ -38,12 +32,12 @@ public class OrderHistoryModel {
 
     }*/
 
-    public OrderHistoryModel(String orderNo,String dateTime,String price,Boolean isHeader,String header)
-    {
-        this.orderNo=orderNo;
-        this.dateTime=dateTime;
-        this.isHeader=isHeader;
-        this.header=header;
+    public DisputeListModel(String orderNo, String dateTime, String price, Boolean isHeader, String header,String status) {
+        this.orderNo = orderNo;
+        this.dateTime = dateTime;
+        this.isHeader = isHeader;
+        this.header = header;
+        this.status=status;
     }
 
 
@@ -158,16 +152,12 @@ public class OrderHistoryModel {
     }*/
 
 
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
 
 
-   public void setOrderNo(String orderNo) {
-       this.orderNo = orderNo;
-   }
-
-
-
-    public String getOrderNo()
-    {
+    public String getOrderNo() {
         return orderNo;
     }
 
@@ -176,9 +166,7 @@ public class OrderHistoryModel {
     }
 
 
-
-    public String getDateTime()
-    {
+    public String getDateTime() {
         return dateTime;
     }
 
@@ -198,12 +186,10 @@ public class OrderHistoryModel {
     public String getPrice() {
         return price;
     }
+
     public boolean getIsHeader() {
         return isHeader;
     }
-
-
-
 
 
     public void setIsHeader(boolean isHeader) {
@@ -211,19 +197,28 @@ public class OrderHistoryModel {
     }
 
 
-
-
-
     public String getHeader() {
         return header;
+    }
+
+
+    public void setHeader(String header) {
+        this.header = header;
     }
 
 
 
 
 
-    public void setHeader(String header) {
-        this.header = header;
+
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
+    public String getStatus() {
+        return status;
     }
 
 
