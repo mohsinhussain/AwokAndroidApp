@@ -368,6 +368,7 @@ android:prompt="@string/productPopup"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                     <EditText
+
                         android:id="@+id/disputeText"
                         android:inputType="textMultiLine"
                         android:lines="8"
