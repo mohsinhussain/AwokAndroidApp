@@ -594,6 +594,7 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
                                     updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
 
 
+
                                     JSONObject updateJson = new JSONObject(updateString);
                                     System.out.println("AFTER CHANGED+" + updateJson);
                                     //submit_btn.performClick();

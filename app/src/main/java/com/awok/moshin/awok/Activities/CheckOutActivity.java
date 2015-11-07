@@ -589,7 +589,8 @@ public class CheckOutActivity extends AppCompatActivity {
                     bottomLay.setVisibility(View.VISIBLE);
                     cartEmptyText.setVisibility(View.GONE);
                   //   totalItems=jsonObjectData.getJSONObject("data").getString("total_items");
-                    totalItems = "404";
+                    totalItems=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total_items_count");
+                    //totalItems = "404";
                     String subtotal=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("subtotal");
                     String total=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total");
                     String shipping=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("shipping_cost");
@@ -619,7 +620,8 @@ public class CheckOutActivity extends AppCompatActivity {
                             totalFlag=jsonObjectProductDetails.getString("seller_name").toString();
                             listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
 //                            listData.setTotalPrice(jsonObjectProductDetails.getString("total_price"));
-                            listData.setTotalPrice("response needed");
+                            listData.setTotalPrice(jsonObjectProductDetails.getString("total"));
+                            //listData.setTotalPrice("response needed");
                             listData.setSellerSubTotal(jsonObject.getString("subtotal"));
 
                         if (jsonObject.getString("shipping_cost").equals("0"))
@@ -661,8 +663,8 @@ public class CheckOutActivity extends AppCompatActivity {
                             listData.setOldPrice(jsonObjectProductDetails.getString("old_price"));
                             listData.setProductId(jsonObjectProductDetails.getString("id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
-                            //  listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
-                            listData.setRemainingStock("20");
+                            listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
+                            //listData.setRemainingStock("20");
                             listData.setIsEditable(true);
 //                            prodPrice.setText((jsonObjectData.getJSONObject("data").getString("total")) + " AED");
                             overViewList.add(listData);

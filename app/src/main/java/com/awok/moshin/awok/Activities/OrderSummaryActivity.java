@@ -125,7 +125,7 @@ JSONObject dataToSend;
 
 
                 addToCartData.put("user_id", "55f6a9462f17f64a9b5f5ce4");
-                addToCartData.put("user_address_id", "55f69d381a7da73416000058");
+                addToCartData.put("user_address_id", "562b3f388e424af254dce20a");
                 addToCartData.put("payment_method_id","560001201a7da7681500004c");
                 addToCartData.put("location_id","560a8eddf26f2e024b8b4690");
 
@@ -379,7 +379,9 @@ JSONObject dataToSend;
                     for(int i=0;i<length;i++){
                         JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONObject("public").getJSONArray("sellers_cart").getJSONObject(i);
 //totalPriceText.setText(jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total_items"));
-                        totalPriceText.setText("200");
+                       // totalPriceText.setText("200");
+                        totalPriceText.setText(jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total_items_count"));
+
                         allPriceText.setText("AED "+jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total"));
                         totalValueTextView.setText("AED "+jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total"));
                         JSONArray productDetails=jsonObject.getJSONArray("items");
@@ -434,7 +436,8 @@ JSONObject dataToSend;
 
                             listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
 //                            listData.setTotalPrice(jsonObjectProductDetails.getString("total_price"));
-                            listData.setTotalPrice("200");
+                            listData.setTotalPrice(jsonObjectProductDetails.getString("total"));
+                           // listData.setTotalPrice("200");
 
                             if(j==0)
                             {
@@ -462,8 +465,8 @@ JSONObject dataToSend;
                             listData.setOldPrice(jsonObjectProductDetails.getString("old_price"));
                             listData.setProductId(jsonObjectProductDetails.getString("id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
-                            //listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
-                            listData.setRemainingStock("20");
+                            listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
+                            //listData.setRemainingStock("20");
                             listData.setIsEditable(true);
 
                             overViewList.add(listData);
@@ -538,7 +541,7 @@ System.out.println("RESPONSE"+response);
                 cartAlertDialog.setContentView(R.layout.dialog_cart_alert);
                 TextView messageTextView = (TextView)cartAlertDialog.findViewById(R.id.msgTextView);
                 Button okButton = (Button) cartAlertDialog.findViewById(R.id.okButton);
-                if(Integer.parseInt(jsonObjectData.getString("status"))==1)
+                if(!jsonObjectData.getBoolean("errors"))
                 {
                     messageTextView.setText(getString(R.string.order_placed_successfully));
                     okButton.setOnClickListener(new View.OnClickListener() {
