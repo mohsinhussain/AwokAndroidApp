@@ -240,7 +240,7 @@ String prod_id,cartId,uniqueId,price,status;
                 }
                 else
                 {
-                    spinnerData = productCondition.getSelectedItem().toString();
+                    spinnerData = "";
                     spinnerDataDispute = "";
                     radioOne=radioValueButton.getText().toString();
                     radioTwo="";
@@ -261,11 +261,15 @@ String prod_id,cartId,uniqueId,price,status;
                 addToCartData.put("goods_condition", spinnerData);
                 addToCartData.put("ship_goods_back", radioTwo);
                 addToCartData.put("dispute_request", spinnerDataDispute);
-                addToCartData.put("additional_details", disputeText.getText());
+                addToCartData.put("refund_amount","");
+                addToCartData.put("additional_details", disputeText.getText().toString());
 
                 dataToSend=new JSONObject(addToCartData);
                 System.out.println(dataToSend.toString());
-
+                /*Intent i=new Intent(DisputeActivity.this,DisputeDetails.class);
+                i.putExtra("cart_id", "56399e3e8e424aa752bf834d");
+                i.putExtra("prod_id","5616592d3b90a7740b000084");
+                startActivity(i);*/
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

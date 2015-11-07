@@ -1,12 +1,347 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="com.awok.moshin.awok.Activities.DisputeDetails">
+    <ScrollView
+
+        android:layout_above="@+id/buttonLay"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_above="@+id/buttonLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+
+
 <LinearLayout
+
     android:id="@+id/main"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:text="Order No:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+android:id="@+id/order_no"
+            android:textSize="16sp"
+            android:text="52454354"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:text="Status:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+android:id="@+id/status"
+            android:textSize="16sp"
+            android:text="null"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:text="Reminder:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+
+
+android:id="@+id/reminder"
+
+
+
+            android:textSize="16sp"
+
+            android:text="takes 2 days to resolve "
+android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+
+
+
+
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:background="@color/primary"/>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+
+            android:textSize="20sp"
+            android:textColor="@color/light_gray"
+            android:text="Dispute No:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/primary"
+            />
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_marginTop="20dp"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:text="Did you receive the Order:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+android:id="@+id/received_order"
+            android:textSize="16sp"
+            android:text="No"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:text="Do you want to return Order:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+android:id="@+id/return_order"
+            android:textSize="16sp"
+            android:text="No"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:text="Dispute Opened:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+android:id="@+id/dispute_opened"
+            android:textSize="16sp"
+            android:text="Nov"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:text="Dispute Order Total:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+android:id="@+id/total"
+            android:textSize="16sp"
+            android:text="AED 2015"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+    </LinearLayout>
+<LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -17,7 +352,238 @@
 
 
 
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:background="@color/primary"/>
+
+
+
+</LinearLayout>
     <LinearLayout
+        android:id="@+id/solutionLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+
+            android:textSize="20sp"
+            android:textColor="@color/light_gray"
+            android:text="Solution:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/primary"
+            />
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+android:id="@+id/solutionTxt"
+            android:textSize="16sp"
+            android:text="No Return Goods"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:text="Refund Requested:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+            android:id="@+id/refund_requested"
+
+            android:textSize="16sp"
+            android:text="AED 2015"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+
+
+
+
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:background="@color/primary"/>
+
+
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+    <LinearLayout
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+
+            android:textSize="20sp"
+            android:textColor="@color/light_gray"
+            android:text="Request Detail:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/primary"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/requestDetailsTxt"
+android:layout_marginTop="20dp"
+            android:textSize="16sp"
+            android:text="not working"
+            android:padding="5dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+
+
+
+
+        <View
+
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:background="@color/primary"/>
+
+
+
+    </LinearLayout>
+    <LinearLayout
+android:visibility="visible"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+
+
+        <ExpandableListView
+
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ExpandableListView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
         android:layout_width="fill_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
@@ -49,6 +615,7 @@
 
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="fill_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
@@ -85,6 +652,7 @@
 
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="fill_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
@@ -124,43 +692,9 @@ android:id="@+id/rem"
 
 
 </LinearLayout>
+
     <LinearLayout
-android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:layout_width="fill_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/modify"
-            android:layout_margin="5dp"
-            android:background="@color/red_base"
-            android:layout_weight="1"
-            android:textColor="#FFFFFF"
-            android:text="Modify"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-
-
-        <Button
-            android:layout_margin="5dp"
-            android:background="@color/red_base"
-            android:text="Cancel Dispute"
-            android:layout_weight="1"
-            android:textColor="#FFFFFF"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/cancel_dispute" />
-
-
-
-
-
-
-
-    </LinearLayout>
-    <LinearLayout
+        android:visibility="gone"
         android:id="@+id/progressLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -188,6 +722,51 @@ android:layout_alignParentBottom="true"
             android:text="Loading.."
             android:textColor="@color/normal_text"
             android:textSize="12sp"/>
+
+    </LinearLayout>
+
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/buttonLay"
+        android:background="#FFFFFF"
+        android:layout_alignParentBottom="true"
+
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/escalate"
+            android:layout_margin="5dp"
+            android:background="@color/red_base"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:text="Escalate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+
+        <Button
+            android:layout_margin="5dp"
+            android:background="@color/red_base"
+            android:text="Cancel Dispute"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel_dispute" />
+
+
+
+
+
+
 
     </LinearLayout>
 </RelativeLayout>
