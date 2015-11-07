@@ -70,7 +70,7 @@ public class APIClient {
 
     public void removeProductFromCartCall(String cartId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/v1/cart/"+cartId+"/", "DELETE", null);
+        mTask.execute(mContext, "http://market1.awok/v1/cart/?id="+cartId+"& ", "DELETE", null);
     }
 
     public void categoriesAPICall() {
@@ -121,7 +121,7 @@ public class APIClient {
     public void OrderCheckOutCallBack(String dataToSend) {
 
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/order/", "POST", dataToSend);
+        mTask.execute(mContext, "http://market1.awok/v1/order/", "POST", dataToSend);
     }
 
     public void OrderHistoryItemsCallBack(String userId,String id,String from,String to) {
