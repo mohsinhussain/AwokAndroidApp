@@ -26,6 +26,9 @@ public class Constants {
     public static String CAT_LIST_PREFS = "categoriesListInPrefs";
     public static String PRODUCT_ID_INTENT = "productId";
     public static String QUANTITY_INTENT = "quantity";
+    public static String STOCK_INTENT = "stockQuantity";
+    public static String VARIANTID_INTENT = "variantId";
+    public static String SELECTED_METHOD_INTENT = "selectedMethod";
     public static String PRODUCT_NAME_INTENT = "productName";
     public static String PRODUCT_DISCOUNT_PERCENTAGE_INTENT = "productDiscountPercentage";
     public static String PRODUCT_IMAGE_INTENT = "productImage";

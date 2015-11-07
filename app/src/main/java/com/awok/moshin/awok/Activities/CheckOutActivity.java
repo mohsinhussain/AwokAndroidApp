@@ -588,10 +588,11 @@ public class CheckOutActivity extends AppCompatActivity {
                     totalLay.setVisibility(View.VISIBLE);
                     bottomLay.setVisibility(View.VISIBLE);
                     cartEmptyText.setVisibility(View.GONE);
-                     totalItems=jsonObjectData.getJSONObject("data").getString("total_items");
-                    String subtotal=jsonObjectData.getJSONObject("data").getString("subtotal");
-                    String total=jsonObjectData.getJSONObject("data").getString("total");
-                    String shipping=jsonObjectData.getJSONObject("data").getString("shipping");
+//                     totalItems=jsonObjectData.getJSONObject("data").getString("total_items");
+                    totalItems = "404";
+                    String subtotal=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("subtotal");
+                    String total=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total");
+                    String shipping=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("shipping_cost");
                     ab.setTitle("Shopping Cart ("+totalItems+")");
                     ab.setHomeAsUpIndicator(R.drawable.back_button);
                     itemsCount.setText(totalItems);
@@ -604,11 +605,11 @@ public class CheckOutActivity extends AppCompatActivity {
                     else {
                         shippingText.setText("AED " + shipping);
                     }
-                    int length = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").length();
+                    int length = jsonObjectData.getJSONObject("data").getJSONObject("public").getJSONArray("sellers_cart").length();
                     for (int i = 0; i < length; i++) {
-                        JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONArray("seller_cart").getJSONObject(i);
+                        JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONObject("public").getJSONArray("sellers_cart").getJSONObject(i);
 
-                        JSONArray productDetails = jsonObject.getJSONArray("products");
+                        JSONArray productDetails = jsonObject.getJSONArray("items");
                         int lengthOfProducts = productDetails.length();
                         for (int j = 0; j < lengthOfProducts; j++) {
 
@@ -617,24 +618,16 @@ public class CheckOutActivity extends AppCompatActivity {
                             JSONObject jsonObjectProductDetails = productDetails.getJSONObject(j);
                             totalFlag=jsonObjectProductDetails.getString("seller_name").toString();
                             listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
-                            listData.setTotalPrice(jsonObjectProductDetails.getString("total_price"));
-                                               /* if((j==0) || (jsonObjectProductDetails.getString("seller_name").equals(totalFlag)))
-                                                   {
-                                                    listData.setTotalTag("false");
-                                                }
-                                                                            else
-                                                {
-                                                    listData.setTotalTag("false");
-                                                }*/
-                            //listData.setOverViewText(jsonObject.getString("total_price"));
-                              listData.setSellerSubTotal(jsonObject.getString("subtotal"));
+//                            listData.setTotalPrice(jsonObjectProductDetails.getString("total_price"));
+                            listData.setTotalPrice("response needed");
+                            listData.setSellerSubTotal(jsonObject.getString("subtotal"));
 
-                        if (jsonObject.getString("shipping").equals("0"))
+                        if (jsonObject.getString("shipping_cost").equals("0"))
                         {
                             listData.setSellerShipping("Free");
                         }
                         else {
-                            listData.setSellerShipping("AED " +jsonObject.getString("shipping"));
+                            listData.setSellerShipping("AED " +jsonObject.getString("shipping_cost"));
                         }
 
 
@@ -658,16 +651,18 @@ public class CheckOutActivity extends AppCompatActivity {
                                 listData.setIsFooter(false);
                             }
 
-                            listData.setStatusId(jsonObjectData.getString("status"));
+//                            listData.setStatusId(jsonObjectData.getString("status"));
+                            listData.setStatusId("respnonse needed");
                             listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
                             //listData.setSellerLabel(jsonObject.getString("seller"));
                             listData.setSellerLabel(jsonObjectProductDetails.getString("seller_name"));
-                            listData.setDiscount(jsonObjectProductDetails.getString("discount_percentage"));
                             listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
+                            listData.setDiscount(jsonObjectProductDetails.getString("discount_percentage"));
                             listData.setOldPrice(jsonObjectProductDetails.getString("old_price"));
-                            listData.setProductId(jsonObjectProductDetails.getString("_id"));
+                            listData.setProductId(jsonObjectProductDetails.getString("id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
-                            listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
+//                            listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
+                            listData.setRemainingStock("need response");
                             listData.setIsEditable(true);
 //                            prodPrice.setText((jsonObjectData.getJSONObject("data").getString("total")) + " AED");
                             overViewList.add(listData);

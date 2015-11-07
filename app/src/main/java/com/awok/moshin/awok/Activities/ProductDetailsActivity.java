@@ -171,31 +171,31 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
             @Override
             public void onClick(View v) {
 
-//                Intent i = new Intent(ProductDetailsActivity.this, CheckOutActivity.class);
-//                i.putExtra(Constants.PRODUCT_ID_INTENT, productId);
-//                startActivity(i);
+                Intent i = new Intent(ProductDetailsActivity.this, ProductOptionsActivity.class);
+                i.putExtra(Constants.PRODUCT_ID_INTENT, productId);
+                startActivityForResult(i, 1);
 
 
-                buyNow.setEnabled(false);
-                buyNow.setBackgroundColor(getResources().getColor(R.color.border));
-                buyNow.setTextColor(getResources().getColor(R.color.button_text));
-                HashMap<String,Object> addToCartData=new HashMap<String, Object>();
-
-
-
-                addToCartData.put("user_id", "55f6a9462f17f64a9b5f5ce4");
-
-                //addToCartData.put("user_id", "55f6a9e52f17f64a9b5f5ce5");
-                addToCartData.put("product_id", productId);
-                addToCartData.put("shipping_method","55f6ab5e2f17f64a9b5f5ce6");
-                addToCartData.put("quantity",1);
-
-
-
-                 dataToSend=new JSONObject(addToCartData);
-
-System.out.println(dataToSend.toString());
-                new APIClient(ProductDetailsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(dataToSend.toString());
+//                buyNow.setEnabled(false);
+//                buyNow.setBackgroundColor(getResources().getColor(R.color.border));
+//                buyNow.setTextColor(getResources().getColor(R.color.button_text));
+//                HashMap<String,Object> addToCartData=new HashMap<String, Object>();
+//
+//
+//
+//                addToCartData.put("user_id", "55f6a9462f17f64a9b5f5ce4");
+//
+//                //addToCartData.put("user_id", "55f6a9e52f17f64a9b5f5ce5");
+//                addToCartData.put("product_id", productId);
+//                addToCartData.put("shipping_method","55f6ab5e2f17f64a9b5f5ce6");
+//                addToCartData.put("quantity",1);
+//
+//
+//
+//                 dataToSend=new JSONObject(addToCartData);
+//
+//System.out.println(dataToSend.toString());
+//                new APIClient(ProductDetailsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(dataToSend.toString());
 
 
             }

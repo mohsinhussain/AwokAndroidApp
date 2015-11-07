@@ -73,10 +73,10 @@ public class ShippingMethodAdapter extends RecyclerView.Adapter<ShippingMethodAd
             public void onClick(View v) {
                 RadioButton rb = (RadioButton) v;
                 //ShippingAddressModel address = (ShippingAddressModel) rb.getTag();
-                activity_main.setPrimaryShippingMethod(OverViewList.get(pos).getName());
+                activity_main.setPrimaryShippingMethod(OverViewList.get(pos).getName(), OverViewList.get(pos).getShippingCost());
                 //address.setIsSelected(rb.isChecked());
                 for(int i=0;i<OverViewList.size();i++) {
-                    ShippingMethod method = OverViewList.get(i);
+//                    ShippingMethod method = OverViewList.get(i);
                    /* if (country.getIsSelected()) {
                         responseText.append("\n" + country.getName());
                     }*/

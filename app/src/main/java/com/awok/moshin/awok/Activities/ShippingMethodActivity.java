@@ -79,6 +79,11 @@ public class ShippingMethodActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView list;
+    String savedMethodName = "";
+    Double shippingCost = 0.0;
+    Button checkOutButton;
+    ConnectivityManager connMgr;
+    NetworkInfo networkInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +99,7 @@ public class ShippingMethodActivity extends AppCompatActivity {
         countryPicker=(RelativeLayout)findViewById(R.id.countryLayout);
         countryImage=(ImageView)findViewById(R.id.country_image);
         list=(RecyclerView)findViewById(R.id.recyclerAddress);
+        checkOutButton = (Button) findViewById(R.id.checkOutButton);
         //mRecyclerView.setAdapter(mAdapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -115,6 +121,9 @@ public class ShippingMethodActivity extends AppCompatActivity {
 
         productId =getIntent().getExtras().getString(Constants.PRODUCT_ID_INTENT);
         quantityString = getIntent().getExtras().getString(Constants.QUANTITY_INTENT);
+        stockQuantity = getIntent().getExtras().getInt(Constants.STOCK_INTENT);
+        variantId = getIntent().getExtras().getString(Constants.VARIANTID_INTENT);
+        savedMethodName = getIntent().getExtras().getString(Constants.SELECTED_METHOD_INTENT);
         quantity.setText(quantityString);
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -135,6 +144,19 @@ public class ShippingMethodActivity extends AppCompatActivity {
 
 
 
+
+
+        checkOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("method",savedMethodName);
+                returnIntent.putExtra("count",quantity.getText().toString());
+                returnIntent.putExtra("cost",shippingCost);
+                setResult(ShippingMethodActivity.this.RESULT_OK,returnIntent);
+                finish();
+            }
+        });
 
 
         countryPicker.setOnClickListener(new View.OnClickListener() {
@@ -165,11 +187,13 @@ public class ShippingMethodActivity extends AppCompatActivity {
     }
 
 
-    public void setPrimaryShippingMethod(String methodName){
+    public void setPrimaryShippingMethod(String methodName, Double shippingCost){
 
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
-        editor.putString(Constants.SHIPPING_METHOD_PREFS, methodName);
-        editor.commit();
+        savedMethodName = methodName;
+        this.shippingCost = shippingCost;
+//        SharedPreferences.Editor editor = mSharedPrefs.edit();
+//        editor.putString(Constants.SHIPPING_METHOD_PREFS, methodName);
+//        editor.commit();
     }
 
     @Override
@@ -191,9 +215,9 @@ public class ShippingMethodActivity extends AppCompatActivity {
         }
 
 
-        ConnectivityManager connMgr = (ConnectivityManager)
+        connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             String locationId = "560a8eddf26f2e024b8b4690";
             new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
@@ -225,8 +249,17 @@ public class ShippingMethodActivity extends AppCompatActivity {
 
                 if (quantity.getText().toString().equals("") || quantity.getText().toString().equals("0")) {
                     quantity.setText("1");
+                    if (networkInfo != null && networkInfo.isConnected()) {
+                        String locationId = "560a8eddf26f2e024b8b4690";
+                        new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                variantId);
+                    } else {
+                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                .setActionTextColor(Color.RED)
+                                .show();
+                    }
                 } else {
-                    if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                    if (!variantId.equalsIgnoreCase("") && Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
                         System.out.println("OUT OF STOCK");
 
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -245,6 +278,15 @@ public class ShippingMethodActivity extends AppCompatActivity {
                                         // if this button is clicked, close
                                         // current activity
                                         quantity.setText(Integer.toString(stockQuantity));
+                                        if (networkInfo != null && networkInfo.isConnected()) {
+                                            String locationId = "560a8eddf26f2e024b8b4690";
+                                            new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                                    variantId);
+                                        } else {
+                                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                                    .setActionTextColor(Color.RED)
+                                                    .show();
+                                        }
                                         dialog.cancel();
                                     }
                                 });
@@ -291,8 +333,17 @@ public class ShippingMethodActivity extends AppCompatActivity {
 
                 if (quantity.getText().toString().equals("") || quantity.getText().toString().equals("0")) {
                     quantity.setText("1");
+                    if (networkInfo != null && networkInfo.isConnected()) {
+                        String locationId = "560a8eddf26f2e024b8b4690";
+                        new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                variantId);
+                    } else {
+                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                .setActionTextColor(Color.RED)
+                                .show();
+                    }
                 } else {
-                    if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                    if (!variantId.equalsIgnoreCase("") && Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
                         System.out.println("OUT OF STOCK");
 
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -311,6 +362,15 @@ public class ShippingMethodActivity extends AppCompatActivity {
                                         // if this button is clicked, close
                                         // current activity
                                         quantity.setText(Integer.toString(stockQuantity));
+                                        if (networkInfo != null && networkInfo.isConnected()) {
+                                            String locationId = "560a8eddf26f2e024b8b4690";
+                                            new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                                    variantId);
+                                        } else {
+                                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                                    .setActionTextColor(Color.RED)
+                                                    .show();
+                                        }
                                         dialog.cancel();
                                     }
                                 });
@@ -373,6 +433,15 @@ public class ShippingMethodActivity extends AppCompatActivity {
                 if (!hasFocus) {
                     if (quantity.getText().toString().equals("") || quantity.getText().toString().equals("0")) {
                         quantity.setText("1");
+                        if (networkInfo != null && networkInfo.isConnected()) {
+                            String locationId = "560a8eddf26f2e024b8b4690";
+                            new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                    variantId);
+                        } else {
+                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+                        }
                     }
                 }
             }
@@ -388,8 +457,17 @@ public class ShippingMethodActivity extends AppCompatActivity {
 
                     if (quantity.getText().toString().equals("") || quantity.getText().toString().equals("0")) {
                         quantity.setText("1");
+                        if (networkInfo != null && networkInfo.isConnected()) {
+                            String locationId = "560a8eddf26f2e024b8b4690";
+                            new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                    variantId);
+                        } else {
+                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+                        }
                     } else {
-                        if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                        if (!variantId.equalsIgnoreCase("") && Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
                             System.out.println("OUT OF STOCK");
 
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -408,6 +486,15 @@ public class ShippingMethodActivity extends AppCompatActivity {
                                             // if this button is clicked, close
                                             // current activity
                                             quantity.setText(Integer.toString(stockQuantity));
+                                            if (networkInfo != null && networkInfo.isConnected()) {
+                                                String locationId = "560a8eddf26f2e024b8b4690";
+                                                new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                                        variantId);
+                                            } else {
+                                                Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                                        .setActionTextColor(Color.RED)
+                                                        .show();
+                                            }
                                             dialog.cancel();
                                         }
                                     });
@@ -457,10 +544,12 @@ public class ShippingMethodActivity extends AppCompatActivity {
     public void pupolateShippingMethod(){
         if(shippingMethodArray.size()>0){
            //populate shipping method listing
-            if (mSharedPrefs.contains(Constants.SHIPPING_METHOD_PREFS)) {
+            if (!savedMethodName.equalsIgnoreCase("")) {
                 for(int i=0; i<shippingMethodArray.size();i++){
-                    if(shippingMethodArray.get(i).getName().equalsIgnoreCase(mSharedPrefs.getString(Constants.SHIPPING_METHOD_PREFS, null))){
+                    if(shippingMethodArray.get(i).getName().equalsIgnoreCase(savedMethodName)){
                         shippingMethodArray.get(i).setIsSelected(true);
+                        shippingCost = shippingMethodArray.get(i).getShippingCost();
+                        savedMethodName  = shippingMethodArray.get(i).getName();
                     }
                 }
             }
@@ -478,6 +567,7 @@ public class ShippingMethodActivity extends AppCompatActivity {
                 JSONObject varObj;
 //                , sizesArray, storageArray;
                 if(issueObj.getInt("status")==200){
+                    shippingMethodArray.clear();
                     dataObj =  issueObj.getJSONObject("data");
                     if(dataObj.has("server")){
                         for(int i=0;i<dataObj.getJSONArray("server").length();i++){
@@ -531,6 +621,14 @@ public class ShippingMethodActivity extends AppCompatActivity {
 
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        setResult(ShippingMethodActivity.this.RESULT_CANCELED, returnIntent);
+        finish();
+        super.onBackPressed();
     }
 
     @Override

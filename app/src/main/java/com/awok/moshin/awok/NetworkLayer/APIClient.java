@@ -59,7 +59,7 @@ public class APIClient {
 
     public void cartItemsCallBack(String userId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+userId+"/summary/", "GET", null);
+        mTask.execute(mContext, "http://market1.awok/v1/cart/"+userId+"/summary/?location_id=560a8eddf26f2e024b8b4690", "GET", null);
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/getProductsByCategory/"+categoryId, "GET", null);
     }
 
@@ -70,7 +70,7 @@ public class APIClient {
 
     public void removeProductFromCartCall(String cartId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/cart/"+cartId+"/", "DELETE", null);
+        mTask.execute(mContext, "http://market1.awok/v1/cart/"+cartId+"/", "DELETE", null);
     }
 
     public void categoriesAPICall() {
@@ -85,12 +85,12 @@ public class APIClient {
 
     public void addToCartAPICall(String dataToSend) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/cart/", "POST", dataToSend);
+        mTask.execute(mContext, "http://market1.awok/v1/cart/", "POST", dataToSend);
 
     }
     public void updateCart(String dataToSend,String updateId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://172.31.23.207/khalid/api/cart/"+updateId+"/", "PUT", dataToSend);
+        mTask.execute(mContext, "http://market1.awok/v1/cart/"+updateId+"/", "PUT", dataToSend);
     }
     public void userCheckAPICall(String phoneNumber) {
         mTask = new AsyncTaskWithDialog();

@@ -94,6 +94,9 @@ public class ProductOptionsActivity extends AppCompatActivity {
     int imageSource;
     ConnectivityManager connMgr;
     NetworkInfo networkInfo;
+    String savedMethodName = "";
+    String savedMethodProfileId = "";
+    JSONObject dataToSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,14 +174,30 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 Intent i = new Intent(ProductOptionsActivity.this, ShippingMethodActivity.class);
                 i.putExtra(Constants.PRODUCT_ID_INTENT, productId);
                 i.putExtra(Constants.QUANTITY_INTENT, quantity.getText().toString());
-                startActivity(i);
+                i.putExtra(Constants.STOCK_INTENT, stockQuantity);
+                i.putExtra(Constants.VARIANTID_INTENT, variantId);
+                i.putExtra(Constants.SELECTED_METHOD_INTENT, savedMethodName);
+                startActivityForResult(i, 1);
             }
         });
 
         checkOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(!variantId.equalsIgnoreCase("") && stockQuantity>=Integer.parseInt(quantity.getText().toString()) && !savedMethodProfileId.equalsIgnoreCase("")){
+                    checkOutButton.setEnabled(false);
+                    checkOutButton.setBackgroundColor(getResources().getColor(R.color.border));
+                    checkOutButton.setTextColor(getResources().getColor(R.color.button_text));
+                    HashMap<String,Object> addToCartData=new HashMap<String, Object>();
+                    addToCartData.put("user_id", "55f6a9462f17f64a9b5f5ce4");
+                    addToCartData.put("product_id", productId);
+                    addToCartData.put("shipping_profile_id", savedMethodProfileId);
+                    addToCartData.put("variant_id",variantId);
+                    addToCartData.put("quantity",Integer.parseInt(quantity.getText().toString()));
+                    dataToSend=new JSONObject(addToCartData);
+                    System.out.println(dataToSend.toString());
+                    new APIClient(ProductOptionsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(dataToSend.toString());
+                }
             }
         });
 
@@ -654,9 +673,56 @@ public class ProductOptionsActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == ProductOptionsActivity.this.RESULT_OK){
+                savedMethodName=data.getStringExtra("method");
+                quantity.setText(data.getStringExtra("count"));
+                for(int i=0; i<shippingMethodArray.size();i++){
+                    if(shippingMethodArray.get(i).getName().equalsIgnoreCase(savedMethodName)){
+                        savedMethodProfileId = shippingMethodArray.get(i).getProfileId();
+                        costTextView.setText("AED " + Double.toString(data.getDoubleExtra("cost", 0.0)));
+                        break;
+                    }
+                }
+            }
+            if (resultCode == ProductOptionsActivity.this.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
+
+//        if (mSharedPrefs.contains(Constants.SHIPPING_METHOD_PREFS)) {
+//            boolean isSavedMethodInList = false;
+//            if(shippingMethodArray.size()>0) {
+//                String savedShippingMethod = mSharedPrefs.getString(Constants.SHIPPING_METHOD_PREFS, null);
+//                for (int i = 0; i < shippingMethodArray.size(); i++) {
+//                    if (shippingMethodArray.get(i).getName().equalsIgnoreCase(savedShippingMethod)) {
+//                        isSavedMethodInList = true;
+//                        costTextView.setText("AED " + String.valueOf(shippingMethodArray.get(i).getShippingCost()));
+//                        break;
+//                    }
+//                }
+//                if (!isSavedMethodInList) {
+//                    costTextView.setText("AED " + String.valueOf(shippingMethodArray.get(0).getShippingCost()));
+//                    SharedPreferences.Editor editor = mSharedPrefs.edit();
+//                    editor.putString(Constants.SHIPPING_METHOD_PREFS, shippingMethodArray.get(0).getName());
+//                    editor.commit();
+//                }
+//            }
+//            else{
+//                costTextView.setText("FREE SHIPPING");
+//            }
+//        }
 
         if(mSharedPrefs.contains(Constants.USER_SETTING_COUNTRY)){
             System.out.println("YES");
@@ -708,22 +774,98 @@ public class ProductOptionsActivity extends AppCompatActivity {
     public void pupolateShippingMethod(){
         if(shippingMethodArray.size()>0) {
 //            shippingHeaderTextView.setText(shippingMethodArray.get(0).getName());
-            if (mSharedPrefs.contains(Constants.SHIPPING_METHOD_PREFS)) {
+            boolean isSavedMethodInList = false;
+            if(!savedMethodName.equalsIgnoreCase("")){
                 for(int i=0; i<shippingMethodArray.size();i++){
-                    if(shippingMethodArray.get(i).getName().equalsIgnoreCase(mSharedPrefs.getString(Constants.SHIPPING_METHOD_PREFS, null))){
+                    if(shippingMethodArray.get(i).getName().equalsIgnoreCase(savedMethodName)){
+                        isSavedMethodInList = true;
                         costTextView.setText("AED " + String.valueOf(shippingMethodArray.get(i).getShippingCost()));
+                        savedMethodProfileId = shippingMethodArray.get(i).getProfileId();
+                        break;
                     }
-                    else{
-                        costTextView.setText("AED " + String.valueOf(shippingMethodArray.get(0).getShippingCost()));
-                    }
+                }
+                if(!isSavedMethodInList){
+                    costTextView.setText("AED " + String.valueOf(shippingMethodArray.get(0).getShippingCost()));
+                    savedMethodProfileId = shippingMethodArray.get(0).getProfileId();
+                    savedMethodName = shippingMethodArray.get(0).getName();
+//                    SharedPreferences.Editor editor = mSharedPrefs.edit();
+//                    editor.putString(Constants.SHIPPING_METHOD_PREFS, shippingMethodArray.get(0).getName());
+//                    editor.commit();
                 }
             }
             else{
                 costTextView.setText("AED " + String.valueOf(shippingMethodArray.get(0).getShippingCost()));
+                savedMethodProfileId = shippingMethodArray.get(0).getProfileId();
+                savedMethodName = shippingMethodArray.get(0).getName();
+//                SharedPreferences.Editor editor = mSharedPrefs.edit();
+//                editor.putString(Constants.SHIPPING_METHOD_PREFS, shippingMethodArray.get(0).getName());
+//                editor.commit();
             }
+
+
+//            if (mSharedPrefs.contains(Constants.SHIPPING_METHOD_PREFS)) {
+//                String savedShippingMethod = mSharedPrefs.getString(Constants.SHIPPING_METHOD_PREFS, null);
+//                for(int i=0; i<shippingMethodArray.size();i++){
+//                    if(shippingMethodArray.get(i).getName().equalsIgnoreCase(savedShippingMethod)){
+//                        isSavedMethodInList = true;
+//                        costTextView.setText("AED " + String.valueOf(shippingMethodArray.get(i).getShippingCost()));
+//                        savedMethodProfileId = shippingMethodArray.get(i).getProfileId();
+//                        break;
+//                    }
+//                }
+//                if(!isSavedMethodInList){
+//                    costTextView.setText("AED " + String.valueOf(shippingMethodArray.get(0).getShippingCost()));
+//                    savedMethodProfileId = shippingMethodArray.get(0).getProfileId();
+//                    SharedPreferences.Editor editor = mSharedPrefs.edit();
+//                    editor.putString(Constants.SHIPPING_METHOD_PREFS, shippingMethodArray.get(0).getName());
+//                    editor.commit();
+//                }
+//            }
+//            else{
+//                costTextView.setText("AED " + String.valueOf(shippingMethodArray.get(0).getShippingCost()));
+//                savedMethodProfileId = shippingMethodArray.get(0).getProfileId();
+//                SharedPreferences.Editor editor = mSharedPrefs.edit();
+//                editor.putString(Constants.SHIPPING_METHOD_PREFS, shippingMethodArray.get(0).getName());
+//                editor.commit();
+//            }
         }
     }
 
+
+    public class GetAddToCartCallBack extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject mMembersJSON;
+                mMembersJSON = new JSONObject(response);
+                System.out.println(mMembersJSON);
+
+                Intent i=new Intent(ProductOptionsActivity.this,CheckOutActivity.class);
+                startActivity(i);
+
+                progressLayout.setVisibility(View.GONE);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be Loaded", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+            }
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+            progressLayout.setVisibility(View.VISIBLE);
+        }
+    }
 
     public class GetShippingsCallBack extends AsyncCallback {
         public void onTaskComplete(String response) {
@@ -814,7 +956,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
 
                         for(int i=0;i<varObj.length();i++){
                             variantArray.add(new Variant(varObj.getJSONObject(i).getJSONObject("_id").getString("$id"),
-                                    varObj.getJSONObject(i).getJSONObject("specs").getString("color"),
+                                    varObj.getJSONObject(i).getJSONObject("specs").getJSONObject("color").getString("color"),
                                     varObj.getJSONObject(i).getJSONObject("specs").getString("storage"), varObj.getJSONObject(i).getInt("quantity")));
                         }
 
