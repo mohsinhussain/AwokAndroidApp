@@ -455,21 +455,8 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 //                imageView.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.default_img)));
 //            }
 
-            imageLoader.get(image, new ImageLoader.ImageListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
-                    progressBar.setVisibility(View.GONE);
-                }
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                    if (response.getBitmap() != null) {
-                        // load image into imageview
-                        imageView.setImageBitmap(response.getBitmap());
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }
-            });
+
+
 
             container.addView(itemView);
 
@@ -503,17 +490,18 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
                 mResources.clear();
                 JSONObject mMembersJSON;
                 mMembersJSON = new JSONObject(response);
-                System.out.println(mMembersJSON.getString("name"));
-                productTitle.setText(mMembersJSON.getString("name"));
-                String ratingsCount=mMembersJSON.getJSONObject("rating").getString("average");
-                String count=mMembersJSON.getJSONObject("rating").getString("sum");
+                JSONObject dataObj = mMembersJSON.getJSONObject("data");
+//                System.out.println(mMembersJSON.getString("name"));
+                productTitle.setText(dataObj.getString("name"));
+                String ratingsCount=dataObj.getJSONObject("rating").getString("average");
+                String count=dataObj.getJSONObject("rating").getString("sum");
 //                prodNewPrice.setText(Integer.toString(mMembersJSON.getInt("new_price")) + " " + "AED");
 //                prodOldPrice.setText(Integer.toString(mMembersJSON.getInt("original_price")) + " " + "AED");
 //                System.out.println("COOLGBDJH" + productDetails.getName());
 //                String prodDesc=mMembersJSON.getString("description");
 //                productOverview.setOverViewTitle(prodDesc);
-                image=mMembersJSON.getString("image");
-                JSONArray imagesStringData=mMembersJSON.getJSONArray("images");
+                image=dataObj.getString("image");
+                JSONArray imagesStringData=dataObj.getJSONArray("images");
                 for(int i=0;i<imagesStringData.length();i++)
                 {
                     //JSONObject data=imagesStringData.getJSONObject(i);
@@ -527,7 +515,7 @@ imageString.add(jsonData);
                 ratingMain.setRating(Float.parseFloat(ratingsCount));
                 product_reviewCount.setText("(" + count + ")");
                 countText.setText(String.valueOf(imageString.size()));
-                baseImage=mMembersJSON.getString("image");
+                baseImage=dataObj.getString("image");
                 //mResources.clear();
                 mResources=imageString;
                 //getRatings();

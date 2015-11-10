@@ -83,17 +83,6 @@ public class ColorSpecGridAdapter extends BaseAdapter {
                 }
             });
 
-//            String mobile = mobileValues[position];
-//
-//            if (mobile.equals("Windows")) {
-//                imageView.setImageResource(R.drawable.windows_logo);
-//            } else if (mobile.equals("iOS")) {
-//                imageView.setImageResource(R.drawable.ios_logo);
-//            } else if (mobile.equals("Blackberry")) {
-//                imageView.setImageResource(R.drawable.blackberry_logo);
-//            } else {
-//                imageView.setImageResource(R.drawable.android_logo);
-//            }
 
         } else {
             gridView = (View) convertView;

@@ -28,7 +28,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="80dp"
+                android:minHeight="50dp"
                 android:id="@+id/imageHolderLayout"
                 android:layout_gravity="center_horizontal">
 
@@ -43,7 +43,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="60dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:layout_gravity="center"
@@ -56,6 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rose Gold"
+                android:visibility="gone"
                 android:layout_margin="8dp"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"

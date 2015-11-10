@@ -43,18 +43,20 @@ public class APIClient {
 
     public void allProductsAPICall(int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/index/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/v1/products/index?page="+pageCount, "GET", null);  //--------------V1 api
+//        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/index/"+pageCount, "GET", null);  ----------old api
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
     }
 
     public void productsFromSearchAPICall(String searchFilter, int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/setti/api/search/index?"+searchFilter+"&pages="+pageCount, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/v1/search?"+searchFilter+"&pages="+pageCount, "GET", null);
     }
 
     public void productsFromCategoryAPICall(String categoryId, int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/getproductsbycategory/"+categoryId+"/"+pageCount, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/v1/sections/"+categoryId+"/show?page="+pageCount, "GET", null);
+//        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/getproductsbycategory/"+categoryId+"/"+pageCount, "GET", null);
     }
 
     public void cartItemsCallBack(String userId) {
@@ -65,7 +67,7 @@ public class APIClient {
 
     public void getPrimaryAddressAPICall(String userId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/setti/api/addresses/primaryaddress//"+userId, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/setti/api/addresses/primaryaddress/"+userId, "GET", null);
     }
 
     public void removeProductFromCartCall(String cartId) {
@@ -80,7 +82,9 @@ public class APIClient {
 
     public void productDetailsAPICall(String productId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/show/" + productId, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/v1/products/"
+                +productId+
+                "/show", "GET", null);
     }
 
     public void addToCartAPICall(String dataToSend) {

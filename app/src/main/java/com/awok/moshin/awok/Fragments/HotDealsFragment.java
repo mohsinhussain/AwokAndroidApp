@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.awok.moshin.awok.Activities.FilterActivity;
 import com.awok.moshin.awok.Activities.ProductDetailsActivity;
@@ -338,8 +339,9 @@ public class HotDealsFragment extends Fragment {
                 Log.i(TAG, "lastProductItem: " + (productsArrayList.size()-1));
 
                 if(shouldLoadMore && lastVisibleItem==(productsArrayList.size()-1)){
-                    loadMore.setVisibility(View.VISIBLE);
-                    mainLayout.setVisibility(View.VISIBLE);
+                    Products item = new Products(true);
+                    productsArrayList.add(item);
+                    mAdapter.notifyDataSetChanged();
                 }
 
                 if (!loading && (totalItemCount - visibleItemCount)
@@ -854,7 +856,7 @@ public class HotDealsFragment extends Fragment {
                         itemCount.setVisibility(View.VISIBLE);
                     }
 
-                    if(obj.getInt("status")==1){
+                    if(obj.getInt("status")==200){
 //                        itemCount.setText("We found "+obj.getInt("total_products")+" search results for '"+searchString+"'");
                         jsonArray = obj.getJSONArray("items");
                     }
@@ -894,7 +896,7 @@ public class HotDealsFragment extends Fragment {
                 }
                 else{
                     mainObject = new JSONObject(response);
-                    jsonArray = mainObject.getJSONArray("items");
+                    jsonArray = mainObject.getJSONObject("data").getJSONObject("server").getJSONArray("items");
                 }
 
 //                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
@@ -910,6 +912,15 @@ public class HotDealsFragment extends Fragment {
                 }
 
                 if(length>0){
+                    if(productsArrayList.size()>0){
+                        for(int i=0;i<productsArrayList.size();i++){
+                            if(productsArrayList.get(i).isLoader()){
+                                productsArrayList.remove(i);
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+
                     for(int i=0;i<length;i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Products item = new Products();
@@ -920,9 +931,9 @@ public class HotDealsFragment extends Fragment {
                         item.setCategoryId(jsonObject.getString("category_id"));
                         item.setPriceNew(jsonObject.getJSONObject("discount").getInt("discount_price"));
                         item.setPriceOld(jsonObject.getInt("price"));
-                        item.setRating(jsonObject.getJSONObject("rating").getString("average"));
-                                item.setRatingCount(jsonObject.getJSONObject("rating").getString("sum"));
-                        item.setDescription(jsonObject.getString("description"));
+                        item.setRating(jsonObject.getJSONObject("rating").getString("rating_average"));
+                        item.setRatingCount(jsonObject.getJSONObject("rating").getString("number_of_ratings"));
+//                        item.setDescription(jsonObject.getString("description"));
                         item.setDiscPercent(jsonObject.getJSONObject("discount").getInt("discount_percentage"));
 //                    if (priceObject.getInt("PRICE_OLD")!=0){
 //                        item.setDiscPercent(priceObject.getInt("PERCENT"));
@@ -931,9 +942,15 @@ public class HotDealsFragment extends Fragment {
                     }
                 }
                 else{
-                    Snackbar.make(getActivity().findViewById(android.R.id.content), "No further items", Snackbar.LENGTH_SHORT)
-                            .setActionTextColor(Color.RED)
-                            .show();
+                    Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
+//                    Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "There is no further", Snackbar.LENGTH_LONG)
+//                            .setActionTextColor(Color.RED);
+//
+//                    View snackbarView = snackbar.getView();
+//
+//                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+//                    textView.setTextColor(Color.WHITE);
+//                    snackbar.show();
                 }
 
 
@@ -952,6 +969,7 @@ public class HotDealsFragment extends Fragment {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
 //                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_SHORT)
 //                        .setActionTextColor(Color.RED)
 //                        .show();
@@ -974,7 +992,7 @@ public class HotDealsFragment extends Fragment {
         @Override
         public void onPreExecute() {
             // TODO Auto-generated method stub
-            if(!mSwipeRefreshLayout.isRefreshing() && pageCount==1){
+            if(!mSwipeRefreshLayout.isRefreshing() && pageCount == 1) {
                 progressLayout.setVisibility(View.VISIBLE);
             }
         }
