@@ -72,7 +72,7 @@ public class APIClient {
 
     public void removeProductFromCartCall(String cartId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/v1/cart/"+cartId+"/", "DELETE", null);
+        mTask.execute(mContext, "http://market1.awok/v1/cart/?id="+cartId+"&location_id=560a8eddf26f2e024b8b4690", "DELETE", null);
     }
 
     public void categoriesAPICall() {
@@ -94,7 +94,7 @@ public class APIClient {
     }
     public void updateCart(String dataToSend,String updateId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/v1/cart/"+updateId+"/", "PUT", dataToSend);
+        mTask.execute(mContext, "http://market1.awok/v1/cart/?id="+updateId+"&location_id=560a8eddf26f2e024b8b4690", "PUT", dataToSend);
     }
     public void userCheckAPICall(String phoneNumber) {
         mTask = new AsyncTaskWithDialog();
@@ -125,17 +125,17 @@ public class APIClient {
     public void OrderCheckOutCallBack(String dataToSend) {
 
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/order/", "POST", dataToSend);
+        mTask.execute(mContext, "http://market1.awok/v1/order/", "POST", dataToSend);
     }
 
     public void OrderHistoryItemsCallBack(String userId,String id,String from,String to) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+userId+"/my-orders/?"+"status=&date_from="+from+"&date_to="+to, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/v1/order/"+userId+"/list/?page="+"&status="+id+"&date_from="+from+"&date_to="+to, "GET", null);
     }
 
     public void OrderHistoryDetailsItemsCallBack(String orderId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/khalid/api/order/"+orderId+"/", "GET", null);
+        mTask.execute(mContext, "http://market1.awok/v1/order/"+orderId+"/", "GET", null);
 
     }
 

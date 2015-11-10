@@ -205,9 +205,9 @@ android:layout_gravity="left"
     </RelativeLayout>
 
         <LinearLayout
-
+android:id="@+id/shippingLay"
             android:padding="5dp"
-            android:layout_marginBottom="10dp"
+
 
             android:layout_width="fill_parent"
             android:gravity="center"
@@ -231,6 +231,7 @@ android:layout_gravity="left"
                 android:text="Shipping Tracking" />
 
             <ImageView
+                android:visibility="gone"
                 android:gravity="left|center_vertical"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="14dp"
@@ -242,6 +243,43 @@ android:layout_gravity="left"
         </LinearLayout>
 
 
+    <LinearLayout
+
+        android:padding="5dp"
+        android:layout_marginBottom="10dp"
+
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:background="#ff9100"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/shippingLay">
+
+        <TextView
+            android:id="@+id/disputeLink"
+            android:gravity="right|center_vertical"
+android:textColor="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:textSize="14sp"
+            android:background="#0000"
+            android:text="Open Dispute" />
+
+        <ImageView
+            android:visibility="gone"
+            android:gravity="left|center_vertical"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="14dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="14dp"
+            android:clickable="false"
+            android:background="#0000"
+            android:src="@drawable/detailsarrow"/>
+    </LinearLayout>
 
     <!--   <RelativeLayout
            android:layout_width="match_parent"

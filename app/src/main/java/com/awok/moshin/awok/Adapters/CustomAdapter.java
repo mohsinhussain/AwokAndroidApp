@@ -283,24 +283,36 @@ customView=v;
         viewHolder.sellerShipping.setText(mDataSet.get(position).getSellerShipping());
         viewHolder.sellerTotal.setText(mDataSet.get(position).getSellerTotal());
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-        imageLoader.get(
-                mDataSet.get(position).getImageBitmapString(),
-                new ImageLoader.ImageListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
-                viewHolder.loadProgressBar.setVisibility(View.GONE);
-            }
+        if(mDataSet.get(position).getImageBitmapString().equals("false"))
+        {
 
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                if (response.getBitmap() != null) {
-                    // load image into imageview
-                    viewHolder.productImg.setImageBitmap(response.getBitmap());
-                    viewHolder.loadProgressBar.setVisibility(View.GONE);
-                }
+
+
+                viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
             }
-        });
+        else
+        {
+            imageLoader.get(
+                    mDataSet.get(position).getImageBitmapString(),
+                    new ImageLoader.ImageListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                            viewHolder.loadProgressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                            if (response.getBitmap() != null) {
+                                // load image into imageview
+                                viewHolder.productImg.setImageBitmap(response.getBitmap());
+                                viewHolder.loadProgressBar.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+        }
+
+
 
 
 

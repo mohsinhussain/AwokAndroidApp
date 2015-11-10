@@ -284,7 +284,13 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
             viewHolder.sellerShipping.setText(mDataSet.get(position).getSellerShipping());
             viewHolder.sellerTotal.setText(mDataSet.get(position).getSellerTotal());
             ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+
+
+
             imageLoader.get(mDataSet.get(position).getImageBitmapString(), new ImageLoader.ImageListener() {
+
+
+
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
@@ -586,6 +592,7 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
                                     HashMap<String, Object> updateString = new HashMap<String, Object>();
                                     //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
                                     updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+
 
 
                                     JSONObject updateJson = new JSONObject(updateString);
