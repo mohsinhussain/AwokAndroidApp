@@ -33,6 +33,8 @@ public class Constants {
     public static String PRODUCT_DISCOUNT_PERCENTAGE_INTENT = "productDiscountPercentage";
     public static String PRODUCT_IMAGE_INTENT = "productImage";
     public static String PRODUCT_PRICE_NEW_INTENT = "productPrieNew";
+    public static String PRODUCT_VARIANTS_INTENT = "productVariants";
+    public static String PRODUCT_SPECS_INTENT = "productSpecs";
     public static String PRODUCT_PRICE_OLD_INTENT = "productPriceOld";
     public static String PRODUCT_DESCRIPTION_INTENT = "productDescription";
     public static String PRODUCT_RATING = "productRating";

@@ -20,8 +20,14 @@ String rating;
     String description;
     String categoryId;
     int imageHeight;
+    boolean loader = false;
 
     public Products() {
+        this.loader = false;
+    }
+
+    public Products(boolean loader) {
+        this.loader = loader;
     }
 
     public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount,int imageHeight) {
@@ -36,6 +42,7 @@ String rating;
         this.rating=rating;
         this.ratingCount=ratingCount;
         this.imageHeight=imageHeight;
+        this.loader = false;
     }
 
     public int getImageHeight(Context mContext) {
@@ -44,6 +51,18 @@ String rating;
 //        Log.v("Products", "desnsity: " + densityDpi);
 //        int dp = Math.round(imageHeight / (metrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return imageHeight;
+    }
+
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
+    public boolean isLoader() {
+        return loader;
+    }
+
+    public void setLoader(boolean loader) {
+        this.loader = loader;
     }
 
     public void setImageHeight(int imageHeight) {

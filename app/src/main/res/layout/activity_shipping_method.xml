@@ -93,16 +93,28 @@
                         android:layout_width="wrap_content"
                         android:textColor="@color/normal_text"
                         android:textSize="14sp"
+                        android:layout_centerVertical="true"
                         android:paddingBottom="8dp"
                         android:layout_height="wrap_content"
                         />
+
+
+                    <TextView
+                        android:id="@+id/countryNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/country_image"
+                        android:textSize="12sp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/light_gray"/>
 
                     <ImageView
                         android:id="@+id/country_image"
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
-                        android:visibility="gone"
-                        android:src="@drawable/uae"
+                        android:layout_centerVertical="true"
+                        android:visibility="invisible"
                         android:layout_height="wrap_content" />
 
                 </RelativeLayout>
@@ -117,7 +129,7 @@
 
                 <RelativeLayout
                     android:background="@color/button_text"
-                    android:padding="8dp"
+                    android:padding="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -125,11 +137,21 @@
                         android:id="@+id/stockQuantityTextView"
                         android:textSize="12sp"
                         android:textColor="@color/light_gray"
-                        android:text="64 items in stock"
-                        android:layout_alignParentRight="true"
-                        android:gravity="right"
-                        android:paddingTop="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_alignLeft="@+id/quantity_count"
+                        android:layout_below="@+id/quantity_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/errorTextView"
+                        android:textSize="12sp"
+                        android:textColor="@color/red_base"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:paddingTop="16dp"
                         android:visibility="gone"
+                        android:layout_toLeftOf="@+id/quantity_count"
                         android:layout_below="@+id/quantity_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -139,7 +161,6 @@
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:text="Quantity"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -148,9 +169,7 @@
                     <LinearLayout
                         android:id="@+id/quantity_count"
                         android:background="#eeeeee"
-                        android:layout_marginBottom="8dp"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">

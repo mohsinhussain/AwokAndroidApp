@@ -8,12 +8,30 @@ public class Variant {
     private String storage;
     String id;
     int stock;
+    int price;
 
-    public Variant(String id, String color, String storage, int Stoc){
+    public Variant(String id, String storage, int Stoc, int price){
+        this.storage = storage;
+        this.id = id;
+        this.stock = Stoc;
+        this.price = price;
+    }
+
+    public Variant(String id, String color, String storage, int Stoc, int price){
         this.color = color;
         this.storage = storage;
         this.id = id;
         this.stock = Stoc;
+        this.price = price;
+    }
+
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public String getId() {

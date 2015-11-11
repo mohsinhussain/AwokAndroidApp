@@ -35,9 +35,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.awok.moshin.awok.Adapters.ColorSpecGridAdapter;
 import com.awok.moshin.awok.Adapters.SizeSpecGridAdapter;
 import com.awok.moshin.awok.Adapters.StorageSpecGridAdapter;
+import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.ColorSpec;
 import com.awok.moshin.awok.Models.ShippingMethod;
 import com.awok.moshin.awok.Models.SizeSpec;
@@ -97,6 +100,11 @@ public class ProductOptionsActivity extends AppCompatActivity {
     String savedMethodName = "";
     String savedMethodProfileId = "";
     JSONObject dataToSend;
+    ImageView productImageView;
+    TextView productNameTextView, priceTexView, colorTextView;
+    JSONArray variantsArray;
+    JSONObject specsObject;
+    TextView colorLabelTextView, countryNameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +131,12 @@ public class ProductOptionsActivity extends AppCompatActivity {
         shippingMethodSelectionLayout = (RelativeLayout) findViewById(R.id.shippingMethodSelectionLayout);
         errorTextView = (TextView) findViewById(R.id.errorTextView);
         countryImage=(ImageView)findViewById(R.id.country_image);
+        productImageView=(ImageView)findViewById(R.id.imagePhotoView);
+        productNameTextView = (TextView) findViewById(R.id.nameTextView);
+        colorTextView = (TextView) findViewById(R.id.selectedColorTextView);
+        colorLabelTextView = (TextView) findViewById(R.id.colorTextView);
+        priceTexView = (TextView) findViewById(R.id.priceTextView);
+        countryNameTextView = (TextView) findViewById(R.id.countryNameTextView);
         //mRecyclerView.setAdapter(mAdapter);
         mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -164,8 +178,81 @@ public class ProductOptionsActivity extends AppCompatActivity {
 
 
         productId =getIntent().getExtras().getString(Constants.PRODUCT_ID_INTENT);
+        productNameTextView.setText(getIntent().getExtras().getString(Constants.PRODUCT_NAME_INTENT));
+        priceTexView.setText(getIntent().getExtras().getString(Constants.PRODUCT_PRICE_NEW_INTENT));
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        String imageURL = getIntent().getExtras().getString(Constants.PRODUCT_IMAGE_INTENT);
+        imageLoader.get(imageURL, new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                productImageView.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                if (response.getBitmap() != null) {
+                    // load image into imageview
+                    productImageView.setImageBitmap(response.getBitmap());
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        try {
+            specsObject = new JSONObject(getIntent().getExtras().getString(Constants.PRODUCT_SPECS_INTENT));
+            variantsArray = new JSONArray(getIntent().getExtras().getString(Constants.PRODUCT_VARIANTS_INTENT));
+
+                if(specsObject.has("colors")){
+                    for(int i=0;i<specsObject.getJSONArray("colors").length();i++){
+                        colorArray.add(new ColorSpec(specsObject.getJSONArray("colors").getJSONObject(i).getString("color"),
+                                specsObject.getJSONArray("colors").getJSONObject(i).getString("image"), false));
+                    }
+                }
 
 
+                if(specsObject.has("sizes")){
+                    for(int i=0;i<specsObject.getJSONArray("sizes").length();i++){
+                        storageArray.add(new StorageSpec(specsObject.getJSONArray("sizes").getJSONObject(i).getString("size"), false));
+                    }
+                }
+
+
+                for(int i=0;i<variantsArray.length();i++){
+                    Variant variant = (new Variant(variantsArray.getJSONObject(i).getJSONObject("_id").getString("$id"),
+                            variantsArray.getJSONObject(i).getJSONObject("specs").optString("size"), variantsArray.getJSONObject(i).getInt("quantity"),
+                            variantsArray.getJSONObject(i).getJSONObject("pricing").getInt("discount_price")));
+                    if(variantsArray.getJSONObject(i).getJSONObject("specs").has("color")){
+                        if(variantsArray.getJSONObject(i).getJSONObject("specs").getJSONObject("color").has("color")){
+                            variant.setColor(variantsArray.getJSONObject(i).getJSONObject("specs").getJSONObject("color").getString("color"));
+                        }
+                    }
+                    variantArray.add(variant);
+                }
+
+            if(variantArray.size()>1){
+                populateSpecs();
+            }
+           else{
+                colorLayout.setVisibility(View.GONE);
+                sizeLayout.setVisibility(View.GONE);
+                storageLayout.setVisibility(View.GONE);
+                if(colorArray.size()>0){
+                    colorTextView.setText(colorArray.get(0).getColor());
+                }
+                else{
+                    colorTextView.setVisibility(View.GONE);
+                    colorLabelTextView.setVisibility(View.GONE);
+                }
+                variantId = variantArray.get(0).getId();
+                stockQuantity = variantArray.get(0).getStock();
+                stockQuantityTextView.setText(stockQuantity + " items left in stock");
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         shippingMethodSelectionLayout.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +271,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
         checkOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!variantId.equalsIgnoreCase("") && stockQuantity>=Integer.parseInt(quantity.getText().toString()) && !savedMethodProfileId.equalsIgnoreCase("")){
+                if(!variantId.equalsIgnoreCase("") && stockQuantity>=Integer.parseInt(quantity.getText().toString()) && !savedMethodProfileId.equalsIgnoreCase("") && errorTextView.getText().toString().equalsIgnoreCase("")){
                     checkOutButton.setEnabled(false);
                     checkOutButton.setBackgroundColor(getResources().getColor(R.color.border));
                     checkOutButton.setTextColor(getResources().getColor(R.color.button_text));
@@ -198,24 +285,33 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     System.out.println(dataToSend.toString());
                     new APIClient(ProductOptionsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(dataToSend.toString());
                 }
+                else{
+                    Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Please select valid product option", Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED);
+
+                    View snackbarView = snackbar.getView();
+
+                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
+                }
             }
         });
+
+//        connMgr = (ConnectivityManager)
+//                getSystemService(Context.CONNECTIVITY_SERVICE);
+//        networkInfo = connMgr.getActiveNetworkInfo();
+//        if (networkInfo != null && networkInfo.isConnected()) {
+//            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this,  new GetProductSpecsCallBack()).ProductSpecsAPICall(productId);
+//        } else {
+//            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+//                    .setActionTextColor(Color.RED)
+//                    .show();
+//        }
 
         connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this,  new GetProductSpecsCallBack()).ProductSpecsAPICall(productId);
-        } else {
-            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
-                    .setActionTextColor(Color.RED)
-                    .show();
-        }
-
-
-//        ConnectivityManager connMgr = (ConnectivityManager)
-//                getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             String locationId = "560a8eddf26f2e024b8b4690";
             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
@@ -243,34 +339,61 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 colorRecyclerView.setExpanded(true);
 
                 colorString = colorArray.get(position).getColor();
-                if(!colorString.equalsIgnoreCase("")&&!storageString.equalsIgnoreCase("")){
-                    //call shipping method API
-                    System.out.println("Call shipping method API");
+                colorTextView.setText(colorString);
+                boolean isMatching = false;
+                if(storageArray.size()>0) {
+                    if (!colorString.equalsIgnoreCase("") && !storageString.equalsIgnoreCase("")) {
+                        //call shipping method API
+                        System.out.println("Call shipping method API");
 
-                    boolean isMatching = false;
 
-                    for (int i = 0; i<variantArray.size();i++){
-                        if(variantArray.get(i).getColor().equalsIgnoreCase(colorString) && variantArray.get(i).getStorage().equalsIgnoreCase(storageString)){
-                            isMatching = true;
-                            variantId = variantArray.get(i).getId();
-                            stockQuantity = variantArray.get(i).getStock();
-                            stockQuantityTextView.setText(stockQuantity+" items left in stock");
-                            if(Integer.parseInt(quantity.getText().toString())>stockQuantity){
-                                quantity.setText(stockQuantity);
-                                if (networkInfo != null && networkInfo.isConnected()) {
-                                    String locationId = "560a8eddf26f2e024b8b4690";
-                                    new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
-                                            variantId);
-                                } else {
-                                    Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
-                                            .setActionTextColor(Color.RED)
-                                            .show();
+                        for (int i = 0; i < variantArray.size(); i++) {
+
+                            if (variantArray.get(i).getColor().equalsIgnoreCase(colorString) && variantArray.get(i).getStorage().equalsIgnoreCase(storageString)) {
+                                isMatching = true;
+                                variantId = variantArray.get(i).getId();
+                                stockQuantity = variantArray.get(i).getStock();
+                                stockQuantityTextView.setText(stockQuantity + " items left in stock");
+                                priceTexView.setText("AED " + variantArray.get(i).getPrice());
+                                if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                                    quantity.setText(stockQuantity);
+                                    if (networkInfo != null && networkInfo.isConnected()) {
+                                        String locationId = "560a8eddf26f2e024b8b4690";
+                                        new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                                variantId);
+                                    } else {
+                                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                                .setActionTextColor(Color.RED)
+                                                .show();
+                                    }
                                 }
                             }
                         }
+//                        else{
+//                            isMatching = true;
+//                            if(variantArray.get(i).getColor().equalsIgnoreCase(colorString)){
+//                                variantId = variantArray.get(i).getId();
+//                                stockQuantity = variantArray.get(i).getStock();
+//                                stockQuantityTextView.setText(stockQuantity+" items left in stock");
+//                                priceTexView.setText("AED " + variantArray.get(i).getPrice());
+//                                if(Integer.parseInt(quantity.getText().toString())>stockQuantity){
+//                                    quantity.setText(stockQuantity);
+//                                    if (networkInfo != null && networkInfo.isConnected()) {
+//                                        String locationId = "560a8eddf26f2e024b8b4690";
+//                                        new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+//                                                variantId);
+//                                    } else {
+//                                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+//                                                .setActionTextColor(Color.RED)
+//                                                .show();
+//                                    }
+//                                }
+//                            }
+//                        }
+
                     }
 
-                    if(isMatching) {
+                    if (isMatching) {
                         ConnectivityManager connMgr = (ConnectivityManager)
                                 getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -284,11 +407,63 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                     .show();
                         }
                     }
-                    else{
-                        Toast.makeText(getApplicationContext(), "OUT OF STOCK",Toast.LENGTH_SHORT).show();
+                    else if(!storageString.equalsIgnoreCase("")) {
+                        Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
+                        variantId = "";
+                        stockQuantityTextView.setText("");
                     }
-                    //locationId  = 560a8eddf26f2e024b8b4690
                 }
+                else{
+                    if (!colorString.equalsIgnoreCase("")) {
+                        //call shipping method API
+                        System.out.println("Call shipping method API");
+
+
+                        for (int i = 0; i < variantArray.size(); i++) {
+
+                            if (variantArray.get(i).getColor().equalsIgnoreCase(colorString)) {
+                                isMatching = true;
+                                variantId = variantArray.get(i).getId();
+                                stockQuantity = variantArray.get(i).getStock();
+                                stockQuantityTextView.setText(stockQuantity + " items left in stock");
+                                priceTexView.setText("AED " + variantArray.get(i).getPrice());
+                                if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                                    quantity.setText(stockQuantity);
+                                    if (networkInfo != null && networkInfo.isConnected()) {
+                                        String locationId = "560a8eddf26f2e024b8b4690";
+                                        new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                                variantId);
+                                    } else {
+                                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                                .setActionTextColor(Color.RED)
+                                                .show();
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (isMatching) {
+                        ConnectivityManager connMgr = (ConnectivityManager)
+                                getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                        if (networkInfo != null && networkInfo.isConnected()) {
+                            String locationId = "560a8eddf26f2e024b8b4690";
+                            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                    variantId);
+                        } else {
+                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
+                        variantId = "";
+                        stockQuantityTextView.setText("");
+                    }
+                }
+                    //locationId  = 560a8eddf26f2e024b8b4690
             }
         });
 
@@ -304,50 +479,102 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 storageRecyclerView.setExpanded(true);
 
                 storageString = storageArray.get(position).getColor();
-                if(!colorString.equalsIgnoreCase("")&&!storageString.equalsIgnoreCase("")){
-                    boolean isMatching = false;
+                if(colorArray.size()>0) {
+                    if (!colorString.equalsIgnoreCase("") && !storageString.equalsIgnoreCase("")) {
+                        boolean isMatching = false;
 
 
-                    for (int i = 0; i<variantArray.size();i++){
-                        if(variantArray.get(i).getColor().equalsIgnoreCase(colorString) && variantArray.get(i).getStorage().equalsIgnoreCase(storageString)){
-                            isMatching = true;
-                            variantId = variantArray.get(i).getId();
-                            stockQuantity = variantArray.get(i).getStock();
-                            stockQuantityTextView.setText(stockQuantity + " items left in stock");
-                            if(Integer.parseInt(quantity.getText().toString())>stockQuantity){
-                                quantity.setText(Integer.toString(stockQuantity));
-                                if (networkInfo != null && networkInfo.isConnected()) {
-                                    String locationId = "560a8eddf26f2e024b8b4690";
-                                    new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
-                                            variantId);
-                                } else {
-                                    Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
-                                            .setActionTextColor(Color.RED)
-                                            .show();
+                        for (int i = 0; i < variantArray.size(); i++) {
+                                if (variantArray.get(i).getColor().equalsIgnoreCase(colorString) && variantArray.get(i).getStorage().equalsIgnoreCase(storageString)) {
+                                    isMatching = true;
+                                    variantId = variantArray.get(i).getId();
+                                    stockQuantity = variantArray.get(i).getStock();
+                                    stockQuantityTextView.setText(stockQuantity + " items left in stock");
+                                    priceTexView.setText("AED " + variantArray.get(i).getPrice());
+                                    if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                                        quantity.setText(Integer.toString(stockQuantity));
+                                        if (networkInfo != null && networkInfo.isConnected()) {
+                                            String locationId = "560a8eddf26f2e024b8b4690";
+                                            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                                    variantId);
+                                        } else {
+                                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                                    .setActionTextColor(Color.RED)
+                                                    .show();
+                                        }
+                                    }
+                                }
+                        }
+
+                        if (isMatching) {
+                            ConnectivityManager connMgr = (ConnectivityManager)
+                                    getSystemService(Context.CONNECTIVITY_SERVICE);
+                            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                            if (networkInfo != null && networkInfo.isConnected()) {
+                                String locationId = "560a8eddf26f2e024b8b4690";
+                                new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                        variantId);
+                            } else {
+                                Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                        .setActionTextColor(Color.RED)
+                                        .show();
+                            }
+                        }
+                        else if(!colorString.equalsIgnoreCase("")) {
+                            Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
+                            variantId = "";
+                            stockQuantityTextView.setText("");
+                        }
+                    }
+                }
+                else{
+                    if (!storageString.equalsIgnoreCase("")) {
+                        boolean isMatching = false;
+
+
+                        for (int i = 0; i < variantArray.size(); i++) {
+                            if (variantArray.get(i).getStorage().equalsIgnoreCase(storageString)) {
+                                isMatching = true;
+                                variantId = variantArray.get(i).getId();
+                                stockQuantity = variantArray.get(i).getStock();
+                                stockQuantityTextView.setText(stockQuantity + " items left in stock");
+                                priceTexView.setText("AED " + variantArray.get(i).getPrice());
+                                if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                                    quantity.setText(Integer.toString(stockQuantity));
+                                    if (networkInfo != null && networkInfo.isConnected()) {
+                                        String locationId = "560a8eddf26f2e024b8b4690";
+                                        new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                                variantId);
+                                    } else {
+                                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                                .setActionTextColor(Color.RED)
+                                                .show();
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if(isMatching) {
-                        ConnectivityManager connMgr = (ConnectivityManager)
-                                getSystemService(Context.CONNECTIVITY_SERVICE);
-                        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-                        if (networkInfo != null && networkInfo.isConnected()) {
-                            String locationId = "560a8eddf26f2e024b8b4690";
-                            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
-                                    variantId);
+                        if (isMatching) {
+                            ConnectivityManager connMgr = (ConnectivityManager)
+                                    getSystemService(Context.CONNECTIVITY_SERVICE);
+                            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                            if (networkInfo != null && networkInfo.isConnected()) {
+                                String locationId = "560a8eddf26f2e024b8b4690";
+                                new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                        variantId);
+                            } else {
+                                Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                        .setActionTextColor(Color.RED)
+                                        .show();
+                            }
                         } else {
-                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
-                                    .setActionTextColor(Color.RED)
-                                    .show();
+                            Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
+                            variantId = "";
+                            stockQuantityTextView.setText("");
                         }
                     }
-                    else{
-                        Toast.makeText(getApplicationContext(), "OUT OF STOCK",Toast.LENGTH_SHORT).show();
-                    }
                 }
-            }
+                }
         });
 
 
@@ -681,6 +908,14 @@ public class ProductOptionsActivity extends AppCompatActivity {
             if(resultCode == ProductOptionsActivity.this.RESULT_OK){
                 savedMethodName=data.getStringExtra("method");
                 quantity.setText(data.getStringExtra("count"));
+                if(data.getStringExtra("errorMessage").equalsIgnoreCase("")){
+                    errorTextView.setVisibility(View.GONE);
+                }
+                else{
+                    errorTextView.setVisibility(View.VISIBLE);
+                    errorTextView.setText(data.getStringExtra("errorMessage"));
+                }
+
                 for(int i=0; i<shippingMethodArray.size();i++){
                     if(shippingMethodArray.get(i).getName().equalsIgnoreCase(savedMethodName)){
                         savedMethodProfileId = shippingMethodArray.get(i).getProfileId();
@@ -726,7 +961,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
 
         if(mSharedPrefs.contains(Constants.USER_SETTING_COUNTRY)){
             System.out.println("YES");
-
+            countryNameTextView.setText(mSharedPrefs.getString(Constants.USER_SETTING_COUNTRY, null));
             imageIco=mSharedPrefs.getString(Constants.USER_COUNTRY_IMAGE_ID, null);
 
             imageSource = getResources().getIdentifier(imageIco , "drawable", getPackageName());
@@ -836,11 +1071,16 @@ public class ProductOptionsActivity extends AppCompatActivity {
         public void onTaskComplete(String response) {
             try {
                 JSONObject mMembersJSON;
+                System.out.println("Add to cart Post response: " + response);
                 mMembersJSON = new JSONObject(response);
                 System.out.println(mMembersJSON);
 
                 Intent i=new Intent(ProductOptionsActivity.this,CheckOutActivity.class);
                 startActivity(i);
+
+                checkOutButton.setEnabled(true);
+                checkOutButton.setBackgroundColor(getResources().getColor(R.color.red_base));
+                checkOutButton.setTextColor(getResources().getColor(R.color.button_text));
 
                 progressLayout.setVisibility(View.GONE);
 
@@ -885,10 +1125,12 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                     dataObj.getJSONArray("server").getJSONObject(i).getString("profile_id"), false));
                         }
                     }
+                    errorTextView.setVisibility(View.GONE);
                     errorTextView.setText("");
                 }
                 else{
                     dataObj =  issueObj.getJSONObject("data");
+                    errorTextView.setVisibility(View.VISIBLE);
                     errorTextView.setText(dataObj.getString("public"));
                 }
                 progressLayout.setVisibility(View.GONE);
@@ -922,74 +1164,74 @@ public class ProductOptionsActivity extends AppCompatActivity {
     }
 
 
-    public class GetProductSpecsCallBack extends AsyncCallback {
-        public void onTaskComplete(String response) {
-            try {
-                JSONObject issueObj = new JSONObject(response);
-                JSONObject dataObj;
-                JSONArray varObj;
-//                , sizesArray, storageArray;
-                if(issueObj.getInt("status")==200){
-                    dataObj =  issueObj.getJSONObject("data").getJSONObject("specs");
-                    varObj =  issueObj.getJSONObject("data").getJSONArray("variants");
-                    if(dataObj.has("colors")){
-                        for(int i=0;i<dataObj.getJSONArray("colors").length();i++){
-                            colorArray.add(new ColorSpec(dataObj.getJSONArray("colors").getJSONObject(i).getString("color"),
-                                    dataObj.getJSONArray("colors").getJSONObject(i).getString("image"), false));
-                        }
-                    }
-
-
-                    if(dataObj.has("storages")){
-                        for(int i=0;i<dataObj.getJSONArray("storages").length();i++){
-                            storageArray.add(new StorageSpec(dataObj.getJSONArray("storages").getJSONObject(i).getString("storage"), false));
-                        }
-                    }
-
-
-                    if(dataObj.has("sizes")){
-                        for(int i=0;i<dataObj.getJSONArray("sizes").length();i++){
-                            sizeArray.add(new SizeSpec(dataObj.getJSONArray("sizes").getJSONObject(i).getString("size"), false));
-                        }
-                    }
-
-
-                        for(int i=0;i<varObj.length();i++){
-                            variantArray.add(new Variant(varObj.getJSONObject(i).getJSONObject("_id").getString("$id"),
-                                    varObj.getJSONObject(i).getJSONObject("specs").getJSONObject("color").getString("color"),
-                                    varObj.getJSONObject(i).getJSONObject("specs").getString("storage"), varObj.getJSONObject(i).getInt("quantity")));
-                        }
-
-
-                }
-                progressLayout.setVisibility(View.GONE);
-
-                populateSpecs();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                /*Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
-                        .setActionTextColor(Color.RED)
-                        .show();*/
-                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be Loaded", Snackbar.LENGTH_LONG)
-                        .setActionTextColor(Color.RED);
-
-                View snackbarView = snackbar.getView();
-
-                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.WHITE);
-                snackbar.show();
-            }
-        }
-        @Override
-        public void onTaskCancelled() {
-        }
-        @Override
-        public void onPreExecute() {
-            // TODO Auto-generated method stub
-            progressLayout.setVisibility(View.VISIBLE);
-        }
-    }
+//    public class GetProductSpecsCallBack extends AsyncCallback {
+//        public void onTaskComplete(String response) {
+//            try {
+//                JSONObject issueObj = new JSONObject(response);
+//                JSONObject dataObj;
+//                JSONArray varObj;
+////                , sizesArray, storageArray;
+//                if(issueObj.getInt("status")==200){
+//                    dataObj =  issueObj.getJSONObject("data").getJSONObject("specs");
+//                    varObj =  issueObj.getJSONObject("data").getJSONArray("variants");
+//                    if(dataObj.has("colors")){
+//                        for(int i=0;i<dataObj.getJSONArray("colors").length();i++){
+//                            colorArray.add(new ColorSpec(dataObj.getJSONArray("colors").getJSONObject(i).getString("color"),
+//                                    dataObj.getJSONArray("colors").getJSONObject(i).getString("image"), false));
+//                        }
+//                    }
+//
+//
+//                    if(dataObj.has("storages")){
+//                        for(int i=0;i<dataObj.getJSONArray("storages").length();i++){
+//                            storageArray.add(new StorageSpec(dataObj.getJSONArray("storages").getJSONObject(i).getString("storage"), false));
+//                        }
+//                    }
+//
+//
+//                    if(dataObj.has("sizes")){
+//                        for(int i=0;i<dataObj.getJSONArray("sizes").length();i++){
+//                            sizeArray.add(new SizeSpec(dataObj.getJSONArray("sizes").getJSONObject(i).getString("size"), false));
+//                        }
+//                    }
+//
+//
+//                        for(int i=0;i<varObj.length();i++){
+//                            variantArray.add(new Variant(varObj.getJSONObject(i).getJSONObject("_id").getString("$id"),
+//                                    varObj.getJSONObject(i).getJSONObject("specs").getJSONObject("color").getString("color"),
+//                                    varObj.getJSONObject(i).getJSONObject("specs").getString("storage"), varObj.getJSONObject(i).getInt("quantity")));
+//                        }
+//
+//
+//                }
+//                progressLayout.setVisibility(View.GONE);
+//
+//                populateSpecs();
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                /*Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+//                        .setActionTextColor(Color.RED)
+//                        .show();*/
+//                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be Loaded", Snackbar.LENGTH_LONG)
+//                        .setActionTextColor(Color.RED);
+//
+//                View snackbarView = snackbar.getView();
+//
+//                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+//                textView.setTextColor(Color.WHITE);
+//                snackbar.show();
+//            }
+//        }
+//        @Override
+//        public void onTaskCancelled() {
+//        }
+//        @Override
+//        public void onPreExecute() {
+//            // TODO Auto-generated method stub
+//            progressLayout.setVisibility(View.VISIBLE);
+//        }
+//    }
 
 
     @Override

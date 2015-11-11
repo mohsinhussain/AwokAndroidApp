@@ -84,6 +84,7 @@ public class ShippingMethodActivity extends AppCompatActivity {
     Button checkOutButton;
     ConnectivityManager connMgr;
     NetworkInfo networkInfo;
+    TextView errorTextView, stockQuantityTextView, countryNameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +99,11 @@ public class ShippingMethodActivity extends AppCompatActivity {
         decrement = (Button) findViewById(R.id.quantity_dec);
         countryPicker=(RelativeLayout)findViewById(R.id.countryLayout);
         countryImage=(ImageView)findViewById(R.id.country_image);
+        countryNameTextView = (TextView) findViewById(R.id.countryNameTextView);
         list=(RecyclerView)findViewById(R.id.recyclerAddress);
         checkOutButton = (Button) findViewById(R.id.checkOutButton);
-        //mRecyclerView.setAdapter(mAdapter);
+        errorTextView = (TextView) findViewById(R.id.errorTextView);
+        stockQuantityTextView = (TextView) findViewById(R.id.stockQuantityTextView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
@@ -125,6 +128,10 @@ public class ShippingMethodActivity extends AppCompatActivity {
         variantId = getIntent().getExtras().getString(Constants.VARIANTID_INTENT);
         savedMethodName = getIntent().getExtras().getString(Constants.SELECTED_METHOD_INTENT);
         quantity.setText(quantityString);
+
+        if(stockQuantity>0){
+            stockQuantityTextView.setText(stockQuantity + " items left in stock");
+        }
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         list.setLayoutManager(mLayoutManager);
@@ -153,6 +160,7 @@ public class ShippingMethodActivity extends AppCompatActivity {
                 returnIntent.putExtra("method",savedMethodName);
                 returnIntent.putExtra("count",quantity.getText().toString());
                 returnIntent.putExtra("cost",shippingCost);
+                returnIntent.putExtra("errorMessage", errorTextView.getText().toString());
                 setResult(ShippingMethodActivity.this.RESULT_OK,returnIntent);
                 finish();
             }
@@ -202,9 +210,8 @@ public class ShippingMethodActivity extends AppCompatActivity {
         super.onResume();
         if(mSharedPrefs.contains(Constants.USER_SETTING_COUNTRY)){
             System.out.println("YES");
-
+            countryNameTextView.setText(mSharedPrefs.getString(Constants.USER_SETTING_COUNTRY, null));
             imageIco=mSharedPrefs.getString(Constants.USER_COUNTRY_IMAGE_ID, null);
-
             imageSource = getResources().getIdentifier(imageIco , "drawable", getPackageName());
             countryImage.setImageDrawable(getResources().getDrawable(imageSource));
             countryImage.setVisibility(View.VISIBLE);
@@ -562,12 +569,12 @@ public class ShippingMethodActivity extends AppCompatActivity {
     public class GetShippingsCallBack extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
+                shippingMethodArray.clear();
                 JSONObject issueObj = new JSONObject(response);
-                JSONObject dataObj;
+                JSONObject dataObj = null;
                 JSONObject varObj;
 //                , sizesArray, storageArray;
-                if(issueObj.getInt("status")==200){
-                    shippingMethodArray.clear();
+                if(!issueObj.getBoolean("errors")){
                     dataObj =  issueObj.getJSONObject("data");
                     if(dataObj.has("server")){
                         for(int i=0;i<dataObj.getJSONArray("server").length();i++){
@@ -577,7 +584,11 @@ public class ShippingMethodActivity extends AppCompatActivity {
                                     dataObj.getJSONArray("server").getJSONObject(i).getString("profile_id"), false));
                         }
                     }
-
+                    errorTextView.setText("");
+                }
+                else{
+                    dataObj =  issueObj.getJSONObject("data");
+                    errorTextView.setText(dataObj.getString("public"));
                 }
                 progressLayout.setVisibility(View.GONE);
 

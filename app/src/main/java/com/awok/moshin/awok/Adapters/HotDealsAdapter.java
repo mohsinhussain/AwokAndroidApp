@@ -18,6 +18,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -27,6 +28,7 @@ import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +38,15 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 
 
     private Context mContext;
+    ArrayList<Products> items;
+    public static final int ITEM_WITH_DISCOUNT = 1;
+    public static final int ITEM_WITHOUT_DISCOUNT = 2;
+    public static final int ITEM_WITHOUT_LOADER = 3;
+
+    public HotDealsAdapter(Context context, ArrayList<Products> items){
+        this.mContext = context;
+        this.items = items;
+    }
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -47,21 +58,67 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int i) {
 //        holder.nameTextView.setText(items.get(i).getName());
-        holder.priceTextView.setText(items.get(i).getPriceNew());
-
-        holder.itemImageView.setImageDrawable(null);
 
         final int viewType = getItemViewType(i);
         switch (viewType) {
-            case ITEM_WITH_DISCOUNT:
-                holder.discountTextView.setText(items.get(i).getDiscPercent()+"%");
+            case ITEM_WITHOUT_LOADER:
+            {
+                holder.priceTextView.setVisibility(View.GONE);
+                holder.itemImageView.setVisibility(View.GONE);
                 break;
-            case ITEM_WITHOUT_DISCOUNT:
+            }
+            case ITEM_WITH_DISCOUNT: {
+                holder.discountTextView.setText(items.get(i).getDiscPercent() + "%");
+                holder.priceLayout.setVisibility(View.VISIBLE);
+                holder.priceTextView.setText(items.get(i).getPriceNew());
+                holder.itemImageView.setImageDrawable(null);
+                ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+                imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                        holder.loadProgressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                        if (response.getBitmap() != null) {
+                            // load image into imageview
+                            holder.itemImageView.setImageBitmap(response.getBitmap());
+                            holder.loadProgressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
+                break;
+            }
+            case ITEM_WITHOUT_DISCOUNT: {
                 holder.discountTextView.setVisibility(View.GONE);
+                holder.priceLayout.setVisibility(View.VISIBLE);
+                holder.priceTextView.setText(items.get(i).getPriceNew());
+                holder.itemImageView.setImageDrawable(null);
+                ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+                imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                        holder.loadProgressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                        if (response.getBitmap() != null) {
+                            // load image into imageview
+                            holder.itemImageView.setImageBitmap(response.getBitmap());
+                            holder.loadProgressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
                 break;
+            }
             default:
                 // Blow up in whatever way you choose.
         }
+
 
 
 
@@ -95,6 +152,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 //                        return true;
 //                    }
 //                });
+
     }
 
     @Override
@@ -116,18 +174,14 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 
 
 
-    List<Products> items;
-    public static final int ITEM_WITH_DISCOUNT = 1;
-    public static final int ITEM_WITHOUT_DISCOUNT = 2;
 
-    public HotDealsAdapter(Context context, List<Products> items){
-        this.mContext = context;
-        this.items = items;
-    }
 
 
     @Override
     public int getItemViewType(int position) {
+        if(items.get(position).isLoader()){
+            return ITEM_WITHOUT_LOADER;
+        }
         if (!items.get(position).getPriceOld().equalsIgnoreCase("0 AED")) {
             return ITEM_WITH_DISCOUNT;
         }
@@ -146,7 +200,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         ImageView itemImageView;
         LinearLayout container;
         ProgressBar loadProgressBar;
-
+        RelativeLayout priceLayout;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -158,6 +212,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
             loadProgressBar = (ProgressBar)itemView.findViewById(R.id.load_progress_bar);
             itemImageView = (ImageView)itemView.findViewById(R.id.itemImageView);
             container = (LinearLayout) itemView.findViewById(R.id.parentPanel);
+            priceLayout= (RelativeLayout) itemView.findViewById(R.id.priceLayout);
         }
     }
 

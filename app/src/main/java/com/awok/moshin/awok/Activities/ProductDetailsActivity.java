@@ -107,6 +107,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     ProductDescriptionFragment productDescriptionFragment;
     ReviewsFragment reviewsFragment;
     StoreRatingFragment storeRatingFragment;
+    String variantsArrayString, specsArrayStrin;
 
 
 
@@ -173,6 +174,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
 
                 Intent i = new Intent(ProductDetailsActivity.this, ProductOptionsActivity.class);
                 i.putExtra(Constants.PRODUCT_ID_INTENT, productId);
+                i.putExtra(Constants.PRODUCT_NAME_INTENT, productName);
+                i.putExtra(Constants.PRODUCT_PRICE_NEW_INTENT, newPrice);
+                i.putExtra(Constants.PRODUCT_IMAGE_INTENT, image);
+                i.putExtra(Constants.PRODUCT_VARIANTS_INTENT, variantsArrayString);
+                i.putExtra(Constants.PRODUCT_SPECS_INTENT, specsArrayStrin);
                 startActivityForResult(i, 1);
 
 
@@ -508,43 +514,43 @@ public void setUpTab()
     }
 
 
-    public class GetAddToCartCallBack extends AsyncCallback {
-        public void onTaskComplete(String response) {
-            try {
-                JSONObject mMembersJSON;
-                mMembersJSON = new JSONObject(response);
-                System.out.println(mMembersJSON);
-
-                Intent i=new Intent(ProductDetailsActivity.this,CheckOutActivity.class);
-                startActivity(i);
-
-                progressLayout.setVisibility(View.GONE);
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                /*Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
-                        .setActionTextColor(Color.RED)
-                        .show();*/
-                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be Loaded", Snackbar.LENGTH_LONG)
-                        .setActionTextColor(Color.RED);
-
-                View snackbarView = snackbar.getView();
-
-                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.WHITE);
-                snackbar.show();
-            }
-        }
-        @Override
-        public void onTaskCancelled() {
-        }
-        @Override
-        public void onPreExecute() {
-            // TODO Auto-generated method stub
-            progressLayout.setVisibility(View.VISIBLE);
-        }
-    }
+//    public class GetAddToCartCallBack extends AsyncCallback {
+//        public void onTaskComplete(String response) {
+//            try {
+//                JSONObject mMembersJSON;
+//                mMembersJSON = new JSONObject(response);
+//                System.out.println(mMembersJSON);
+//
+//                Intent i=new Intent(ProductDetailsActivity.this,CheckOutActivity.class);
+//                startActivity(i);
+//
+//                progressLayout.setVisibility(View.GONE);
+//
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                /*Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+//                        .setActionTextColor(Color.RED)
+//                        .show();*/
+//                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be Loaded", Snackbar.LENGTH_LONG)
+//                        .setActionTextColor(Color.RED);
+//
+//                View snackbarView = snackbar.getView();
+//
+//                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+//                textView.setTextColor(Color.WHITE);
+//                snackbar.show();
+//            }
+//        }
+//        @Override
+//        public void onTaskCancelled() {
+//        }
+//        @Override
+//        public void onPreExecute() {
+//            // TODO Auto-generated method stub
+//            progressLayout.setVisibility(View.VISIBLE);
+//        }
+//    }
 
 
 
@@ -571,31 +577,14 @@ public void setUpTab()
 
                 JSONObject mMembersJSON;
                 mMembersJSON = new JSONObject(response);
-                System.out.println("COOLGBDJH" + mMembersJSON);
-        /*        System.out.println(mMembersJSON.getString("name"));
-
-                String ratingsCount=mMembersJSON.getJSONObject("rating").getString("average");
-                String count=mMembersJSON.getJSONObject("rating").getString("sum");
-//                prodNewPrice.setText(Integer.toString(mMembersJSON.getInt("new_price")) + " " + "AED");
-//                prodOldPrice.setText(Integer.toString(mMembersJSON.getInt("original_price")) + " " + "AED");
-//                System.out.println("COOLGBDJH" + productDetails.getName());
-//                String prodDesc=mMembersJSON.getString("description");
-//                productOverview.setOverViewTitle(prodDesc);
-                image=mMembersJSON.getString("image");
-                JSONArray imagesStringData=mMembersJSON.getJSONArray("images");
-                for(int i=0;i<imagesStringData.length();i++)
-                {
-                    //JSONObject data=imagesStringData.getJSONObject(i);
-                    String jsonData=imagesStringData.get(i).toString();
-
-
-                }*/
-                 jsonDescriptionData=mMembersJSON.getJSONArray("description");
+                System.out.println("response: " + mMembersJSON);
+                JSONObject dataObj = mMembersJSON.getJSONObject("data");
+                 jsonDescriptionData=dataObj.getJSONArray("description");
+                variantsArrayString = dataObj.getJSONArray("variants").toString();
+                specsArrayStrin = dataObj.getJSONObject("specs").toString();
                 System.out.println("JDATA" + jsonDescriptionData.toString());
                 for(int i=0;i<jsonDescriptionData.length();i++)
                 {
-
-
                     JSONObject data=jsonDescriptionData.getJSONObject(i);
                     //String jsonData=imagesStringData.get(i).toString();
                     descData.setDescHeader(data.getString("head"));
@@ -605,42 +594,54 @@ System.out.println(data.getString("head"));
 descModel.add(descData);
                 }
  //imageProductRating=mMembersJSON.getString("image");
-                 boughtBy=mMembersJSON.getString("bought_by");
-                 savedBy=mMembersJSON.getString("saved_by");
-                jsonRatingArray=mMembersJSON.getJSONArray("comments");
+                 boughtBy=dataObj.getString("bought_by");
+                 savedBy=dataObj.getString("saved_by");
+                jsonRatingArray=dataObj.getJSONArray("comments");
                 for(int j=0;j<jsonRatingArray.length();j++)
                 {
 
 
                     JSONObject dataRating=jsonRatingArray.getJSONObject(j);
                     //String jsonData=imagesStringData.get(i).toString();
-                    prodRatingData.setContent(dataRating.getString("content"));
-                    prodRatingData.setRate(dataRating.getString("rate"));
+                    prodRatingData.setContent(dataRating.getJSONObject("data").getString("content"));
+                    prodRatingData.setRate(dataRating.getJSONObject("data").getString("rate"));
                     prodRatingData.setUsername(dataRating.getString("username"));
+                    if(dataRating.has("days")){
+                        storeRatingModel.setDays(dataRating.getString("days"));
+                    }
+                    else{
+                        storeRatingModel.setDays(dataRating.getString("created_at"));
+                    }
                     prodRatingData.setDays(dataRating.getString("days"));
-                    prodORating.setMainText (dataRating.getString("content"));
+                    prodORating.setMainText (dataRating.getJSONObject("data").getString("content"));
                     prodORating.setName(dataRating.getString("username"));
-                    prodORating.setRating(dataRating.getString("rate"));
+                    prodORating.setRating(dataRating.getJSONObject("data").getString("rate"));
                     prodOverViewRating.add(prodORating);
                     prodRating.add(prodRatingData);
                 }
 
 
-                 storeName=mMembersJSON.getJSONObject("store").getString("name");
-                JSONObject storeRating=mMembersJSON.getJSONObject("store").getJSONObject("rating");
-                storeSum=storeRating.getString("sum");
-                         storeAverage=storeRating.getString("average");
-                 storeImage=mMembersJSON.getJSONObject("store").getString("image");
-                 storeUrl=mMembersJSON.getJSONObject("store").getString("store_url");
-                JSONArray storeComments=mMembersJSON.getJSONObject("store").getJSONArray("comments");
+                 storeName=dataObj.getJSONObject("store").getString("name");
+                JSONObject storeRating=dataObj.getJSONObject("store").getJSONObject("rating");
+                storeSum=storeRating.getString("number_of_ratings");
+                         storeAverage=storeRating.getString("rating_average");
+                 storeImage=dataObj.getJSONObject("store").getString("image");
+                 storeUrl=dataObj.getJSONObject("store").getString("url");
+                JSONArray storeComments=dataObj.getJSONObject("store").getJSONArray("comments");
                 for(int k=0;k<storeComments.length();k++)
                 {
 
                     JSONObject jsonStroreData=storeComments.getJSONObject(k);
                     storeRatingModel.setUsername(jsonStroreData.getString("username"));
-                    storeRatingModel.setContent(jsonStroreData.getString("content"));
-                    storeRatingModel.setRate(jsonStroreData.getString("rate"));
-                    storeRatingModel.setDays(jsonStroreData.getString("days"));
+                    storeRatingModel.setContent(jsonStroreData.getJSONObject("data").getString("content"));
+                    storeRatingModel.setRate(jsonStroreData.getJSONObject("data").getString("rate"));
+                    if(jsonStroreData.has("days")){
+                        storeRatingModel.setDays(jsonStroreData.getString("days"));
+                    }
+                    else{
+                        storeRatingModel.setDays(jsonStroreData.getString("created_at"));
+                    }
+
 
 
 
@@ -658,10 +659,10 @@ descModel.add(descData);
                 }
 
 
-                JSONObject shippingData=mMembersJSON.getJSONObject("shipping_data");
-                 estimatedPrice=shippingData.getString("estimated_price");
-                         country=shippingData.getString("country");
-                                 estimatedDays=shippingData.getString("estimated_shipping_days");
+                JSONObject shippingData=dataObj.getJSONObject("shipping_data");
+                 estimatedPrice=shippingData.getString("shipping_cost");
+                         country=shippingData.getString("location_name");
+                                 estimatedDays=shippingData.getString("est_from") +" to " + shippingData.getString("est_to");
 
                          shipFrom=   shippingData.getString("ships_from");
                          returnPolicies=shippingData.getString("return_policy");
