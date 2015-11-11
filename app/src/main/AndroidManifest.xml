@@ -76,7 +76,7 @@
             android:name=".Activities.SubCategoriesActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
-            </activity>
+        </activity>
         <activity
             android:name=".Activities.ProductOptionsActivity"
             android:label="@string/app_name"
@@ -214,6 +214,10 @@
         <activity
             android:name=".Activities.DisputeList"
             android:label="@string/title_activity_dispute_list" >
+        </activity>
+        <activity
+            android:name=".Activities.Main2Activity"
+            android:label="@string/title_activity_main2" >
         </activity>
     </application>
 

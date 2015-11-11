@@ -83,18 +83,18 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         });
 
 
-        holder.itemImageView.getViewTreeObserver().addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-                    public boolean onPreDraw() {
-                        int cellWidth = holder.itemImageView.getMeasuredWidth();
-                        int imageHeighFromServer = items.get(i).getImageHeight(mContext);
-                        int imageWidthFromServer = 150;
-                        int cellHeight = cellWidth*imageHeighFromServer/imageWidthFromServer;
-                        holder.itemImageView.getLayoutParams().height = cellHeight;
-                        holder.itemImageView.requestLayout();
-                        return true;
-                    }
-                });
+//        holder.itemImageView.getViewTreeObserver().addOnPreDrawListener(
+//                new ViewTreeObserver.OnPreDrawListener() {
+//                    public boolean onPreDraw() {
+//                        int cellWidth = holder.itemImageView.getMeasuredWidth();
+//                        int imageHeighFromServer = items.get(i).getImageHeight(mContext);
+//                        int imageWidthFromServer = 150;
+//                        int cellHeight = cellWidth*imageHeighFromServer/imageWidthFromServer;
+//                        holder.itemImageView.getLayoutParams().height = cellHeight;
+//                        holder.itemImageView.requestLayout();
+//                        return true;
+//                    }
+//                });
     }
 
     @Override

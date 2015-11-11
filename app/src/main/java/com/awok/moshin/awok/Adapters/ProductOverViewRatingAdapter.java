@@ -38,6 +38,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.awok.moshin.awok.Activities.CheckOutActivity;
 import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.Checkout;
+import com.awok.moshin.awok.Models.ProductRatingModel;
 import com.awok.moshin.awok.Models.productOverviewRating;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
@@ -54,7 +55,8 @@ import java.util.List;
  * Created by shon on 10/10/2015.
  */
 public class ProductOverViewRatingAdapter extends RecyclerView.Adapter<ProductOverViewRatingAdapter.ViewHolder> {
-    private List<productOverviewRating> OverViewList = new ArrayList<productOverviewRating>();
+  ////////////  private List<productOverviewRating> OverViewList = new ArrayList<productOverviewRating>();
+  private List<ProductRatingModel> OverViewList = new ArrayList<ProductRatingModel>();
     private Activity activity_main;
     View customView;
 
@@ -64,7 +66,7 @@ public class ProductOverViewRatingAdapter extends RecyclerView.Adapter<ProductOv
     Context mContext;
 
 
-    public ProductOverViewRatingAdapter(Activity activity, List<productOverviewRating> overViewList) {
+    public ProductOverViewRatingAdapter(Activity activity, List<ProductRatingModel> overViewList) {
         OverViewList = overViewList;
 
 
@@ -92,16 +94,16 @@ public class ProductOverViewRatingAdapter extends RecyclerView.Adapter<ProductOv
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
 
 
-        final productOverviewRating item = OverViewList.get(position);
+        final ProductRatingModel item = OverViewList.get(position);
 
         LayerDrawable reviewRatingColor = (LayerDrawable) viewHolder.rating.getProgressDrawable();
         reviewRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
         reviewRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
         reviewRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
 
-            viewHolder.rating.setRating(2);
-            viewHolder.mainText.setText(OverViewList.get(position).getMainText());
-            viewHolder.name.setText(OverViewList.get(position).getName());
+            viewHolder.rating.setRating(Float.parseFloat(OverViewList.get(position).getRate()));
+            viewHolder.mainText.setText(OverViewList.get(position).getContent());
+            viewHolder.name.setText(OverViewList.get(position).getUsername());
 
 
 
@@ -166,7 +168,7 @@ public class ProductOverViewRatingAdapter extends RecyclerView.Adapter<ProductOv
 
 
 
-    public void add(productOverviewRating item, int position) {
+    public void add(ProductRatingModel item, int position) {
         OverViewList.add(position, item);
         notifyItemInserted(position);
     }

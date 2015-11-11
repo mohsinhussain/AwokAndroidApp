@@ -135,18 +135,19 @@
 
 </LinearLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/goToTopButton"
-        android:background="#666"
+        android:background="@color/primary"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
+        android:padding="5dp"
         android:textColor="#ccc"
-        android:text="@string/go_to_top"
-        android:layout_width="35dp"
-        android:layout_height="25dp" />
+        android:src="@drawable/direction"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
 
 
 

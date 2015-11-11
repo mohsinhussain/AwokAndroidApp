@@ -306,7 +306,9 @@ public void setUpTab()
         calls=viewPager;
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
-        productOverViewFragment=new ProductOverViewFragment(productId, productName,image);
+        productOverViewFragment=new ProductOverViewFragment(productId, productName,image,prodRating,estimatedDays,estimatedPrice);
+        System.out.println("GVDH"+estimatedDays);
+        System.out.println("GVDH" + estimatedPrice);
         //productOverViewFragment=new ProductOverViewFragment();
         //shippingDeliveryFrag=new ShippingDeliveryFrag(returnPolicies,estimatedPrice,country,estimatedDays,shipFrom);
         shippingDeliveryFrag=new ShippingDeliveryFrag();

@@ -131,7 +131,7 @@ public class APIClient {
 
     public void OrderHistoryDetailsItemsCallBack(String orderId) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/v1/order/"+orderId+"/", "GET", null);
+        mTask.execute(mContext, "http://market1.awok/v1/order/?id="+orderId, "GET", null);
 
     }
 

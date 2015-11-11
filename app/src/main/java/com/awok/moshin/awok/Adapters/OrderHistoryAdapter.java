@@ -147,7 +147,8 @@ if (orderHistoryData.get(position).getIsHeader())
 //viewHolder.image.setImageBitmap(base64ToBitmap(orderHistoryData.get(position).getImageData()));
             viewHolder.orderNo.setText("Order #"+orderHistoryData.get(position).getOrderNo());
                 viewHolder.orderNo.setTag(orderHistoryData.get(position).getOrderId());
-        viewHolder.dateTime.setText("placed on "+date(orderHistoryData.get(position).getDateTime().toString()));
+        viewHolder.dateTime.setText("placed on " + date(orderHistoryData.get(position).getDateTime().toString()));
+        viewHolder.monthValue.setText(orderHistoryData.get(position).getHeader());
 
            // viewHolder.shipping.setText("In Stock : " + orderHistoryData.get(position).getShipping());
             //orderCheck=orderHistoryData.get(position).getOrderId();
@@ -193,6 +194,7 @@ if (orderHistoryData.get(position).getIsHeader())
         private RelativeLayout main,totalLay;*/
         TextView orderNo,dateTime;
         LinearLayout headLayMonth;
+        TextView monthValue;
 
 
 
@@ -237,7 +239,8 @@ main=(RelativeLayout)itemLayoutView
                     .findViewById(R.id.date_time);
             headLayMonth=(LinearLayout)itemLayoutView
                     .findViewById(R.id.headLayMonth);
-
+            monthValue=(TextView)itemLayoutView
+                    .findViewById(R.id.monthValue);
         }
         @Override
         public void onClick(View view) {

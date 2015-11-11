@@ -46,7 +46,7 @@ public class OrderHistory extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private TextView orderCount,orderText;
     ProgressBar progressBar;
-    private TextView errorText;
+    private TextView errorText,noOrders;
     private Spinner spinnerOrder,statusAll;
     private String id="";
             private String from="";
@@ -67,7 +67,7 @@ progressBar=(ProgressBar)findViewById(R.id.marker_progress);
 
 mainLay=(LinearLayout)findViewById(R.id.bottomLay);
       //  mainLay.setVisibility(View.GONE);
-
+        noOrders=(TextView)findViewById(R.id.noOrders);
         spinnerOrder = (Spinner) findViewById(R.id.orderStatus);
         statusAll = (Spinner) findViewById(R.id.showall);
 
@@ -212,46 +212,52 @@ errorText=(TextView)findViewById(R.id.error_text);
     public class GetHistoryCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
-orderHistoryData.clear();
-                System.out.println(response);
+
                 JSONObject jsonObjectData;
                 jsonObjectData=new JSONObject(response);
-                System.out.println(jsonObjectData.toString());
-                JSONObject dataJson=jsonObjectData.getJSONObject("data");
-JSONArray data=dataJson.getJSONArray("grouped_orders");
+
+                if(jsonObjectData.getString("errors").equals("true"))
+                {
+                    noOrders.setVisibility(View.VISIBLE);
+                }
+else {
+
+                    orderHistoryData.clear();
+                    System.out.println(response);
+
+                    System.out.println(jsonObjectData.toString());
+                    JSONObject dataJson = jsonObjectData.getJSONObject("data");
+                    JSONArray data = dataJson.getJSONObject("server").getJSONArray("grouped_orders");
 
 //                System.out.println(jsonObjectData.getJSONArray("data").length());
 //orderCount.setText("Your Last "+jsonObjectData.getJSONArray("data").length()+" Orders");
-                for(int i=0;i<data.length();i++) {
-                    //JSONArray jsonArrayData=jsonObjectData.getJSONArray("data");
-                    JSONObject jsonCart=data.getJSONObject(i);
-                  //  System.out.println(jsonObjectData.getJSONArray("data").getJSONObject(i).getJSONArray("cart").toString());
+                    for (int i = 0; i < data.length(); i++) {
+                        //JSONArray jsonArrayData=jsonObjectData.getJSONArray("data");
+                        JSONObject jsonCart = data.getJSONObject(i);
+                        //  System.out.println(jsonObjectData.getJSONArray("data").getJSONObject(i).getJSONArray("cart").toString());
 
-                  //  orderData.setIsHeader(true);
-                    for(int j=0;j<jsonCart.getJSONArray("orders").length();j++) {
-                        OrderHistoryModel orderData=new OrderHistoryModel();
+                        //  orderData.setIsHeader(true);
+                        for (int j = 0; j < jsonCart.getJSONArray("orders").length(); j++) {
+                            OrderHistoryModel orderData = new OrderHistoryModel();
 
-                        orderData.setHeader(jsonCart.getString("timeframe"));
-JSONObject jsonOrders=jsonCart.getJSONArray("orders").getJSONObject(j);
-                        orderData.setOrderId(jsonOrders.getString("_id"));
-                        //orderData.setPrice(jsonObjectData.getString("price"));
-                        orderData.setOrderNo(jsonOrders.getString("number"));
-                        orderData.setDateTime(jsonOrders.getString("time_created_unix"));
-                        if (j==0)
-                        {
-                            System.out.println("SHOW");
-                            orderData.setIsHeader(true);
+                            orderData.setHeader(jsonCart.getString("timeframe"));
+                            JSONObject jsonOrders = jsonCart.getJSONArray("orders").getJSONObject(j);
+                            orderData.setOrderId(jsonOrders.getString("id"));
+                            //orderData.setPrice(jsonObjectData.getString("price"));
+                            orderData.setOrderNo(jsonOrders.getString("number"));
+                            orderData.setDateTime(jsonOrders.getString("time_created_unix"));
+                            if (j == 0) {
+                                System.out.println("SHOW");
+                                orderData.setIsHeader(true);
+                            } else {
+                                System.out.println("SHOW NO");
+                                orderData.setIsHeader(false);
+                            }
+                            orderHistoryData.add(orderData);
+                            //JSONObject jsonObjData=jsonObjectData.getJSONObject(jsonArrayData);
+                            //for(int j=0;j<jsonArrayData.getJSONArray("cart").length();j++)
+
                         }
-                        else
-                        {
-                            System.out.println("SHOW NO");
-                            orderData.setIsHeader(false);
-                        }
-                        orderHistoryData.add(orderData);
-                        //JSONObject jsonObjData=jsonObjectData.getJSONObject(jsonArrayData);
-                        //for(int j=0;j<jsonArrayData.getJSONArray("cart").length();j++)
-
-                    }
 
 
                     /*for(int j=0;j<jsonCart.getJSONArray("cart").length();j++)
@@ -270,15 +276,14 @@ JSONObject jsonOrders=jsonCart.getJSONArray("orders").getJSONObject(j);
 
                     }*/
 
-                    System.out.println("CARE" +orderHistoryData.toString());
-                   // System.out.println("CARE" +orderData.toString());
+                        System.out.println("CARE" + orderHistoryData.toString());
+                        // System.out.println("CARE" +orderData.toString());
 
 
+                        //System.out.println("RESPONSE" + );
+                    }
 
-                    //System.out.println("RESPONSE" + );
                 }
-
-
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                    // progressBar.startAnimation(animation);

@@ -189,4 +189,5 @@ Introducing the world’s first 4K smartphone</string>
     <string name="title_activity_dispute_details">DisputeDetails</string>
     <string name="title_activity_modify_dispute">ModifyDispute</string>
     <string name="title_activity_dispute_list">DisputeList</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

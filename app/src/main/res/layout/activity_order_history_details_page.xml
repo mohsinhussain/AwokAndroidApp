@@ -68,47 +68,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-    <RelativeLayout
-        android:gravity="center_vertical"
 
-        android:layout_marginRight="10dp"
-        android:id="@+id/shippingHead"
-
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content">
-        <RelativeLayout
-            android:layout_margin="16dp"
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-       <!-- <ImageView
-            android:id="@+id/shippingImg"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/shipment_icon"/>-->
-
-        <TextView
-
-            android:layout_width="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_height="wrap_content"
-            android:text="Shipment Tracking"/>
-
-</RelativeLayout>
-    </RelativeLayout>
-
-<View
-    android:layout_below="@+id/shippingHead"
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:id="@+id/orderView"
-    android:background="#e3e3e3"/>
 
 
             <RelativeLayout
@@ -116,7 +76,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_below="@+id/orderView"
+
                 android:id="@+id/shipLay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -283,13 +243,112 @@
                 android:id="@+id/delView"
                 android:background="#e3e3e3"/>
 
+            <RelativeLayout
+                android:gravity="center_vertical"
+android:layout_below="@+id/delView"
+                android:layout_marginRight="10dp"
+                android:id="@+id/shippingHead"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_margin="16dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- <ImageView
+                         android:id="@+id/shippingImg"
+
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:src="@drawable/shipment_icon"/>-->
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_height="wrap_content"
+                        android:text="Shipment Tracking"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_below="@+id/shippingHead"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/orderView"
+                android:background="#e3e3e3"/>
+
+
+
+
+            <RelativeLayout
+                android:gravity="center_vertical"
+                android:layout_below="@+id/orderView"
+                android:layout_marginRight="10dp"
+                android:id="@+id/orderMessageLay"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_margin="16dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- <ImageView
+                         android:id="@+id/shippingImg"
+
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:src="@drawable/shipment_icon"/>-->
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_height="wrap_content"
+                        android:text="Order Messages"/>
+
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+android:text="0"
+                        android:textSize="10sp"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/badge_custom"
+                        android:id="@+id/button"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_below="@+id/shippingHead"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/orderMessageView"
+                android:background="#e3e3e3"/>
+
+
+
 
             <RelativeLayout
                 android:visibility="gone"
                 android:gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_below="@+id/orderTimeLay"
+                android:layout_below="@+id/orderMessageLay"
                 android:id="@+id/delLay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -403,14 +462,14 @@ android:layout_centerVertical="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_height="wrap_content"
 
-                        android:text="Shipping :"/>
+                        android:text="SHIPPING :"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="20 AED"
-                        android:textColor="@color/primary"
+                        android:textColor="@color/header_text"
                         android:id="@+id/shippingPrice"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
@@ -441,14 +500,15 @@ android:layout_centerVertical="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_height="wrap_content"
 
-                        android:text="Total Amount :"/>
+                        android:text="TOTAL AMOUNT :"
+                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
 
-                        android:textColor="@color/primary"
+                        android:textColor="@color/red_base"
 
                         android:id="@+id/totalPrice"
                         android:layout_alignParentTop="true"
@@ -684,6 +744,7 @@ android:layout_centerVertical="true"
 
 
             <Button
+                android:visibility="gone"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
 
@@ -701,10 +762,10 @@ android:layout_centerVertical="true"
 
             <Button
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+
                 android:padding="5dp"
                 android:background="#ef6c00"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textStyle="bold"
                 android:text="Order Message"

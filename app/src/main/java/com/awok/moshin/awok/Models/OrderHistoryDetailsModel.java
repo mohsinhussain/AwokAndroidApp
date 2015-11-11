@@ -15,6 +15,11 @@ public class OrderHistoryDetailsModel {
     private String seller;
     private String shipping;
     private String shippingStatus;
+    private String productName;
+    private String productUniqueId;
+    private String estimated_days_from;
+    private String estimated_days_to;
+    private String intentPrice;
 
 
     public OrderHistoryDetailsModel()
@@ -22,7 +27,7 @@ public class OrderHistoryDetailsModel {
 
     }
 
-    public OrderHistoryDetailsModel(String image, String price,String quantity,String title,String seller, String shipping,String shippingStatus,String delTime) {
+    public OrderHistoryDetailsModel(String image,String estimated_days_from  ,String intentPrice,String estimated_days_to, String price,String quantity,String title,String seller, String shipping,String shippingStatus,String delTime,String productName,String productUniqueId) {
         this.image = image;
         this.price = price;
         this.quantity=quantity;
@@ -33,6 +38,18 @@ public class OrderHistoryDetailsModel {
         this.shipping=shipping;
         this.shippingStatus=shippingStatus;
         this.delTime=delTime;
+        this.productName=productName;
+        this.productUniqueId=productUniqueId;
+        this.estimated_days_to=estimated_days_to;
+        this.intentPrice=intentPrice;
+
+
+
+
+
+
+
+        this.estimated_days_from=estimated_days_from;
 
 
     }
@@ -157,6 +174,61 @@ public class OrderHistoryDetailsModel {
     public String getDelTime()
     {
         return delTime;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductName()
+    {
+        return productName;
+    }
+
+    public void setProductUniqueId(String productUniqueId) {
+        this.productUniqueId = productUniqueId;
+    }
+
+    public String getProductUniqueId()
+    {
+        return productUniqueId;
+    }
+
+    public void setEstimated_days_from(String estimated_days_from) {
+        this.estimated_days_from = estimated_days_from;
+    }
+
+
+
+
+
+
+
+    public String getEstimated_days_from()
+    {
+        return estimated_days_from;
+    }
+
+    public void setEstimated_days_to(String estimated_days_to) {
+        this.estimated_days_to = estimated_days_to;
+    }
+
+    public String getEstimated_days_to()
+    {
+        return estimated_days_to;
+    }
+
+    public void setIntentPrice(String intentPrice) {
+        this.intentPrice = intentPrice;
+    }
+
+
+
+
+
+    public String getIntentPrice()
+    {
+        return intentPrice;
     }
 
 /*    public void setOrderTime(String orderTime) {

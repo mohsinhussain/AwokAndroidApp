@@ -125,6 +125,7 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
                 viewHolder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
                 viewHolder.loadProgressBar.setVisibility(View.GONE);
             }
+
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
                 if (response.getBitmap() != null) {
@@ -136,11 +137,11 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
         });
 
 
-        viewHolder.price.setText(orderHistoryDetailsData.get(position).getPrice() + " AED");
+        viewHolder.price.setText(orderHistoryDetailsData.get(position).getPrice());
         viewHolder.quantity.setText(orderHistoryDetailsData.get(position).getQuantity()+"X ");
-
+viewHolder.daysData.setText(orderHistoryDetailsData.get(position).getEstimated_days_from() + " days - " + orderHistoryDetailsData.get(position).getEstimated_days_to()+" days");
         viewHolder.title.setText(orderHistoryDetailsData.get(position).getTitle());
-        viewHolder.seller.setText(orderHistoryDetailsData.get(position).getShipping());
+        viewHolder.seller.setText("Seller: "+orderHistoryDetailsData.get(position).getShipping());
         viewHolder.shipping.setTag(orderHistoryDetailsData.get(position).getTitle());
 
       /*  }
@@ -181,7 +182,7 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
         /*public TextView title,quantity,seller,price,totalPrice,shipping;
         public ImageView image;
         private RelativeLayout main,totalLay;*/
-        TextView price,quantity,title,seller,shipping;
+        TextView price,quantity,title,seller,shipping,daysData;
         ImageView image;
         ProgressBar loadProgressBar;
 
@@ -194,7 +195,8 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
             loadProgressBar = (ProgressBar)itemLayoutView.findViewById(R.id.load_progress_bar);
             image=(ImageView)itemLayoutView
                     .findViewById(R.id.mainImg);
-
+daysData=(TextView)itemLayoutView
+        .findViewById(R.id.daysData);
             price = (TextView) itemLayoutView
                     .findViewById(R.id.price);
             quantity = (TextView) itemLayoutView

@@ -53,12 +53,14 @@ public class OrderHistoryDetailsPage extends AppCompatActivity {
 private RecyclerView mRecyclerView;
 private String orderId;
     private TextView error;
+    private String sendProductUniqueId,sendProductName;
     private RelativeLayout mainLay;
     ProgressBar progressBar;
     private Button disputeOpen;
     private RecyclerView.Adapter mAdapter;
     private TextView orderTime,delTime,orderStatus,shippingAmount,totalAmount,sellerStore,sellerName;
     HashMap<String,String> productUniqueId;
+
     //private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderHistoryDetailsModel> orderHistoryDetailsData = new ArrayList<OrderHistoryDetailsModel>();
 private  String cart_id,status,price,orderDisputeId;
@@ -78,6 +80,8 @@ disputeOpen=(Button)findViewById(R.id.disputeButton);
                 i.putExtra("id",orderDisputeId);
                 i.putExtra("cartId",cart_id);
                 i.putExtra("uniqueId",productUniqueId);
+                i.putExtra("sendProductUniqueId",sendProductUniqueId);
+                i.putExtra("sendProductName",sendProductName);
                 for (Map.Entry<String,String> entry : productUniqueId.entrySet()) {
                     String key = entry.getKey();
                     String value = entry.getValue();
@@ -123,7 +127,36 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
         ab.setTitle("Order History Details");
 
 
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                       Intent i=new Intent(OrderHistoryDetailsPage.this,DisputeActivity.class);
+                System.out.println("id" + orderDisputeId);
+                System.out.println("cartId" + cart_id);
+                System.out.println("uniqueId" + productUniqueId);
+                System.out.println("sendProductUniqueId" + orderHistoryDetailsData.get(position).getProductUniqueId());
+                System.out.println("sendProductName" + orderHistoryDetailsData.get(position).getProductName());
+                        i.putExtra("id", orderDisputeId);
+                        i.putExtra("cartId", cart_id);
+                        i.putExtra("uniqueId", productUniqueId);
+                        i.putExtra("sendProductUniqueId", orderHistoryDetailsData.get(position).getProductUniqueId());
+                        i.putExtra("sendProductName", orderHistoryDetailsData.get(position).getProductName());
+                for (Map.Entry<String, String> entry : productUniqueId.entrySet()) {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    System.out.println("Before Sending: " + key + " " + value + "\n");
+                    // do stuff
+                }
+                System.out.println("price");
+                System.out.println("status" + status);
+                        i.putExtra("price",orderHistoryDetailsData.get(position).getIntentPrice());
+                        i.putExtra("status",status);
+                        startActivity(i);
 
+
+            }
+        }));
 
         ConnectivityManager connMgr = (ConnectivityManager)
                 getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -209,34 +242,43 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
 
 
                     //JSONArray jsonArrayData=jsonObjectData.getJSONArray("data");
-                    JSONObject jsonCart = jsonObjectData.getJSONObject("data");
+                    JSONObject jsonCart = jsonObjectData.getJSONObject("data").getJSONObject("public");
                 System.out.println(jsonCart.toString());
                 productUniqueId=new HashMap<>();
                     for(int j=0;j<jsonCart.getJSONArray("cart").length();j++) {
                         JSONObject jsonCartData = jsonCart.getJSONArray("cart").getJSONObject(j);
-
-                        System.out.println(jsonCartData.toString());
                         OrderHistoryDetailsModel orderData=new OrderHistoryDetailsModel();
+                        System.out.println(jsonCartData.toString());
+                        //OrderHistoryDetailsModel orderData=new OrderHistoryDetailsModel();
                         orderData.setImage(jsonCartData.getString("image"));
-                        orderData.setPrice(jsonCartData.getString("total_price"));
+                        //orderData.setPrice(jsonCartData.getString("total_price"));
+                        orderData.setPrice(jsonCartData.getString("currency") + " " + jsonCartData.getString("total"));
+                        orderData.setIntentPrice(jsonCartData.getString("total"));
                         orderData.setQuantity(jsonCartData.getString("quantity"));
+                        orderData.setProductName(jsonCartData.getString("product_name"));
+                        orderData.setProductUniqueId(jsonCartData.getString("id"));
                         orderData.setTitle(jsonCartData.getString("product_name"));
                         orderData.setSeller(jsonCartData.getString("seller_name"));
+                        orderData.setEstimated_days_from(jsonCartData.getJSONObject("shipping_info").getString("estimated_days_from"));
+                        orderData.setEstimated_days_to(jsonCartData.getJSONObject("shipping_info").getString("estimated_days_to"));
                         orderData.setShipping(jsonCartData.getString("seller_name"));
                         orderData.setShippingStatus(jsonCartData.getString("seller_name"));
-                                orderData.setDelTime(jsonCartData.getString("seller_name"));
+                        orderData.setDelTime(jsonCartData.getString("seller_name"));
                         /*orderData.setOrderTime(jsonCartData.getString("time_created_unix"));
                         orderData.setDelTime(jsonCartData.getString("time_updated_unix"));*/
                         orderTime.setText(date(jsonCartData.getString("time_created_unix")));
                         delTime.setText(date(jsonCartData.getString("time_updated_unix")));
-                        productUniqueId.put(jsonCartData.getString("product_name"), jsonCartData.getString("_id"));
+                        productUniqueId.put(jsonCartData.getString("product_name"), jsonCartData.getString("id"));
+                        sendProductUniqueId=jsonCartData.getString("id");
+                        sendProductName=jsonCartData.getString("product_name");
 
-                        totalAmount.setText((jsonCart.getString("price")) + " AED");
-
+                        totalAmount.setText(jsonCart.getString("currency")+" "+(jsonCart.getString("total")));
+shippingAmount.setText(jsonCart.getString("currency")+" "+jsonCart.getString("shipping_cost"));
                         sellerName.setText(jsonCartData.getString("seller_name"));
- cart_id=jsonCart.getString("_id");
+ cart_id=jsonCart.getString("id");
                         status=jsonCart.getString("status");
-                        price=jsonCart.getString("price");
+                        //price=jsonCart.getString("price");
+                        price=jsonCart.getString("currency")+" "+jsonCart.getString("subtotal");
                         orderDisputeId=jsonCart.getString("number");
 
                         orderHistoryDetailsData.add(orderData);

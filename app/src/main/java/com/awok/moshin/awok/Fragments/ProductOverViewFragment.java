@@ -57,6 +57,7 @@ import com.awok.moshin.awok.Adapters.ProductOverViewRatingAdapter;
 import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.Models.ProductDetailsModel;
+import com.awok.moshin.awok.Models.ProductRatingModel;
 import com.awok.moshin.awok.Models.productOverviewRating;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
@@ -104,15 +105,18 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
  private Button prod_buyNow,save;
     private RatingBar prodRatingBar,prod_reviewRating;
-    String image, baseImage,productName, productId;
-
+    String image, baseImage,productName, productId,estimatedDays,estimatedPrice;
+    List<ProductRatingModel> rating;
     public ProductOverViewFragment(){
 
     }
-    public ProductOverViewFragment(String productId,String productName, String imageData) {
+    public ProductOverViewFragment(String productId,String productName, String imageData,List<ProductRatingModel> rating,String estimatedDays,String estimatedPrice) {
         this.productName=productName;
         this.image=imageData;
         this.productId=productId;
+        this.rating=rating;
+        this.estimatedDays=estimatedDays;
+        this.estimatedPrice=estimatedPrice;
 
     }
 
@@ -210,7 +214,8 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
        mRecyclerView.setLayoutManager(mLayoutManager);
 
-       mAdapter = new ProductOverViewRatingAdapter(getActivity(), ratingData);
+      //  mAdapter = new ProductOverViewRatingAdapter(getActivity(), ratingData);
+        mAdapter = new ProductOverViewRatingAdapter(getActivity(), rating);
 
              //   scroll.fullScroll(NestedScrollView.FOCUS_UP);
 
@@ -248,9 +253,10 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         productTitle.setText(productName);
         mCustomPagerAdapter = new CustomPagerAdapter(getContext());
 
+//prod_deliveryTime.setText(estimatedDays);
 
 
-
+        //prod_shippingCost.setText(estimatedPrice);
 
         viewPager.setAdapter(mCustomPagerAdapter);
         mRecyclerView.setAdapter(mAdapter);
