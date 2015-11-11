@@ -25,8 +25,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.awok.moshin.awok.AppController;
+import com.awok.moshin.awok.Fragments.DragonBallFooter;
+import com.awok.moshin.awok.Fragments.FooterViewHolder;
 import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.R;
+import com.karumi.headerrecyclerview.HeaderRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,7 @@ import java.util.List;
 /**
  * Created by moshin on 9/6/2015.
  */
-public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemViewHolder>{
+public class HotDealsAdapter extends  RecyclerView.Adapter<HotDealsAdapter.ItemViewHolder> {
 
 
     private Context mContext;
@@ -54,6 +57,8 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         ItemViewHolder pvh = new ItemViewHolder(v);
         return pvh;
     }
+
+
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int i) {
@@ -133,10 +138,7 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
 
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
+
 
 
 
@@ -157,6 +159,16 @@ public class HotDealsAdapter extends RecyclerView.Adapter<HotDealsAdapter.ItemVi
         }
     }
 
+
+//    public void remove(int position) {
+//        mDataSet.remove(position);
+//        notifyItemRemoved(position);
+//    }
+//
+//    public void add(String text, int position) {
+////        mDataSet.add(position, text);
+//        notifyItemInserted(position);
+//    }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         CardView mCardView;

@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.awok.moshin.awok.Activities.FilterActivity;
 import com.awok.moshin.awok.Activities.ProductDetailsActivity;
+import com.awok.moshin.awok.Adapters.DragonBallAdapter;
 import com.awok.moshin.awok.Adapters.HotDealsAdapter;
 import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
@@ -46,6 +47,8 @@ import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
 import com.awok.moshin.awok.Util.RecyclerItemClickListener;
+import com.karumi.headerrecyclerview.HeaderRecyclerViewAdapter;
+import com.karumi.headerrecyclerview.HeaderSpanSizeLookup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,10 +57,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.zip.Inflater;
 
+import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
+
 public class HotDealsFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     HotDealsAdapter mAdapter;
+    AlphaInAnimationAdapter alphaAdapter;
     View mView;
     LinearLayout progressLayout;
     ProgressBar progressBar;
@@ -255,7 +261,7 @@ public class HotDealsFragment extends Fragment {
 
 
 
-        showFilters(inflater,container);
+        showFilters(inflater, container);
 
 
         mSwipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.CYAN, Color.GREEN,
@@ -265,6 +271,8 @@ public class HotDealsFragment extends Fragment {
         mRecyclerView.setHasFixedSize(false);
 
         mLayoutManager = new StaggeredGridLayoutManager(2,  1);
+//        HeaderSpanSizeLookup headerSpanSizeLookup = new HeaderSpanSizeLookup(adapter, layoutManager);
+//        mLayoutManager.setSpanSizeLookup(headerSpanSizeLookup);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.addOnItemTouchListener(
@@ -339,9 +347,12 @@ public class HotDealsFragment extends Fragment {
                 Log.i(TAG, "lastProductItem: " + (productsArrayList.size()-1));
 
                 if(shouldLoadMore && lastVisibleItem==(productsArrayList.size()-1)){
-                    Products item = new Products(true);
-                    productsArrayList.add(item);
-                    mAdapter.notifyDataSetChanged();
+//                    DragonBallFooter footer = new DragonBallFooter("Loading...");
+//                    mAdapter.setFooter(footer);
+//                    mAdapter.notifyDataSetChanged();
+//                    Products item = new Products(true);
+//                    productsArrayList.add(item);
+//                    mAdapter.notifyDataSetChanged();
                 }
 
                 if (!loading && (totalItemCount - visibleItemCount)
@@ -912,14 +923,15 @@ public class HotDealsFragment extends Fragment {
                 }
 
                 if(length>0){
-                    if(productsArrayList.size()>0){
-                        for(int i=0;i<productsArrayList.size();i++){
-                            if(productsArrayList.get(i).isLoader()){
-                                productsArrayList.remove(i);
-                            }
-                        }
-                        mAdapter.notifyDataSetChanged();
-                    }
+//                    mAdapter.hideFooter();
+//                    if(productsArrayList.size()>0){
+//                        for(int i=0;i<productsArrayList.size();i++){
+//                            if(productsArrayList.get(i).isLoader()){
+//                                productsArrayList.remove(i);
+//                            }
+//                        }
+//                        add.notifyDataSetChanged();
+//                    }
 
                     for(int i=0;i<length;i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -1002,8 +1014,10 @@ public class HotDealsFragment extends Fragment {
 
     private void initializeData(){
         if (pageCount==1){
+//            mAdapter = new DragonBallAdapter(getActivity(), productsArrayList);
             mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
-            mRecyclerView.setAdapter(mAdapter);
+            alphaAdapter = new AlphaInAnimationAdapter(mAdapter);
+            mRecyclerView.setAdapter(alphaAdapter);
             mRecyclerView.setItemAnimator(null);
             mLayoutManager = new StaggeredGridLayoutManager(2,  1);
             mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -1012,6 +1026,7 @@ public class HotDealsFragment extends Fragment {
         }
         else{
             mAdapter.notifyDataSetChanged();
+            alphaAdapter.notifyDataSetChanged();
         }
 
     }

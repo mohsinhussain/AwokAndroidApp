@@ -281,6 +281,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     addToCartData.put("shipping_profile_id", savedMethodProfileId);
                     addToCartData.put("variant_id",variantId);
                     addToCartData.put("quantity",Integer.parseInt(quantity.getText().toString()));
+                    System.out.println("HashMap: "+addToCartData);
                     dataToSend=new JSONObject(addToCartData);
                     System.out.println(dataToSend.toString());
                     new APIClient(ProductOptionsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(dataToSend.toString());
