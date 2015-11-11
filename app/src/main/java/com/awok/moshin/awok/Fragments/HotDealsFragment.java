@@ -13,6 +13,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -30,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -80,7 +83,7 @@ public class HotDealsFragment extends Fragment {
     private boolean shouldLoadMore = false;
     private LinearLayout mainLayout;
     private boolean isSearch = false;
-    private Button gotoTopButton;
+    private ImageButton gotoTopButton;
     LinearLayout.LayoutParams params;
     private String searchString = null;
     int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
@@ -233,7 +236,7 @@ public class HotDealsFragment extends Fragment {
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);
         progressLayout = (LinearLayout) mView.findViewById(R.id.progressLayout);
         itemCount = (TextView) mView.findViewById(R.id.itemCountTextView);
-        gotoTopButton = (Button) mView.findViewById(R.id.goToTopButton);
+        gotoTopButton = (ImageButton) mView.findViewById(R.id.goToTopButton);
         progressLayout.setVisibility(View.GONE);
         loadMore=(ProgressBar)mView.findViewById(R.id.load_progress_bar);
         loadMore.setVisibility(View.GONE);
@@ -279,6 +282,9 @@ public class HotDealsFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        ActivityOptionsCompat options =
+                                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                        getActivity());
                         Intent i=new Intent(getContext(), ProductDetailsActivity.class);
                         i.putExtra(Constants.PRODUCT_ID_INTENT,productsArrayList.get(position).getId());
                         i.putExtra(Constants.PRODUCT_RATING,productsArrayList.get(position).getRating());
@@ -291,7 +297,15 @@ public class HotDealsFragment extends Fragment {
                         i.putExtra(Constants.PRODUCT_PRICE_OLD_INTENT,productsArrayList.get(position).getPriceOld());
                         i.putExtra(Constants.PRODUCT_DESCRIPTION_INTENT,productsArrayList.get(position).getDescription());
                         i.putExtra(Constants.CAT_ID_INTENT, productsArrayList.get(position).getCategoryId());
-                        startActivity(i);
+                       // ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle();
+                        //startActivity(i);
+
+
+
+
+
+                        ActivityCompat.startActivity(getActivity(), i, options.toBundle());
+
 //                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
 //                        subCatIntent.putExtra(Constants.CAT_ARRAY_INTENT, (Serializable) categoriesArrayList);
 ////                        subCatIntent.putExtra(Constants.CAT_DEPTH_LEVEL_INTENT, localCategoriesArrayList.get(position).getDepthLevel());

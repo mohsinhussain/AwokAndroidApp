@@ -125,6 +125,39 @@ public class HotDealsAdapter extends  RecyclerView.Adapter<HotDealsAdapter.ItemV
         }
 
 
+
+
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                holder.loadProgressBar.setVisibility(View.GONE);
+            }
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                if (response.getBitmap() != null) {
+                    // load image into imageview
+                    holder.itemImageView.setImageBitmap(response.getBitmap());
+                    holder.loadProgressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+//        holder.itemImageView.getViewTreeObserver().addOnPreDrawListener(
+//                new ViewTreeObserver.OnPreDrawListener() {
+//                    public boolean onPreDraw() {
+//                        int cellWidth = holder.itemImageView.getMeasuredWidth();
+//                        int imageHeighFromServer = items.get(i).getImageHeight(mContext);
+//                        int imageWidthFromServer = 150;
+//                        int cellHeight = cellWidth*imageHeighFromServer/imageWidthFromServer;
+//                        holder.itemImageView.getLayoutParams().height = cellHeight;
+//                        holder.itemImageView.requestLayout();
+//                        return true;
+//                    }
+//                });
+
     }
 
     @Override

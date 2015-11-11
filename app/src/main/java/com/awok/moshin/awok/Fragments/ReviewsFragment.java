@@ -245,7 +245,7 @@ boughtByTxt.setText("Bought By: "+boughtBy+" people");
         this.productName=productName;
         this.image=image;
         this.ratingtxt=ratingValue;
-        ratingCount=ratingCountValue;
+        this.ratingCount=ratingCountValue;
         this.rating=rating;
         this.boughtBy=boughtBy;
         this.savedBy=savedBy;

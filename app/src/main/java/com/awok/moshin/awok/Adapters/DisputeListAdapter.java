@@ -127,7 +127,15 @@ public class DisputeListAdapter extends BaseExpandableListAdapter {
     public Object getGroup(int groupPosition) {
         return data.get(groupPosition);
     }
+    @Override
+    public void onGroupCollapsed(int groupPosition) {
+        super.onGroupCollapsed(groupPosition);
+    }
 
+    @Override
+    public void onGroupExpanded(int groupPosition) {
+        super.onGroupExpanded(groupPosition);
+    }
     public int getGroupCount() {
         return data.size();
     }

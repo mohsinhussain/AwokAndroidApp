@@ -8,9 +8,7 @@ import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.DisplayMetrics;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,18 +19,14 @@ import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.awok.moshin.awok.Adapters.DisputeListAdapter;
-import com.awok.moshin.awok.Models.Checkout;
 import com.awok.moshin.awok.Models.DisputeChildModel;
 import com.awok.moshin.awok.Models.DisputeExpandableListModel;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.xp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,13 +56,14 @@ private LinearLayout solutionLay,buttonLay;
     ExpandableListView expListView;
 
     private String is_Cancel,is_Closed,is_Escalate;
-
+    ExpandableListView mListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dispute_details);
 
-        cancel=(Button)findViewById(R.id.cancel_dispute);
+
+       ///////////////// cancel=(Button)findViewById(R.id.cancel_dispute);
 disputeNo=(TextView)findViewById(R.id.disputeNo);
         disputeStatus=(TextView)findViewById(R.id.disputeStatus);
         rem=(TextView)findViewById(R.id.rem);
@@ -77,7 +72,7 @@ main=(LinearLayout)findViewById(R.id.main);
         solutionLay=(LinearLayout)findViewById(R.id.solutionLay);
         main.setVisibility(View.GONE);
 //modify=(Button)findViewById(R.id.modify);
-        escalate=(Button)findViewById(R.id.escalate);
+     ////////////////   escalate=(Button)findViewById(R.id.escalate);
    /*     modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +96,28 @@ main=(LinearLayout)findViewById(R.id.main);
             }
         });
 */
+
+
+////////////////
+
+
+    /*    createData();
+        mListView = (ExpandableListView) findViewById(R.id.activity_expandable_list_view);
+        MyExpandableListAdapter adapter = new MyExpandableListAdapter(this,
+                mGroups);
+        mListView.setAdapter(adapter);
+        mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v,
+                                        int groupPosition, long id) {
+                setListViewHeight(parent, groupPosition);
+                return false;
+            }
+        });*/
+
+     ///////////////
+
         buttonLay=(LinearLayout)findViewById(R.id.buttonLay);
 
         order_no=(TextView)findViewById(R.id.order_no);
@@ -119,7 +136,7 @@ main=(LinearLayout)findViewById(R.id.main);
         progressLayout=(LinearLayout)findViewById(R.id.progressLayout);
         progressLayout.setVisibility(View.GONE);
 
-cancel.setOnClickListener(new View.OnClickListener() {
+/*cancel.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -148,7 +165,7 @@ cancel.setOnClickListener(new View.OnClickListener() {
 
         }
     }
-});
+});*/
         Intent i=getIntent();
         cart_id=i.getStringExtra("cart_id");
         prod_id=i.getStringExtra("prod_id");
@@ -188,21 +205,16 @@ cancel.setOnClickListener(new View.OnClickListener() {
 
         expListView = (ExpandableListView) findViewById(R.id.list);
 
-        /*final ExpandableListAdapter expListAdapter = new DisputeListAdapter(
-                this, groupList, laptopCollection);*/
-        final ExpandableListAdapter expListAdapter = new DisputeListAdapter(
-                this, disputeMainModel);
-        //expListView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+
+      /*  final ExpandableListAdapter expListAdapter = new DisputeListAdapter(
+                this, disputeMainModel);*/
+
+     /*   MyExpandableListAdapter expListAdapter = new MyExpandableListAdapter(this,
+                disputeMainModel);*/
+        final ExpandableListAdapter expListAdapter = new xp(
+                this, groupList, laptopCollection);
 
         expListView.setAdapter(expListAdapter);
-   //     expListView.requestLayout();
-
-
-
-        setListViewHeightBasedOnChildren(expListView);
-
-
-
 
 
 
@@ -214,7 +226,8 @@ cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
                                         int groupPosition, long id) {
-                System.out.println("LIST "+groupPosition);
+                System.out.println("LIST " + groupPosition);
+
                 setListViewHeight(parent, groupPosition);
                 return false;
             }
@@ -223,9 +236,9 @@ cancel.setOnClickListener(new View.OnClickListener() {
        // setListViewHeight(expListView,0);
 
 //expListView.setNestedScrollingEnabled(false);
-        setGroupIndicatorToRight();
+    //    setGroupIndicatorToRight();
 
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+       /* expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
@@ -236,7 +249,7 @@ cancel.setOnClickListener(new View.OnClickListener() {
 
                 return true;
             }
-        });
+        });*/
     }
 
     private void createGroupList() {
@@ -287,15 +300,15 @@ cancel.setOnClickListener(new View.OnClickListener() {
             childList.add(model);
     }
 
-    private void setGroupIndicatorToRight() {
-        /* Get the screen width */
+   /* private void setGroupIndicatorToRight() {
+        *//* Get the screen width *//*
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
 
         expListView.setIndicatorBounds(width - getDipsFromPixel(35), width
                 - getDipsFromPixel(5));
-    }
+    }*/
 
     // Convert pixel to dip
     public int getDipsFromPixel(float pixels) {
@@ -584,7 +597,43 @@ disputeChildModel.add(disputeDataChild);
         }
     }
 
-    private void setListViewHeight(ExpandableListView listView,
+
+
+   /* private void setListViewHeight(ExpandableListView expandableListView) {
+        ExpandableListAdapter expandableListAdapter = expandableListView
+                .getExpandableListAdapter();
+        int totalHeight = 0;
+        int totalChildren = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(
+                expandableListView.getWidth(), View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < expandableListAdapter.getGroupCount(); i++) {
+            View groupItem = expandableListAdapter.getGroupView(i, false, null,
+                    expandableListView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += groupItem.getMeasuredHeight();
+            if (expandableListView.isGroupExpanded(i)) {
+                for (int j = 0; j < expandableListAdapter.getChildrenCount(i); j++) {
+                    View listItem = expandableListAdapter.getChildView(i, j,
+                            false, null, expandableListView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                    totalHeight += listItem.getMeasuredHeight();
+                    totalChildren++;
+                }
+            }
+        }
+        ViewGroup.LayoutParams params = expandableListView.getLayoutParams();
+        int height = totalHeight
+                + (expandableListView.getDividerHeight()
+                * (expandableListAdapter.getGroupCount() ) * totalChildren);
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        expandableListView.setLayoutParams(params);
+        expandableListView.requestLayout();
+    }*/
+
+
+    /*private void setListViewHeight(ExpandableListView listView,
                                    int group) {
         ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
         int totalHeight = 0;
@@ -619,8 +668,42 @@ disputeChildModel.add(disputeDataChild);
         listView.requestLayout();
 
     }
+*/
+   /* private void setListViewHeight(ExpandableListView listView,
+                                   int group) {
+        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
 
+            totalHeight += groupItem.getMeasuredHeight();
 
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+
+    }*/
 
 
     /*public static boolean setListViewHeightBasedOnItems(ExpandableListView listView) {
@@ -656,7 +739,7 @@ disputeChildModel.add(disputeDataChild);
 
     }*/
 
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
+   /* public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
@@ -676,7 +759,152 @@ disputeChildModel.add(disputeDataChild);
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+    }*/
+
+
+
+
+
+
+    /*private void setListViewHeight(ExpandableListView listView, int group, boolean isGroupClick) {
+        ExpandableListAdapter listAdapter = listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.AT_MOST);
+        int totalChildren = 0;
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i,
+                    listView.isGroupExpanded(i), null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += groupItem.getMeasuredHeight();
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false,
+                            null, listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                    totalHeight += listItem.getMeasuredHeight();
+                    totalChildren++;
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight()
+                * (listAdapter.getGroupCount() ) * totalChildren);
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+
+
+    }*/
+
+
+
+
+    /*private void setListViewHeight(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
+
+
+    private void setListViewHeight(ExpandableListView listView,
+                                   int group) {
+        ExpandableListAdapter listAdapter = listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+
+    }*/
+    private void setListViewHeight(ExpandableListView listView,
+                                   int group) {
+        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                   /* int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(ViewGroup.LayoutParams.MATCH_PARENT, View.MeasureSpec.EXACTLY);
+                    int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(ViewGroup.LayoutParams.WRAP_CONTENT, View.MeasureSpec.EXACTLY);
+                    listItem.measure(widthMeasureSpec, heightMeasureSpec);*/
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                   /* listItem.measure(
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));*/
+                    //listItem.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+
+    }
+
+
+
+
+
 
 
 }

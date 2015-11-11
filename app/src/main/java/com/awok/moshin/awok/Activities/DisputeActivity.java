@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ import com.awok.moshin.awok.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,13 +49,14 @@ private JSONObject dataToSend;
 private Button disputeOpen;
 private RadioGroup returnRadio,radioButton;
 private RadioButton radioValueButton,radioValueReturnButton;
-private EditText disputeText;
-private LinearLayout disputeShow;
+private EditText disputeText,valueRefund;
+private LinearLayout disputeShow,refundAmountLay;
 private String spinnerData,spinnerDataDispute,radioTwo,radioOne,valueProductIdSpinner;
 int selectedId,selectedIdReturn;
 private LinearLayout progressLayout;
 List<String> nameProductList = new ArrayList<String>();
-
+    private String sendProductUniqueId,sendProductName,refundValue;
+private TextView nameProductText;
 HashMap<String,String> productId=new HashMap<>();
 
 private TextView priceTxtMain,shippingStatus,orderId;
@@ -70,6 +73,12 @@ String prod_id,cartId,uniqueId,price,status;
         cartId=i.getStringExtra("cartId");
         price=i.getStringExtra("price");
         status=i.getStringExtra("status");
+refundValue=price.toString();
+        nameProductText=(TextView)findViewById(R.id.nameProductText);
+        valueRefund=(EditText)findViewById(R.id.valueRefund);
+        valueRefund.setText(price);
+        sendProductUniqueId=i.getStringExtra("sendProductUniqueId");
+        sendProductName=i.getStringExtra("sendProductName");
         productId=(HashMap<String, String>) i.getSerializableExtra("uniqueId");
         for (Map.Entry<String,String> entry : productId.entrySet()) {
             String key = entry.getKey();
@@ -79,10 +88,28 @@ String prod_id,cartId,uniqueId,price,status;
             System.out.println("After Sending: "+key+ " "+value);
             // do stuff
         }
-
+        nameProductText.setText(sendProductName);
         orderId.setText(prod_id);
         shippingStatus.setText(status);
         priceTxtMain.setText("AED "+price);
+
+
+
+
+
+
+
+        refundAmountLay=(LinearLayout)findViewById(R.id.refundAmountLay);
+
+
+
+
+
+
+
+        refundAmountLay.setVisibility(View.GONE);
+
+
 
         productCondition=(Spinner)findViewById(R.id.productCondition);
         disputeRequest=(Spinner)findViewById(R.id.disputeRequest);
@@ -144,7 +171,45 @@ String prod_id,cartId,uniqueId,price,status;
         disputeRequest.setAdapter(dataAdapterDispute);
 
 
+        disputeRequest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
+            public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
+                int item = disputeRequest.getSelectedItemPosition();
+                refundValue=disputeRequest.getSelectedItem().toString();
+                if (refundValue.equals("Refund")) {
+                    refundAmountLay.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    refundAmountLay.setVisibility(View.GONE);
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                refundValue="";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                refundAmountLay.setVisibility(View.GONE);
+
+
+
+
+
+            }
+        });
 
 
         radioButton = (RadioGroup) findViewById(R.id.radioSelect);
@@ -171,6 +236,7 @@ String prod_id,cartId,uniqueId,price,status;
                     spinnerData = "";
                     spinnerDataDispute = "";
                     radioTwo = "";
+                    refundValue="";
 
                 } else {
 
@@ -225,6 +291,7 @@ String prod_id,cartId,uniqueId,price,status;
             public void onClick(View v) {
                 if(disputeShow.getVisibility()==View.VISIBLE)
                 {
+
                     spinnerData = productCondition.getSelectedItem().toString();
                     spinnerDataDispute = disputeRequest.getSelectedItem().toString();
                     System.out.println(spinnerData);
@@ -240,6 +307,7 @@ String prod_id,cartId,uniqueId,price,status;
                 }
                 else
                 {
+                    refundValue="";
                     spinnerData = "";
                     spinnerDataDispute = "";
                     radioOne=radioValueButton.getText().toString();
@@ -251,49 +319,65 @@ String prod_id,cartId,uniqueId,price,status;
 
 
 
-                HashMap<String,Object> addToCartData=new HashMap<String, Object>();
 
 
+                if(valueRefund.getText().toString().equals("")||disputeText.getText().toString().equals(""))
+                {
+                    if (valueRefund.getText().toString().equals("")) {
+                        valueRefund.setError("Please Enter Refund Amount");
+                    }
+                    if (disputeText.getText().toString().equals("")) {
+                        disputeText.setError("Please Enter Dispute Details");
+                    }
 
-                addToCartData.put("is_received", radioOne);
+                }
+                else {
+System.out.println("ERROR"+valueRefund.getText().toString());
+                    valueRefund.setError(null);
+                    disputeText.setError(null);
+                    HashMap<String, Object> addToCartData = new HashMap<String, Object>();
 
-                //addToCartData.put("user_id", "55f6a9e52f17f64a9b5f5ce5");
-                addToCartData.put("goods_condition", spinnerData);
-                addToCartData.put("ship_goods_back", radioTwo);
-                addToCartData.put("dispute_request", spinnerDataDispute);
-                addToCartData.put("refund_amount","");
-                addToCartData.put("additional_details", disputeText.getText().toString());
 
-                dataToSend=new JSONObject(addToCartData);
-                System.out.println(dataToSend.toString());
+                    addToCartData.put("is_received", radioOne);
+
+                    //addToCartData.put("user_id", "55f6a9e52f17f64a9b5f5ce5");
+                   // addToCartData.put("goods_condition", spinnerData);
+                    addToCartData.put("ship_goods_back", radioTwo);
+                    addToCartData.put("dispute_request", spinnerDataDispute);
+                    addToCartData.put("refund_amount", valueRefund.getText().toString());
+                    addToCartData.put("additional_details", disputeText.getText().toString());
+
+                    dataToSend = new JSONObject(addToCartData);
+                    System.out.println(dataToSend.toString());
                 /*Intent i=new Intent(DisputeActivity.this,DisputeDetails.class);
                 i.putExtra("cart_id", "56399e3e8e424aa752bf834d");
                 i.putExtra("prod_id","5616592d3b90a7740b000084");
                 startActivity(i);*/
-                ConnectivityManager connMgr = (ConnectivityManager)
-                        getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-                if (networkInfo != null && networkInfo.isConnected()) {
+                    ConnectivityManager connMgr = (ConnectivityManager)
+                            getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                    if (networkInfo != null && networkInfo.isConnected()) {
 
-                    new APIClient(DisputeActivity.this, getApplicationContext(), new GetDisputeOpen()).disputeOpenCallBack(valueProductIdSpinner, dataToSend.toString());
-
-
-                } else {
+                        //new APIClient(DisputeActivity.this, getApplicationContext(), new GetDisputeOpen()).disputeOpenCallBack(valueProductIdSpinner, dataToSend.toString());
 
 
+                        new APIClient(DisputeActivity.this, getApplicationContext(), new GetDisputeOpen()).disputeOpenCallBack(sendProductUniqueId, dataToSend.toString());
 
 
-                    Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED);
-
-                    View snackbarView = snackbar.getView();
-
-                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setTextColor(Color.WHITE);
-                    snackbar.show();
+                    } else {
 
 
+                        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                .setActionTextColor(Color.RED);
 
+                        View snackbarView = snackbar.getView();
+
+                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                        textView.setTextColor(Color.WHITE);
+                        snackbar.show();
+
+
+                    }
                 }
             }
         });
