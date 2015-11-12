@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -42,6 +43,7 @@ import android.widget.Toast;
 
 import com.awok.moshin.awok.Activities.FilterActivity;
 import com.awok.moshin.awok.Activities.ProductDetailsActivity;
+import com.awok.moshin.awok.Adapters.DragonBallAdapter;
 import com.awok.moshin.awok.Adapters.HotDealsAdapter;
 import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
@@ -49,6 +51,8 @@ import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
 import com.awok.moshin.awok.Util.RecyclerItemClickListener;
+import com.karumi.headerrecyclerview.HeaderRecyclerViewAdapter;
+import com.karumi.headerrecyclerview.HeaderSpanSizeLookup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,10 +61,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.zip.Inflater;
 
+import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
+
 public class HotDealsFragment extends Fragment {
 
     RecyclerView mRecyclerView;
-    HotDealsAdapter mAdapter;
+    DragonBallAdapter mAdapter;
+    AlphaInAnimationAdapter alphaAdapter;
     View mView;
     LinearLayout progressLayout;
     ProgressBar progressBar;
@@ -91,6 +98,7 @@ public class HotDealsFragment extends Fragment {
     String filterString = "";
     boolean isFilter = false;
     LinearLayout filterButtonLayout;
+    TextView messageTextView;
     public HotDealsFragment(){}
 
     public HotDealsFragment(String categoryId)
@@ -230,6 +238,7 @@ public class HotDealsFragment extends Fragment {
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);
         progressLayout = (LinearLayout) mView.findViewById(R.id.progressLayout);
         itemCount = (TextView) mView.findViewById(R.id.itemCountTextView);
+        messageTextView = (TextView) mView.findViewById(R.id.messageTextView);
         gotoTopButton = (ImageButton) mView.findViewById(R.id.goToTopButton);
         progressLayout.setVisibility(View.GONE);
         loadMore=(ProgressBar)mView.findViewById(R.id.load_progress_bar);
@@ -258,7 +267,7 @@ public class HotDealsFragment extends Fragment {
 
 
 
-        showFilters(inflater,container);
+        showFilters(inflater, container);
 
 
         mSwipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.CYAN, Color.GREEN,
@@ -268,6 +277,8 @@ public class HotDealsFragment extends Fragment {
         mRecyclerView.setHasFixedSize(false);
 
         mLayoutManager = new StaggeredGridLayoutManager(2,  1);
+//        HeaderSpanSizeLookup headerSpanSizeLookup = new HeaderSpanSizeLookup(adapter, layoutManager);
+//        mLayoutManager.setSpanSizeLookup(headerSpanSizeLookup);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.addOnItemTouchListener(
@@ -353,9 +364,12 @@ public class HotDealsFragment extends Fragment {
                 Log.i(TAG, "lastProductItem: " + (productsArrayList.size()-1));
 
                 if(shouldLoadMore && lastVisibleItem==(productsArrayList.size()-1)){
-                    Products item = new Products(true);
-                    productsArrayList.add(item);
-                    mAdapter.notifyDataSetChanged();
+                    DragonBallFooter footer = getFooter();
+                    mAdapter.setFooter(footer);
+//                    alphaAdapter.notifyDataSetChanged();
+//                    Products item = new Products(true);
+//                    productsArrayList.add(item);
+//                    mAdapter.notifyDataSetChanged();
                 }
 
                 if (!loading && (totalItemCount - visibleItemCount)
@@ -926,14 +940,16 @@ public class HotDealsFragment extends Fragment {
                 }
 
                 if(length>0){
-                    if(productsArrayList.size()>0){
-                        for(int i=0;i<productsArrayList.size();i++){
-                            if(productsArrayList.get(i).isLoader()){
-                                productsArrayList.remove(i);
-                            }
-                        }
-                        mAdapter.notifyDataSetChanged();
-                    }
+//                    mAdapter.hideFooter();
+//                    alphaAdapter.notifyDataSetChanged();
+//                    if(productsArrayList.size()>0){
+//                        for(int i=0;i<productsArrayList.size();i++){
+//                            if(productsArrayList.get(i).isLoader()){
+//                                productsArrayList.remove(i);
+//                            }
+//                        }
+//                        add.notifyDataSetChanged();
+//                    }
 
                     for(int i=0;i<length;i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -956,7 +972,9 @@ public class HotDealsFragment extends Fragment {
                     }
                 }
                 else{
-                    Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
+                    initializeData();
+                    mAdapter.hideFooter();
 //                    Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "There is no further", Snackbar.LENGTH_LONG)
 //                            .setActionTextColor(Color.RED);
 //
@@ -983,7 +1001,7 @@ public class HotDealsFragment extends Fragment {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
 //                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_SHORT)
 //                        .setActionTextColor(Color.RED)
 //                        .show();
@@ -995,6 +1013,8 @@ public class HotDealsFragment extends Fragment {
                 loadMore.setVisibility(View.GONE);
                 mainLayout.setVisibility(View.GONE);
                 shouldLoadMore = false;
+                initializeData();
+                mAdapter.hideFooter();
                 if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
@@ -1016,18 +1036,39 @@ public class HotDealsFragment extends Fragment {
 
     private void initializeData(){
         if (pageCount==1){
-            mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
-            mRecyclerView.setAdapter(mAdapter);
+            mAdapter = new DragonBallAdapter(getActivity());
+//            mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
+            alphaAdapter = new AlphaInAnimationAdapter(mAdapter);
+            alphaAdapter.setDuration(400);
+            DragonBallFooter footer = getFooter();
+            mAdapter.setItems(productsArrayList);
+            if(productsArrayList.size()==0){
+                messageTextView.setVisibility(View.VISIBLE);
+            }
+            else{
+                mAdapter.setFooter(footer);
+            }
+            mRecyclerView.setAdapter(alphaAdapter);
             mRecyclerView.setItemAnimator(null);
             mLayoutManager = new StaggeredGridLayoutManager(2,  1);
             mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 //            mLayoutManager.offsetChildrenVertical(0);
             mRecyclerView.setLayoutManager(mLayoutManager);
+
+
         }
         else{
-            mAdapter.notifyDataSetChanged();
+//            mAdapter.notifyDataSetChanged();
+            mAdapter.setItems(productsArrayList);
+//            adapter.notifyDataSetChanged();
+//            alphaAdapter.notifyDataSetChanged();
         }
 
+    }
+
+    public DragonBallFooter getFooter() {
+        String loadMoreMessage = "Loading More..";
+        return new DragonBallFooter(loadMoreMessage);
     }
 
 }
