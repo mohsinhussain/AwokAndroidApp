@@ -49,6 +49,7 @@ import com.awok.moshin.awok.Models.OrderSummary;
 import com.awok.moshin.awok.Models.ProductDetailsModel;
 import com.awok.moshin.awok.Models.ProductOverview;
 import com.awok.moshin.awok.Models.ProductRatingModel;
+import com.awok.moshin.awok.Models.ProductRatingPageModel;
 import com.awok.moshin.awok.Models.StoreRatingModel;
 import com.awok.moshin.awok.Models.productOverviewRating;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
@@ -95,9 +96,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     productOverviewRating prodORating=new productOverviewRating();
     DescriptionModel descData=new DescriptionModel();
     ProductRatingModel prodRatingData=new ProductRatingModel();
+    ProductRatingPageModel prodRatingPageData=new ProductRatingPageModel();
     StoreRatingModel storeRatingModel=new StoreRatingModel();
     private List<DescriptionModel> descModel = new ArrayList<DescriptionModel>();
     private List<ProductRatingModel> prodRating = new ArrayList<ProductRatingModel>();
+    private List<ProductRatingPageModel> prodPageRating = new ArrayList<ProductRatingPageModel>();
     private List<StoreRatingModel> storeRatingData = new ArrayList<StoreRatingModel>();
     private List<productOverviewRating> prodOverViewRating=new ArrayList<productOverviewRating>();
     String storeName,storeSum,storeAverage,storeImage,storeUrl;
@@ -131,6 +134,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         newPrice=getIntent().getExtras().getString(Constants.PRODUCT_PRICE_NEW_INTENT);
         oldPrice =getIntent().getExtras().getString(Constants.PRODUCT_PRICE_OLD_INTENT);
         image =getIntent().getExtras().getString(Constants.PRODUCT_IMAGE_INTENT);
+        System.out.println(image + " fjkgxfjkhkjfhkjfh");
         description =getIntent().getExtras().getString(Constants.PRODUCT_DESCRIPTION_INTENT);
         Log.v("Product DetailView", productId);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
@@ -606,18 +610,28 @@ descModel.add(descData);
                     prodRatingData.setContent(dataRating.getJSONObject("data").getString("content"));
                     prodRatingData.setRate(dataRating.getJSONObject("data").getString("rate"));
                     prodRatingData.setUsername(dataRating.getString("username"));
+
+
+
+
+                    prodRatingPageData.setContent(dataRating.getJSONObject("data").getString("content"));
+                    prodRatingPageData.setRate(dataRating.getJSONObject("data").getString("rate"));
+                    prodRatingPageData.setUsername(dataRating.getString("username"));
+
+
                     if(dataRating.has("days")){
-                        storeRatingModel.setDays(dataRating.getString("days"));
+                        prodRatingPageData.setDays(dataRating.getString("days"));
                     }
                     else{
-                        storeRatingModel.setDays(dataRating.getString("created_at"));
+                        prodRatingPageData.setDays(dataRating.getString("created_at"));
                     }
                     prodRatingData.setDays(dataRating.getString("days"));
-                    prodORating.setMainText (dataRating.getJSONObject("data").getString("content"));
+                    prodORating.setMainText(dataRating.getJSONObject("data").getString("content"));
                     prodORating.setName(dataRating.getString("username"));
                     prodORating.setRating(dataRating.getJSONObject("data").getString("rate"));
                     prodOverViewRating.add(prodORating);
                     prodRating.add(prodRatingData);
+                    prodPageRating.add(prodRatingPageData);
                 }
 
 
@@ -677,7 +691,7 @@ descModel.add(descData);
 
 
                 shippingDeliveryFrag.call(returnPolicies, estimatedPrice, country, estimatedDays, shipFrom);
-                reviewsFragment.call(prodRating,productName,image,rating,ratingCount,boughtBy,savedBy);
+                reviewsFragment.call(prodPageRating,productName,image,rating,ratingCount,boughtBy,savedBy,productId);
                 productDescriptionFragment.call(descModel);
                 storeRatingFragment.call(storeRatingData, storeName, storeSum, storeAverage, storeImage, storeUrl);
               //  productOverViewFragment.call(prodOverViewRating,productId, productName,image);

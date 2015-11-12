@@ -7,8 +7,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,9 +31,16 @@ import com.awok.moshin.awok.Adapters.ProductRatingAdapter;
 import com.awok.moshin.awok.Adapters.StoreRatingAdapter;
 import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.DescriptionModel;
+import com.awok.moshin.awok.Models.ProductRatingPageModel;
 import com.awok.moshin.awok.Models.StoreRatingModel;
+import com.awok.moshin.awok.NetworkLayer.APIClient;
+import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,11 +57,21 @@ public class StoreRatingFragment extends Fragment{
         private String mParam2;
         private RatingBar prod_reviewRating;
 List<StoreRatingModel> model;
-
+    private List<StoreRatingModel> storeRatingData = new ArrayList<StoreRatingModel>();
+    StoreRatingModel storeRatingModel=new StoreRatingModel();
+    int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private boolean loading = true;
+    private int previousTotal = 0;
+    private int current_page = 1;
 
+
+
+
+
+    private int visibleThreshold = 5;
     private LinearLayout reviewsLayout;
         public StoreRatingFragment() {
             // Required empty public constructor
@@ -186,6 +206,46 @@ productNameView.setText(storeName);
             if(model.size()>0){
                 reviewsLayout.setVisibility(View.GONE);
             }
+
+
+
+
+
+
+
+
+            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    LinearLayoutManager layoutManager = ((LinearLayoutManager)mRecyclerView.getLayoutManager());
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    firstVisibleItem =layoutManager.findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if (totalItemCount > previousTotal) {
+                            loading = false;
+                            previousTotal = totalItemCount;
+                        }
+                    }
+                    if (!loading && (totalItemCount - visibleItemCount)
+                            <= (firstVisibleItem + visibleThreshold)) {
+                        // End has been reached
+
+                        // Do something
+                        current_page++;
+
+                        onLoadMore();
+
+                        loading = true;
+                    }
+                }
+            });
+
+
+
             return mView;
         }
 
@@ -194,6 +254,38 @@ productNameView.setText(storeName);
             return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
         }
+
+
+
+
+
+
+
+
+    private void onLoadMore() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new APIClient(getActivity(), getActivity(),  new GetCartCallback()).productStoreCommentsCallBack(current_page);
+
+        } else {
+
+            /*Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();*/
+
+
+            Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+        }
+    }
 
 
 
@@ -275,5 +367,90 @@ productNameView.setText(storeName);
         this.storeImage=storeImage;
         this.storeUrl=storeUrl;
     }
+
+
+
+
+
+
+
+
+
+    public class GetCartCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+
+
+                JSONObject jsonObjectData;
+                jsonObjectData = new JSONObject(response);
+
+
+                if (jsonObjectData.getString("errors").equals("true")) {
+
+
+                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "No More Comments", Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED);
+
+                    View snackbarView = snackbar.getView();
+
+                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
+                } else {
+
+                    for (int i = 0; i < jsonObjectData.getJSONArray("data").length(); i++) {
+
+
+                        JSONObject data = jsonObjectData.getJSONArray("data").getJSONObject(i);
+
+                        storeRatingModel.setUsername(data.getString("username"));
+                        storeRatingModel.setContent(data.getJSONObject("data").getString("content"));
+                        storeRatingModel.setRate(data.getJSONObject("data").getString("rate"));
+                        if(data.has("days")){
+                            storeRatingModel.setDays(data.getString("days"));
+                        }
+                        else{
+                            storeRatingModel.setDays(data.getString("created_at"));
+                        }
+
+
+
+
+
+
+
+
+
+
+
+                        storeRatingData.add(storeRatingModel);
+
+                    }
+                    //     mRecyclerView.setAdapter(mAdapter);
+                }
+                mAdapter.notifyDataSetChanged();
+
+            }catch(JSONException e){
+                e.printStackTrace();
+                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(Color.RED)
+                        .show();
+
+            }
+
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+//            if(!mSwipeRefreshLayout.isRefreshing()){
+
+//            }
+
+        }
+    }
+
 
 }

@@ -235,6 +235,16 @@ public class APIClient {
         mTask.execute(mContext, "http://market1.awok/v1/disputes/"+s+"/disputeList", "GET", null);
     }
 
+    public void productReviewCommentsCallBack(String s,int page) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/v1/products/"+s+"/getproductcomments?page="+page, "GET", null);
+    }
+
+    public void productStoreCommentsCallBack(int current_page) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://market1.awok/v1/stores/562c77e28e424a9c39dce22d/getstorecomments?page="+current_page, "GET", null);
+    }
+
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {
 
         @Override

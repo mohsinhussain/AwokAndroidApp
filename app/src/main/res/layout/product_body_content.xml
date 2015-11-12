@@ -296,7 +296,7 @@ android:id="@+id/layMiddle"
                         android:id="@+id/prod_color_default"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Black, White"
+                        android:text=""
                         android:textSize="12sp" />
 
 

@@ -7,16 +7,23 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -28,11 +35,22 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.awok.moshin.awok.Adapters.DescriptionAdapter;
 import com.awok.moshin.awok.Adapters.ProductRatingAdapter;
+import com.awok.moshin.awok.Adapters.ProductRatingPageAdapter;
 import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.DescriptionModel;
+import com.awok.moshin.awok.Models.OrderSummary;
 import com.awok.moshin.awok.Models.ProductRatingModel;
+import com.awok.moshin.awok.Models.ProductRatingPageModel;
+import com.awok.moshin.awok.Models.Products;
+import com.awok.moshin.awok.NetworkLayer.APIClient;
+import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,17 +59,26 @@ public class ReviewsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
     // TODO: Rename and change types of parameters
     private String productName,image,ratingCount,ratingtxt,boughtBy,savedBy;
     private String mParam2;
     private RatingBar prod_reviewRating;
-
-    List<ProductRatingModel> rating;
+    private int previousTotal = 0;
+    private String productId;
+    List<ProductRatingPageModel> rating;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout reviewsLayout;
+    private boolean loading = true;
+    ProductRatingPageModel prodRatingData=new ProductRatingPageModel();
+    private int current_page = 1;
+
+    private List<ProductRatingPageModel> prodRating = new ArrayList<ProductRatingPageModel>();
+
+    private int visibleThreshold = 5;
+
     public ReviewsFragment() {
         // Required empty public constructor
     }
@@ -90,6 +117,7 @@ public class ReviewsFragment extends Fragment {
 boughtByTxt.setText("Bought By: "+boughtBy+" people");
         savedByTxt.setText("Saved By: "+savedBy+" people");
         productNameView.setText(productName);
+        System.out.println(image + "image");
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         imageLoader.get(image, new ImageLoader.ImageListener() {
             @Override
@@ -147,20 +175,87 @@ boughtByTxt.setText("Bought By: "+boughtBy+" people");
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(false);
 
-
-        mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        mLayoutManager = new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 //
 //            // use a linear layout manager
        /* mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);*/
 //
-        mAdapter = new ProductRatingAdapter(getActivity(),rating);
+        mAdapter = new ProductRatingPageAdapter(getActivity(),rating);
         mRecyclerView.setAdapter(mAdapter);
+
         reviewsLayout = (LinearLayout) mView.findViewById(R.id.reviews);
         if(rating.size()>0){
             reviewsLayout.setVisibility(View.GONE);
         }
+
+
+
+
+
+
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = ((LinearLayoutManager)mRecyclerView.getLayoutManager());
+                visibleItemCount = layoutManager.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                firstVisibleItem =layoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount)
+                        <= (firstVisibleItem + visibleThreshold)) {
+                    // End has been reached
+
+                    // Do something
+                    current_page++;
+
+                    onLoadMore();
+
+                    loading = true;
+                }
+            }
+        });
+
+
+
+
+
         return mView;
+    }
+
+    private void onLoadMore() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new APIClient(getActivity(), getActivity(),  new GetCartCallback()).productReviewCommentsCallBack(productId,current_page);
+
+        } else {
+
+            /*Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();*/
+
+
+            Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+        }
     }
 
     private Bitmap base64ToBitmap(String imageString) {
@@ -240,17 +335,133 @@ boughtByTxt.setText("Bought By: "+boughtBy+" people");
 
 
 
-    public void call(List<ProductRatingModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String savedBy)
+    public void call(List<ProductRatingPageModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String savedBy,String productId)
     {
         this.productName=productName;
         this.image=image;
+        System.out.println(image+" review Frag");
         this.ratingtxt=ratingValue;
         this.ratingCount=ratingCountValue;
         this.rating=rating;
         this.boughtBy=boughtBy;
         this.savedBy=savedBy;
+        this.productId=productId;
 
         System.out.println("MOHSIN/SHON HAS DONE IT");
+    }
+
+
+
+
+
+    /*public class EndlessScrollListener extends RecyclerView.OnScrollListener {
+
+        private int visibleThreshold = 5;
+        private int currentPage = 0;
+        private int previousTotal = 0;
+        private boolean loading = true;
+
+        public EndlessScrollListener() {
+        }
+        public EndlessScrollListener(int visibleThreshold) {
+            this.visibleThreshold = visibleThreshold;
+        }
+
+        @Override
+        public void onScroll(RecyclerView view, int firstVisibleItem,
+                             int visibleItemCount, int totalItemCount) {
+            if (loading) {
+                if (totalItemCount > previousTotal) {
+                    loading = false;
+                    previousTotal = totalItemCount;
+                    currentPage++;
+                }
+            }
+
+
+            if (!loading && (totalItemCount - visibleItemCount)<=(firstVisibleItem + visibleThreshold)) {
+                new LoadGigsTask().execute();
+                currentPage=currentPage + 1;
+                loading = true;
+            }
+        }
+
+        *//*@Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+        }*//*
+    }*/
+
+
+    public class GetCartCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+
+
+                JSONObject jsonObjectData;
+                jsonObjectData = new JSONObject(response);
+
+
+                if (jsonObjectData.getString("errors").equals("true")) {
+
+
+                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "No More Comments", Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED);
+
+                    View snackbarView = snackbar.getView();
+
+                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
+                } else {
+
+                    for (int i = 0; i < jsonObjectData.getJSONArray("data").length(); i++) {
+
+
+                        JSONObject data = jsonObjectData.getJSONArray("data").getJSONObject(i);
+
+                        prodRatingData.setContent(data.getJSONObject("data").getString("content"));
+                        prodRatingData.setRate(data.getJSONObject("data").getString("rate"));
+                        prodRatingData.setUsername(data.getString("username"));
+
+
+
+
+
+                        if(data.has("days")){
+                            prodRatingData.setDays(data.getString("days"));
+                        }
+                        else{
+                            prodRatingData.setDays(data.getString("created_at"));
+                        }
+
+
+                        rating.add(prodRatingData);
+
+                    }
+                    //     mRecyclerView.setAdapter(mAdapter);
+                }
+                    mAdapter.notifyDataSetChanged();
+
+                }catch(JSONException e){
+                    e.printStackTrace();
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                            .setActionTextColor(Color.RED)
+                            .show();
+
+                }
+
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+//            if(!mSwipeRefreshLayout.isRefreshing()){
+
+//            }
+
+        }
     }
 
 }

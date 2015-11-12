@@ -136,8 +136,13 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         }
 
        //mAdapter.notifyDataSetChanged();
+        /*mCustomPagerAdapter.notifyDataSetChanged();
+        viewPager.setAdapter(mCustomPagerAdapter);*/
         mCustomPagerAdapter.notifyDataSetChanged();
         mAdapter.notifyDataSetChanged();
+      //  viewPager.notify();
+
+//        viewPager.notify();
     }
     
 
@@ -461,11 +466,41 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 //                imageView.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.default_img)));
 //            }
 
+            imageLoader.get(image, new ImageLoader.ImageListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                    progressBar.setVisibility(View.GONE);
+                }
 
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+
+ System.out.println("POSITION"+position);                       // load image into imageview
+if(position==0)
+{
+    imageView.invalidate();
+    imageView.setImageBitmap(response.getBitmap());
+   // System.out.println("POSITION" + response.toString());
+    progressBar.setVisibility(View.GONE);
+}
+                        else {
+    imageView.setImageBitmap(response.getBitmap());
+    progressBar.setVisibility(View.GONE);
+}
+                    }
+                }
+
+            });
 
 
             container.addView(itemView);
 
+/*if(mResources.get(position).equals(mResources.size()))
+{
+    viewPager.invalidate();
+}*/
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -483,7 +518,14 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
             return itemView;
         }
+      /*  @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }*/
+      /*public int getItemPosition(Object object) {
 
+          return POSITION_NONE;
+      }*/
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((RelativeLayout) object);
@@ -494,6 +536,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         public void onTaskComplete(String response) {
             try {
                 mResources.clear();
+
                 JSONObject mMembersJSON;
                 mMembersJSON = new JSONObject(response);
                 JSONObject dataObj = mMembersJSON.getJSONObject("data");
@@ -507,6 +550,8 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 //                String prodDesc=mMembersJSON.getString("description");
 //                productOverview.setOverViewTitle(prodDesc);
                 image=dataObj.getString("image");
+                prod_shippingCost.setText("AED "+(dataObj.getJSONObject("shipping_data").getString("shipping_cost")));
+                prod_deliveryTime.setText((dataObj.getJSONObject("shipping_data").getString("est_from")) + " - " + (dataObj.getJSONObject("shipping_data").getString("est_to")) + " days");
                 JSONArray imagesStringData=dataObj.getJSONArray("images");
                 for(int i=0;i<imagesStringData.length();i++)
                 {
@@ -516,6 +561,22 @@ imageString.add(jsonData);
                     System.out.println(imageString);
 
                 }
+int colorLength=dataObj.getJSONObject("specs").getJSONArray("colors").length();
+                JSONArray colorArray=dataObj.getJSONObject("specs").getJSONArray("colors");
+                ArrayList<String> colorArrayList=new ArrayList<>();
+                for(int j=0;j<colorLength;j++)
+                {
+                JSONObject colorData=colorArray.getJSONObject(j);
+
+                    colorArrayList.add(colorData.getString("color"));
+                    System.out.println(colorArrayList + " color");
+
+                }
+
+
+                prod_color_default.setText(colorArrayList.toString().replace("[", "").replace("]", ""));
+
+
 
                 //mResources=
                 ratingMain.setRating(Float.parseFloat(ratingsCount));
@@ -523,8 +584,12 @@ imageString.add(jsonData);
                 countText.setText(String.valueOf(imageString.size()));
                 baseImage=dataObj.getString("image");
                 //mResources.clear();
+               // mResources.clear();
+
                 mResources=imageString;
+         //       mCustomPagerAdapter.notifyDataSetChanged();
                 //getRatings();
+
                 getRatings();
 
 
