@@ -21,14 +21,14 @@ public class Utilities {
 //        context.sendBroadcast(intent);
 //    }
 
-    public static String buildParams(Map<String, String> params)
+    public static String buildParams(Map<String, Object> params)
     {
         if (params == null)
             return "";
         StringBuilder bodyBuilder = new StringBuilder();
-        Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+        Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, String> param = iterator.next();
+            Map.Entry<String, Object> param = iterator.next();
             bodyBuilder.append(param.getKey()).append('=')
                     .append(param.getValue());
             if (iterator.hasNext()) {

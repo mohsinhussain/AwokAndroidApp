@@ -225,7 +225,7 @@ public class HTTPClient{
         urlConn.setDoInput(true);
         urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
-        urlConn.setRequestProperty("Content-Type","application/json");
+        urlConn.setRequestProperty("Content-Type","text/plain");
 //        urlConn.setRequestProperty("Host", "android.schoolportal.gr");
         urlConn.connect();
 //Create JSONObject here

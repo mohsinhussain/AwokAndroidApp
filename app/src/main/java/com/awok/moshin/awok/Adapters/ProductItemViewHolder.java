@@ -14,7 +14,7 @@ import com.awok.moshin.awok.R;
 /**
  * Created by mohsin on 11/11/2015.
  */
-public class ItemViewHolder extends RecyclerView.ViewHolder {
+public class ProductItemViewHolder extends RecyclerView.ViewHolder {
     CardView mCardView;
     //        TextView nameTextView;
     TextView priceTextView;
@@ -25,7 +25,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     ProgressBar loadProgressBar;
     RelativeLayout priceLayout;
 
-    ItemViewHolder(View itemView) {
+    ProductItemViewHolder(View itemView) {
         super(itemView);
         mCardView = (CardView)itemView.findViewById(R.id.cv);
 //            nameTextView = (TextView)itemView.findViewById(R.id.nameTextView);

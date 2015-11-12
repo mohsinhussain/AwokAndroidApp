@@ -17,7 +17,9 @@
 package com.awok.moshin.awok.Fragments;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.R;
@@ -28,14 +30,22 @@ import com.awok.moshin.awok.R;
 public class FooterViewHolder extends RecyclerView.ViewHolder {
 
   private final TextView loadMoreMessage;
+  private StaggeredGridLayoutManager.LayoutParams layoutParams;
 
   public FooterViewHolder(View itemView) {
     super(itemView);
+    StaggeredGridLayoutManager.LayoutParams layoutParams = new StaggeredGridLayoutManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    layoutParams.setFullSpan(true);
+    itemView.setLayoutParams(layoutParams);
     this.loadMoreMessage = (TextView) itemView.findViewById(R.id.tv_load_more);
   }
 
   public void render(DragonBallFooter footer) {
     String loadMoreText = footer.getLoadMoreMessage();
     loadMoreMessage.setText(loadMoreText);
+  }
+
+  public void setLayoutParams(StaggeredGridLayoutManager.LayoutParams layoutParams) {
+    this.layoutParams = layoutParams;
   }
 }

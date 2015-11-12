@@ -64,99 +64,112 @@ public class HotDealsAdapter extends  RecyclerView.Adapter<HotDealsAdapter.ItemV
     public void onBindViewHolder(final ItemViewHolder holder, final int i) {
 //        holder.nameTextView.setText(items.get(i).getName());
 
-        final int viewType = getItemViewType(i);
-        switch (viewType) {
-            case ITEM_WITHOUT_LOADER:
-            {
-                holder.priceTextView.setVisibility(View.GONE);
-                holder.itemImageView.setVisibility(View.GONE);
-                break;
-            }
-            case ITEM_WITH_DISCOUNT: {
-                holder.discountTextView.setText(items.get(i).getDiscPercent() + "%");
-                holder.priceLayout.setVisibility(View.VISIBLE);
-                holder.priceTextView.setText(items.get(i).getPriceNew());
-                holder.itemImageView.setImageDrawable(null);
-                ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-                imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
-                        holder.loadProgressBar.setVisibility(View.GONE);
-                    }
+//        final int viewType = getItemViewType(i);
+//        switch (viewType) {
+//            case ITEM_WITHOUT_LOADER:
+//            {
+//                holder.priceTextView.setVisibility(View.GONE);
+//                holder.itemImageView.setVisibility(View.INVISIBLE);
+//                break;
+//            }
+//            case ITEM_WITH_DISCOUNT: {
+//                holder.discountTextView.setText(items.get(i).getDiscPercent() + "%");
+//                holder.priceLayout.setVisibility(View.VISIBLE);
+//                holder.priceTextView.setText(items.get(i).getPriceNew());
+//                ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+//                imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+//                        holder.loadProgressBar.setVisibility(View.GONE);
+//                    }
+//
+//                    @Override
+//                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+//                        if (response.getBitmap() != null) {
+//                            // load image into imageview
+//                            holder.itemImageView.setImageBitmap(response.getBitmap());
+//                            holder.loadProgressBar.setVisibility(View.GONE);
+//                        }
+//                    }
+//                });
+//                break;
+//            }
+//            case ITEM_WITHOUT_DISCOUNT: {
+//                holder.discountTextView.setVisibility(View.GONE);
+//                holder.priceLayout.setVisibility(View.VISIBLE);
+//                holder.priceTextView.setText(items.get(i).getPriceNew());
+//                ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+//                imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+//                        holder.loadProgressBar.setVisibility(View.GONE);
+//                    }
+//
+//                    @Override
+//                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+//                        if (response.getBitmap() != null) {
+//                            // load image into imageview
+//                            holder.itemImageView.setImageBitmap(response.getBitmap());
+//                            holder.loadProgressBar.setVisibility(View.GONE);
+//                        }
+//                    }
+//                });
+//                break;
+//            }
+//            default:
+//                // Blow up in whatever way you choose.
+//        }
 
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                        if (response.getBitmap() != null) {
-                            // load image into imageview
-                            holder.itemImageView.setImageBitmap(response.getBitmap());
-                            holder.loadProgressBar.setVisibility(View.GONE);
-                        }
+
+        holder.itemImageView.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+                    public boolean onPreDraw() {
+                        int cellWidth = holder.itemImageView.getMeasuredWidth();
+                        int imageHeighFromServer = items.get(i).getImageHeight(mContext);
+                        int imageWidthFromServer = 120;
+                        int cellHeight = cellWidth*imageHeighFromServer/imageWidthFromServer;
+                        holder.itemImageView.getLayoutParams().height = cellHeight;
+                        holder.itemImageView.requestLayout();
+                        return true;
                     }
                 });
-                break;
-            }
-            case ITEM_WITHOUT_DISCOUNT: {
-                holder.discountTextView.setVisibility(View.GONE);
-                holder.priceLayout.setVisibility(View.VISIBLE);
-                holder.priceTextView.setText(items.get(i).getPriceNew());
-                holder.itemImageView.setImageDrawable(null);
-                ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-                imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
-                        holder.loadProgressBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                        if (response.getBitmap() != null) {
-                            // load image into imageview
-                            holder.itemImageView.setImageBitmap(response.getBitmap());
-                            holder.loadProgressBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
-                break;
-            }
-            default:
-                // Blow up in whatever way you choose.
-        }
 
 
+        holder.itemImageView.setImageDrawable(null);
 
-
+//        holder.itemImageView.setVisibility(View.INVISIBLE);
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         imageLoader.get(items.get(i).getImage(), new ImageLoader.ImageListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 holder.itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+//                holder.itemImageView.setVisibility(View.VISIBLE);
+                Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
+                animation.setStartOffset(1000);
+                animation.setFillAfter(true);
+                holder.overLay.startAnimation(animation);
                 holder.loadProgressBar.setVisibility(View.GONE);
             }
+
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
                 if (response.getBitmap() != null) {
                     // load image into imageview
                     holder.itemImageView.setImageBitmap(response.getBitmap());
+//                    holder.itemImageView.setVisibility(View.VISIBLE);
+                    Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
+                    animation.setStartOffset(1000);
+                    animation.setFillAfter(true);
+                    holder.overLay.startAnimation(animation);
                     holder.loadProgressBar.setVisibility(View.GONE);
                 }
             }
         });
 
 
-//        holder.itemImageView.getViewTreeObserver().addOnPreDrawListener(
-//                new ViewTreeObserver.OnPreDrawListener() {
-//                    public boolean onPreDraw() {
-//                        int cellWidth = holder.itemImageView.getMeasuredWidth();
-//                        int imageHeighFromServer = items.get(i).getImageHeight(mContext);
-//                        int imageWidthFromServer = 150;
-//                        int cellHeight = cellWidth*imageHeighFromServer/imageWidthFromServer;
-//                        holder.itemImageView.getLayoutParams().height = cellHeight;
-//                        holder.itemImageView.requestLayout();
-//                        return true;
-//                    }
-//                });
+
 
     }
 
@@ -213,6 +226,7 @@ public class HotDealsAdapter extends  RecyclerView.Adapter<HotDealsAdapter.ItemV
         LinearLayout container;
         ProgressBar loadProgressBar;
         RelativeLayout priceLayout;
+        View overLay;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -225,6 +239,7 @@ public class HotDealsAdapter extends  RecyclerView.Adapter<HotDealsAdapter.ItemV
             itemImageView = (ImageView)itemView.findViewById(R.id.itemImageView);
             container = (LinearLayout) itemView.findViewById(R.id.parentPanel);
             priceLayout= (RelativeLayout) itemView.findViewById(R.id.priceLayout);
+            overLay = (View) itemView.findViewById(R.id.overLay);
         }
     }
 

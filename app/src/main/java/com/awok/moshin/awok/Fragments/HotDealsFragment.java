@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -65,7 +66,7 @@ import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
 public class HotDealsFragment extends Fragment {
 
     RecyclerView mRecyclerView;
-    HotDealsAdapter mAdapter;
+    DragonBallAdapter mAdapter;
     AlphaInAnimationAdapter alphaAdapter;
     View mView;
     LinearLayout progressLayout;
@@ -97,6 +98,7 @@ public class HotDealsFragment extends Fragment {
     String filterString = "";
     boolean isFilter = false;
     LinearLayout filterButtonLayout;
+    TextView messageTextView;
     public HotDealsFragment(){}
 
     public HotDealsFragment(String categoryId)
@@ -236,6 +238,7 @@ public class HotDealsFragment extends Fragment {
         progressBar = (ProgressBar) mView.findViewById(R.id.marker_progress);
         progressLayout = (LinearLayout) mView.findViewById(R.id.progressLayout);
         itemCount = (TextView) mView.findViewById(R.id.itemCountTextView);
+        messageTextView = (TextView) mView.findViewById(R.id.messageTextView);
         gotoTopButton = (ImageButton) mView.findViewById(R.id.goToTopButton);
         progressLayout.setVisibility(View.GONE);
         loadMore=(ProgressBar)mView.findViewById(R.id.load_progress_bar);
@@ -361,9 +364,9 @@ public class HotDealsFragment extends Fragment {
                 Log.i(TAG, "lastProductItem: " + (productsArrayList.size()-1));
 
                 if(shouldLoadMore && lastVisibleItem==(productsArrayList.size()-1)){
-//                    DragonBallFooter footer = new DragonBallFooter("Loading...");
-//                    mAdapter.setFooter(footer);
-//                    mAdapter.notifyDataSetChanged();
+                    DragonBallFooter footer = getFooter();
+                    mAdapter.setFooter(footer);
+//                    alphaAdapter.notifyDataSetChanged();
 //                    Products item = new Products(true);
 //                    productsArrayList.add(item);
 //                    mAdapter.notifyDataSetChanged();
@@ -938,6 +941,7 @@ public class HotDealsFragment extends Fragment {
 
                 if(length>0){
 //                    mAdapter.hideFooter();
+//                    alphaAdapter.notifyDataSetChanged();
 //                    if(productsArrayList.size()>0){
 //                        for(int i=0;i<productsArrayList.size();i++){
 //                            if(productsArrayList.get(i).isLoader()){
@@ -968,7 +972,9 @@ public class HotDealsFragment extends Fragment {
                     }
                 }
                 else{
-                    Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
+                    initializeData();
+                    mAdapter.hideFooter();
 //                    Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "There is no further", Snackbar.LENGTH_LONG)
 //                            .setActionTextColor(Color.RED);
 //
@@ -995,7 +1001,7 @@ public class HotDealsFragment extends Fragment {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "There is no further", Toast.LENGTH_SHORT).show();
 //                Snackbar.make(getActivity().findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_SHORT)
 //                        .setActionTextColor(Color.RED)
 //                        .show();
@@ -1007,6 +1013,8 @@ public class HotDealsFragment extends Fragment {
                 loadMore.setVisibility(View.GONE);
                 mainLayout.setVisibility(View.GONE);
                 shouldLoadMore = false;
+                initializeData();
+                mAdapter.hideFooter();
                 if (mSwipeRefreshLayout!=null && mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
@@ -1028,21 +1036,39 @@ public class HotDealsFragment extends Fragment {
 
     private void initializeData(){
         if (pageCount==1){
-//            mAdapter = new DragonBallAdapter(getActivity(), productsArrayList);
-            mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
+            mAdapter = new DragonBallAdapter(getActivity());
+//            mAdapter = new HotDealsAdapter(getActivity(), productsArrayList);
             alphaAdapter = new AlphaInAnimationAdapter(mAdapter);
+            alphaAdapter.setDuration(400);
+            DragonBallFooter footer = getFooter();
+            mAdapter.setItems(productsArrayList);
+            if(productsArrayList.size()==0){
+                messageTextView.setVisibility(View.VISIBLE);
+            }
+            else{
+                mAdapter.setFooter(footer);
+            }
             mRecyclerView.setAdapter(alphaAdapter);
             mRecyclerView.setItemAnimator(null);
             mLayoutManager = new StaggeredGridLayoutManager(2,  1);
             mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 //            mLayoutManager.offsetChildrenVertical(0);
             mRecyclerView.setLayoutManager(mLayoutManager);
+
+
         }
         else{
-            mAdapter.notifyDataSetChanged();
-            alphaAdapter.notifyDataSetChanged();
+//            mAdapter.notifyDataSetChanged();
+            mAdapter.setItems(productsArrayList);
+//            adapter.notifyDataSetChanged();
+//            alphaAdapter.notifyDataSetChanged();
         }
 
+    }
+
+    public DragonBallFooter getFooter() {
+        String loadMoreMessage = "Loading More..";
+        return new DragonBallFooter(loadMoreMessage);
     }
 
 }

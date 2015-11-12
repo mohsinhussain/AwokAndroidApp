@@ -135,6 +135,27 @@
 
 </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/messageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:visibility="gone"
+            android:text="There are no more products here! =("
+            android:textColor="@color/normal_text"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
     <ImageButton
         android:id="@+id/goToTopButton"
         android:background="@color/primary"

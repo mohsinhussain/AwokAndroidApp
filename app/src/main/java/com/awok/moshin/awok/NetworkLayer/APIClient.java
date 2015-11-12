@@ -8,6 +8,7 @@ import android.provider.SyncStateContract;
 import android.util.Log;
 
 import com.awok.moshin.awok.Util.Constants;
+import com.awok.moshin.awok.Util.Utilities;
 
 import org.json.JSONObject;
 
@@ -43,7 +44,7 @@ public class APIClient {
 
     public void allProductsAPICall(int pageCount) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/v1/products/index?&page="+pageCount, "GET", null);  //--------------V1 api
+        mTask.execute(mContext, "http://market1.awok/v1/products/index?&delay=1&page=" + pageCount, "GET", null);  //--------------V1 api
 //        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/index/"+pageCount, "GET", null);  ----------old api
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
     }
