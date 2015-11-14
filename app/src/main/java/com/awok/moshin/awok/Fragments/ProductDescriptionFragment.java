@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -36,10 +37,11 @@ import java.util.List;
 
 public class ProductDescriptionFragment extends Fragment {
 
-   private List<DescriptionModel> description;
-
+   //private List<DescriptionModel> description=new ArrayList<DescriptionModel>();;
+private String description;
         private RecyclerView mRecyclerView;
         private RecyclerView.Adapter mAdapter;
+    private WebView webView;
         private RecyclerView.LayoutManager mLayoutManager;
         //private List<ProductOverview> overViewList = new ArrayList<ProductOverview>();
 
@@ -57,6 +59,9 @@ public class ProductDescriptionFragment extends Fragment {
         //descriptionTextView = (TextView) mView.findViewById(R.id.descriptionTextView);
         //descriptionTextView.setText(description);
 
+         webView=(WebView)mView.findViewById(R.id.webview);
+
+        webView.loadData(description, "text/html", null);
 
 
 
@@ -72,22 +77,22 @@ public class ProductDescriptionFragment extends Fragment {
 
 
 
-            mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
-//
-//            // getSupportActionBar().setIcon(R.drawable.ic_launcher);
-//
-//            // getSupportActionBar().setTitle("Android Versions");
-//
-//            // use this setting to improve performance if you know that changes
-//            // in content do not change the layout size of the RecyclerView
+          /*  mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
+
             mRecyclerView.setHasFixedSize(true);
-//
-//            // use a linear layout manager
+
             mLayoutManager = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(mLayoutManager);
-//
+
+
             mAdapter = new DescriptionAdapter(getActivity(),description);
-            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setAdapter(mAdapter);*/
+
+
+
+
+       // call(description);
+
 //
 //
 //overViewList.clear();
@@ -107,11 +112,15 @@ public class ProductDescriptionFragment extends Fragment {
 
             return mView;
         }
-    public void call(List<DescriptionModel> description)
+   /* public void call(List<DescriptionModel> description)
     {
         this.description = description;
 
         System.out.println("MOHSIN/SHON HAS DONE IT");
-    }
+    }*/
+   public void call(String description)
+   {
+       this.description=description;
+   }
     }
 

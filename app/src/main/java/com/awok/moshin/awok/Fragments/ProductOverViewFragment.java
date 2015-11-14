@@ -101,7 +101,7 @@ private ImageView countButton,share;
 
 
 private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_color_default,prod_shipping,prod_shippingCost,prod_delivery,prod_deliveryTime,prod_reviews,quickDeliveryTxt,
-        prod_price,prod_discountPrice,countText,estArrival,estShipping;
+        prod_price,prod_discountPrice,countText,estArrival,estShipping,reviewView;
 
  private Button prod_buyNow,save;
     private RatingBar prodRatingBar,prod_reviewRating;
@@ -113,6 +113,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
     public ProductOverViewFragment(String productId,String productName, String imageData,List<ProductRatingModel> rating,String estimatedDays,String estimatedPrice) {
         this.productName=productName;
         this.image=imageData;
+
         this.productId=productId;
         this.rating=rating;
         this.estimatedDays=estimatedDays;
@@ -140,6 +141,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         viewPager.setAdapter(mCustomPagerAdapter);*/
         mCustomPagerAdapter.notifyDataSetChanged();
         mAdapter.notifyDataSetChanged();
+       // viewPager.invalidate();
       //  viewPager.notify();
 
 //        viewPager.notify();
@@ -156,10 +158,35 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         viewPager = (ViewPager) mView.findViewById(R.id.imageSlider);
         countButton=(ImageView)mView.findViewById(R.id.imageView);
         productTitle=(TextView)mView.findViewById(R.id.productTitle);
+        reviewView=(TextView)mView.findViewById(R.id.reviewView);
         product_reviewCount=(TextView)mView.findViewById(R.id.product_reviewCount);
         scroll=(ScrollView)mView.findViewById(R.id.nestedScroll);
         countText=(TextView)mView.findViewById(R.id.countText);
+      //  countText=(TextView)mView.findViewById(R.id.countText);
         estArrival=(TextView)mView.findViewById(R.id.estimatedArrival);
+
+        countText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(baseImage!=null){
+                    Intent i=new Intent(getContext(), FragmentFullScreenImage.class);
+                    i.putExtra("size",mResources.size());
+                    i.putExtra("position", 0);
+                    i.putExtra("image",image);
+                    i.putExtra("baseImage",mResources);
+                    startActivity(i);
+                }
+            }
+        });
+
+        reviewView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ProductDetailsActivity)getActivity()).goToView();
+            }
+        });
+
+
         middle=(RelativeLayout)mView.findViewById(R.id.layMiddle);
 
                 estShipping=(TextView)mView.findViewById(R.id.estimatedShipping);
@@ -478,24 +505,30 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
                     if (response.getBitmap() != null) {
 
  System.out.println("POSITION"+position);                       // load image into imageview
-if(position==0)
+/*if(position==0)
 {
     imageView.invalidate();
     imageView.setImageBitmap(response.getBitmap());
+
+ //   imageView.setBackground(getResources().getDrawable(R.drawable.flag_id));
    // System.out.println("POSITION" + response.toString());
     progressBar.setVisibility(View.GONE);
 }
-                        else {
+                        else {*/
     imageView.setImageBitmap(response.getBitmap());
     progressBar.setVisibility(View.GONE);
 }
                     }
-                }
+            //    }
 
             });
-
+/*if(position==mResources.size())
+{
+    mCustomPagerAdapter.notifyDataSetChanged();
+}*/
 
             container.addView(itemView);
+
 
 /*if(mResources.get(position).equals(mResources.size()))
 {
@@ -522,10 +555,11 @@ if(position==0)
         public int getItemPosition(Object object) {
             return POSITION_NONE;
         }*/
-      /*public int getItemPosition(Object object) {
+
+      public int getItemPosition(Object object) {
 
           return POSITION_NONE;
-      }*/
+      }
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((RelativeLayout) object);

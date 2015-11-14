@@ -74,7 +74,7 @@ public class ReviewsFragment extends Fragment {
     private boolean loading = true;
     ProductRatingPageModel prodRatingData=new ProductRatingPageModel();
     private int current_page = 1;
-
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private List<ProductRatingPageModel> prodRating = new ArrayList<ProductRatingPageModel>();
 
     private int visibleThreshold = 5;
@@ -118,7 +118,7 @@ boughtByTxt.setText("Bought By: "+boughtBy+" people");
         savedByTxt.setText("Saved By: "+savedBy+" people");
         productNameView.setText(productName);
         System.out.println(image + "image");
-        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        /*ImageLoader imageLoader = AppController.getInstance().getImageLoader();*/
         imageLoader.get(image, new ImageLoader.ImageListener() {
             @Override
             public void onErrorResponse(VolleyError error) {

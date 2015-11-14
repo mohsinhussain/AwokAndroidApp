@@ -375,15 +375,15 @@ JSONObject dataToSend;
 //
 //                    itemAmount.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
 //                    total.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
-                    int length = jsonObjectData.getJSONObject("data").getJSONObject("public").getJSONArray("sellers_cart").length();
+                    int length = jsonObjectData.getJSONObject("data").getJSONObject("server").getJSONArray("sellers_cart").length();
                     for(int i=0;i<length;i++){
-                        JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONObject("public").getJSONArray("sellers_cart").getJSONObject(i);
+                        JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONObject("server").getJSONArray("sellers_cart").getJSONObject(i);
 //totalPriceText.setText(jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total_items"));
                        // totalPriceText.setText("200");
-                        totalPriceText.setText(jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total_items_count"));
+                        totalPriceText.setText(jsonObjectData.getJSONObject("data").getJSONObject("server").getString("total_items_count"));
 
-                        allPriceText.setText("AED "+jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total"));
-                        totalValueTextView.setText("AED "+jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total"));
+                        allPriceText.setText("AED "+jsonObjectData.getJSONObject("data").getJSONObject("server").getString("total"));
+                        totalValueTextView.setText("AED "+jsonObjectData.getJSONObject("data").getJSONObject("server").getString("total"));
                         JSONArray productDetails=jsonObject.getJSONArray("items");
                         int lengthOfProducts = productDetails.length();
                         for(int j=0;j<lengthOfProducts;j++)

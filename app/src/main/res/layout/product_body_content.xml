@@ -239,6 +239,7 @@ android:id="@+id/layMiddle"
 
 
                     <TextView
+                        android:id="@+id/reviewView"
                         android:layout_marginLeft="15dp"
                         android:textColor="#2196f3"
                         android:layout_width="wrap_content"
