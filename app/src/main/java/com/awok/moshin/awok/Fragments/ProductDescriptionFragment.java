@@ -38,7 +38,8 @@ import java.util.List;
 public class ProductDescriptionFragment extends Fragment {
 
    //private List<DescriptionModel> description=new ArrayList<DescriptionModel>();;
-private String description;
+private String description="";
+    private int flag=0;
         private RecyclerView mRecyclerView;
         private RecyclerView.Adapter mAdapter;
     private WebView webView;
@@ -54,16 +55,39 @@ private String description;
     @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-            View mView = inflater.inflate(R.layout.fragment_product_over_view, container, false);
+        // Inflate the layout for this fragment
+        View mView = inflater.inflate(R.layout.fragment_product_over_view, container, false);
         //descriptionTextView = (TextView) mView.findViewById(R.id.descriptionTextView);
         //descriptionTextView.setText(description);
 
-         webView=(WebView)mView.findViewById(R.id.webview);
+        webView = (WebView) mView.findViewById(R.id.webview);
+        webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
+        if (description.equals(""))
+        {
+            flag=0;
+        }
+        else
+        {
+            flag=1;
+        }
 
-        webView.loadData(description, "text/html", null);
 
 
+
+
+
+
+
+
+
+/*if(description.equals(null))
+{*/
+   // loadMore();
+/*}
+        else {
+    webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
+
+}*/
 
 
 
@@ -112,15 +136,45 @@ private String description;
 
             return mView;
         }
-   /* public void call(List<DescriptionModel> description)
-    {
-        this.description = description;
 
-        System.out.println("MOHSIN/SHON HAS DONE IT");
+  /*  private void loadMore() {
+        if(this.description.equals(""))
+        {
+            loadMore();
+        }
+        else
+        {
+            webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
+        }
+
     }*/
+
+    /* public void call(List<DescriptionModel> description)
+     {
+         this.description = description;
+
+         System.out.println("MOHSIN/SHON HAS DONE IT");
+     }*/
+
+
+
+
+
+
+
    public void call(String description)
    {
        this.description=description;
+
+/*if(flag==1)
+{
+
+}
+       else
+{
+    webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
+}*/
+
    }
     }
 

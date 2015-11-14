@@ -505,21 +505,22 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
                     if (response.getBitmap() != null) {
 
  System.out.println("POSITION"+position);                       // load image into imageview
-/*if(position==0)
+if(position==0)
 {
     imageView.invalidate();
+
     imageView.setImageBitmap(response.getBitmap());
 
  //   imageView.setBackground(getResources().getDrawable(R.drawable.flag_id));
    // System.out.println("POSITION" + response.toString());
     progressBar.setVisibility(View.GONE);
 }
-                        else {*/
+                        else {
     imageView.setImageBitmap(response.getBitmap());
     progressBar.setVisibility(View.GONE);
 }
                     }
-            //    }
+                }
 
             });
 /*if(position==mResources.size())
@@ -534,6 +535,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 {
     viewPager.invalidate();
 }*/
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
