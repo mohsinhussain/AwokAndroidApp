@@ -81,7 +81,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     private TextView prodNewPrice,prodOldPrice;
     private Button buyNow,save;
     Map<String,String> productSpec = new HashMap<String,String>();
-    private String imageData,imageProductRating,boughtBy ,savedBy;
+    private String imageData,imageProductRating,boughtBy ,savedBy,htmlDescription;
     String productId,productName, newPrice, oldPrice, image, description,rating,ratingCount;
     String catId;
     JSONObject dataToSend;
@@ -287,6 +287,7 @@ public void setUpTab()
     tabLayout.setTabTextColors(getResources().getColor(R.color.normal_text), getResources().getColor(R.color.header_text));
     tabLayout.setupWithViewPager(viewPager);
 
+
 }
 
 
@@ -314,6 +315,7 @@ public void setUpTab()
 
     private void setupViewPager(ViewPager viewPager) {
         calls=viewPager;
+
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
         productOverViewFragment=new ProductOverViewFragment(productId, productName,image,prodRating,estimatedDays,estimatedPrice);
@@ -355,6 +357,7 @@ public void setUpTab()
         viewPager.setAdapter(adapter);
 
 
+
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -388,6 +391,10 @@ public void setUpTab()
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    public void goToView() {
+        calls.setCurrentItem(3);
     }
 
 
@@ -583,11 +590,12 @@ public void setUpTab()
                 mMembersJSON = new JSONObject(response);
                 System.out.println("response: " + mMembersJSON);
                 JSONObject dataObj = mMembersJSON.getJSONObject("data");
-                 jsonDescriptionData=dataObj.getJSONArray("description");
+               //  jsonDescriptionData=dataObj.getJSONArray("description");
                 variantsArrayString = dataObj.getJSONArray("variants").toString();
                 specsArrayStrin = dataObj.getJSONObject("specs").toString();
-                System.out.println("JDATA" + jsonDescriptionData.toString());
-                for(int i=0;i<jsonDescriptionData.length();i++)
+//                System.out.println("JDATA" + jsonDescriptionData.toString());
+                htmlDescription=dataObj.getString("description");
+              /*  for(int i=0;i<jsonDescriptionData.length();i++)
                 {
                     JSONObject data=jsonDescriptionData.getJSONObject(i);
                     //String jsonData=imagesStringData.get(i).toString();
@@ -596,7 +604,7 @@ public void setUpTab()
 System.out.println(data.getString("head"));
                     System.out.println(data.getString("content"));
 descModel.add(descData);
-                }
+                }*/
  //imageProductRating=mMembersJSON.getString("image");
                  boughtBy=dataObj.getString("bought_by");
                  savedBy=dataObj.getString("saved_by");
@@ -692,7 +700,8 @@ descModel.add(descData);
 
                 shippingDeliveryFrag.call(returnPolicies, estimatedPrice, country, estimatedDays, shipFrom);
                 reviewsFragment.call(prodPageRating,productName,image,rating,ratingCount,boughtBy,savedBy,productId);
-                productDescriptionFragment.call(descModel);
+                //productDescriptionFragment.call(descModel);
+                productDescriptionFragment.call(htmlDescription);
                 storeRatingFragment.call(storeRatingData, storeName, storeSum, storeAverage, storeImage, storeUrl);
               //  productOverViewFragment.call(prodOverViewRating,productId, productName,image);
 

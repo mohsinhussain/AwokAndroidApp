@@ -84,6 +84,7 @@ public class HotDealsFragment extends Fragment {
     private boolean shouldLoadMore = false;
     private LinearLayout mainLayout;
     private boolean isSearch = false;
+    private String xtra_image;
     private ImageButton gotoTopButton;
     LinearLayout.LayoutParams params;
     private String searchString = null;
@@ -296,6 +297,7 @@ public class HotDealsFragment extends Fragment {
                         i.putExtra(Constants.PRODUCT_NAME_INTENT,productsArrayList.get(position).getName());
                         i.putExtra(Constants.PRODUCT_DISCOUNT_PERCENTAGE_INTENT,productsArrayList.get(position).getDiscPercent());
                         i.putExtra(Constants.PRODUCT_IMAGE_INTENT,productsArrayList.get(position).getImage());
+                        //i.putExtra(Constants.PRODUCT_IMAGE_INTENT,productsArrayList.get(position).getXtraImage());
                         i.putExtra(Constants.PRODUCT_PRICE_NEW_INTENT,productsArrayList.get(position).getPriceNew());
                         i.putExtra(Constants.PRODUCT_PRICE_OLD_INTENT,productsArrayList.get(position).getPriceOld());
                         i.putExtra(Constants.PRODUCT_DESCRIPTION_INTENT,productsArrayList.get(position).getDescription());
@@ -963,6 +965,7 @@ public class HotDealsFragment extends Fragment {
                         item.setPriceOld(jsonObject.getInt("price"));
                         item.setRating(jsonObject.getJSONObject("rating").getString("rating_average"));
                         item.setRatingCount(jsonObject.getJSONObject("rating").getString("number_of_ratings"));
+                        item.setXtraImage(jsonObject.getString("image_extra"));
 //                        item.setDescription(jsonObject.getString("description"));
                         item.setDiscPercent(jsonObject.getJSONObject("discount").getInt("discount_percentage"));
 //                    if (priceObject.getInt("PRICE_OLD")!=0){

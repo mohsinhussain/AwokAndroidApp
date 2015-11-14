@@ -589,11 +589,11 @@ public class CheckOutActivity extends AppCompatActivity {
                     bottomLay.setVisibility(View.VISIBLE);
                     cartEmptyText.setVisibility(View.GONE);
                   //   totalItems=jsonObjectData.getJSONObject("data").getString("total_items");
-                    totalItems=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total_items_count");
+                    totalItems=jsonObjectData.getJSONObject("data").getJSONObject("server").getString("total_items_count");
                     //totalItems = "404";
-                    String subtotal=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("subtotal");
-                    String total=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total");
-                    String shipping=jsonObjectData.getJSONObject("data").getJSONObject("public").getString("shipping_cost");
+                    String subtotal=jsonObjectData.getJSONObject("data").getJSONObject("server").getString("subtotal");
+                    String total=jsonObjectData.getJSONObject("data").getJSONObject("server").getString("total");
+                    String shipping=jsonObjectData.getJSONObject("data").getJSONObject("server").getString("shipping_cost");
                     ab.setTitle("Shopping Cart ("+totalItems+")");
                     ab.setHomeAsUpIndicator(R.drawable.back_button);
                     itemsCount.setText(totalItems);
@@ -606,9 +606,9 @@ public class CheckOutActivity extends AppCompatActivity {
                     else {
                         shippingText.setText("AED " + shipping);
                     }
-                    int length = jsonObjectData.getJSONObject("data").getJSONObject("public").getJSONArray("sellers_cart").length();
+                    int length = jsonObjectData.getJSONObject("data").getJSONObject("server").getJSONArray("sellers_cart").length();
                     for (int i = 0; i < length; i++) {
-                        JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONObject("public").getJSONArray("sellers_cart").getJSONObject(i);
+                        JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONObject("server").getJSONArray("sellers_cart").getJSONObject(i);
 
                         JSONArray productDetails = jsonObject.getJSONArray("items");
                         int lengthOfProducts = productDetails.length();

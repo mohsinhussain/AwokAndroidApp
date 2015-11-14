@@ -7,6 +7,7 @@
 
     <ProgressBar
         style="?android:attr/progressBarStyle"
+        android:visibility="gone"
         android:id="@+id/load_progress_bar"
         android:indeterminateDrawable="@drawable/progress_bar_load_more"
         android:layout_width="wrap_content"

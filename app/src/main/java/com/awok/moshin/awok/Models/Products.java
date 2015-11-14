@@ -21,6 +21,7 @@ String rating;
     String categoryId;
     int imageHeight;
     boolean loader = false;
+    private String xtraImage;
 
     public Products() {
         this.loader = false;
@@ -30,7 +31,7 @@ String rating;
         this.loader = loader;
     }
 
-    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount,int imageHeight) {
+    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount,int imageHeight,String xtraImage) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -43,6 +44,7 @@ String rating;
         this.ratingCount=ratingCount;
         this.imageHeight=imageHeight;
         this.loader = false;
+        this.xtraImage=xtraImage;
     }
 
     public int getImageHeight(Context mContext) {
@@ -156,5 +158,17 @@ String rating;
     public String getRatingCount() {
         return ratingCount;
     }
+
+    public void setXtraImage(String xtraImage) {
+        this.xtraImage = xtraImage;
+    }
+
+
+
+
+    public String getXtraImage() {
+        return xtraImage;
+    }
+
 
 }
