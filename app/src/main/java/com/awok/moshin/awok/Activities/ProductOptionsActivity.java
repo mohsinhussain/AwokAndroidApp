@@ -186,7 +186,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 productImageView.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
-                progressBar.setVisibility(View.GONE);
+//                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -194,12 +194,13 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 if (response.getBitmap() != null) {
                     // load image into imageview
                     productImageView.setImageBitmap(response.getBitmap());
-                    progressBar.setVisibility(View.GONE);
+//                    progressBar.setVisibility(View.GONE);
                 }
             }
         });
 
         try {
+            //null pointer exception
             specsObject = new JSONObject(getIntent().getExtras().getString(Constants.PRODUCT_SPECS_INTENT));
             variantsArray = new JSONArray(getIntent().getExtras().getString(Constants.PRODUCT_VARIANTS_INTENT));
 
@@ -280,7 +281,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     addToCartData.put("product_id", productId);
                     addToCartData.put("shipping_profile_id", savedMethodProfileId);
                     addToCartData.put("variant_id",variantId);
-                    addToCartData.put("quantity",Integer.parseInt(quantity.getText().toString()));
+                    addToCartData.put("quantity", Integer.parseInt(quantity.getText().toString()));
                     System.out.println("HashMap: "+addToCartData);
                     dataToSend=new JSONObject(addToCartData);
                     System.out.println(dataToSend.toString());
@@ -341,6 +342,24 @@ public class ProductOptionsActivity extends AppCompatActivity {
 
                 colorString = colorArray.get(position).getColor();
                 colorTextView.setText(colorString);
+                ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+                String ImgUrl = colorArray.get(position).getImageUrl();
+                imageLoader.get(ImgUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        productImageView.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
+//                progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                        if (response.getBitmap() != null) {
+                            // load image into imageview
+                            productImageView.setImageBitmap(response.getBitmap());
+//                    progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
                 boolean isMatching = false;
                 if(storageArray.size()>0) {
                     if (!colorString.equalsIgnoreCase("") && !storageString.equalsIgnoreCase("")) {
@@ -357,7 +376,8 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
                                 priceTexView.setText("AED " + variantArray.get(i).getPrice());
                                 if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
-                                    quantity.setText(stockQuantity);
+                                    //null pointer exception
+                                    quantity.setText(String.valueOf(stockQuantity));
                                     if (networkInfo != null && networkInfo.isConnected()) {
                                         String locationId = "560a8eddf26f2e024b8b4690";
                                         new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
@@ -412,6 +432,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
                         variantId = "";
                         stockQuantityTextView.setText("");
+                        stockQuantity = 0;
                     }
                 }
                 else{
@@ -461,6 +482,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     else {
                         Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
                         variantId = "";
+                        stockQuantity = 0;
                         stockQuantityTextView.setText("");
                     }
                 }
@@ -525,6 +547,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
                             variantId = "";
                             stockQuantityTextView.setText("");
+                            stockQuantity = 0;
                         }
                     }
                 }
@@ -572,6 +595,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
                             variantId = "";
                             stockQuantityTextView.setText("");
+                            stockQuantity = 0;
                         }
                     }
                 }
@@ -641,16 +665,16 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                         // if this button is clicked, close
                                         // current activity
                                         quantity.setText(Integer.toString(stockQuantity));
-                                        if (networkInfo != null && networkInfo.isConnected()) {
-                                            String locationId = "560a8eddf26f2e024b8b4690";
-                                            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
-                                                    variantId);
-                                        } else {
-                                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
-                                                    .setActionTextColor(Color.RED)
-                                                    .show();
-                                        }
-                                        dialog.cancel();
+//                                        if (networkInfo != null && networkInfo.isConnected()) {
+//                                            String locationId = "560a8eddf26f2e024b8b4690";
+//                                            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+//                                                    variantId);
+//                                        } else {
+//                                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+//                                                    .setActionTextColor(Color.RED)
+//                                                    .show();
+//                                        }
+//                                        dialog.cancel();
                                     }
                                 });
 

@@ -82,7 +82,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
             });
 
 
-    discountTextView.setText(character.getDiscPercent() + "% OFF");
+    discountTextView.setText(character.getDiscPercent() + "%");
     priceLayout.setVisibility(View.VISIBLE);
     priceTextView.setText(character.getPriceNew());
 

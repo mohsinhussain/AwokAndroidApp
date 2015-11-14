@@ -285,15 +285,15 @@ public class ShippingMethodActivity extends AppCompatActivity {
                                         // if this button is clicked, close
                                         // current activity
                                         quantity.setText(Integer.toString(stockQuantity));
-                                        if (networkInfo != null && networkInfo.isConnected()) {
-                                            String locationId = "560a8eddf26f2e024b8b4690";
-                                            new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
-                                                    variantId);
-                                        } else {
-                                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
-                                                    .setActionTextColor(Color.RED)
-                                                    .show();
-                                        }
+//                                        if (networkInfo != null && networkInfo.isConnected()) {
+//                                            String locationId = "560a8eddf26f2e024b8b4690";
+//                                            new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+//                                                    variantId);
+//                                        } else {
+//                                            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+//                                                    .setActionTextColor(Color.RED)
+//                                                    .show();
+//                                        }
                                         dialog.cancel();
                                     }
                                 });
