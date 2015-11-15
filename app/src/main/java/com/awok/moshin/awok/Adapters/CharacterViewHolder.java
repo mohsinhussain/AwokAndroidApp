@@ -97,7 +97,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-
+    final int[] cellHeight = new int[1];
 
     itemImageView.getViewTreeObserver().addOnPreDrawListener(
             new ViewTreeObserver.OnPreDrawListener() {
@@ -105,17 +105,19 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
                 int cellWidth = itemImageView.getMeasuredWidth();
                 int imageHeighFromServer = character.getImageHeight(mContext);
                 int imageWidthFromServer = 120;
-                int cellHeight = cellWidth * imageHeighFromServer / imageWidthFromServer;
-                itemImageView.getLayoutParams().height = cellHeight;
+                cellHeight[0] = cellWidth * imageHeighFromServer / imageWidthFromServer;
+                itemImageView.getLayoutParams().height = cellHeight[0];
                 itemImageView.requestLayout();
 //                overLay.setMinimumHeight(cellHeight);
-                overLay.getLayoutParams().height = cellHeight+20;
+
 //                overLay.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, cellHeight+20));
-                overLay.requestLayout();
                 return true;
               }
             });
 
+
+    overLay.getLayoutParams().height = cellHeight[0];
+    overLay.requestLayout();
 
     discountTextView.setText(character.getDiscPercent() + "%");
     priceLayout.setVisibility(View.VISIBLE);

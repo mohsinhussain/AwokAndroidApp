@@ -85,7 +85,7 @@
                     <View
                         android:id="@+id/overLay"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:background="@color/button_text"
                         android:layout_alignLeft="@+id/itemImageView"
                         android:layout_alignRight="@+id/itemImageView"
