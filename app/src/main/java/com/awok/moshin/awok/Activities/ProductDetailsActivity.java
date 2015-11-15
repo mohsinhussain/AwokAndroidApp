@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.awok.moshin.awok.Fragments.HotDealsFragment;
 import com.awok.moshin.awok.Fragments.ProductDescriptionFragment;
@@ -183,8 +184,26 @@ swipe.setVisibility(View.GONE);
                 i.putExtra(Constants.PRODUCT_NAME_INTENT, productName);
                 i.putExtra(Constants.PRODUCT_PRICE_NEW_INTENT, newPrice);
                 i.putExtra(Constants.PRODUCT_IMAGE_INTENT, image);
-                i.putExtra(Constants.PRODUCT_VARIANTS_INTENT, variantsArrayString);
-                i.putExtra(Constants.PRODUCT_SPECS_INTENT, specsArrayStrin);
+
+                System.out.println("variantsArrayString: " + variantsArrayString);
+                if(variantsArrayString!=null){
+                    i.putExtra(Constants.PRODUCT_VARIANTS_INTENT, variantsArrayString);
+                }
+                else{
+                    variantsArrayString = "";
+                    Toast.makeText(ProductDetailsActivity.this, "Variants are not coming from server!", Toast.LENGTH_LONG).show();
+                    i.putExtra(Constants.PRODUCT_VARIANTS_INTENT, variantsArrayString);
+                }
+
+                System.out.println("specsArrayString: "+specsArrayStrin);
+                if(specsArrayStrin!=null){
+                    i.putExtra(Constants.PRODUCT_SPECS_INTENT, specsArrayStrin);
+                }
+                else{
+                    specsArrayStrin = "";
+                    Toast.makeText(ProductDetailsActivity.this, "SPECS are not coming from server!", Toast.LENGTH_LONG).show();
+                    i.putExtra(Constants.PRODUCT_SPECS_INTENT, specsArrayStrin);
+                }
                 startActivityForResult(i, 1);
 
 
@@ -263,7 +282,9 @@ swipe.setVisibility(View.GONE);
         });*/
 
 
-
+        buyNow.setEnabled(false);
+        buyNow.setBackgroundColor(getResources().getColor(R.color.border));
+        buyNow.setTextColor(getResources().getColor(R.color.button_text));
 
 
 
@@ -580,8 +601,8 @@ public void setUpTab()
     public void onResume(){
         super.onResume();
         invalidateOptionsMenu();
-        buyNow.setEnabled(true);
-        buyNow.setBackgroundColor(getResources().getColor(R.color.button_bg));
+//        buyNow.setEnabled(true);
+//        buyNow.setBackgroundColor(getResources().getColor(R.color.button_bg));
 
     }
 
@@ -710,6 +731,7 @@ descModel.add(descData);
                 storeRatingFragment.call(storeRatingData, storeName, storeSum, storeAverage, storeImage, storeUrl);
 
 
+
 swipe.setVisibility(View.VISIBLE);
                 Animation slide_up = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.slide_up);
@@ -720,6 +742,14 @@ swipe.setVisibility(View.VISIBLE);
 
 
            //     tabLayout.setEnabled(true);
+
+
+               /* buyNow.setEnabled(true);
+                buyNow.setBackgroundColor(getResources().getColor(R.color.red_base));
+                buyNow.setTextColor(getResources().getColor(R.color.button_text));*/
+
+
+
 
               //  productOverViewFragment.call(prodOverViewRating,productId, productName,image);
 

@@ -22,13 +22,27 @@ String rating;
     int imageHeight;
     boolean loader = false;
     private String xtraImage;
+    private boolean isCached;
+    int years, months, days, hours, minutes, seconds;
 
     public Products() {
         this.loader = false;
+        isCached = false;
+        years = 0;
+        days = 0;
+        hours = 0;
+        minutes = 0;
+        seconds = 0;
     }
 
     public Products(boolean loader) {
         this.loader = loader;
+        isCached = false;
+        years = 0;
+        days = 0;
+        hours = 0;
+        minutes = 0;
+        seconds = 0;
     }
 
     public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount,int imageHeight,String xtraImage) {
@@ -45,6 +59,12 @@ String rating;
         this.imageHeight=imageHeight;
         this.loader = false;
         this.xtraImage=xtraImage;
+        isCached = false;
+        years = 0;
+        days = 0;
+        hours = 0;
+        minutes = 0;
+        seconds = 0;
     }
 
     public int getImageHeight(Context mContext) {
@@ -53,6 +73,62 @@ String rating;
 //        Log.v("Products", "desnsity: " + densityDpi);
 //        int dp = Math.round(imageHeight / (metrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return imageHeight;
+    }
+
+    public int getYears() {
+        return years;
+    }
+
+    public void setYears(int years) {
+        this.years = years;
+    }
+
+    public int getMonths() {
+        return months;
+    }
+
+    public void setMonths(int months) {
+        this.months = months;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
+
+    public boolean isCached() {
+        return isCached;
+    }
+
+    public void setIsCached(boolean isCached) {
+        this.isCached = isCached;
     }
 
     public int getImageHeight() {

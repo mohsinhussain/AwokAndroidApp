@@ -325,7 +325,12 @@ public class HotDealsFragment extends Fragment {
         gotoTopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLayoutManager.smoothScrollToPosition(mRecyclerView, null, 0);
+                if(firstVisibleItem<=40) {
+                    mLayoutManager.smoothScrollToPosition(mRecyclerView, null, 0);
+                }
+                else{
+                    mLayoutManager.scrollToPosition(0);
+                }
             }
         });
 
@@ -965,9 +970,18 @@ public class HotDealsFragment extends Fragment {
                         item.setPriceOld(jsonObject.getInt("price"));
                         item.setRating(jsonObject.getJSONObject("rating").getString("rating_average"));
                         item.setRatingCount(jsonObject.getJSONObject("rating").getString("number_of_ratings"));
-                        item.setXtraImage(jsonObject.getString("image_extra"));
 //                        item.setDescription(jsonObject.getString("description"));
                         item.setDiscPercent(jsonObject.getJSONObject("discount").getInt("discount_percentage"));
+                        if(!jsonObject.getJSONObject("discount").isNull("timer")){
+                            item.setYears(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("years"));
+                            item.setMonths(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("months"));
+                            item.setDays(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("days"));
+                            item.setHours(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("hours"));
+                            item.setMinutes(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("minutes"));
+                            item.setSeconds(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("seconds"));
+                        }
+
+
 //                    if (priceObject.getInt("PRICE_OLD")!=0){
 //                        item.setDiscPercent(priceObject.getInt("PERCENT"));
 //                    }
@@ -1050,6 +1064,7 @@ public class HotDealsFragment extends Fragment {
             }
             else{
                 mAdapter.setFooter(footer);
+                messageTextView.setVisibility(View.INVISIBLE);
             }
             mRecyclerView.setAdapter(alphaAdapter);
             mRecyclerView.setItemAnimator(null);

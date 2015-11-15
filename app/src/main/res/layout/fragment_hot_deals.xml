@@ -150,7 +150,7 @@
             android:layout_gravity="center_horizontal"
             android:paddingTop="8dp"
             android:visibility="gone"
-            android:text="There are no more products here! =("
+            android:text="There are no more products ! =("
             android:textColor="@color/normal_text"
             android:textSize="14sp"/>
 

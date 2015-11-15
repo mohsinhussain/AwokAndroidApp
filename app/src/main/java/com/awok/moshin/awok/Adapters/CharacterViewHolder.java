@@ -20,6 +20,7 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -46,9 +47,9 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
   //        TextView nameTextView;
   TextView priceTextView;
   //        TextView oldPriceTextView;
-  TextView discountTextView;
+  TextView discountTextView, timerTextView;
   ImageView itemImageView;
-  LinearLayout container;
+  LinearLayout container, timerLayout;
   ProgressBar loadProgressBar;
   RelativeLayout priceLayout;
   View overLay;
@@ -63,24 +64,60 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
     loadProgressBar = (ProgressBar)itemView.findViewById(R.id.load_progress_bar);
     itemImageView = (ImageView)itemView.findViewById(R.id.itemImageView);
     container = (LinearLayout) itemView.findViewById(R.id.parentPanel);
+    timerLayout = (LinearLayout) itemView.findViewById(R.id.timerLayout);
     priceLayout= (RelativeLayout) itemView.findViewById(R.id.priceLayout);
     overLay = (View) itemView.findViewById(R.id.overLay);
+    timerTextView = (TextView)itemView.findViewById(R.id.timerTextView);
   }
 
   public void render(final Products character, final Context mContext) {
+
+
+    //SETTING DISCOUNT TIMER
+    if(character.getYears()!=0){
+      timerTextView.setText(character.getYears()+"y."+character.getMonths()+"m."+character.getDays()+"d."+character.getHours()+"hrs."+character.getMinutes()+"min."+character.getSeconds()+"sec");
+    }
+    else if(character.getMonths()!=0){
+      timerTextView.setText(character.getMonths()+"m."+character.getDays()+"d."+character.getHours()+"hrs."+character.getMinutes()+"min."+character.getSeconds()+"sec");
+    }
+    else if(character.getDays()!=0){
+      timerTextView.setText(character.getDays()+"d."+character.getHours()+"hrs."+character.getMinutes()+"min."+character.getSeconds()+"sec");
+    }
+    else if(character.getHours()!=0){
+      timerTextView.setText(character.getHours()+"hrs."+character.getMinutes()+"min."+character.getSeconds()+"sec");
+    }
+    else if(character.getMinutes()!=0){
+      timerTextView.setText(character.getMinutes()+"min."+character.getSeconds()+"sec");
+    }
+    else if(character.getSeconds()!=0){
+      timerTextView.setText(character.getSeconds()+"sec");
+    }
+    else {
+      timerLayout.setVisibility(View.GONE);
+    }
+
+
+    final int[] cellHeight = new int[1];
+
     itemImageView.getViewTreeObserver().addOnPreDrawListener(
             new ViewTreeObserver.OnPreDrawListener() {
               public boolean onPreDraw() {
                 int cellWidth = itemImageView.getMeasuredWidth();
                 int imageHeighFromServer = character.getImageHeight(mContext);
                 int imageWidthFromServer = 120;
-                int cellHeight = cellWidth * imageHeighFromServer / imageWidthFromServer;
-                itemImageView.getLayoutParams().height = cellHeight;
+                cellHeight[0] = cellWidth * imageHeighFromServer / imageWidthFromServer;
+                itemImageView.getLayoutParams().height = cellHeight[0];
                 itemImageView.requestLayout();
+//                overLay.setMinimumHeight(cellHeight);
+
+//                overLay.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, cellHeight+20));
                 return true;
               }
             });
 
+
+    overLay.getLayoutParams().height = cellHeight[0];
+    overLay.requestLayout();
 
     discountTextView.setText(character.getDiscPercent() + "%");
     priceLayout.setVisibility(View.VISIBLE);
@@ -93,12 +130,21 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
     imageLoader.get(character.getImage(), new ImageLoader.ImageListener() {
       @Override
       public void onErrorResponse(VolleyError error) {
-        itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+
 //                holder.itemImageView.setVisibility(View.VISIBLE);
-        Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
-        animation.setStartOffset(500);
-        animation.setFillAfter(true);
-        overLay.startAnimation(animation);
+
+        itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+        if(character.isCached()){
+          overLay.setVisibility(View.GONE);
+        }
+        else{
+          Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
+          animation.setStartOffset(500);
+          animation.setFillAfter(true);
+          overLay.startAnimation(animation);
+          character.setIsCached(true);
+        }
+
         loadProgressBar.setVisibility(View.GONE);
       }
 
@@ -108,10 +154,16 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
           // load image into imageview
           itemImageView.setImageBitmap(response.getBitmap());
 //                    holder.itemImageView.setVisibility(View.VISIBLE);
-          Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
-          animation.setStartOffset(500);
-          animation.setFillAfter(true);
-          overLay.startAnimation(animation);
+          if(character.isCached()){
+            overLay.setVisibility(View.GONE);
+          }
+          else{
+            Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
+            animation.setStartOffset(500);
+            animation.setFillAfter(true);
+            overLay.startAnimation(animation);
+            character.setIsCached(true);
+          }
           loadProgressBar.setVisibility(View.GONE);
         }
       }
