@@ -61,12 +61,14 @@ public class ReviewsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
     // TODO: Rename and change types of parameters
-    private String productName,image,ratingCount,ratingtxt,boughtBy,savedBy;
+    private String productName,ratingCount,boughtBy,savedBy;
+    private String image="";
+    private String ratingtxt="0";
     private String mParam2;
     private RatingBar prod_reviewRating;
     private int previousTotal = 0;
     private String productId;
-    List<ProductRatingPageModel> rating;
+    List<ProductRatingPageModel> rating=new ArrayList<ProductRatingPageModel>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -107,63 +109,6 @@ public class ReviewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View mView = inflater.inflate(R.layout.fragment_reviews, container, false);
 
-        TextView productNameView=(TextView)mView.findViewById(R.id.productTitle);
-        //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
-        TextView ratingCounttxt=(TextView)mView.findViewById(R.id.product_reviewCount);
-        TextView boughtByTxt=(TextView)mView.findViewById(R.id.textView);
-        TextView savedByTxt=(TextView)mView.findViewById(R.id.textView2);
-        final ImageView imgMain=(ImageView)mView.findViewById(R.id.mainImg);
-        final ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);
-boughtByTxt.setText("Bought By: "+boughtBy+" people");
-        savedByTxt.setText("Saved By: "+savedBy+" people");
-        productNameView.setText(productName);
-        System.out.println(image + "image");
-        /*ImageLoader imageLoader = AppController.getInstance().getImageLoader();*/
-        imageLoader.get(image, new ImageLoader.ImageListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
-                progressBar.setVisibility(View.GONE);
-            }
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                if (response.getBitmap() != null) {
-                    // load image into imageview
-                    imgMain.setImageBitmap(response.getBitmap());
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        });
-//        if(image!=null && !image.equalsIgnoreCase("")){
-//            imgMain.setImageUrl(image, imageLoader);
-//        }
-//        else{
-//            imgMain.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.default_img)));
-//        }
-//        imgMain.setImageUrl(image, imageLoader);
-//        imgMain.setErrorImageResId(R.drawable.default_img);
-//        imgMain.setImageBitmap(base64ToBitmap(image));
-//        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-//        imageLoader.get(image, new ImageLoader.ImageListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("HotDealsAdapter", "Image Load Error: " + error.getMessage());
-//            }
-//            @Override
-//            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-//                if (response.getBitmap() != null) {
-//                    // load image into imageview
-//                    imgMain.setImageBitmap(response.getBitmap());
-//                }
-//            }
-//        });
-        prod_reviewRating=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
-        prod_reviewRating.setRating(Float.parseFloat(ratingtxt));
-        ratingCounttxt.setText("("+ratingCount+")");
-        LayerDrawable mainRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
-        mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
-        mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
-        mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
 //
 //            // getSupportActionBar().setIcon(R.drawable.ic_launcher);
@@ -172,11 +117,15 @@ boughtByTxt.setText("Bought By: "+boughtBy+" people");
 //
 //            // use this setting to improve performance if you know that changes
 //            // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setNestedScrollingEnabled(false);
+        /*mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setHasFixedSize(false);*/
+        mRecyclerView.setNestedScrollingEnabled(true);
+        // mRecyclerView.hasNestedScrollingParent();
         mRecyclerView.setHasFixedSize(false);
 
-        mLayoutManager = new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        //mLayoutManager = new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+       // mRecyclerView.setLayoutManager(mLayoutManager);
 //
 //            // use a linear layout manager
        /* mLayoutManager = new LinearLayoutManager(getContext());
@@ -226,6 +175,72 @@ boughtByTxt.setText("Bought By: "+boughtBy+" people");
             }
         });
 
+        TextView productNameView=(TextView)mView.findViewById(R.id.productTitle);
+        //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+        TextView ratingCounttxt=(TextView)mView.findViewById(R.id.product_reviewCount);
+        TextView boughtByTxt=(TextView)mView.findViewById(R.id.textView);
+        TextView savedByTxt=(TextView)mView.findViewById(R.id.textView2);
+        final ImageView imgMain=(ImageView)mView.findViewById(R.id.mainImg);
+        final ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);
+        boughtByTxt.setText("Bought By: "+boughtBy+" people");
+        savedByTxt.setText("Saved By: "+savedBy+" people");
+        productNameView.setText(productName);
+        System.out.println(image + "image");
+        /*ImageLoader imageLoader = AppController.getInstance().getImageLoader();*/
+        if(image.equals(""))
+        {
+            imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+        }
+        else {
+            imageLoader.get(image, new ImageLoader.ImageListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+                        // load image into imageview
+                        imgMain.setImageBitmap(response.getBitmap());
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+
+
+//        if(image!=null && !image.equalsIgnoreCase("")){
+//            imgMain.setImageUrl(image, imageLoader);
+//        }
+//        else{
+//            imgMain.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.default_img)));
+//        }
+//        imgMain.setImageUrl(image, imageLoader);
+//        imgMain.setErrorImageResId(R.drawable.default_img);
+//        imgMain.setImageBitmap(base64ToBitmap(image));
+//        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+//        imageLoader.get(image, new ImageLoader.ImageListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("HotDealsAdapter", "Image Load Error: " + error.getMessage());
+//            }
+//            @Override
+//            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+//                if (response.getBitmap() != null) {
+//                    // load image into imageview
+//                    imgMain.setImageBitmap(response.getBitmap());
+//                }
+//            }
+//        });
+        prod_reviewRating=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+        prod_reviewRating.setRating(Float.parseFloat(ratingtxt));
+        ratingCounttxt.setText("(" + ratingCount + ")");
+        LayerDrawable mainRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
+        mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
+        mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
+        mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
 
 
 
@@ -404,14 +419,14 @@ boughtByTxt.setText("Bought By: "+boughtBy+" people");
                 if (jsonObjectData.getString("errors").equals("true")) {
 
 
-                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "No More Comments", Snackbar.LENGTH_LONG)
+                   /* Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "No More Comments", Snackbar.LENGTH_LONG)
                             .setActionTextColor(Color.RED);
 
                     View snackbarView = snackbar.getView();
 
                     TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
                     textView.setTextColor(Color.WHITE);
-                    snackbar.show();
+                    snackbar.show();*/
                 } else {
 
                     for (int i = 0; i < jsonObjectData.getJSONArray("data").length(); i++) {

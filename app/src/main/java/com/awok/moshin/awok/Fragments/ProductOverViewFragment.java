@@ -153,7 +153,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View mView = inflater.inflate(R.layout.product_body_content, container, false);
-        mResources.add(image);
+      mResources.add(image);
         ratingMain=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
         viewPager = (ViewPager) mView.findViewById(R.id.imageSlider);
         countButton=(ImageView)mView.findViewById(R.id.imageView);
@@ -235,7 +235,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 
        mRecyclerView = (RecyclerView) mView.findViewById(R.id.recyclerViewRating);
 
-       mRecyclerView.setHasFixedSize(true);
+    //   mRecyclerView.setHasFixedSize(true);
         //mRecyclerView.setNestedScrollingEnabled(false);
        // int viewHeight = 100 * (10);
       //  mRecyclerView.getLayoutParams().height = viewHeight;
@@ -243,8 +243,13 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
         // use a linear layout manager
         //mLayoutManager = new LinearLayoutManager(getActivity());
         //LinearLayoutBridge mLayoutManager=new LinearLayoutBridge(getActivity(),LinearLayoutManager.VERTICAL,false);
-        MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-       mRecyclerView.setLayoutManager(mLayoutManager);
+ //////////////////////////////////       MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        mRecyclerView.setNestedScrollingEnabled(true);
+        // mRecyclerView.hasNestedScrollingParent();
+        mRecyclerView.setHasFixedSize(false);
+
+        mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+  /////////////     mRecyclerView.setLayoutManager(mLayoutManager);
 
       //  mAdapter = new ProductOverViewRatingAdapter(getActivity(), ratingData);
         mAdapter = new ProductOverViewRatingAdapter(getActivity(), rating);
@@ -480,7 +485,8 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
             View itemView = mLayoutInflater.inflate(R.layout.fragment_imageslider, container, false);
 
             final ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-            final ProgressBar progressBar = (ProgressBar) itemView.findViewById(R.id.load_progress_bar);
+   ////////         final ProgressBar progressBar = (ProgressBar) itemView.findViewById(R.id.load_progress_bar);
+            final ImageView progressBar = (ImageView) itemView.findViewById(R.id.load_progress_bar);
             //imageView.setImageResource(mResources[position]);
 //imageView.setImageBitmap(base64ToBitmap(image));
             Log.v("overview", "imageurl: " + image);
@@ -492,8 +498,30 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
 //            else{
 //                imageView.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.default_img)));
 //            }
+if(position==0) {
 
-            imageLoader.get(image, new ImageLoader.ImageListener() {
+    imageLoader.get(image, new ImageLoader.ImageListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            progressBar.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+            //progressBar.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+            if (response.getBitmap() != null) {
+
+
+                progressBar.setImageBitmap(response.getBitmap());
+                //  progressBar.setVisibility(View.GONE);
+
+            }
+        }
+
+    });
+
+}
+            imageLoader.get(mResources.get(position), new ImageLoader.ImageListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
@@ -505,7 +533,7 @@ private TextView productTitle,product_reviewCount,prod_warranty,prod_color,prod_
                     if (response.getBitmap() != null) {
 
  System.out.println("POSITION"+position);                       // load image into imageview
-if(position==0)
+/*if(position==0)
 {
     imageView.invalidate();
 
@@ -515,11 +543,11 @@ if(position==0)
    // System.out.println("POSITION" + response.toString());
     progressBar.setVisibility(View.GONE);
 }
-                        else {
+                        else {*/
     imageView.setImageBitmap(response.getBitmap());
     progressBar.setVisibility(View.GONE);
 }
-                    }
+                   // }
                 }
 
             });
@@ -585,7 +613,7 @@ if(position==0)
 //                System.out.println("COOLGBDJH" + productDetails.getName());
 //                String prodDesc=mMembersJSON.getString("description");
 //                productOverview.setOverViewTitle(prodDesc);
-                image=dataObj.getString("image");
+         /////////////////////////////////////////////////////////////////////       image=dataObj.getString("image");
                 prod_shippingCost.setText("AED "+(dataObj.getJSONObject("shipping_data").getString("shipping_cost")));
                 prod_deliveryTime.setText((dataObj.getJSONObject("shipping_data").getString("est_from")) + " - " + (dataObj.getJSONObject("shipping_data").getString("est_to")) + " days");
                 JSONArray imagesStringData=dataObj.getJSONArray("images");

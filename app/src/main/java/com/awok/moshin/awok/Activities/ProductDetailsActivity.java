@@ -74,6 +74,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     ProgressBar progressBar;
+    private RelativeLayout swipe;
     LinearLayout progressLayout;
     ArrayList<ProductDetailsModel> productDetailsList = new ArrayList<ProductDetailsModel>();
     ProductDetailsModel productDetails=new ProductDetailsModel();
@@ -84,6 +85,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     private String imageData,imageProductRating,boughtBy ,savedBy,htmlDescription;
     String productId,productName, newPrice, oldPrice, image, description,rating,ratingCount;
     String catId;
+    private  ViewPager viewPager;
     JSONObject dataToSend;
     JSONArray jsonDescriptionData;
     JSONArray jsonRatingArray;
@@ -142,8 +144,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         progressLayout.setVisibility(View.GONE);
         mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
 
-
-
+swipe=(RelativeLayout)findViewById(R.id.swipe);
+swipe.setVisibility(View.GONE);
 
 
 
@@ -276,7 +278,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
 
 public void setUpTab()
 {
-    final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+    viewPager = (ViewPager) findViewById(R.id.viewpager);
     if (viewPager != null) {
         setupViewPager(viewPager);
     }
@@ -286,6 +288,9 @@ public void setUpTab()
     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     tabLayout.setTabTextColors(getResources().getColor(R.color.normal_text), getResources().getColor(R.color.header_text));
     tabLayout.setupWithViewPager(viewPager);
+    //tabLayout.setupWithViewPager(viewPager);
+    //tabLayout.setEnabled(false);
+
 
 
 }
@@ -703,6 +708,19 @@ descModel.add(descData);
                 //productDescriptionFragment.call(descModel);
                 productDescriptionFragment.call(htmlDescription);
                 storeRatingFragment.call(storeRatingData, storeName, storeSum, storeAverage, storeImage, storeUrl);
+
+
+swipe.setVisibility(View.VISIBLE);
+                Animation slide_up = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.slide_up);
+// Start animation
+                swipe.startAnimation(slide_up);
+
+
+
+
+           //     tabLayout.setEnabled(true);
+
               //  productOverViewFragment.call(prodOverViewRating,productId, productName,image);
 
                 //mResources=
