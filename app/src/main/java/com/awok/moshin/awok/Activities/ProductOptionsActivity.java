@@ -201,6 +201,12 @@ public class ProductOptionsActivity extends AppCompatActivity {
 
         try {
             //null pointer exception
+            if(!getIntent().getExtras().getString(Constants.PRODUCT_SPECS_INTENT).equalsIgnoreCase("")){
+                specsObject = new JSONObject(getIntent().getExtras().getString(Constants.PRODUCT_SPECS_INTENT));
+            }
+            else{
+                specsObject = new JSONObject();
+            }
             specsObject = new JSONObject(getIntent().getExtras().getString(Constants.PRODUCT_SPECS_INTENT));
             variantsArray = new JSONArray(getIntent().getExtras().getString(Constants.PRODUCT_VARIANTS_INTENT));
 
