@@ -96,14 +96,44 @@
             android:paddingBottom="15dp"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
             <TextView
                 android:id="@+id/colorHeaderTextView"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:text="Color"
+                android:text="Color:"
                 android:textColor="@color/dialog_button_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/colorTextView"
+                android:textSize="14sp"
+                android:text="Color"
+                android:visibility="gone"
+                android:layout_below="@+id/nameTextView"
+                android:layout_toRightOf="@+id/imagePhotoView"
+                android:textColor="@color/light_gray"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/selectedColorTextView"
+                android:textSize="14sp"
+                android:text="Please Select"
+                android:layout_below="@+id/nameTextView"
+                android:layout_toRightOf="@+id/colorTextView"
+                android:textColor="@color/light_gray"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
 
             <com.awok.moshin.awok.Util.ExpandableHeightGridView
                 android:id="@+id/colorRecyclerView"
@@ -125,14 +155,32 @@
             android:id="@+id/storageLayout"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
             <TextView
                 android:id="@+id/storageHeaderTextView"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:text="Size"
+                android:text="Size:"
                 android:textColor="@color/dialog_button_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/selectedSizeTextView"
+                android:textSize="14sp"
+                android:text="Please Select"
+                android:layout_below="@+id/nameTextView"
+                android:layout_toRightOf="@+id/colorTextView"
+                android:textColor="@color/light_gray"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
             <com.awok.moshin.awok.Util.ExpandableHeightGridView
                 android:id="@+id/storageRecyclerView"
@@ -185,14 +233,15 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/stockQuantityTextView"
                 android:textSize="12sp"
                 android:textColor="@color/light_gray"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:layout_marginBottom="15dp"
                 android:layout_alignLeft="@+id/quantity_count"
                 android:layout_below="@+id/quantity_count"
                 android:layout_width="wrap_content"
@@ -205,6 +254,7 @@
                 android:textColor="@color/red_base"
                 android:layout_alignParentLeft="true"
                 android:gravity="left"
+                android:visibility="gone"
                 android:paddingTop="16dp"
                 android:layout_toLeftOf="@+id/quantity_count"
                 android:layout_below="@+id/quantity_count"
@@ -301,7 +351,6 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:text="Shipping Method"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -311,7 +360,6 @@
 
             <LinearLayout
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -328,7 +376,7 @@
                        android:textSize="14sp"
                        android:text="-"
                        android:layout_width="wrap_content"
-                       android:layout_height="wrap_content" />
+                       android:layout_height="20dp" />
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -354,7 +402,6 @@
                     </LinearLayout>
                 </LinearLayout>
                 <ImageView
-                    android:layout_gravity="center_vertical"
                     android:src="@drawable/front_button"
                     android:layout_marginLeft="8dp"
                     android:layout_width="wrap_content"
@@ -389,7 +436,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:background="@drawable/drop_shadow_down_background"
+                android:background="@drawable/line_down_background"
                 >
 
                 <ImageView
@@ -410,29 +457,6 @@
                     android:layout_height="wrap_content" />
 
 
-                <TextView
-                    android:id="@+id/colorTextView"
-                    android:textSize="14sp"
-                    android:text="Color"
-                    android:layout_below="@+id/nameTextView"
-                    android:layout_toRightOf="@+id/imagePhotoView"
-                    android:textColor="@color/light_gray"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/selectedColorTextView"
-                    android:textSize="14sp"
-                    android:text="Please Select"
-                    android:layout_below="@+id/nameTextView"
-                    android:layout_toRightOf="@+id/colorTextView"
-                    android:textColor="@color/normal_text"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/priceTextView"

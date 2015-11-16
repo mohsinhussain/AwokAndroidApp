@@ -17,6 +17,7 @@
 package com.awok.moshin.awok.Adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.DragonBallCharacter;
 import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.Constants;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -53,6 +55,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
   ProgressBar loadProgressBar;
   RelativeLayout priceLayout;
   View overLay;
+  SharedPreferences mSharedPrefs;
 
   public CharacterViewHolder(View itemView) {
     super(itemView);
@@ -97,29 +100,41 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-
-
-    itemImageView.getViewTreeObserver().addOnPreDrawListener(
-            new ViewTreeObserver.OnPreDrawListener() {
-              public boolean onPreDraw() {
-                int cellWidth = itemImageView.getMeasuredWidth();
-                int imageHeighFromServer = character.getImageHeight(mContext);
-                int imageWidthFromServer = 120;
-                int cellHeight = cellWidth * imageHeighFromServer / imageWidthFromServer;
-                itemImageView.getLayoutParams().height = cellHeight;
-                itemImageView.requestLayout();
+    if(!character.isCached()) {
+      itemImageView.getViewTreeObserver().addOnPreDrawListener(
+              new ViewTreeObserver.OnPreDrawListener() {
+                public boolean onPreDraw() {
+                  int cellWidth = itemImageView.getMeasuredWidth();
+                  int imageHeighFromServer = character.getImageHeight(mContext);
+                  int imageWidthFromServer = 120;
+                  int cellHeight = cellWidth * imageHeighFromServer / imageWidthFromServer;
+                  itemImageView.getLayoutParams().height = cellHeight;
+                  itemImageView.requestLayout();
 //                System.out.println("ItemImageView: " + itemImageView.getLayoutParams().height);
-                return true;
-              }
-            });
+                  return true;
+                }
+              });
+
+
+      int cellWidth2 = overLay.getMeasuredWidth();
+      int imageHeighFromServer2 = character.getImageHeight(mContext);
+      int imageWidthFromServer2= 100;
+      int cellHeight2 = cellWidth2 * imageHeighFromServer2 / imageWidthFromServer2;
+      overLay.getLayoutParams().height = cellHeight2;
+      overLay.requestLayout();
+    }
+
+
+
+
 
 //    overLay.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 //      @Override
 //      public boolean onPreDraw() {
-        int cellWidth2 = overLay.getMeasuredWidth();
-        int imageHeighFromServer2 = character.getImageHeight(mContext);
-        int imageWidthFromServer2= 100;
-        int cellHeight2 = cellWidth2 * imageHeighFromServer2 / imageWidthFromServer2;
+//        int cellWidth2 = overLay.getMeasuredWidth();
+//        int imageHeighFromServer2 = character.getImageHeight(mContext);
+//        int imageWidthFromServer2= 100;
+//        int cellHeight2 = cellWidth2 * imageHeighFromServer2 / imageWidthFromServer2;
 //        RelativeLayout.LayoutParams layout_description = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,
 //                cellHeight);
 //
@@ -130,8 +145,8 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
 //        overLay.requestLayout();
 
 
-        overLay.getLayoutParams().height = cellHeight2;
-        overLay.requestLayout();
+//        overLay.getLayoutParams().height = cellHeight2;
+//        overLay.requestLayout();
 //        System.out.println("overLay: " + overLay.getLayoutParams().height);
 //        return true;
 //      }

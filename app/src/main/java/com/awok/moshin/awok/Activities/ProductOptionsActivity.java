@@ -101,10 +101,11 @@ public class ProductOptionsActivity extends AppCompatActivity {
     String savedMethodProfileId = "";
     JSONObject dataToSend;
     ImageView productImageView;
-    TextView productNameTextView, priceTexView, colorTextView;
+    TextView productNameTextView, priceTexView, colorTextView, sizeTextView;
     JSONArray variantsArray;
     JSONObject specsObject;
     TextView colorLabelTextView, countryNameTextView;
+    String shippingResponse = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +135,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
         productImageView=(ImageView)findViewById(R.id.imagePhotoView);
         productNameTextView = (TextView) findViewById(R.id.nameTextView);
         colorTextView = (TextView) findViewById(R.id.selectedColorTextView);
+        sizeTextView = (TextView) findViewById(R.id.selectedSizeTextView);
         colorLabelTextView = (TextView) findViewById(R.id.colorTextView);
         priceTexView = (TextView) findViewById(R.id.priceTextView);
         countryNameTextView = (TextView) findViewById(R.id.countryNameTextView);
@@ -251,8 +253,17 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     colorTextView.setVisibility(View.GONE);
                     colorLabelTextView.setVisibility(View.GONE);
                 }
+
+
+                if(storageArray.size()>0){
+                    sizeTextView.setText(colorArray.get(0).getColor());
+                }
+                else{
+                    sizeTextView.setVisibility(View.GONE);
+                }
                 variantId = variantArray.get(0).getId();
                 stockQuantity = variantArray.get(0).getStock();
+                stockQuantityTextView.setVisibility(View.VISIBLE);
                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
             }
 
@@ -271,6 +282,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 i.putExtra(Constants.STOCK_INTENT, stockQuantity);
                 i.putExtra(Constants.VARIANTID_INTENT, variantId);
                 i.putExtra(Constants.SELECTED_METHOD_INTENT, savedMethodName);
+                i.putExtra(Constants.SHIPPING_RESPONSE_INTENT, shippingResponse);
                 startActivityForResult(i, 1);
             }
         });
@@ -379,6 +391,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 isMatching = true;
                                 variantId = variantArray.get(i).getId();
                                 stockQuantity = variantArray.get(i).getStock();
+                                stockQuantityTextView.setVisibility(View.VISIBLE);
                                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
                                 priceTexView.setText("AED " + variantArray.get(i).getPrice());
                                 if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
@@ -437,6 +450,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     else if(!storageString.equalsIgnoreCase("")) {
                         Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
                         variantId = "";
+                        stockQuantityTextView.setVisibility(View.GONE);
                         stockQuantityTextView.setText("");
                         stockQuantity = 0;
                     }
@@ -453,6 +467,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 isMatching = true;
                                 variantId = variantArray.get(i).getId();
                                 stockQuantity = variantArray.get(i).getStock();
+                                stockQuantityTextView.setVisibility(View.VISIBLE);
                                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
                                 priceTexView.setText("AED " + variantArray.get(i).getPrice());
                                 if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
@@ -489,6 +504,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
                         variantId = "";
                         stockQuantity = 0;
+                        stockQuantityTextView.setVisibility(View.GONE);
                         stockQuantityTextView.setText("");
                     }
                 }
@@ -508,6 +524,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 storageRecyclerView.setExpanded(true);
 
                 storageString = storageArray.get(position).getColor();
+                sizeTextView.setText(storageString);
                 if(colorArray.size()>0) {
                     if (!colorString.equalsIgnoreCase("") && !storageString.equalsIgnoreCase("")) {
                         boolean isMatching = false;
@@ -518,6 +535,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                     isMatching = true;
                                     variantId = variantArray.get(i).getId();
                                     stockQuantity = variantArray.get(i).getStock();
+                                    stockQuantityTextView.setVisibility(View.VISIBLE);
                                     stockQuantityTextView.setText(stockQuantity + " items left in stock");
                                     priceTexView.setText("AED " + variantArray.get(i).getPrice());
                                     if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
@@ -552,6 +570,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         else if(!colorString.equalsIgnoreCase("")) {
                             Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
                             variantId = "";
+                            stockQuantityTextView.setVisibility(View.GONE);
                             stockQuantityTextView.setText("");
                             stockQuantity = 0;
                         }
@@ -567,6 +586,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 isMatching = true;
                                 variantId = variantArray.get(i).getId();
                                 stockQuantity = variantArray.get(i).getStock();
+                                stockQuantityTextView.setVisibility(View.VISIBLE);
                                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
                                 priceTexView.setText("AED " + variantArray.get(i).getPrice());
                                 if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
@@ -600,6 +620,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
                             variantId = "";
+                            stockQuantityTextView.setVisibility(View.GONE);
                             stockQuantityTextView.setText("");
                             stockQuantity = 0;
                         }
@@ -1141,6 +1162,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
     public class GetShippingsCallBack extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
+                shippingResponse = response;
                 shippingMethodArray.clear();
                 JSONObject issueObj = new JSONObject(response);
                 JSONObject dataObj = null;

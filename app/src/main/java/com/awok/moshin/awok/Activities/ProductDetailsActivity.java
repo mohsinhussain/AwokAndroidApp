@@ -282,9 +282,9 @@ swipe.setVisibility(View.GONE);
         });*/
 
 
-        buyNow.setEnabled(false);
+       /* buyNow.setEnabled(false);
         buyNow.setBackgroundColor(getResources().getColor(R.color.border));
-        buyNow.setTextColor(getResources().getColor(R.color.button_text));
+        buyNow.setTextColor(getResources().getColor(R.color.button_text));*/
 
 
 
