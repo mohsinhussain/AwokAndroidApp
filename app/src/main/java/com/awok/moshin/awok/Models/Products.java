@@ -20,6 +20,7 @@ String rating;
     String description;
     String categoryId;
     int imageHeight;
+    int imageWidth;
     boolean loader = false;
     private String xtraImage;
     private boolean isCached;
@@ -45,7 +46,7 @@ String rating;
         seconds = 0;
     }
 
-    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount,int imageHeight,String xtraImage) {
+    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount,int imageHeight, int imageWidth, String xtraImage) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -65,14 +66,23 @@ String rating;
         hours = 0;
         minutes = 0;
         seconds = 0;
+        this.imageWidth = imageWidth;
     }
 
     public int getImageHeight(Context mContext) {
-        DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+//        DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
 //        int densityDpi = (int)(metrics.density * 160f);
 //        Log.v("Products", "desnsity: " + densityDpi);
 //        int dp = Math.round(imageHeight / (metrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return imageHeight;
+    }
+
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    public void setImageWidth(int imageWidth) {
+        this.imageWidth = imageWidth;
     }
 
     public int getYears() {

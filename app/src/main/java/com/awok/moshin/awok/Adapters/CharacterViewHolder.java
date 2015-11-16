@@ -97,7 +97,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    final int[] cellHeight = new int[1];
+
 
     itemImageView.getViewTreeObserver().addOnPreDrawListener(
             new ViewTreeObserver.OnPreDrawListener() {
@@ -105,19 +105,38 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
                 int cellWidth = itemImageView.getMeasuredWidth();
                 int imageHeighFromServer = character.getImageHeight(mContext);
                 int imageWidthFromServer = 120;
-                cellHeight[0] = cellWidth * imageHeighFromServer / imageWidthFromServer;
-                itemImageView.getLayoutParams().height = cellHeight[0];
+                int cellHeight = cellWidth * imageHeighFromServer / imageWidthFromServer;
+                itemImageView.getLayoutParams().height = cellHeight;
                 itemImageView.requestLayout();
-//                overLay.setMinimumHeight(cellHeight);
-
-//                overLay.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, cellHeight+20));
+//                System.out.println("ItemImageView: " + itemImageView.getLayoutParams().height);
                 return true;
               }
             });
 
+//    overLay.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//      @Override
+//      public boolean onPreDraw() {
+        int cellWidth2 = overLay.getMeasuredWidth();
+        int imageHeighFromServer2 = character.getImageHeight(mContext);
+        int imageWidthFromServer2= 100;
+        int cellHeight2 = cellWidth2 * imageHeighFromServer2 / imageWidthFromServer2;
+//        RelativeLayout.LayoutParams layout_description = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,
+//                cellHeight);
+//
+//        overLay.setLayoutParams(layout_description);
 
-    overLay.getLayoutParams().height = cellHeight[0];
-    overLay.requestLayout();
+//        ViewGroup.LayoutParams params = overLay.getLayoutParams();
+//        params.height = 10;
+//        overLay.requestLayout();
+
+
+        overLay.getLayoutParams().height = cellHeight2;
+        overLay.requestLayout();
+//        System.out.println("overLay: " + overLay.getLayoutParams().height);
+//        return true;
+//      }
+//    });
+
 
     discountTextView.setText(character.getDiscPercent() + "%");
     priceLayout.setVisibility(View.VISIBLE);
