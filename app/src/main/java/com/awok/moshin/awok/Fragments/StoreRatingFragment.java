@@ -154,11 +154,16 @@ productNameView.setText(storeName);
 
             mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
 
-            mRecyclerView.setNestedScrollingEnabled(false);
+            /*mRecyclerView.setNestedScrollingEnabled(false);
             mRecyclerView.setHasFixedSize(false);
 
 
-            mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));*/
+            mRecyclerView.setNestedScrollingEnabled(true);
+            // mRecyclerView.hasNestedScrollingParent();
+            mRecyclerView.setHasFixedSize(false);
+
+            mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
 //
             mAdapter = new StoreRatingAdapter(getActivity(),model);
