@@ -61,13 +61,19 @@ public class ReviewsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
     // TODO: Rename and change types of parameters
-    private String productName,ratingCount,boughtBy,savedBy;
+    private String productName="";
+    private String boughtBy="";
+    private String savedBy="";
+    private String ratingCount="";
     private String image="";
     private String ratingtxt="0";
+    private TextView productNameView,ratingCounttxt,boughtByTxt,savedByTxt;
+    private ImageView imgMain;
+    private ProgressBar progressBar;
     private String mParam2;
     private RatingBar prod_reviewRating;
     private int previousTotal = 0;
-    private String productId;
+    private String productId="";
     List<ProductRatingPageModel> rating=new ArrayList<ProductRatingPageModel>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -122,8 +128,9 @@ public class ReviewsFragment extends Fragment {
         mRecyclerView.setNestedScrollingEnabled(true);
         // mRecyclerView.hasNestedScrollingParent();
         mRecyclerView.setHasFixedSize(false);
-
-        mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mLayoutManager=new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        //mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(mLayoutManager);
         //mLayoutManager = new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
        // mRecyclerView.setLayoutManager(mLayoutManager);
 //
@@ -151,9 +158,13 @@ public class ReviewsFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = ((LinearLayoutManager)mRecyclerView.getLayoutManager());
-                visibleItemCount = layoutManager.getChildCount();
-                totalItemCount = layoutManager.getItemCount();
-                firstVisibleItem =layoutManager.findFirstVisibleItemPosition();
+                visibleItemCount = mRecyclerView.getChildCount();
+                //totalItemCount = layoutManager.getItemCount();
+                totalItemCount=mRecyclerView.getLayoutManager().getItemCount();
+                //firstVisibleItem =layoutManager.findFirstVisibleItemPosition();
+                firstVisibleItem=((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+
+                //firstVisibleItem=layoutManager.findFirstCompletelyVisibleItemPosition(null);
 
                 if (loading) {
                     if (totalItemCount > previousTotal) {
@@ -175,40 +186,7 @@ public class ReviewsFragment extends Fragment {
             }
         });
 
-        TextView productNameView=(TextView)mView.findViewById(R.id.productTitle);
-        //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
-        TextView ratingCounttxt=(TextView)mView.findViewById(R.id.product_reviewCount);
-        TextView boughtByTxt=(TextView)mView.findViewById(R.id.textView);
-        TextView savedByTxt=(TextView)mView.findViewById(R.id.textView2);
-        final ImageView imgMain=(ImageView)mView.findViewById(R.id.mainImg);
-        final ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);
-        boughtByTxt.setText("Bought By: "+boughtBy+" people");
-        savedByTxt.setText("Saved By: "+savedBy+" people");
-        productNameView.setText(productName);
-        System.out.println(image + "image");
-        /*ImageLoader imageLoader = AppController.getInstance().getImageLoader();*/
-        if(image.equals(""))
-        {
-            imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
-        }
-        else {
-            imageLoader.get(image, new ImageLoader.ImageListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
-                    progressBar.setVisibility(View.GONE);
-                }
 
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                    if (response.getBitmap() != null) {
-                        // load image into imageview
-                        imgMain.setImageBitmap(response.getBitmap());
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }
-            });
-        }
 
 
 //        if(image!=null && !image.equalsIgnoreCase("")){
@@ -234,13 +212,96 @@ public class ReviewsFragment extends Fragment {
 //                }
 //            }
 //        });
+
+        productNameView=(TextView)mView.findViewById(R.id.productTitle);
+        //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+        ratingCounttxt=(TextView)mView.findViewById(R.id.product_reviewCount);
+        boughtByTxt=(TextView)mView.findViewById(R.id.textView);
+        savedByTxt=(TextView)mView.findViewById(R.id.textView2);
+        imgMain=(ImageView)mView.findViewById(R.id.mainImg);
+        progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);
+        prod_reviewRating=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+
+
+
+        /*TextView productNameView=(TextView)mView.findViewById(R.id.productTitle);
+        //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+        TextView ratingCounttxt=(TextView)mView.findViewById(R.id.product_reviewCount);
+        TextView boughtByTxt=(TextView)mView.findViewById(R.id.textView);
+        TextView savedByTxt=(TextView)mView.findViewById(R.id.textView2);
+        final ImageView imgMain=(ImageView)mView.findViewById(R.id.mainImg);
+        final ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);*/
+        if(boughtBy.equals("")||boughtBy.equals("0"))
+        {
+            boughtByTxt.setVisibility(View.GONE);
+        }
+        else
+        {
+
+            boughtByTxt.setText("Bought By: "+boughtBy+" people");
+
+
+        }
+
+        if(savedBy.equals("")||savedBy.equals("0"))
+        {
+            savedByTxt.setVisibility(View.GONE);
+        }
+        else
+        {
+
+            savedByTxt.setText("Saved By: "+savedBy+" people");
+
+
+        }
+
+
+        productNameView.setText(productName);
+        System.out.println(image + "image");
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+        if(image.equals(""))
+        {
+            imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+        }
+        else {
+            imageLoader.get(image, new ImageLoader.ImageListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+                        // load image into imageview
+                        imgMain.setImageBitmap(response.getBitmap());
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+
+
+
         prod_reviewRating=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
         prod_reviewRating.setRating(Float.parseFloat(ratingtxt));
-        ratingCounttxt.setText("(" + ratingCount + ")");
+        if(ratingCount.equals(""))
+        {
+            ratingCounttxt.setVisibility(View.GONE);
+        }
+        else
+        {
+
+
+            ratingCounttxt.setText("(" + ratingCount + ")");
+
+        }
         LayerDrawable mainRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
         mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
         mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
         mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
+
 
 
 
@@ -350,22 +411,96 @@ public class ReviewsFragment extends Fragment {
 
 
 
-    public void call(List<ProductRatingPageModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String savedBy,String productId)
-    {
-        this.productName=productName;
-        this.image=image;
-        System.out.println(image+" review Frag");
-        this.ratingtxt=ratingValue;
-        this.ratingCount=ratingCountValue;
-        this.rating=rating;
-        this.boughtBy=boughtBy;
-        this.savedBy=savedBy;
-        this.productId=productId;
+    public void call(List<ProductRatingPageModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String savedBy,String productId) {
+        this.productName = productName;
+        this.image = image;
+        System.out.println(image + " review Frag");
+        this.ratingtxt = ratingValue;
+        this.ratingCount = ratingCountValue;
+        this.rating = rating;
+        this.boughtBy = boughtBy;
+        this.savedBy = savedBy;
+        this.productId = productId;
 
-        System.out.println("MOHSIN/SHON HAS DONE IT");
+
+        if (boughtByTxt != null || savedByTxt != null || imgMain != null || ratingCounttxt != null) {
+
+            if (this.boughtBy.equals("") || this.boughtBy.equals("0")) {
+                boughtByTxt.setVisibility(View.GONE);
+            } else {
+
+                boughtByTxt.setText("Bought By: " + this.boughtBy + " people");
+                boughtByTxt.setVisibility(View.VISIBLE);
+
+
+            }
+
+            if (this.savedBy.equals("") || this.savedBy.equals("0")) {
+                savedByTxt.setVisibility(View.GONE);
+            } else {
+
+                savedByTxt.setText("Saved By: " + this.savedBy + " people");
+                savedByTxt.setVisibility(View.VISIBLE);
+
+
+            }
+
+
+            productNameView.setText(this.productName);
+            System.out.println(image + "image");
+        /*ImageLoader imageLoader = AppController.getInstance().getImageLoader();*/
+            if (this.image.equals("")) {
+                imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+            } else {
+                imageLoader.get(this.image, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                        if (response.getBitmap() != null) {
+                            // load image into imageview
+                            imgMain.setImageBitmap(response.getBitmap());
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+
+
+            prod_reviewRating.setRating(Float.parseFloat(this.ratingtxt));
+            if (this.ratingCount.equals("")) {
+                ratingCounttxt.setVisibility(View.GONE);
+            } else {
+
+
+                ratingCounttxt.setText("(" + this.ratingCount + ")");
+                ratingCounttxt.setVisibility(View.VISIBLE);
+
+            }
+            LayerDrawable mainRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
+            mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
+            mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
+            mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
+
+
+            System.out.println("MOHSIN/SHON HAS DONE IT");
+
+           // mRecyclerView.setAdapter(mAdapter);
+
+
+            if(this.rating.size()>0){
+                reviewsLayout.setVisibility(View.GONE);
+            }
+            mAdapter = new ProductRatingPageAdapter(getActivity(),rating);
+            mRecyclerView.setAdapter(mAdapter);
+//            mAdapter.notifyDataSetChanged();
+        }
+
     }
-
-
 
 
 
@@ -429,10 +564,10 @@ public class ReviewsFragment extends Fragment {
                     snackbar.show();*/
                 } else {
 
-                    for (int i = 0; i < jsonObjectData.getJSONArray("data").length(); i++) {
+                    for (int i = 0; i < jsonObjectData.getJSONObject("data").getJSONArray("comments").length(); i++) {
 
 
-                        JSONObject data = jsonObjectData.getJSONArray("data").getJSONObject(i);
+                        JSONObject data = jsonObjectData.getJSONObject("data").getJSONArray("comments").getJSONObject(i);
 
                         prodRatingData.setContent(data.getJSONObject("data").getString("content"));
                         prodRatingData.setRate(data.getJSONObject("data").getString("rate"));
@@ -455,7 +590,7 @@ public class ReviewsFragment extends Fragment {
                     }
                     //     mRecyclerView.setAdapter(mAdapter);
                 }
-                    mAdapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
 
                 }catch(JSONException e){
                     e.printStackTrace();

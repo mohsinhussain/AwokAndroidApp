@@ -132,7 +132,8 @@ public class CheckOutActivity extends AppCompatActivity {
        // mRecyclerView.hasNestedScrollingParent();
         mRecyclerView.setHasFixedSize(false);
 
-        mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+        //mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+        mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
        /* int viewHeight = 40 * overViewList.size();
         mRecyclerView.getLayoutParams().height = viewHeight;*/
         mAdapter = new CustomAdapter(CheckOutActivity.this, overViewList);

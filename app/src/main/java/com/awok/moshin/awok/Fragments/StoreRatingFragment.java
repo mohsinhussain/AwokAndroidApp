@@ -51,12 +51,26 @@ public class StoreRatingFragment extends Fragment{
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private static final String ARG_PARAM1 = "param1";
         private static final String ARG_PARAM2 = "param2";
-  String  storeName,storeSum,storeAverage,storeImage,storeUrl;
+  String  storeName,storeUrl;
+    private String storeAverage="0";
+
+
+
+
+    TextView productNameView,ratingCounttxt,visitStore;
+    ImageView imgMain;
+    ProgressBar progressBar;
+
+    private String storeImage="";
+private String storeId="";
+
+    private String storeSum="";
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         // TODO: Rename and change types of parameters
         private String productName,image,rating,ratingCount;
         private String mParam2;
         private RatingBar prod_reviewRating;
-List<StoreRatingModel> model;
+List<StoreRatingModel> model=new ArrayList<StoreRatingModel>();
     private List<StoreRatingModel> storeRatingData = new ArrayList<StoreRatingModel>();
     StoreRatingModel storeRatingModel=new StoreRatingModel();
     int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
@@ -97,14 +111,24 @@ List<StoreRatingModel> model;
             // Inflate the layout for this fragment
             View mView = inflater.inflate(R.layout.fragment_store_rating, container, false);
 
-            TextView productNameView=(TextView)mView.findViewById(R.id.productTitle);
+             productNameView=(TextView)mView.findViewById(R.id.productTitle);
             //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
-            TextView ratingCounttxt=(TextView)mView.findViewById(R.id.product_reviewCount);
-            final TextView visitStore=(TextView)mView.findViewById(R.id.textView4);
-            final ImageView imgMain=(ImageView)mView.findViewById(R.id.mainImg);
-            final ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);
+             ratingCounttxt=(TextView)mView.findViewById(R.id.product_reviewCount);
+              visitStore=(TextView)mView.findViewById(R.id.textView4);
+              imgMain=(ImageView)mView.findViewById(R.id.mainImg);
+              progressBar = (ProgressBar) mView.findViewById(R.id.load_progress_bar);
+            prod_reviewRating=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+            reviewsLayout = (LinearLayout) mView.findViewById(R.id.reviews);
 productNameView.setText(storeName);
-            ratingCounttxt.setText("("+storeSum+")");
+            if(storeSum.equals("")||storeSum.equals("0"))
+            {
+                ratingCounttxt.setVisibility(View.GONE);
+            }
+            else
+            {
+                ratingCounttxt.setText("("+storeSum+")");
+            }
+
             visitStore.setTag(storeUrl);
             visitStore.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -115,23 +139,30 @@ productNameView.setText(storeName);
                 }
             });
 
-            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-            imageLoader.get(storeImage, new ImageLoader.ImageListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    imgMain.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
-                    progressBar.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                    if (response.getBitmap() != null) {
-                        // load image into imageview
-                        imgMain.setImageBitmap(response.getBitmap());
+            if (storeImage.equals("")||storeImage.equals(null))
+            {
+                imgMain.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
+            }
+            else
+            {
+                imageLoader.get(storeImage, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        imgMain.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
                         progressBar.setVisibility(View.GONE);
                     }
-                }
-            });
+
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                        if (response.getBitmap() != null) {
+                            // load image into imageview
+                            imgMain.setImageBitmap(response.getBitmap());
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+
 
       //      productNameView.setText(productName);
          /*   ImageLoader imageLoader = AppController.getInstance().getImageLoader();
@@ -154,19 +185,16 @@ productNameView.setText(storeName);
 
             mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
 
-            /*mRecyclerView.setNestedScrollingEnabled(false);
-            mRecyclerView.setHasFixedSize(false);
-
-
-            mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));*/
             mRecyclerView.setNestedScrollingEnabled(true);
-            // mRecyclerView.hasNestedScrollingParent();
             mRecyclerView.setHasFixedSize(false);
 
+
+          //  mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
 //
             mAdapter = new StoreRatingAdapter(getActivity(),model);
+            System.out.println("model" + model.size());
             mRecyclerView.setAdapter(mAdapter);
 
 
@@ -272,7 +300,7 @@ productNameView.setText(storeName);
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(getActivity(), getActivity(),  new GetCartCallback()).productStoreCommentsCallBack(current_page);
+            new APIClient(getActivity(), getActivity(),  new GetCartCallback()).productStoreCommentsCallBack(storeId,current_page);
 
         } else {
 
@@ -363,15 +391,95 @@ productNameView.setText(storeName);
             }
         }
     }
-    public void call(List<StoreRatingModel> model,String  storeName,String storeSum,String storeAverage,String storeImage,String storeUrl)
+    public void call(List<StoreRatingModel> model,String  storeName,String storeSum,String storeAverage,String storeImage,String storeUrl,String storeId)
     {
+
         this.model=model;
         this.storeName=storeName;
         this.storeSum=storeSum;
         this.storeAverage=storeAverage;
         this.storeImage=storeImage;
         this.storeUrl=storeUrl;
+        this.storeId=storeId;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if(ratingCounttxt!=null||visitStore!=null||imgMain!=null||prod_reviewRating!=null) {
+
+            productNameView.setText(this.storeName);
+            if (this.storeSum.equals("") || this.storeSum.equals("0")) {
+                ratingCounttxt.setVisibility(View.GONE);
+            } else {
+                ratingCounttxt.setText("(" + this.storeSum + ")");
+                ratingCounttxt.setVisibility(View.VISIBLE);
+            }
+
+            visitStore.setTag(this.storeUrl);
+            visitStore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(visitStore.getTag().toString()));
+                    startActivity(i);
+                }
+            });
+
+            if (this.storeImage.equals("") || this.storeImage.equals(null)) {
+                imgMain.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
+            } else {
+                imageLoader.get(this.storeImage, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        imgMain.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                        if (response.getBitmap() != null) {
+                            // load image into imageview
+                            imgMain.setImageBitmap(response.getBitmap());
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+
+
+            prod_reviewRating.setRating(Float.parseFloat(this.storeAverage));
+            //      ratingCounttxt.setText("("+ratingCount+")");
+            LayerDrawable mainRatingColor = (LayerDrawable) prod_reviewRating.getProgressDrawable();
+            mainRatingColor.getDrawable(2).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
+            mainRatingColor.getDrawable(1).setColorFilter(Color.parseColor("#FFEA00"), PorterDuff.Mode.SRC_ATOP);
+            mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
+
+
+            if (this.model.size() > 0) {
+                reviewsLayout.setVisibility(View.GONE);
+            }
+
+            mAdapter = new StoreRatingAdapter(getActivity(), model);
+
+
+            mRecyclerView.setAdapter(mAdapter);
+        }
+
+
     }
+
 
 
 
@@ -393,24 +501,18 @@ productNameView.setText(storeName);
                 if (jsonObjectData.getString("errors").equals("true")) {
 
 
-                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "No More Comments", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.RED);
 
-                    View snackbarView = snackbar.getView();
-
-                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setTextColor(Color.WHITE);
-                    snackbar.show();
                 } else {
 
-                    for (int i = 0; i < jsonObjectData.getJSONArray("data").length(); i++) {
+                    for (int i = 0; i < jsonObjectData.getJSONObject("data").getJSONArray("comments").length(); i++) {
 
 
-                        JSONObject data = jsonObjectData.getJSONArray("data").getJSONObject(i);
+                        JSONObject data = jsonObjectData.getJSONObject("data").getJSONArray("comments").getJSONObject(i);
 
                         storeRatingModel.setUsername(data.getString("username"));
                         storeRatingModel.setContent(data.getJSONObject("data").getString("content"));
                         storeRatingModel.setRate(data.getJSONObject("data").getString("rate"));
+
                         if(data.has("days")){
                             storeRatingModel.setDays(data.getString("days"));
                         }
@@ -428,7 +530,7 @@ productNameView.setText(storeName);
 
 
 
-                        storeRatingData.add(storeRatingModel);
+                        model.add(storeRatingModel);
 
                     }
                     //     mRecyclerView.setAdapter(mAdapter);

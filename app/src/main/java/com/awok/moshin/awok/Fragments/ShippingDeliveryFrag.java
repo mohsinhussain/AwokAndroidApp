@@ -79,6 +79,17 @@ public class ShippingDeliveryFrag extends Fragment
         this.shipFrom=shipFrom;
         this.returnPolicies=returnPolicies;
 
+
+if(shipPrice!=null||availability!=null||estiShipping!=null||shipsFrom!=null||returnPolicy!=null) {
+    shipPrice.setText(estimatedPrice);
+    availability.setText(country);
+    estiShipping.setText(estimatedDays);
+    shipsFrom.setText(shipFrom);
+    returnPolicy.setText(returnPolicies);
+
+}
+
+
         System.out.println("MOHSIN/SHON HAS DONE IT");
     }
 }

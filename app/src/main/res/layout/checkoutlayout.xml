@@ -273,8 +273,10 @@ android:visibility="gone"
             android:gravity="center_vertical"
             android:id="@+id/stock"
             android:textSize="12dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:textColor="@color/light_gray"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
 
             android:layout_below="@+id/quantity_count"
             android:layout_alignRight="@+id/quantity_count"
@@ -299,6 +301,7 @@ android:visibility="gone"
         <TextView
             android:paddingLeft="4dp"
             android:paddingTop="8dp"
+            android:gravity="center"
             android:paddingBottom="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -432,13 +435,13 @@ android:visibility="gone"
        </RelativeLayout>-->
 <RelativeLayout
 android:id="@+id/footer"
-
-android:background="#fcfafa"
+android:paddingBottom="10dp"
+android:background="@color/primary_material_light_1"
     android:layout_below="@+id/main"
     android:layout_width="match_parent"
 
 
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <View
@@ -449,10 +452,11 @@ android:background="#fcfafa"
 
 <RelativeLayout
     android:id="@+id/additionLay"
-    android:padding="16dp"
+    android:padding="12dp"
     android:layout_marginBottom="8dp"
     android:layout_below="@+id/borderLayuot"
     android:background="#fcfafa"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -566,7 +570,7 @@ android:background="#fcfafa"
 
         <TextView
             android:text="Total"
-            android:paddingBottom="5dp"
+
             android:layout_weight="1"
             android:textColor="#999999"
             android:layout_width="wrap_content"
@@ -578,7 +582,7 @@ android:background="#fcfafa"
             android:id="@+id/sellerTotal"
             android:text="AED 2000"
             android:textColor="#ff3823"
-            android:paddingBottom="5dp"
+
             android:layout_weight="1"
             android:gravity="right"
             android:textSize="14sp"

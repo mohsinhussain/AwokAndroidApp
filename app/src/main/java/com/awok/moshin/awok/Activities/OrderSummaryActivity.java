@@ -173,7 +173,8 @@ JSONObject dataToSend;
        // //int viewHeight = 100 * overViewList.size();
        //mRecyclerView.getLayoutParams().height = viewHeight;
        //MyLinearLayoutManager mLayoutManager=new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,true);
-        mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+      //  mRecyclerView.setLayoutManager(new MyLinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+        mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
     // mRecyclerView.setLayoutManager(mLayoutManager);
        /* int viewHeight = 100 * overViewList.size();
         mRecyclerView.getLayoutParams().height = viewHeight;*/

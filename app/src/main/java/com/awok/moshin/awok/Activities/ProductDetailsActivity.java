@@ -17,6 +17,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -84,7 +85,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
     private Button buyNow,save;
     Map<String,String> productSpec = new HashMap<String,String>();
     private String imageData,imageProductRating,boughtBy ,savedBy,htmlDescription;
-    String productId,productName, newPrice, oldPrice, image, description,rating,ratingCount;
+    String productId,productName, newPrice, oldPrice, image, description,rating,ratingCount,storeId;
     String catId;
     private  ViewPager viewPager;
     JSONObject dataToSend;
@@ -117,7 +118,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
 
 
 
-
+    Adapter adapter = new Adapter(getSupportFragmentManager());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -282,9 +283,9 @@ swipe.setVisibility(View.GONE);
         });*/
 
 
-        buyNow.setEnabled(false);
+        /*buyNow.setEnabled(false);
         buyNow.setBackgroundColor(getResources().getColor(R.color.border));
-        buyNow.setTextColor(getResources().getColor(R.color.button_text));
+        buyNow.setTextColor(getResources().getColor(R.color.button_text));*/
 
 
 
@@ -342,7 +343,7 @@ public void setUpTab()
     private void setupViewPager(ViewPager viewPager) {
         calls=viewPager;
 
-        Adapter adapter = new Adapter(getSupportFragmentManager());
+
 
         productOverViewFragment=new ProductOverViewFragment(productId, productName,image,prodRating,estimatedDays,estimatedPrice);
         System.out.println("GVDH"+estimatedDays);
@@ -424,7 +425,7 @@ public void setUpTab()
     }
 
 
-    static class Adapter extends FragmentPagerAdapter {
+    static class Adapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
 
@@ -635,6 +636,7 @@ descModel.add(descData);
                  boughtBy=dataObj.getString("bought_by");
                  savedBy=dataObj.getString("saved_by");
                 jsonRatingArray=dataObj.getJSONArray("comments");
+                storeId=dataObj.getJSONObject("store_id").getString("$id");
                 for(int j=0;j<jsonRatingArray.length();j++)
                 {
 
@@ -728,9 +730,9 @@ descModel.add(descData);
                 reviewsFragment.call(prodPageRating,productName,image,rating,ratingCount,boughtBy,savedBy,productId);
                 //productDescriptionFragment.call(descModel);
                 productDescriptionFragment.call(htmlDescription);
-                storeRatingFragment.call(storeRatingData, storeName, storeSum, storeAverage, storeImage, storeUrl);
+                storeRatingFragment.call(storeRatingData, storeName, storeSum, storeAverage, storeImage, storeUrl,storeId);
 
-
+//adapter.notifyDataSetChanged();
 
 swipe.setVisibility(View.VISIBLE);
                 Animation slide_up = AnimationUtils.loadAnimation(getApplicationContext(),

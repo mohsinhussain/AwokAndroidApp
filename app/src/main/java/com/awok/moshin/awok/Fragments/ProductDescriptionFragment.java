@@ -50,6 +50,24 @@ private String description="";
   /*  public ProductDescriptionFragment(List<DescriptionModel> description) {
         this.description = description;
     }*/
+  public ProductDescriptionFragment(String description) {
+      this.description=description;
+  }
+
+
+
+
+
+    public ProductDescriptionFragment() {
+
+    }
+
+
+
+
+
+
+
 
 
     @Override
@@ -165,7 +183,23 @@ private String description="";
    public void call(String description)
    {
        this.description=description;
+       if(webView!=null){
+           webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
+       }
 
+
+//       ProductDescriptionFragment desc = (ProductDescriptionFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.viewpager);
+//       if (desc != null && desc.isVisible()) {
+//           //DO STUFF
+//           System.out.println("DESC");
+//       }
+//       else {
+//           System.out.println("DESC NOTVISIBLE");
+//           //Whatever
+//       }
+
+
+//this.getView().getVisibility();
 /*if(flag==1)
 {
 

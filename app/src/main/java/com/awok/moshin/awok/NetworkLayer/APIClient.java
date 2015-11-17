@@ -84,6 +84,8 @@ public class APIClient {
     public void productDetailsAPICall(String productId) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/v1/products/"+productId+"/show", "GET", null);
+        //mTask.execute(mContext, "http://192.168.1.205/mpapi/Products/"+productId+"/show", "GET", null);
+
     }
 
     public void addToCartAPICall(String dataToSend) {
@@ -239,9 +241,9 @@ public class APIClient {
         mTask.execute(mContext, "http://market1.awok/v1/products/"+s+"/getproductcomments?page="+page, "GET", null);
     }
 
-    public void productStoreCommentsCallBack(int current_page) {
+    public void productStoreCommentsCallBack(String id,int current_page) {
         mTask = new AsyncTaskWithDialog();
-        mTask.execute(mContext, "http://market1.awok/v1/stores/562c77e28e424a9c39dce22d/getstorecomments?page="+current_page, "GET", null);
+        mTask.execute(mContext, "http://market1.awok/v1/stores/"+id+"/getstorecomments?page="+current_page, "GET", null);
     }
 
     public class AsyncTaskWithDialog extends AsyncTask<Object, Void, String> {

@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:overScrollMode="never"
     tools:context="com.awok.moshin.awok.Fragments.ProductDescriptionFragment">
 
     <!--<TextView
@@ -25,6 +26,8 @@
         android:scrollbars="none" />-->
 
     <WebView
+        android:overScrollMode="never"
+        android:scrollbars="none"
         android:id="@+id/webview"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

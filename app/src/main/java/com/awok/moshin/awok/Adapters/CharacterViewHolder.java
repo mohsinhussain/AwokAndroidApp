@@ -109,15 +109,15 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
                 itemImageView.getLayoutParams().height = cellHeight[0];
                 itemImageView.requestLayout();
 //                overLay.setMinimumHeight(cellHeight);
-
+                overLay.requestLayout();
 //                overLay.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, cellHeight+20));
                 return true;
               }
             });
 
 
-    overLay.getLayoutParams().height = cellHeight[0];
-    overLay.requestLayout();
+    //overLay.getLayoutParams().height = cellHeight[0];
+    //overLay.requestLayout();
 
     discountTextView.setText(character.getDiscPercent() + "%");
     priceLayout.setVisibility(View.VISIBLE);

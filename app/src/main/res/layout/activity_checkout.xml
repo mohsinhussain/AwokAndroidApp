@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 android:background="@color/primary_material_light_1"
     android:layout_width="match_parent"
+    android:overScrollMode="never"
     android:layout_height="match_parent">
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -269,6 +270,7 @@ android:id="@+id/subtotal"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         android:layout_above="@+id/bottomLay"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 <LinearLayout
@@ -290,6 +292,7 @@ android:id="@+id/subtotal"
         android:layout_width="match_parent"
 
         android:layout_height="match_parent"
+        android:overScrollMode="never"
 
         android:background="#fff"
 
@@ -300,10 +303,11 @@ android:id="@+id/subtotal"
 
     <!--android:layout_above="@+id/bottomLay"-->
 
-
+    <!--android:background="@drawable/shadow_background"-->
 
     <LinearLayout
 
+android:background="#FFFFFF"
         android:id="@+id/totalLay"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
@@ -312,8 +316,8 @@ android:id="@+id/subtotal"
 
 
 
-        android:background="@drawable/shadow_background"
-        android:paddingTop="16dp"
+
+        android:paddingTop="8dp"
         android:layout_below="@+id/overViewRecyclerView"
 
         android:layout_width="match_parent"
@@ -321,11 +325,11 @@ android:id="@+id/subtotal"
         android:orientation="vertical">
 
 
-        <View
+<!--        <View
             android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@color/primary_material_light_1"/>
+            android:layout_height="2dp"
+            android:background="@color/primary_material_light_1"/>-->
 
 
         <LinearLayout
@@ -493,7 +497,7 @@ android:id="@+id/subtotal"
                     android:background="@color/button_text"
                     android:textColor="#ff3823"
                     android:layout_width="wrap_content"
-                    android:textSize="19sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:text="AED 20"
                     android:layout_height="wrap_content"

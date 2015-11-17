@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:id="@+id/nestedScroll"
     android:layout_height="wrap_content"
+    android:overScrollMode="never"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:overScrollMode="never"
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
@@ -27,6 +29,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/imageSlider"
             app:layout_collapseMode="parallax"
+            android:overScrollMode="never"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -270,6 +273,7 @@ android:id="@+id/layMiddle"
 
                 android:scrollbars="none" />-->
     <android.support.v7.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/recyclerViewRating"
         android:layout_width="match_parent"
 
@@ -297,7 +301,7 @@ android:id="@+id/layMiddle"
                         android:id="@+id/prod_color_default"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:text="Please Wait ..."
                         android:textSize="12sp" />
 
 
@@ -337,7 +341,7 @@ android:id="@+id/layMiddle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="2 - 4 Days"
+                    android:text="Please Wait ..."
                     android:textSize="12sp"/>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -367,7 +371,7 @@ android:id="@+id/layMiddle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="20 AED"
+                    android:text="Please Wait ..."
                     android:layout_marginBottom="23dp"
                     android:textSize="12sp"/>
 
@@ -524,7 +528,7 @@ android:layout_marginBottom="10dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="We guarantee a safe and secure shopping experience so you never have to worry"
         android:gravity="center_vertical"
-        android:layout_gravity=""
+
         android:id="@+id/textView5"
 
         android:layout_alignBottom="@+id/imageView3"

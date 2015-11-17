@@ -279,9 +279,9 @@ customView=v;
         viewHolder.stock.setText("Free Shipping");
         viewHolder.sellerNameText.setText(mDataSet.get(position).getSellerLabel());
         viewHolder.stock.setTag(mDataSet.get(position).getRemainingStock());
-        viewHolder.sellerSubTotal.setText(mDataSet.get(position).getSellerSubTotal());
+        viewHolder.sellerSubTotal.setText("AED " + mDataSet.get(position).getSellerSubTotal());
         viewHolder.sellerShipping.setText(mDataSet.get(position).getSellerShipping());
-        viewHolder.sellerTotal.setText(mDataSet.get(position).getSellerTotal());
+        viewHolder.sellerTotal.setText("AED "+mDataSet.get(position).getSellerTotal());
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         if(mDataSet.get(position).getImageBitmapString().equals("false"))
         {
@@ -523,10 +523,9 @@ customView=v;
             @Override
             public void afterTextChanged(Editable s) {
                 System.out.println("AFTER CHANGED");
-        if (viewHolder.quantity.getText().toString().equals("0"))
-        {
-            viewHolder.quantity.setText("1");
-        }
+                if (viewHolder.quantity.getText().toString().equals("0")) {
+                    viewHolder.quantity.setText("1");
+                }
             }
         });
         viewHolder.quantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -541,6 +540,51 @@ customView=v;
                 }
             }
         });
+
+
+
+
+
+
+
+
+
+
+       /* viewHolder.quantity.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    System.out.println("KEY                 "+valueQuantity);
+                    //check if the right key was pressed
+                    if (keyCode == KeyEvent.KEYCODE_BACK)
+                    {
+System.out.println("KEY                 "+valueQuantity);
+                        return true;
+                    }
+
+                    if (keyCode == KeyEvent.KEYCODE_5)
+                    {
+                        System.out.println("KEY                 " + valueQuantity);
+                        return true;
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+
+                return false;
+            }
+        });
+*/
 
         viewHolder.quantity.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @SuppressLint("NewApi")
@@ -576,6 +620,7 @@ customView=v;
                                             public void onClick(DialogInterface dialog, int id) {
                                                 // if this button is clicked, close
                                                 // current activity
+                                                viewHolder.quantity.setText(valueQuantity);
                                                 dialog.cancel();
                                             }
                                         });
@@ -593,7 +638,7 @@ customView=v;
                                 // show it
                                 alertDialog.show();
 
-                                viewHolder.quantity.setText(valueQuantity);
+                               // viewHolder.quantity.setText(valueQuantity);
 
                             } else {
                                 HashMap<String, Object> updateString = new HashMap<String, Object>();
@@ -652,6 +697,16 @@ customView=v;
                     performSearch();
                     return true;
                 }*/
+
+
+
+
+                   /* if (event.getAction() == KeyEvent.KEYCODE_BACK) {
+                        System.out.println("KEY CLOSE");
+                    }*/
+
+
+
                 }
 
                     return false;
