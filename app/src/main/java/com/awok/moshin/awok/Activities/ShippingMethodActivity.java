@@ -85,6 +85,8 @@ public class ShippingMethodActivity extends AppCompatActivity {
     ConnectivityManager connMgr;
     NetworkInfo networkInfo;
     TextView errorTextView, stockQuantityTextView, countryNameTextView;
+    boolean loadingFistTime = true;
+    String shippingResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,16 +123,18 @@ public class ShippingMethodActivity extends AppCompatActivity {
         ab.setTitle("Shipping Method");
 
 
-
+        loadingFistTime = true;
         productId =getIntent().getExtras().getString(Constants.PRODUCT_ID_INTENT);
         quantityString = getIntent().getExtras().getString(Constants.QUANTITY_INTENT);
         stockQuantity = getIntent().getExtras().getInt(Constants.STOCK_INTENT);
         variantId = getIntent().getExtras().getString(Constants.VARIANTID_INTENT);
         savedMethodName = getIntent().getExtras().getString(Constants.SELECTED_METHOD_INTENT);
+        shippingResponse = getIntent().getExtras().getString(Constants.SHIPPING_RESPONSE_INTENT);
         quantity.setText(quantityString);
 
         if(stockQuantity>0){
             stockQuantityTextView.setText(stockQuantity + " items left in stock");
+            stockQuantityTextView.setVisibility(View.VISIBLE);
         }
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -214,25 +218,74 @@ public class ShippingMethodActivity extends AppCompatActivity {
             imageIco=mSharedPrefs.getString(Constants.USER_COUNTRY_IMAGE_ID, null);
             imageSource = getResources().getIdentifier(imageIco , "drawable", getPackageName());
             countryImage.setImageDrawable(getResources().getDrawable(imageSource));
-            countryImage.setVisibility(View.VISIBLE);
+//            countryImage.setVisibility(View.VISIBLE);
         }
         else
         {
             System.out.println("No");
         }
 
+        if(loadingFistTime){
+            try {
+                shippingMethodArray.clear();
+                JSONObject issueObj = new JSONObject(shippingResponse);
+                JSONObject dataObj = null;
+                JSONObject varObj;
+//                , sizesArray, storageArray;
+                if(!issueObj.getBoolean("errors")){
+                    dataObj =  issueObj.getJSONObject("data");
+                    if(dataObj.has("server")){
+                        for(int i=0;i<dataObj.getJSONArray("server").length();i++){
+                            shippingMethodArray.add(new ShippingMethod(dataObj.getJSONArray("server").getJSONObject(i).getDouble("shipping_cost"),
+                                    dataObj.getJSONArray("server").getJSONObject(i).getInt("savings"), dataObj.getJSONArray("server").getJSONObject(i).getString("name"),
+                                    dataObj.getJSONArray("server").getJSONObject(i).getInt("est_from"), dataObj.getJSONArray("server").getJSONObject(i).getInt("est_to"),
+                                    dataObj.getJSONArray("server").getJSONObject(i).getString("profile_id"), false));
+                        }
+                    }
+                    errorTextView.setText("");
+                    errorTextView.setVisibility(View.GONE);
+                }
+                else{
+                    dataObj =  issueObj.getJSONObject("data");
+                    errorTextView.setText(dataObj.getString("public"));
+                    errorTextView.setVisibility(View.VISIBLE);
+                }
+                progressLayout.setVisibility(View.GONE);
 
-        connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            String locationId = "560a8eddf26f2e024b8b4690";
-            new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
-                    variantId);
-        } else {
-            Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
-                    .setActionTextColor(Color.RED)
-                    .show();
+                pupolateShippingMethod();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                /*Snackbar.make(findViewById(android.R.id.content), "Test data could not be loaded", Snackbar.LENGTH_INDEFINITE)
+                        .setActionTextColor(Color.RED)
+                        .show();*/
+                Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Data could not be Loaded", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+                progressLayout.setVisibility(View.GONE);
+            }
+
+            loadingFistTime = false;
+        }
+        else {
+
+            connMgr = (ConnectivityManager)
+                    getSystemService(Context.CONNECTIVITY_SERVICE);
+            networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                String locationId = "560a8eddf26f2e024b8b4690";
+                new APIClient(ShippingMethodActivity.this, ShippingMethodActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                        variantId);
+            } else {
+                Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                        .setActionTextColor(Color.RED)
+                        .show();
+            }
         }
 
     }
@@ -585,9 +638,11 @@ public class ShippingMethodActivity extends AppCompatActivity {
                         }
                     }
                     errorTextView.setText("");
+                    errorTextView.setVisibility(View.GONE);
                 }
                 else{
                     dataObj =  issueObj.getJSONObject("data");
+                    errorTextView.setVisibility(View.VISIBLE);
                     errorTextView.setText(dataObj.getString("public"));
                 }
                 progressLayout.setVisibility(View.GONE);

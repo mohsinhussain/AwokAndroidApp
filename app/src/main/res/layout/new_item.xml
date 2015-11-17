@@ -79,6 +79,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:id="@+id/itemImageView"/>
 
@@ -86,11 +88,7 @@
                         android:id="@+id/overLay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/button_text"
-                        android:layout_alignLeft="@+id/itemImageView"
-                        android:layout_alignRight="@+id/itemImageView"
-                        android:layout_alignTop="@+id/itemImageView"
-                        android:layout_alignBottom="@+id/itemImageView"/>
+                        android:background="@color/button_text"/>
 
 
 

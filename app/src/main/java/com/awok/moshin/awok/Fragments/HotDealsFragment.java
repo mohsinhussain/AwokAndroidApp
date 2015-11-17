@@ -286,38 +286,26 @@ public class HotDealsFragment extends Fragment {
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        ActivityOptionsCompat options =
-                                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                        getActivity());
-                        Intent i=new Intent(getContext(), ProductDetailsActivity.class);
-                        i.putExtra(Constants.PRODUCT_ID_INTENT,productsArrayList.get(position).getId());
-                        i.putExtra(Constants.PRODUCT_RATING,productsArrayList.get(position).getRating());
-                        i.putExtra(Constants.PRODUCT_RATING_COUNT,productsArrayList.get(position).getRatingCount());
 
-                        i.putExtra(Constants.PRODUCT_NAME_INTENT,productsArrayList.get(position).getName());
-                        i.putExtra(Constants.PRODUCT_DISCOUNT_PERCENTAGE_INTENT,productsArrayList.get(position).getDiscPercent());
-                        i.putExtra(Constants.PRODUCT_IMAGE_INTENT,productsArrayList.get(position).getImage());
-                        //i.putExtra(Constants.PRODUCT_IMAGE_INTENT,productsArrayList.get(position).getXtraImage());
-                        i.putExtra(Constants.PRODUCT_PRICE_NEW_INTENT,productsArrayList.get(position).getPriceNew());
-                        i.putExtra(Constants.PRODUCT_PRICE_OLD_INTENT,productsArrayList.get(position).getPriceOld());
-                        i.putExtra(Constants.PRODUCT_DESCRIPTION_INTENT,productsArrayList.get(position).getDescription());
-                        i.putExtra(Constants.CAT_ID_INTENT, productsArrayList.get(position).getCategoryId());
-                       // ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle();
-                        //startActivity(i);
+                        if(productsArrayList.size()>0){
+                            ActivityOptionsCompat options =
+                                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                            getActivity());
+                            Intent i=new Intent(getContext(), ProductDetailsActivity.class);
+                            i.putExtra(Constants.PRODUCT_ID_INTENT,productsArrayList.get(position).getId());
+                            i.putExtra(Constants.PRODUCT_RATING,productsArrayList.get(position).getRating());
+                            i.putExtra(Constants.PRODUCT_RATING_COUNT,productsArrayList.get(position).getRatingCount());
 
+                            i.putExtra(Constants.PRODUCT_NAME_INTENT,productsArrayList.get(position).getName());
+                            i.putExtra(Constants.PRODUCT_DISCOUNT_PERCENTAGE_INTENT,productsArrayList.get(position).getDiscPercent());
+                            i.putExtra(Constants.PRODUCT_IMAGE_INTENT,productsArrayList.get(position).getImage());
+                            i.putExtra(Constants.PRODUCT_PRICE_NEW_INTENT,productsArrayList.get(position).getPriceNew());
+                            i.putExtra(Constants.PRODUCT_PRICE_OLD_INTENT,productsArrayList.get(position).getPriceOld());
+                            i.putExtra(Constants.PRODUCT_DESCRIPTION_INTENT,productsArrayList.get(position).getDescription());
+                            i.putExtra(Constants.CAT_ID_INTENT, productsArrayList.get(position).getCategoryId());
+                            ActivityCompat.startActivity(getActivity(), i, options.toBundle());
+                        }
 
-
-
-
-                        ActivityCompat.startActivity(getActivity(), i, options.toBundle());
-
-//                        Intent subCatIntent = new Intent(getActivity(), SubCategoriesActivity.class);
-//                        subCatIntent.putExtra(Constants.CAT_ARRAY_INTENT, (Serializable) categoriesArrayList);
-////                        subCatIntent.putExtra(Constants.CAT_DEPTH_LEVEL_INTENT, localCategoriesArrayList.get(position).getDepthLevel());
-//                        subCatIntent.putExtra(Constants.CAT_PARENT_ID_INTENT, localCategoriesArrayList.get(position).getParentId());
-//                        subCatIntent.putExtra(Constants.CAT_NAME_INTENT, localCategoriesArrayList.get(position).getName());
-//                        subCatIntent.putExtra(Constants.CAT_ID_INTENT, localCategoriesArrayList.get(position).getId());
-//                        startActivity(subCatIntent);
                     }
                 })
         );
@@ -367,8 +355,8 @@ public class HotDealsFragment extends Fragment {
                     }
                 }
 
-                Log.i(TAG, "lastVisibleItem: " + lastVisibleItem);
-                Log.i(TAG, "lastProductItem: " + (productsArrayList.size()-1));
+//                Log.i(TAG, "lastVisibleItem: " + lastVisibleItem);
+//                Log.i(TAG, "lastProductItem: " + (productsArrayList.size()-1));
 
                 if(shouldLoadMore && lastVisibleItem==(productsArrayList.size()-1)){
                     DragonBallFooter footer = getFooter();
@@ -386,7 +374,7 @@ public class HotDealsFragment extends Fragment {
                     pageCount++;
 
 
-                    Log.i("Hot Deals Fragment", "pageCount: " + pageCount);
+//                    Log.i("Hot Deals Fragment", "pageCount: " + pageCount);
 
                     // Do something
                     refreshContent();
@@ -965,6 +953,7 @@ public class HotDealsFragment extends Fragment {
                         item.setName(jsonObject.getString("name"));
                         item.setImage(jsonObject.getString("image"));
                         item.setImageHeight(jsonObject.getInt("image_height"));
+                        item.setImageWidth(jsonObject.getInt("image_width"));
                         item.setCategoryId(jsonObject.getString("category_id"));
                         item.setPriceNew(jsonObject.getJSONObject("discount").getInt("discount_price"));
                         item.setPriceOld(jsonObject.getInt("price"));

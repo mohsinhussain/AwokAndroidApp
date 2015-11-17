@@ -84,6 +84,7 @@
                     android:paddingRight="8dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="16dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/drop_shadow_down_background">
 
 
@@ -103,9 +104,10 @@
                         android:id="@+id/countryNameTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/country_image"
                         android:textSize="12sp"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:paddingBottom="8dp"
                         android:layout_marginRight="5dp"
                         android:textColor="@color/light_gray"/>
 
@@ -114,7 +116,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_centerVertical="true"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         android:layout_height="wrap_content" />
 
                 </RelativeLayout>
@@ -138,32 +140,39 @@
                         android:textSize="12sp"
                         android:textColor="@color/light_gray"
                         android:layout_marginTop="8dp"
+                        android:visibility="gone"
                         android:layout_alignLeft="@+id/quantity_count"
                         android:layout_below="@+id/quantity_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:id="@+id/errorTextView"
-                        android:textSize="12sp"
-                        android:textColor="@color/red_base"
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:gravity="left"
-                        android:paddingTop="16dp"
-                        android:visibility="gone"
                         android:layout_toLeftOf="@+id/quantity_count"
-                        android:layout_below="@+id/quantity_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_centerVertical="true">
 
-                    <TextView
-                        android:id="@+id/quantityHeaderTextView"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:text="Quantity"
-                        android:layout_alignParentLeft="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/errorTextView"
+                            android:textSize="12sp"
+                            android:textColor="@color/red_base"
+                            android:gravity="left"
+                            android:layout_marginTop="16dp"
+                            android:visibility="gone"
+                            android:layout_below="@+id/quantity_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/quantityHeaderTextView"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:text="Quantity"
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
 
 
                     <LinearLayout
@@ -366,7 +375,7 @@
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/progress_bg"
+        android:background="@drawable/loader_bg"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:paddingLeft="16dp"

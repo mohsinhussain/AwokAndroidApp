@@ -101,10 +101,14 @@ public class ProductOptionsActivity extends AppCompatActivity {
     String savedMethodProfileId = "";
     JSONObject dataToSend;
     ImageView productImageView;
-    TextView productNameTextView, priceTexView, colorTextView;
+    TextView productNameTextView, priceTexView, colorTextView, sizeTextView;
     JSONArray variantsArray;
     JSONObject specsObject;
+    View topQuantityBorder;
     TextView colorLabelTextView, countryNameTextView;
+    String shippingResponse = "";
+    TextView outOfStockMessageTextView;
+    LinearLayout quantityCountLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,14 +130,18 @@ public class ProductOptionsActivity extends AppCompatActivity {
         costTextView = (TextView)findViewById(R.id.costTextView);
         shippingHeaderTextView = (TextView)findViewById(R.id.shippingMethodHeaderTextView);
         stockQuantityTextView = (TextView)findViewById(R.id.stockQuantityTextView);
+        outOfStockMessageTextView = (TextView)findViewById(R.id.outOfStockTextView);
         increment = (Button) findViewById(R.id.quantity_inc);
         decrement = (Button) findViewById(R.id.quantity_dec);
         shippingMethodSelectionLayout = (RelativeLayout) findViewById(R.id.shippingMethodSelectionLayout);
         errorTextView = (TextView) findViewById(R.id.errorTextView);
         countryImage=(ImageView)findViewById(R.id.country_image);
+        topQuantityBorder = (View) findViewById(R.id.topQuantityBorder);
         productImageView=(ImageView)findViewById(R.id.imagePhotoView);
         productNameTextView = (TextView) findViewById(R.id.nameTextView);
+        quantityCountLayout = (LinearLayout) findViewById(R.id.quantity_count);
         colorTextView = (TextView) findViewById(R.id.selectedColorTextView);
+        sizeTextView = (TextView) findViewById(R.id.selectedSizeTextView);
         colorLabelTextView = (TextView) findViewById(R.id.colorTextView);
         priceTexView = (TextView) findViewById(R.id.priceTextView);
         countryNameTextView = (TextView) findViewById(R.id.countryNameTextView);
@@ -251,8 +259,17 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     colorTextView.setVisibility(View.GONE);
                     colorLabelTextView.setVisibility(View.GONE);
                 }
+
+
+                if(storageArray.size()>0){
+                    sizeTextView.setText(colorArray.get(0).getColor());
+                }
+                else{
+                    sizeTextView.setVisibility(View.GONE);
+                }
                 variantId = variantArray.get(0).getId();
                 stockQuantity = variantArray.get(0).getStock();
+                stockQuantityTextView.setVisibility(View.VISIBLE);
                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
             }
 
@@ -265,13 +282,16 @@ public class ProductOptionsActivity extends AppCompatActivity {
         shippingMethodSelectionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ProductOptionsActivity.this, ShippingMethodActivity.class);
-                i.putExtra(Constants.PRODUCT_ID_INTENT, productId);
-                i.putExtra(Constants.QUANTITY_INTENT, quantity.getText().toString());
-                i.putExtra(Constants.STOCK_INTENT, stockQuantity);
-                i.putExtra(Constants.VARIANTID_INTENT, variantId);
-                i.putExtra(Constants.SELECTED_METHOD_INTENT, savedMethodName);
-                startActivityForResult(i, 1);
+                if(outOfStockMessageTextView.getVisibility()==View.GONE) {
+                    Intent i = new Intent(ProductOptionsActivity.this, ShippingMethodActivity.class);
+                    i.putExtra(Constants.PRODUCT_ID_INTENT, productId);
+                    i.putExtra(Constants.QUANTITY_INTENT, quantity.getText().toString());
+                    i.putExtra(Constants.STOCK_INTENT, stockQuantity);
+                    i.putExtra(Constants.VARIANTID_INTENT, variantId);
+                    i.putExtra(Constants.SELECTED_METHOD_INTENT, savedMethodName);
+                    i.putExtra(Constants.SHIPPING_RESPONSE_INTENT, shippingResponse);
+                    startActivityForResult(i, 1);
+                }
             }
         });
 
@@ -379,6 +399,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 isMatching = true;
                                 variantId = variantArray.get(i).getId();
                                 stockQuantity = variantArray.get(i).getStock();
+                                stockQuantityTextView.setVisibility(View.VISIBLE);
                                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
                                 priceTexView.setText("AED " + variantArray.get(i).getPrice());
                                 if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
@@ -421,6 +442,8 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     }
 
                     if (isMatching) {
+                        outOfStockMessageTextView.setVisibility(View.GONE);
+                        quantityCountLayout.setVisibility(View.VISIBLE);
                         ConnectivityManager connMgr = (ConnectivityManager)
                                 getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -436,7 +459,10 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     }
                     else if(!storageString.equalsIgnoreCase("")) {
                         Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
+                        outOfStockMessageTextView.setVisibility(View.VISIBLE);
+                        quantityCountLayout.setVisibility(View.GONE);
                         variantId = "";
+                        stockQuantityTextView.setVisibility(View.GONE);
                         stockQuantityTextView.setText("");
                         stockQuantity = 0;
                     }
@@ -453,6 +479,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 isMatching = true;
                                 variantId = variantArray.get(i).getId();
                                 stockQuantity = variantArray.get(i).getStock();
+                                stockQuantityTextView.setVisibility(View.VISIBLE);
                                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
                                 priceTexView.setText("AED " + variantArray.get(i).getPrice());
                                 if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
@@ -472,6 +499,8 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     }
 
                     if (isMatching) {
+                        outOfStockMessageTextView.setVisibility(View.GONE);
+                        quantityCountLayout.setVisibility(View.VISIBLE);
                         ConnectivityManager connMgr = (ConnectivityManager)
                                 getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -487,8 +516,11 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
+                        outOfStockMessageTextView.setVisibility(View.VISIBLE);
+                        quantityCountLayout.setVisibility(View.GONE);
                         variantId = "";
                         stockQuantity = 0;
+                        stockQuantityTextView.setVisibility(View.GONE);
                         stockQuantityTextView.setText("");
                     }
                 }
@@ -508,6 +540,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 storageRecyclerView.setExpanded(true);
 
                 storageString = storageArray.get(position).getColor();
+                sizeTextView.setText(storageString);
                 if(colorArray.size()>0) {
                     if (!colorString.equalsIgnoreCase("") && !storageString.equalsIgnoreCase("")) {
                         boolean isMatching = false;
@@ -518,6 +551,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                     isMatching = true;
                                     variantId = variantArray.get(i).getId();
                                     stockQuantity = variantArray.get(i).getStock();
+                                    stockQuantityTextView.setVisibility(View.VISIBLE);
                                     stockQuantityTextView.setText(stockQuantity + " items left in stock");
                                     priceTexView.setText("AED " + variantArray.get(i).getPrice());
                                     if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
@@ -536,6 +570,8 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         }
 
                         if (isMatching) {
+                            outOfStockMessageTextView.setVisibility(View.GONE);
+                            quantityCountLayout.setVisibility(View.VISIBLE);
                             ConnectivityManager connMgr = (ConnectivityManager)
                                     getSystemService(Context.CONNECTIVITY_SERVICE);
                             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -551,7 +587,10 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         }
                         else if(!colorString.equalsIgnoreCase("")) {
                             Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
+                            outOfStockMessageTextView.setVisibility(View.VISIBLE);
+                            quantityCountLayout.setVisibility(View.GONE);
                             variantId = "";
+                            stockQuantityTextView.setVisibility(View.GONE);
                             stockQuantityTextView.setText("");
                             stockQuantity = 0;
                         }
@@ -567,6 +606,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 isMatching = true;
                                 variantId = variantArray.get(i).getId();
                                 stockQuantity = variantArray.get(i).getStock();
+                                stockQuantityTextView.setVisibility(View.VISIBLE);
                                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
                                 priceTexView.setText("AED " + variantArray.get(i).getPrice());
                                 if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
@@ -585,6 +625,8 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         }
 
                         if (isMatching) {
+                            outOfStockMessageTextView.setVisibility(View.GONE);
+                            quantityCountLayout.setVisibility(View.VISIBLE);
                             ConnectivityManager connMgr = (ConnectivityManager)
                                     getSystemService(Context.CONNECTIVITY_SERVICE);
                             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -599,7 +641,10 @@ public class ProductOptionsActivity extends AppCompatActivity {
                             }
                         } else {
                             Toast.makeText(getApplicationContext(), "OUT OF STOCK", Toast.LENGTH_SHORT).show();
+                            outOfStockMessageTextView.setVisibility(View.VISIBLE);
+                            quantityCountLayout.setVisibility(View.GONE);
                             variantId = "";
+                            stockQuantityTextView.setVisibility(View.GONE);
                             stockQuantityTextView.setText("");
                             stockQuantity = 0;
                         }
@@ -726,15 +771,15 @@ public class ProductOptionsActivity extends AppCompatActivity {
 
                 if (quantity.getText().toString().equals("") || quantity.getText().toString().equals("0")) {
                     quantity.setText("1");
-                    if (networkInfo != null && networkInfo.isConnected()) {
-                        String locationId = "560a8eddf26f2e024b8b4690";
-                        new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
-                                variantId);
-                    } else {
-                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
-                                .setActionTextColor(Color.RED)
-                                .show();
-                    }
+//                    if (networkInfo != null && networkInfo.isConnected()) {
+//                        String locationId = "560a8eddf26f2e024b8b4690";
+//                        new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+//                                variantId);
+//                    } else {
+//                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+//                                .setActionTextColor(Color.RED)
+//                                .show();
+//                    }
                 } else {
                     if (!variantId.equalsIgnoreCase("") && Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
                         System.out.println("OUT OF STOCK");
@@ -967,6 +1012,10 @@ public class ProductOptionsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        if(colorArray.size()<=1 && storageArray.size()<=1){
+            topQuantityBorder.setVisibility(View.GONE);
+        }
+
 //        if (mSharedPrefs.contains(Constants.SHIPPING_METHOD_PREFS)) {
 //            boolean isSavedMethodInList = false;
 //            if(shippingMethodArray.size()>0) {
@@ -997,7 +1046,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
 
             imageSource = getResources().getIdentifier(imageIco , "drawable", getPackageName());
             countryImage.setImageDrawable(getResources().getDrawable(imageSource));
-            countryImage.setVisibility(View.VISIBLE);
+//            countryImage.setVisibility(View.VISIBLE);
         }
         else
         {
@@ -1141,6 +1190,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
     public class GetShippingsCallBack extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
+                shippingResponse = response;
                 shippingMethodArray.clear();
                 JSONObject issueObj = new JSONObject(response);
                 JSONObject dataObj = null;

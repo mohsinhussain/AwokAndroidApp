@@ -283,7 +283,11 @@ swipe.setVisibility(View.GONE);
         });*/
 
 
+
         /*buyNow.setEnabled(false);
+
+       /* buyNow.setEnabled(false);
+>>>>>>> 5b056ff3820f54cf3441ca332b26a526f1f5a246
         buyNow.setBackgroundColor(getResources().getColor(R.color.border));
         buyNow.setTextColor(getResources().getColor(R.color.button_text));*/
 

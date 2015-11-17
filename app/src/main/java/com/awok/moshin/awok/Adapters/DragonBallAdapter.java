@@ -40,9 +40,11 @@ public class DragonBallAdapter extends
                 DragonBallFooter> {
 
   Context mContext;
+  int cellWidth = 0;
 
   public DragonBallAdapter(Context mContext){
     this.mContext = mContext;
+    this.cellWidth = cellWidth;
   }
 
   @Override
