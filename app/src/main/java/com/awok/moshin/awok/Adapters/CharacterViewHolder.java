@@ -118,7 +118,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
 
       int cellWidth2 = overLay.getMeasuredWidth();
       int imageHeighFromServer2 = character.getImageHeight(mContext);
-      int imageWidthFromServer2= 100;
+      int imageWidthFromServer2= 90;
       int cellHeight2 = cellWidth2 * imageHeighFromServer2 / imageWidthFromServer2;
       overLay.getLayoutParams().height = cellHeight2;
       overLay.requestLayout();

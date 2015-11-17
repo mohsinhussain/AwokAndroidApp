@@ -134,6 +134,7 @@ public class ShippingMethodActivity extends AppCompatActivity {
 
         if(stockQuantity>0){
             stockQuantityTextView.setText(stockQuantity + " items left in stock");
+            stockQuantityTextView.setVisibility(View.VISIBLE);
         }
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -217,7 +218,7 @@ public class ShippingMethodActivity extends AppCompatActivity {
             imageIco=mSharedPrefs.getString(Constants.USER_COUNTRY_IMAGE_ID, null);
             imageSource = getResources().getIdentifier(imageIco , "drawable", getPackageName());
             countryImage.setImageDrawable(getResources().getDrawable(imageSource));
-            countryImage.setVisibility(View.VISIBLE);
+//            countryImage.setVisibility(View.VISIBLE);
         }
         else
         {
@@ -242,10 +243,12 @@ public class ShippingMethodActivity extends AppCompatActivity {
                         }
                     }
                     errorTextView.setText("");
+                    errorTextView.setVisibility(View.GONE);
                 }
                 else{
                     dataObj =  issueObj.getJSONObject("data");
                     errorTextView.setText(dataObj.getString("public"));
+                    errorTextView.setVisibility(View.VISIBLE);
                 }
                 progressLayout.setVisibility(View.GONE);
 
@@ -635,9 +638,11 @@ public class ShippingMethodActivity extends AppCompatActivity {
                         }
                     }
                     errorTextView.setText("");
+                    errorTextView.setVisibility(View.GONE);
                 }
                 else{
                     dataObj =  issueObj.getJSONObject("data");
+                    errorTextView.setVisibility(View.VISIBLE);
                     errorTextView.setText(dataObj.getString("public"));
                 }
                 progressLayout.setVisibility(View.GONE);
