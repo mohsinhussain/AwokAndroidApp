@@ -1,56 +1,57 @@
 package com.awok.moshin.awok.Util;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * Created by mohsin on 9/20/2015.
- */
-public abstract class EndlessRecyclerOnScrollListener extends
-        RecyclerView.OnScrollListener {
-    public static String TAG = EndlessRecyclerOnScrollListener.class
-            .getSimpleName();
+* Custom Scroll listener for RecyclerView.
+* Based on implementation https://gist.github.com/ssinss/e06f12ef66c51252563e
+*/
+public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
+    public static String TAG = "EndlessScrollListener";
 
-    private int previousTotal = 0;
-    private boolean loading = true;
-    private int visibleThreshold = 10;
+    private int previousTotal = 0; // The total number of items in the dataset after the last load
+    private boolean loading = true; // True if we are still waiting for the last set of data to load.
+    private int visibleThreshold = 5; // The minimum amount of items to have below your current scroll position before loading more.
     int firstVisibleItem, visibleItemCount, totalItemCount;
 
-    private int current_page = 1;
+    private int currentPage = 1;
 
-    private LinearLayoutManager mLinearLayoutManager;
-
-    public EndlessRecyclerOnScrollListener(
-            LinearLayoutManager linearLayoutManager) {
-        this.mLinearLayoutManager = linearLayoutManager;
-    }
+    RecyclerViewPositionHelper mRecyclerViewHelper;
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-
+        mRecyclerViewHelper = RecyclerViewPositionHelper.createHelper(recyclerView);
         visibleItemCount = recyclerView.getChildCount();
-        totalItemCount = mLinearLayoutManager.getItemCount();
-        firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+        totalItemCount = mRecyclerViewHelper.getItemCount();
+        firstVisibleItem = mRecyclerViewHelper.findFirstVisibleItemPosition();
 
         if (loading) {
             if (totalItemCount > previousTotal) {
                 loading = false;
                 previousTotal = totalItemCount;
+                System.out.println("totalItemCount MAIN"+totalItemCount);
+                System.out.println("previousTotal MAIN"+previousTotal);
             }
         }
-        if (!loading
-                && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+        if (!loading && (totalItemCount - visibleItemCount)
+                <= (firstVisibleItem + visibleThreshold)) {
             // End has been reached
-
             // Do something
-            current_page++;
+            System.out.println("totalItemCount - visibleItemCount" + (totalItemCount - visibleItemCount));
+            System.out.println("firstVisibleItem + visibleThreshold" + (firstVisibleItem + visibleThreshold));
+            System.out.println("totalItemCount"+totalItemCount);
+            System.out.println("visibleItemCount" + visibleItemCount);
+            System.out.println("firstVisibleItem" + firstVisibleItem);
+            System.out.println("visibleThreshold" + visibleThreshold);
+            currentPage++;
 
-            onLoadMore(current_page);
+            onLoadMore(currentPage);
 
             loading = true;
         }
     }
 
-    public abstract void onLoadMore(int current_page);
+    //Start loading
+    public abstract void onLoadMore(int currentPage);
 }

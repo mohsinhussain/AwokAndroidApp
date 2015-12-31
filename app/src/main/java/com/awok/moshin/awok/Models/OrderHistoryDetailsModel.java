@@ -20,6 +20,91 @@ public class OrderHistoryDetailsModel {
     private String estimated_days_from;
     private String estimated_days_to;
     private String intentPrice;
+    private String headOrderMessageCount;
+    private String headOrderStatus;
+    private String headOrderTime;
+    private String footerShipment;
+    private String totalAmount;
+    private boolean headerView=false;
+    private boolean loader=false;
+
+
+    public boolean isLoader() {
+        return loader;
+    }
+
+    public void setLoader(boolean loader) {
+        this.loader = loader;
+    }
+
+    public String getHeadOrderTime() {
+        return headOrderTime;
+    }
+
+    public void setHeadOrderTime(String headOrderTime) {
+        this.headOrderTime = headOrderTime;
+    }
+
+    public String getHeadOrderStatus() {
+        return headOrderStatus;
+    }
+
+    public void setHeadOrderStatus(String headOrderStatus) {
+        this.headOrderStatus = headOrderStatus;
+    }
+
+    public String getHeadOrderMessageCount() {
+        return headOrderMessageCount;
+    }
+
+    public void setHeadOrderMessageCount(String headOrderMessageCount) {
+        this.headOrderMessageCount = headOrderMessageCount;
+    }
+
+    public boolean isHeaderView() {
+        return headerView;
+    }
+
+    public void setHeaderView(boolean headerView) {
+        this.headerView = headerView;
+    }
+
+    public String getFooterShipment() {
+        return footerShipment;
+    }
+
+    public void setFooterShipment(String footerShipment) {
+        this.footerShipment = footerShipment;
+    }
+
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public OrderHistoryDetailsModel(String footerShipment,String totalAmount,boolean loader)
+    {
+        this.footerShipment=footerShipment;
+        this.totalAmount=totalAmount;
+        this.headerView=false;
+
+        this.loader=loader;
+
+    }
+
+
+    public OrderHistoryDetailsModel(String headOrderMessageCount,String headOrderStatus,String headOrderTime,boolean headerView)
+    {
+        this.headOrderMessageCount=headOrderMessageCount;
+        this.headOrderStatus=headOrderStatus;
+        this.headOrderTime=headOrderTime;
+        this.headerView=headerView;
+        this.loader=false;
+    }
+
 
 
     public OrderHistoryDetailsModel()
@@ -50,6 +135,8 @@ public class OrderHistoryDetailsModel {
 
 
         this.estimated_days_from=estimated_days_from;
+        this.headerView=false;
+        this.loader=false;
 
 
     }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -31,7 +34,12 @@
             android:layout_height="wrap_content" />
 
     </android.support.design.widget.AppBarLayout>
-
+    <!--<View
+        android:id="@+id/overlay"
+        android:background="#FFFFFF"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"/>-->
     <ProgressBar android:indeterminate="true"
         android:layout_width="50dp" android:layout_height="50dp"
         android:id="@+id/marker_progress" android:background ="@drawable/progress"
@@ -44,3 +52,23 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>
+
+    <TextView
+        android:layout_above="@+id/voiceIco"
+        android:id="@+id/txtSpeechInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+
+        android:textColor="#3e3e3e"
+        android:textSize="26dp"
+        android:textStyle="normal" />
+    <ImageView
+        android:id="@+id/voiceIco"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="10dp"
+        android:src="@drawable/guar"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp" />
+</RelativeLayout>

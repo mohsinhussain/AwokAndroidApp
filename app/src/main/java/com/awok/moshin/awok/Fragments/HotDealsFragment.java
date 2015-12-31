@@ -367,6 +367,8 @@ public class HotDealsFragment extends Fragment {
 //                    mAdapter.notifyDataSetChanged();
                 }
 
+                System.out.println("VISIBLE ITEM COUNT: "+ visibleItemCount);
+
                 if (!loading && (totalItemCount - visibleItemCount)
                         <= (firstVisibleItem + visibleThreshold)) {
 
@@ -379,7 +381,12 @@ public class HotDealsFragment extends Fragment {
                     // Do something
                     refreshContent();
 
-
+                    System.out.println("totalItemCount - visibleItemCount" + (totalItemCount - visibleItemCount));
+                    System.out.println("firstVisibleItem + visibleThreshold" + (firstVisibleItem + visibleThreshold));
+                    System.out.println("totalItemCount"+totalItemCount);
+                    System.out.println("visibleItemCount" + visibleItemCount);
+                    System.out.println("firstVisibleItem" + firstVisibleItem);
+                    System.out.println("visibleThreshold" + visibleThreshold);
 
                     loading = true;
                 }
@@ -839,17 +846,18 @@ public class HotDealsFragment extends Fragment {
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            if(isSearch && searchString!=null){
-                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).productsFromSearchAPICall(searchString, pageCount);
-            }
-            else if(categoryId!=null){
-                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).productsFromCategoryAPICall(categoryId, pageCount);
-            }
-            else{
-                new APIClient(getActivity(), getActivity(),  new GetProductsCallback()).allProductsAPICall(pageCount);
-            }
+            if (isSearch && searchString != null) {
+                new APIClient(getActivity(), getActivity(), new GetProductsCallback()).productsFromSearchAPICall(searchString, pageCount);
+            } else if (categoryId != null) {
+                new APIClient(getActivity(), getActivity(), new GetProductsCallback()).productsFromCategoryAPICall(categoryId, pageCount);
+            } else {
+                {
+                    new APIClient(getActivity(), getActivity(), new GetProductsCallback()).allProductsAPICall(pageCount);
+                }
 
-        } else {
+            }
+        }
+            else {
             Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED);
 
@@ -919,7 +927,8 @@ public class HotDealsFragment extends Fragment {
                 }
                 else{
                     mainObject = new JSONObject(response);
-                    jsonArray = mainObject.getJSONObject("data").getJSONObject("server").getJSONArray("items");
+                    //jsonArray = mainObject.getJSONObject("data").getJSONObject("server").getJSONArray("items");
+                    jsonArray = mainObject.getJSONObject("output").getJSONArray("message");
                 }
 
 //                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
@@ -949,25 +958,25 @@ public class HotDealsFragment extends Fragment {
                     for(int i=0;i<length;i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Products item = new Products();
-                        item.setId(jsonObject.getJSONObject("_id").getString("$id"));
-                        item.setName(jsonObject.getString("name"));
-                        item.setImage(jsonObject.getString("image"));
-                        item.setImageHeight(jsonObject.getInt("image_height"));
-                        item.setImageWidth(jsonObject.getInt("image_width"));
-                        item.setCategoryId(jsonObject.getString("category_id"));
-                        item.setPriceNew(jsonObject.getJSONObject("discount").getInt("discount_price"));
-                        item.setPriceOld(jsonObject.getInt("price"));
-                        item.setRating(jsonObject.getJSONObject("rating").getString("rating_average"));
-                        item.setRatingCount(jsonObject.getJSONObject("rating").getString("number_of_ratings"));
+                        item.setId(jsonObject.getString("ID"));
+                        item.setName(jsonObject.getString("NAME"));
+                        item.setImage(jsonObject.getString("IMAGE"));
+                        item.setImageHeight(jsonObject.getInt("IMAGE_HEIGHT"));
+                        item.setImageWidth(jsonObject.getInt("IMAGE_WIDTH"));
+                        item.setCategoryId(jsonObject.getString("CATEGORY_ID"));
+                        item.setPriceNew(jsonObject.getJSONObject("DISCOUNTS").getInt("discount_price"));
+                        item.setPriceOld(jsonObject.getInt("PRICE"));
+                        item.setRating(jsonObject.getJSONObject("RAITING").getString("rating_average"));
+                        item.setRatingCount(jsonObject.getJSONObject("RAITING").getString("number_of_ratings"));
 //                        item.setDescription(jsonObject.getString("description"));
-                        item.setDiscPercent(jsonObject.getJSONObject("discount").getInt("discount_percentage"));
-                        if(!jsonObject.getJSONObject("discount").isNull("timer")){
-                            item.setYears(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("years"));
-                            item.setMonths(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("months"));
-                            item.setDays(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("days"));
-                            item.setHours(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("hours"));
-                            item.setMinutes(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("minutes"));
-                            item.setSeconds(jsonObject.getJSONObject("discount").getJSONObject("timer").getInt("seconds"));
+                        item.setDiscPercent(jsonObject.getJSONObject("DISCOUNTS").getInt("discount_percentage"));
+                        if(!jsonObject.getJSONObject("DISCOUNTS").isNull("timer")){
+                            item.setYears(jsonObject.getJSONObject("DISCOUNTS").getJSONObject("timer").getInt("years"));
+                            item.setMonths(jsonObject.getJSONObject("DISCOUNTS").getJSONObject("timer").getInt("months"));
+                            item.setDays(jsonObject.getJSONObject("DISCOUNTS").getJSONObject("timer").getInt("days"));
+                            item.setHours(jsonObject.getJSONObject("DISCOUNTS").getJSONObject("timer").getInt("hours"));
+                            item.setMinutes(jsonObject.getJSONObject("DISCOUNTS").getJSONObject("timer").getInt("minutes"));
+                            item.setSeconds(jsonObject.getJSONObject("DISCOUNTS").getJSONObject("timer").getInt("seconds"));
                         }
 
 

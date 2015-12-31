@@ -42,12 +42,22 @@ public class APIClient {
         mTask.execute(mContext, Constants.API_SERVER_URL+"product/", "GET", null);
     }
 
-    public void allProductsAPICall(int pageCount) {
+  /*  public void allProductsAPICall(int pageCount) {
         mTask = new AsyncTaskWithDialog();
         mTask.execute(mContext, "http://market1.awok/v1/products/index?page=" + pageCount, "GET", null);  //--------------V1 api
 //        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/index/"+pageCount, "GET", null);  ----------old api
 //        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
+    }*/
+
+
+
+    public void allProductsAPICall(int pageCount) {
+        mTask = new AsyncTaskWithDialog();
+        mTask.execute(mContext, "http://mp.alifca.com/api/?" + pageCount, "GET", null);  //--------------V1 api
+//        mTask.execute(mContext, "http://market1.awok/ahmed/awokapi/products/index/"+pageCount, "GET", null);  ----------old api
+//        mTask.execute(mContext, "http://192.168.1.9/api/webapi/public/products/", "GET", null);
     }
+
 
     public void productsFromSearchAPICall(String searchFilter, int pageCount) {
         mTask = new AsyncTaskWithDialog();

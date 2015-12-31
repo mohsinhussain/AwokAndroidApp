@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:layout_below="@+id/overViewRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:padding="5dp"
+        android:id="@+id/recyclerViewSeperator"
+        android:background="#e3e3e3"/>
+    <RelativeLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/recyclerViewSeperator"
+        android:id="@+id/shippingLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="wrap_content"
+
+                android:text="SHIPPING :"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="20 AED"
+                android:textColor="@color/header_text"
+                android:id="@+id/shippingPrice"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/shippingLay"
+        android:id="@+id/totalLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="wrap_content"
+
+                android:text="TOTAL AMOUNT :"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="@color/red_base"
+
+                android:id="@+id/totalPrice"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

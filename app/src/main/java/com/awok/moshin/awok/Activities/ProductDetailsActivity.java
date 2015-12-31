@@ -58,6 +58,8 @@ import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
+import com.hannesdorfmann.swipeback.Position;
+import com.hannesdorfmann.swipeback.SwipeBack;
 
 
 import org.json.JSONArray;
@@ -128,6 +130,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements SearchV
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);*/
+        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         Intent i=new Intent();
         productId =getIntent().getExtras().getString(Constants.PRODUCT_ID_INTENT);
         productName=getIntent().getExtras().getString(Constants.PRODUCT_NAME_INTENT);
@@ -340,6 +343,7 @@ public void setUpTab()
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
     }
 
 

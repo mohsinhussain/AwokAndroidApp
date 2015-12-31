@@ -43,6 +43,7 @@
                 app:layout_scrollFlags="scroll|enterAlways"/>
 
             <!--</android.support.design.widget.CollapsingToolbarLayout>-->
+
         </android.support.design.widget.AppBarLayout>
 
 
@@ -57,8 +58,20 @@
 
 
     </android.support.design.widget.CoordinatorLayout>
+<!--        android:background="@drawable/shadow_background"-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/overViewRecyclerView"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/main_content"
 
+
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+            android:scrollbars="none" />
     <android.support.v4.widget.NestedScrollView
+        android:visibility="gone"
         android:id="@+id/nestedScroll"
 
         android:layout_below="@+id/main_content"
@@ -414,7 +427,7 @@ android:layout_centerVertical="true"
 
 
         android:scrollbars="none" />-->
-            <android.support.v7.widget.RecyclerView
+            <!--<android.support.v7.widget.RecyclerView
                 android:id="@+id/overViewRecyclerView"
                 android:padding="5dp"
                 android:layout_width="match_parent"
@@ -424,11 +437,12 @@ android:layout_centerVertical="true"
 
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:background="@drawable/shadow_background"
-                android:scrollbars="none" />
+                android:scrollbars="none" />-->
             <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
 
 
             <View
+                android:visibility="gone"
                 android:layout_below="@+id/overViewRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -440,6 +454,7 @@ android:layout_centerVertical="true"
 
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_below="@+id/recyclerViewSeperator"
@@ -479,6 +494,7 @@ android:layout_centerVertical="true"
             </RelativeLayout>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"

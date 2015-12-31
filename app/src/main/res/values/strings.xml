@@ -58,7 +58,8 @@ Introducing the world’s first 4K smartphone</string>
     <!--<string name="enter_password">Please Enter Password</string>-->
     <!--<string name="enter_password">Please Enter Password</string>-->
     <!--<string name="enter_password">Please Enter Password</string>-->
-
+    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_not_supported">Sorry! Your device doesnt support speech input</string>
 
 
 

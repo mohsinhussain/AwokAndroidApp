@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/shipSeperator"
+        android:id="@+id/orderStatusLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/orderStatusImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/order_status_icon"/>
+
+            <TextView
+                android:layout_toRightOf="@+id/orderStatusImg"
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="Order Status"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Completed"
+                android:layout_centerVertical="true"
+                android:id="@+id/orderStatus"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+    <View
+        android:layout_below="@+id/orderStatusLay"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/mainSeperator"
+        android:background="#e3e3e3"/>
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/orderStatusLay"
+        android:id="@+id/orderTimeLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/orderTimeImg"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/order_time_icon"/>
+
+            <TextView
+                android:layout_toRightOf="@+id/orderTimeImg"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_height="wrap_content"
+                android:text="Order Time"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/orderTimeDate"
+                android:layout_centerVertical="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+
+
+    <View
+        android:layout_below="@+id/orderTimeLay"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/delView"
+        android:background="#e3e3e3"/>
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_below="@+id/delView"
+        android:layout_marginRight="10dp"
+        android:id="@+id/shippingHead"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_margin="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- <ImageView
+                 android:id="@+id/shippingImg"
+
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/shipment_icon"/>-->
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="wrap_content"
+                android:text="Shipment Tracking"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/shippingHead"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/orderView"
+        android:background="#e3e3e3"/>
+
+
+
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_below="@+id/orderView"
+        android:layout_marginRight="10dp"
+        android:id="@+id/orderMessageLay"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_margin="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- <ImageView
+                 android:id="@+id/shippingImg"
+
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/shipment_icon"/>-->
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="wrap_content"
+                android:text="Order Messages"/>
+
+            <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="0"
+                android:textSize="10sp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/badge_custom"
+                android:id="@+id/button"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/shippingHead"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/orderMessageView"
+        android:background="#e3e3e3"/>
+
+
+
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/orderMessageLay"
+        android:id="@+id/delLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/delImg"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/delivery_time_icon"/>
+
+            <TextView
+                android:id="@+id/delHead"
+                android:layout_toRightOf="@+id/delImg"
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="10dp"
+                android:text="Delivery Time"/>
+
+            <TextView
+                android:text="vklfjklfj"
+                android:layout_toRightOf="@+id/delImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/delTimeDate"
+                android:layout_below="@+id/delHead"
+                android:layout_alignLeft="@+id/delHead"
+                android:layout_alignStart="@+id/delHead" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+
+    <View
+        android:visibility="gone"
+        android:layout_below="@+id/delLay"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/orderStatusView"
+        android:background="#e3e3e3"/>
+</LinearLayout>

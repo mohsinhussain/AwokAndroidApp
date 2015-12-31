@@ -174,6 +174,13 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
                     .setActionTextColor(Color.RED)
                     .show();
         }
+
+
+
+
+
+
+
     }
 
 
@@ -244,6 +251,8 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
                     //JSONArray jsonArrayData=jsonObjectData.getJSONArray("data");
                     JSONObject jsonCart = jsonObjectData.getJSONObject("data").getJSONObject("public");
                 System.out.println(jsonCart.toString());
+             //   String js=jsonCart.getJSONArray("cart").getJSONObject(0).;
+
                 productUniqueId=new HashMap<>();
                     for(int j=0;j<jsonCart.getJSONArray("cart").length();j++) {
                         JSONObject jsonCartData = jsonCart.getJSONArray("cart").getJSONObject(j);
@@ -280,9 +289,19 @@ shippingAmount.setText(jsonCart.getString("currency")+" "+jsonCart.getString("sh
                         //price=jsonCart.getString("price");
                         price=jsonCart.getString("currency")+" "+jsonCart.getString("subtotal");
                         orderDisputeId=jsonCart.getString("number");
-
-                        orderHistoryDetailsData.add(orderData);
-                        System.out.println(orderHistoryDetailsData.toString());
+if(j==0)
+{
+    orderHistoryDetailsData.add(new OrderHistoryDetailsModel("2","Completed",date(jsonCartData.getString("time_created_unix")), true));
+}
+                        else
+                        if(j==((jsonCart.getJSONArray("cart").length())-1))
+                        {
+                            orderHistoryDetailsData.add(new OrderHistoryDetailsModel(jsonCart.getString("currency")+" "+jsonCart.getString("shipping_cost").toString(),jsonCart.getString("currency")+" "+(jsonCart.getString("total")), true));
+                        }
+                        else {
+                            orderHistoryDetailsData.add(orderData);
+                            System.out.println(orderHistoryDetailsData.toString());
+                        }
 
                     }
 

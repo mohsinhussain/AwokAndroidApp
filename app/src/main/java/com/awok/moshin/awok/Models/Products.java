@@ -190,7 +190,7 @@ String rating;
     }
 
     public String getImage() {
-        return image;
+        return "http://mp.alifca.com/"+image;
     }
 
     public void setImage(String image) {

@@ -1,52 +1,40 @@
 package com.awok.moshin.awok.Fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
-import com.awok.moshin.awok.Adapters.DescriptionAdapter;
-import com.awok.moshin.awok.Adapters.ProductRatingAdapter;
 import com.awok.moshin.awok.Adapters.ProductRatingPageAdapter;
 import com.awok.moshin.awok.AppController;
-import com.awok.moshin.awok.Models.DescriptionModel;
-import com.awok.moshin.awok.Models.OrderSummary;
-import com.awok.moshin.awok.Models.ProductRatingModel;
 import com.awok.moshin.awok.Models.ProductRatingPageModel;
-import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.EndlessRecyclerOnScrollListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -84,8 +72,9 @@ public class ReviewsFragment extends Fragment {
     private int current_page = 1;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private List<ProductRatingPageModel> prodRating = new ArrayList<ProductRatingPageModel>();
-
+private ScrollView nestedScroll;
     private int visibleThreshold = 5;
+    View views;
 
     public ReviewsFragment() {
         // Required empty public constructor
@@ -114,8 +103,9 @@ public class ReviewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View mView = inflater.inflate(R.layout.fragment_reviews, container, false);
-
+        nestedScroll=(ScrollView)mView.findViewById(R.id.nestedScroll);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
+        views=(View)mView.findViewById(R.id.view);
 //
 //            // getSupportActionBar().setIcon(R.drawable.ic_launcher);
 //
@@ -125,11 +115,15 @@ public class ReviewsFragment extends Fragment {
 //            // in content do not change the layout size of the RecyclerView
         /*mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(false);*/
-        mRecyclerView.setNestedScrollingEnabled(true);
+   /////////     mRecyclerView.setNestedScrollingEnabled(false);
         // mRecyclerView.hasNestedScrollingParent();
-        mRecyclerView.setHasFixedSize(false);
+  //////////      mRecyclerView.setHasFixedSize(false);
         mLayoutManager=new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        //mLayoutManager=new MyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
         //mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        //mLayoutManager = new LinearLayoutManager(getActivity());
+    //    mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setLayoutManager(mLayoutManager);
         //mLayoutManager = new MyLinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
        // mRecyclerView.setLayoutManager(mLayoutManager);
@@ -150,9 +144,171 @@ public class ReviewsFragment extends Fragment {
 
 
 
+views.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        onLoadMore();
+    }
+});
 
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+
+/*nestedScroll.setOnScrollChangeListener(new OnScrollChangeListener() {
+
+    @Override
+    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        Rect scrollBounds = new Rect();
+        nestedScroll.getHitRect(scrollBounds);
+        if (views.getLocalVisibleRect(scrollBounds)) {
+            // Any portion of the imageView, even a single pixel, is within the visible window
+            System.out.println("?<D?>KDS?>D" );
+        } else {
+            // NONE of the imageView is within the visible window
+            System.out.println("NOPE"  );
+        }
+    }
+});*/
+
+
+
+
+
+
+
+
+
+/*
+        nestedScroll.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return false;
+            }
+        });*/
+
+
+
+
+
+
+
+       /* mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                System.out.println("COOL LISTENE");
+                Rect scrollBounds = new Rect();
+                nestedScroll.getHitRect(scrollBounds);
+                if (views.getLocalVisibleRect(scrollBounds)) {
+                    // Any portion of the imageView, even a single pixel, is within the visible window
+                    System.out.println("?<D?>KDS?>D" );
+                } else {
+                    // NONE of the imageView is within the visible window
+                    System.out.println("NOPE"  );
+                }
+            }
+        });*/
+
+
+
+
+/*nestedScroll.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+    @Override
+    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        Rect scrollBounds = new Rect();
+        nestedScroll.getHitRect(scrollBounds);
+        if (views.getLocalVisibleRect(scrollBounds)) {
+            // Any portion of the imageView, even a single pixel, is within the visible window
+            System.out.println("?<D?>KDS?>D" );
+        } else {
+            // NONE of the imageView is within the visible window
+            System.out.println("NOPE"  );
+        }
+
+    }
+});*/
+
+    /*    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Rect scrollBounds = new Rect();
+                nestedScroll.getHitRect(scrollBounds);
+                if (views.getLocalVisibleRect(scrollBounds)) {
+                    // Any portion of the imageView, even a single pixel, is within the visible window
+                    System.out.println("?<D?>KDS?>Dvhnbnvbnbvnvb" );
+                } else {
+                    // NONE of the imageView is within the visible window
+                    System.out.println("NOPE"  );
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerViewTxt, int dx, int dy) {
+                super.onScrolled(recyclerViewTxt, dx, dy);
+                LinearLayoutManager layoutManager = ((LinearLayoutManager)mRecyclerView.getLayoutManager());
+                visibleItemCount = recyclerViewTxt.getChildCount();
+                //totalItemCount = layoutManager.getItemCount();
+                totalItemCount=recyclerViewTxt.getLayoutManager().getItemCount();
+                //firstVisibleItem =layoutManager.findFirstVisibleItemPosition();
+                firstVisibleItem=((LinearLayoutManager) recyclerViewTxt.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+
+                //firstVisibleItem=layoutManager.findFirstCompletelyVisibleItemPosition(null);
+                System.out.println("dx"+dx);
+                System.out.println("dy"+dy);
+                System.out.println("recyclerViewTxt"+recyclerViewTxt.getChildCount());
+                System.out.println("recyclerViewTxt"+recyclerViewTxt.getChildCount());
+                System.out.println("recyclerViewTxt"+recyclerViewTxt.getChildCount());
+                System.out.println("recyclerViewTxt"+recyclerViewTxt.getChildCount());
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                        System.out.println("totalItemCount MAIN"+totalItemCount);
+                        System.out.println("previousTotal MAIN"+previousTotal);
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount)
+                        <= (firstVisibleItem + visibleThreshold)) {
+                    // End has been reached
+                    System.out.println("COUNT"+current_page);
+                    System.out.println("totalItemCount - visibleItemCount" + (totalItemCount - visibleItemCount));
+                    System.out.println("firstVisibleItem + visibleThreshold" + (firstVisibleItem + visibleThreshold));
+                    System.out.println("totalItemCount"+totalItemCount);
+                    System.out.println("visibleItemCount" + visibleItemCount);
+                    System.out.println("firstVisibleItem" + firstVisibleItem);
+                    System.out.println("visibleThreshold" + visibleThreshold);
+
+                    // Do something
+                    current_page++;
+
+                    onLoadMore();
+
+                    loading = true;
+                }
+
+
+
+
+                Rect scrollBounds = new Rect();
+                nestedScroll.getHitRect(scrollBounds);
+                if (views.getLocalVisibleRect(scrollBounds)) {
+                    // Any portion of the imageView, even a single pixel, is within the visible window
+                    System.out.println("?<D?>KDS?>D" );
+                } else {
+                    // NONE of the imageView is within the visible window
+                    System.out.println("NOPE"  );
+                }
+
+
+            }
+        });*/
+
+
+
+       /* mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -165,16 +321,30 @@ public class ReviewsFragment extends Fragment {
                 firstVisibleItem=((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
 
                 //firstVisibleItem=layoutManager.findFirstCompletelyVisibleItemPosition(null);
-
+                System.out.println("totalItemCount - visibleItemCount" + (totalItemCount - visibleItemCount));
+                System.out.println("firstVisibleItem + visibleThreshold" + (firstVisibleItem + visibleThreshold));
+                System.out.println("totalItemCount" + totalItemCount);
+                System.out.println("visibleItemCount" + visibleItemCount);
+                System.out.println("firstVisibleItem" + firstVisibleItem);
+                System.out.println("visibleThreshold" + visibleThreshold);
                 if (loading) {
                     if (totalItemCount > previousTotal) {
                         loading = false;
                         previousTotal = totalItemCount;
+                        System.out.println("totalItemCount MAIN"+totalItemCount);
+                        System.out.println("previousTotal MAIN"+previousTotal);
                     }
                 }
                 if (!loading && (totalItemCount - visibleItemCount)
                         <= (firstVisibleItem + visibleThreshold)) {
                     // End has been reached
+System.out.println("COUNT"+current_page);
+                    *//*System.out.println("totalItemCount - visibleItemCount" + (totalItemCount - visibleItemCount));
+                    System.out.println("firstVisibleItem + visibleThreshold" + (firstVisibleItem + visibleThreshold));
+                    System.out.println("totalItemCount"+totalItemCount);
+                    System.out.println("visibleItemCount" + visibleItemCount);
+                    System.out.println("firstVisibleItem" + firstVisibleItem);
+                    System.out.println("visibleThreshold" + visibleThreshold);*//*
 
                     // Do something
                     current_page++;
@@ -184,7 +354,7 @@ public class ReviewsFragment extends Fragment {
                     loading = true;
                 }
             }
-        });
+        });*/
 
 
 
@@ -303,7 +473,35 @@ public class ReviewsFragment extends Fragment {
         mainRatingColor.getDrawable(0).setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
 
 
+/*mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+    @Override
+    public void onLoadMore(int currentPage) {
 
+        System.out.println("CURRENT" + currentPage);
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new APIClient(getActivity(), getActivity(), new GetCartCallback()).productReviewCommentsCallBack(productId, current_page);
+
+        } else {
+
+            *//*Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();*//*
+
+
+            Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+        }
+    }
+});*/
 
 
         return mView;
@@ -591,6 +789,7 @@ public class ReviewsFragment extends Fragment {
                     //     mRecyclerView.setAdapter(mAdapter);
                 }
                 mAdapter.notifyDataSetChanged();
+                current_page++;
 
                 }catch(JSONException e){
                     e.printStackTrace();

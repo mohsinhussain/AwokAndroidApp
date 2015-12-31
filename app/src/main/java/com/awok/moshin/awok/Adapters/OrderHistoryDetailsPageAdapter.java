@@ -14,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -37,11 +39,16 @@ import java.util.TimeZone;
 /**
  * Created by shon on 9/30/2015.
  */
-public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHistoryDetailsPageAdapter.ViewHolder> {
+public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<OrderHistoryDetailsModel> orderHistoryDetailsData = new ArrayList<OrderHistoryDetailsModel>();
     private Activity activity;
     View customView;
+    private  final int TYPE_FOOTER = 2;
 
+
+
+    private final int TYPE_HEADER = 0;
+    private final int TYPE_ITEM = 1;
     private ArrayAdapter<CharSequence> adapter;
     NetworkInfo networkInfo;
     Context context;
@@ -71,25 +78,43 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
 
     // Create new views (invoked by the layout manager)
     @Override
-    public OrderHistoryDetailsPageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                              int viewType) {
         // create a new view
-        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
+/*        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.order_history_details_custom_view, null);
 
 
         customView=itemLayoutView;
 
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView);*/
+        RecyclerView.ViewHolder viewHolder;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if (viewType == 0) {
+            View header = inflater.inflate(R.layout.order_history_details_page_header, parent, false);
+            viewHolder = new HeaderViewHolder(header);
+
+        }
+
+
+        else if (viewType == 2) {
+            View footer = inflater.inflate(R.layout.order_history_details_page_footer, parent, false);
+            viewHolder = new FooterHolder(footer);
+        }
+
+        else {
+            View item = inflater.inflate(R.layout.order_history_details_custom_view, parent, false);
+            viewHolder = new ViewHolder(item);
+        }
         return viewHolder;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewholder, final int position) {
 
 
-        final OrderHistoryDetailsModel item = orderHistoryDetailsData.get(position);
+   /////////////     final OrderHistoryDetailsModel item = orderHistoryDetailsData.get(position);
 /*
         if(orderCheck.equals(orderHistoryData.get(position).getOrderId()))
         {*/
@@ -117,32 +142,46 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<OrderHi
 //        else{
 //            viewHolder.image.setImageDrawable(mContext.getResources().getDrawable((R.drawable.default_img)));
 //        }
+        if (viewholder.getItemViewType() == 0) {
+            final HeaderViewHolder headView = (HeaderViewHolder) viewholder;
+            headView.orderStatus.setText(orderHistoryDetailsData.get(position).getHeadOrderStatus());
+            headView.orderTimeDate.setText(orderHistoryDetailsData.get(position).getHeadOrderTime());
+            headView.button.setText(orderHistoryDetailsData.get(position).getHeadOrderMessageCount());
+        }
 
-        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-        imageLoader.get(orderHistoryDetailsData.get(position).getImage(), new ImageLoader.ImageListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                viewHolder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
-                viewHolder.loadProgressBar.setVisibility(View.GONE);
-            }
 
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                if (response.getBitmap() != null) {
-                    // load image into imageview
-                    viewHolder.image.setImageBitmap(response.getBitmap());
-                    viewHolder.loadProgressBar.setVisibility(View.GONE);
+        else if (viewholder.getItemViewType() == 2) {
+            final FooterHolder footerView = (FooterHolder) viewholder;
+            footerView.shippingPrice.setText(orderHistoryDetailsData.get(position).getFooterShipment());
+            footerView.totalPrice.setText(orderHistoryDetailsData.get(position).getTotalAmount());
+        }
+        else if (viewholder.getItemViewType() == 1) {
+            final ViewHolder holder = (ViewHolder) viewholder;
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            imageLoader.get(orderHistoryDetailsData.get(position).getImage(), new ImageLoader.ImageListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    holder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
+                    holder.loadProgressBar.setVisibility(View.GONE);
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                    if (response.getBitmap() != null) {
+                        // load image into imageview
+                        holder.image.setImageBitmap(response.getBitmap());
+                        holder.loadProgressBar.setVisibility(View.GONE);
+                    }
+                }
+            });
 
 
-        viewHolder.price.setText(orderHistoryDetailsData.get(position).getPrice());
-        viewHolder.quantity.setText(orderHistoryDetailsData.get(position).getQuantity()+"X ");
-viewHolder.daysData.setText(orderHistoryDetailsData.get(position).getEstimated_days_from() + " days - " + orderHistoryDetailsData.get(position).getEstimated_days_to()+" days");
-        viewHolder.title.setText(orderHistoryDetailsData.get(position).getTitle());
-        viewHolder.seller.setText("Seller: "+orderHistoryDetailsData.get(position).getShipping());
-        viewHolder.shipping.setTag(orderHistoryDetailsData.get(position).getTitle());
+            holder.price.setText(orderHistoryDetailsData.get(position).getPrice());
+            holder.quantity.setText(orderHistoryDetailsData.get(position).getQuantity() + "X ");
+            holder.daysData.setText(orderHistoryDetailsData.get(position).getEstimated_days_from() + " days - " + orderHistoryDetailsData.get(position).getEstimated_days_to() + " days");
+            holder.title.setText(orderHistoryDetailsData.get(position).getTitle());
+            holder.seller.setText("Seller: " + orderHistoryDetailsData.get(position).getShipping());
+            holder.shipping.setTag(orderHistoryDetailsData.get(position).getTitle());
 
       /*  }
         else {
@@ -162,7 +201,7 @@ viewHolder.daysData.setText(orderHistoryDetailsData.get(position).getEstimated_d
         }*/
 
 
-
+        }
 
 
     }
@@ -262,6 +301,79 @@ daysData=(TextView)itemLayoutView
        Log.d("date", format.format(date_value).toString());
        return format.format(date_value).toString();
    }
+
+
+
+
+
+
+
+    @Override
+    public int getItemViewType(int position) {
+
+        if (orderHistoryDetailsData.get(position).isHeaderView()) {
+            return TYPE_HEADER;
+
+        }
+
+
+
+        else if (orderHistoryDetailsData.get(position).isLoader()) {
+            return TYPE_FOOTER;
+
+        }
+
+
+        else if (position > 0) {
+            return TYPE_ITEM;
+        }
+
+        return 1;
+    }
+
+
+
+
+
+
+
+
+
+    public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        TextView  orderStatus,orderTimeDate;
+        Button button;
+
+
+        HeaderViewHolder(View itemView) {
+            super(itemView);
+
+            orderStatus=(TextView)itemView.findViewById(R.id.orderStatus);
+            orderTimeDate=(TextView)itemView.findViewById(R.id.orderTimeDate);
+            //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
+            button=(Button)itemView.findViewById(R.id.button);
+
+        }
+    }
+
+
+    public static class FooterHolder extends RecyclerView.ViewHolder {
+
+        TextView shippingPrice,totalPrice;
+
+        FooterHolder(View itemView) {
+            super(itemView);
+
+            shippingPrice=(TextView)itemView.findViewById(R.id.shippingPrice);
+            totalPrice=(TextView)itemView.findViewById(R.id.totalPrice);
+
+        }
+    }
+
+
+
+
+
 
 }
 
