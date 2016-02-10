@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.ConnectivityManager;
@@ -38,9 +40,11 @@ import com.android.volley.toolbox.ImageLoader;
 import com.awok.moshin.awok.Activities.CheckOutActivity;
 import com.awok.moshin.awok.AppController;
 import com.awok.moshin.awok.Models.Checkout;
+import com.awok.moshin.awok.Models.Checkout_Model;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.Constants;
 
 import org.json.JSONObject;
 
@@ -51,10 +55,11 @@ import java.util.List;
 /**
  * Created by shon on 10/20/2015.
  */
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "CustomAdapter";
     View customView;
-    private List<Checkout> mDataSet = new ArrayList<Checkout>();
+    //private List<Checkout> mDataSet = new ArrayList<Checkout>();
+    private List<Checkout_Model> mDataSet = new ArrayList<Checkout_Model>();
     //private final int NO_SHOW = 0, SHOW = 1  ,SHOW_FOOTER=2,HIDE_FOOTER=3;
     private final int SHOW_HEADER=0,SHOW_FOOTER=1,SHOW_BOTH=2,HIDE=3;
     // BEGIN_INCLUDE(recyclerViewSampleViewHolder)
@@ -66,6 +71,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     private String valueQuantity;
     LinearLayout.LayoutParams lp;
     Context mContext;
+    SharedPreferences mSharedPrefs;
+    String userId;
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final TextView prodOverviewTitle,prodOverViewText,sellerLabel,stock,totalPrice,newPrice,sellerNameText,discount,sellerTotal,sellerShipping,sellerSubTotal;
@@ -155,7 +162,27 @@ remove=(TextView)itemLayoutView
     }
 
 
+
     @Override
+    public int getItemViewType(int position) {
+        if(mDataSet.get(position).getIsHeader())
+
+        {
+            return SHOW_HEADER;
+        }
+
+        else if(mDataSet.get(position).getIsFooter())
+        {
+            return SHOW_FOOTER;
+        }
+        else
+        {
+            return HIDE;
+        }
+    }
+
+
+  /*  @Override
     public int getItemViewType(int position) {
         if(mDataSet.get(position).getIsHeader() && mDataSet.get(position).getIsFooter())
 
@@ -173,7 +200,7 @@ return SHOW_FOOTER;
         else
         {
 return HIDE;
-        }
+        }*/
 
 
 
@@ -199,11 +226,18 @@ return HIDE;
 //            output= HIDE_FOOTER;
 //        }
 //return output;
-    }
+   // }
 
+   /* @Override
+    public int getItemViewType(int position) {
+        // Just as an example, return 0 or 2 depending on position
+        System.out.println("COOL"+position);
+        // Note that unlike in ListView adapters, types don't have to be contiguous
+        return position % 2 * 2;
 
+    }*/
 
-    public CustomAdapter(Activity activity,List<Checkout> overViewList) {
+    public CustomAdapter(Activity activity,List<Checkout_Model> overViewList) {
         mDataSet = overViewList;
         ConnectivityManager connMgr = (ConnectivityManager)
                 activity.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -214,26 +248,49 @@ return HIDE;
         lp.topMargin = 20;
         this.mContext=activity;
         this.activity_main=activity;
+        mSharedPrefs = mContext.getSharedPreferences(Constants.PREFS_NAME, 0);
+        if ((mSharedPrefs.contains(Constants.USER_ID_PREFS)))
+        {
+            userId = mSharedPrefs.getString(Constants.USER_ID_PREFS, null);
+        }
     }
 
     // BEGIN_INCLUDE(recyclerViewOnCreateViewHolder)
     // Create new views (invoked by the layout manager)
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
-        View v = LayoutInflater.from(viewGroup.getContext())
+   /*     View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.checkoutlayout, viewGroup, false);
 customView=v;
-        return new ViewHolder(v);
+        return new ViewHolder(v);*/
+        RecyclerView.ViewHolder viewHolder;
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        if (viewType == 0) {
+            View header = inflater.inflate(R.layout.checkoutlayout, viewGroup, false);
+            viewHolder = new ViewHolder(header);
+
+        }
+
+
+
+
+        else {
+            View item = inflater.inflate(R.layout.cart_bottom_lay, viewGroup, false);
+            viewHolder = new FooterHolder(item);
+        }
+        return viewHolder;
     }
     // END_INCLUDE(recyclerViewOnCreateViewHolder)
 
     // BEGIN_INCLUDE(recyclerViewOnBindViewHolder)
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder1, final int position) {
         Log.d(TAG, "Element " + position + " set.");
-        switch (viewHolder.getItemViewType()) {
+        if (viewHolder1.getItemViewType() == 0) {
+            final ViewHolder viewHolder = (ViewHolder) viewHolder1;
+   /*     switch (viewHolder.getItemViewType()) {
 
 
 
@@ -245,8 +302,8 @@ customView=v;
                 break;
 
 
-            /*case SHOW_FOOTER:
-                viewHolder.footer.setVisibility(View.VISIBLE);*/
+            *//*case SHOW_FOOTER:
+                viewHolder.footer.setVisibility(View.VISIBLE);*//*
 
             case SHOW_HEADER:
                 viewHolder.sellerMainLay.setVisibility(View.VISIBLE);
@@ -265,108 +322,97 @@ customView=v;
                 break;
 
 
-        }
-        // Get element from your dataset at this position and replace the contents of the view
-        // with that element
-        viewHolder.newPrice.setText("AED " + mDataSet.get(position).getOverViewText());
-        viewHolder.prodOverViewText.setText("AED " + mDataSet.get(position).getOldPrice());
-        viewHolder.prodOverViewText.setPaintFlags(viewHolder.prodOverViewText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        viewHolder.prodOverviewTitle.setText(mDataSet.get(position).getOverViewTitle());
-        viewHolder.prodOverviewTitle.setTag(mDataSet.get(position).getProductId());
-        viewHolder.totalPrice.setText("Total Price :" + mDataSet.get(position).getTotalPrice() + " AED");
-        viewHolder.quantity.setText(mDataSet.get(position).getQuantity());
-        viewHolder.discount.setText(mDataSet.get(position).getDiscount() + "%");
-        viewHolder.stock.setText("Free Shipping");
-        viewHolder.sellerNameText.setText(mDataSet.get(position).getSellerLabel());
-        viewHolder.stock.setTag(mDataSet.get(position).getRemainingStock());
-        viewHolder.sellerSubTotal.setText("AED " + mDataSet.get(position).getSellerSubTotal());
-        viewHolder.sellerShipping.setText(mDataSet.get(position).getSellerShipping());
-        viewHolder.sellerTotal.setText("AED "+mDataSet.get(position).getSellerTotal());
-        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-        if(mDataSet.get(position).getImageBitmapString().equals("false"))
-        {
-
+        }*/
+            // Get element from your dataset at this position and replace the contents of the view
+            // with that element
+            viewHolder.newPrice.setText("AED " + mDataSet.get(position).getPrice());
+            viewHolder.prodOverViewText.setText("AED " + mDataSet.get(position).getOld_price());
+            viewHolder.prodOverViewText.setPaintFlags(viewHolder.prodOverViewText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            viewHolder.prodOverviewTitle.setText(mDataSet.get(position).getName());
+            //viewHolder.prodOverviewTitle.setTag(mDataSet.get(position).getProduct_id());
+            viewHolder.prodOverviewTitle.setTag(mDataSet.get(position).getId());
+            viewHolder.totalPrice.setText("Total Price :" + mDataSet.get(position).getPrice() + " AED");
+            viewHolder.quantity.setText(mDataSet.get(position).getQuantity());
+            viewHolder.discount.setText(mDataSet.get(position).getDiscount() + "%");
+            //viewHolder.stock.setText("Free Shipping");
+            viewHolder.stock.setText("11");
+            // viewHolder.sellerNameText.setText(mDataSet.get(position).getSellerLabel());
+            //viewHolder.stock.setTag(mDataSet.get(position).getRemainingStock());
+            viewHolder.stock.setTag(11);
+            // viewHolder.sellerSubTotal.setText("AED " + mDataSet.get(position).getSellerSubTotal());
+            // viewHolder.sellerShipping.setText(mDataSet.get(position).getSellerShipping());
+            // viewHolder.sellerTotal.setText("AED "+mDataSet.get(position).getSellerTotal());
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            if (mDataSet.get(position).getImage().equals("false")) {
 
 
                 viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
-            }
-        else
-        {
-            imageLoader.get(
-                    mDataSet.get(position).getImageBitmapString(),
-                    new ImageLoader.ImageListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
-                            viewHolder.loadProgressBar.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
-                            if (response.getBitmap() != null) {
-                                // load image into imageview
-                                viewHolder.productImg.setImageBitmap(response.getBitmap());
+            } else {
+                imageLoader.get("http://" +
+                                mDataSet.get(position).getImage(),
+                        new ImageLoader.ImageListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                viewHolder.productImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
                                 viewHolder.loadProgressBar.setVisibility(View.GONE);
                             }
-                        }
-                    });
-        }
 
-
-
-
-
-
-
-        viewHolder.quantity.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                valueQuantity = viewHolder.quantity.getText().toString();
-                // viewHolder.quantity.setText("");
-                //viewHolder.quantity.append(newtext);
-                //viewHolder.quantity.getText().clear();
-                return false;
+                            @Override
+                            public void onResponse(ImageLoader.ImageContainer response, boolean arg1) {
+                                if (response.getBitmap() != null) {
+                                    // load image into imageview
+                                    viewHolder.productImg.setImageBitmap(response.getBitmap());
+                                    viewHolder.loadProgressBar.setVisibility(View.GONE);
+                                }
+                            }
+                        });
             }
-        });
 
 
+            viewHolder.quantity.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    valueQuantity = viewHolder.quantity.getText().toString();
+                    // viewHolder.quantity.setText("");
+                    //viewHolder.quantity.append(newtext);
+                    //viewHolder.quantity.getText().clear();
+                    return false;
+                }
+            });
 
 
+            viewHolder.increment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mDataSet.get(position).isEditable()) {
+                        int addQuantity = Integer.parseInt(viewHolder.quantity.getText().toString());
+                        addQuantity = addQuantity + 1;
+                        viewHolder.quantity.setText(String.valueOf(addQuantity));
+
+                        if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                            viewHolder.quantity.setText("1");
+                        } else {
+                            if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
+                                System.out.println("OUT OF STOCK");
+
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                        mContext);
+
+                                // set title
+                                alertDialogBuilder.setTitle("Cart Alert");
 
 
-
-        viewHolder.increment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDataSet.get(position).isEditable()) {
-                    int addQuantity = Integer.parseInt(viewHolder.quantity.getText().toString());
-                    addQuantity = addQuantity + 1;
-                    viewHolder.quantity.setText(String.valueOf(addQuantity));
-
-                    if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
-                        viewHolder.quantity.setText("1");
-                    } else {
-                        if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
-                            System.out.println("OUT OF STOCK");
-
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                                    mContext);
-
-                            // set title
-                            alertDialogBuilder.setTitle("Cart Alert");
-
-
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("The Quantity is not available in Stock")
-                                    .setCancelable(false)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, close
-                                            // current activity
-                                            dialog.cancel();
-                                        }
-                                    });
+                                // set dialog message
+                                alertDialogBuilder
+                                        .setMessage("The Quantity is not available in Stock")
+                                        .setCancelable(false)
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                // if this button is clicked, close
+                                                // current activity
+                                                dialog.cancel();
+                                            }
+                                        });
                                    /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // if this button is clicked, just close
@@ -375,81 +421,84 @@ customView=v;
                                         }
                                     });*/
 
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
+                                // create alert dialog
+                                AlertDialog alertDialog = alertDialogBuilder.create();
 
-                            // show it
-                            alertDialog.show();
+                                // show it
+                                alertDialog.show();
 
-                        } else {
-                            HashMap<String, Object> updateString = new HashMap<String, Object>();
-                            //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
-                            updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                            } else {
+                                HashMap<String, Object> updateString = new HashMap<String, Object>();
+                                //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                String sendj = viewHolder.prodOverviewTitle.getTag().toString();
+                                updateString.put("QUANTITY", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                updateString.put("ACTION", "UPDATE");
+                                updateString.put("CID", Integer.parseInt(sendj));
 
 
-                            JSONObject updateJson = new JSONObject(updateString);
-                            System.out.println("AFTER CHANGED+" + updateJson);
-                            //submit_btn.performClick();
+                                JSONObject updateJson = new JSONObject(updateString);
+                                System.out.println("AFTER CHANGED+" + updateJson);
+                                //submit_btn.performClick();
                    /*System.out.println("AFTER CHANGED");
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.
                             INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(activity.getParent().getCurrentFocus().getWindowToken(), 0);*/
-                            View view = activity_main.getCurrentFocus();
-                            if (view != null) {
-                                InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                            }
-                            if (networkInfo != null && networkInfo.isConnected()) {
-                                String updateId = viewHolder.prodOverviewTitle.getTag().toString();
-                                //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-                                mDataSet.get(position).setIsEditable(false);
-                                new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
+                                View view = activity_main.getCurrentFocus();
+                                if (view != null) {
+                                    InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                }
+                                if (networkInfo != null && networkInfo.isConnected()) {
+                                    String updateId = viewHolder.prodOverviewTitle.getTag().toString();
+                                    //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
+                                    mDataSet.get(position).setIsEditable(false);
+                                    new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(),userId);
 
 
-                            } else {
-                                Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                                        .setActionTextColor(Color.RED)
-                                        .show();
+                                } else {
+                                    Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                            .setActionTextColor(Color.RED)
+                                            .show();
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
+            });
 
 
-        viewHolder.decrement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDataSet.get(position).isEditable()) {
-                    int addQuantity = Integer.parseInt(viewHolder.quantity.getText().toString());
-                    addQuantity = addQuantity - 1;
-                    viewHolder.quantity.setText(String.valueOf(addQuantity));
+            viewHolder.decrement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mDataSet.get(position).isEditable()) {
+                        int addQuantity = Integer.parseInt(viewHolder.quantity.getText().toString());
+                        addQuantity = addQuantity - 1;
+                        viewHolder.quantity.setText(String.valueOf(addQuantity));
 
-                    if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
-                        viewHolder.quantity.setText("1");
-                    } else {
-                        if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
-                            System.out.println("OUT OF STOCK");
+                        if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                            viewHolder.quantity.setText("1");
+                        } else {
+                            if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
+                                System.out.println("OUT OF STOCK");
 
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                                    mContext);
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                        mContext);
 
-                            // set title
-                            alertDialogBuilder.setTitle("Cart Alert");
+                                // set title
+                                alertDialogBuilder.setTitle("Cart Alert");
 
 
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("The Quantity is not available in Stock")
-                                    .setCancelable(false)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // if this button is clicked, close
-                                            // current activity
-                                            dialog.cancel();
-                                        }
-                                    });
+                                // set dialog message
+                                alertDialogBuilder
+                                        .setMessage("The Quantity is not available in Stock")
+                                        .setCancelable(false)
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                // if this button is clicked, close
+                                                // current activity
+                                                dialog.cancel();
+                                            }
+                                        });
                                    /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // if this button is clicked, just close
@@ -458,88 +507,90 @@ customView=v;
                                         }
                                     });*/
 
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
+                                // create alert dialog
+                                AlertDialog alertDialog = alertDialogBuilder.create();
 
-                            // show it
-                            alertDialog.show();
+                                // show it
+                                alertDialog.show();
 
-                        } else {
-                            HashMap<String, Object> updateString = new HashMap<String, Object>();
-                            //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
-                            updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                            } else {
+                                HashMap<String, Object> updateString = new HashMap<String, Object>();
+                                //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                String sendi = viewHolder.prodOverviewTitle.getTag().toString();
+                                updateString.put("QUANTITY", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                updateString.put("ACTION", "UPDATE");
+                                updateString.put("CID", Integer.parseInt(sendi));
 
 
-                            JSONObject updateJson = new JSONObject(updateString);
-                            System.out.println("AFTER CHANGED+" + updateJson);
-                            //submit_btn.performClick();
+                                JSONObject updateJson = new JSONObject(updateString);
+                                System.out.println("AFTER CHANGED+" + updateJson);
+                                //submit_btn.performClick();
                    /*System.out.println("AFTER CHANGED");
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.
                             INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(activity.getParent().getCurrentFocus().getWindowToken(), 0);*/
-                            View view = activity_main.getCurrentFocus();
-                            if (view != null) {
-                                InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                            }
-                            if (networkInfo != null && networkInfo.isConnected()) {
+                                View view = activity_main.getCurrentFocus();
+                                if (view != null) {
+                                    InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                }
+                                if (networkInfo != null && networkInfo.isConnected()) {
 
-                                String updateId = viewHolder.prodOverviewTitle.getTag().toString();
-                                //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-                                new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
-                                mDataSet.get(position).setIsEditable(false);
+                                    String updateId = viewHolder.prodOverviewTitle.getTag().toString();
+                                    //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
+                                    new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), userId);
+                                    mDataSet.get(position).setIsEditable(false);
 
-                            } else {
-                                Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                                        .setActionTextColor(Color.RED)
-                                        .show();
+                                } else {
+                                    Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                            .setActionTextColor(Color.RED)
+                                            .show();
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
+            });
 
 
+            viewHolder.quantity.addTextChangedListener(new TextWatcher() {
 
-        viewHolder.quantity.addTextChangedListener(new TextWatcher() {
 
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    System.out.println("BEFOR CHANGED");
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                System.out.println("BEFOR CHANGED");
-
-                //valueQuantity=viewHolder.quantity.getText().toString();
+                    //valueQuantity=viewHolder.quantity.getText().toString();
 //viewHolder.quantity.setText("");
 
-            }
-
-            @Override
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                System.out.println("TEXT CHANGED");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                System.out.println("AFTER CHANGED");
-                if (viewHolder.quantity.getText().toString().equals("0")) {
-                    viewHolder.quantity.setText("1");
                 }
-            }
-        });
-        viewHolder.quantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
 
+                @Override
 
-                if (!hasFocus) {
-                    if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
-                        viewHolder.quantity.setText(valueQuantity);
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    System.out.println("TEXT CHANGED");
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    System.out.println("AFTER CHANGED");
+                    if (viewHolder.quantity.getText().toString().equals("0")) {
+                        viewHolder.quantity.setText("1");
                     }
                 }
-            }
-        });
+            });
+            viewHolder.quantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+
+
+                    if (!hasFocus) {
+                        if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                            viewHolder.quantity.setText(valueQuantity);
+                        }
+                    }
+                }
+            });
 
 
 
@@ -586,44 +637,44 @@ System.out.println("KEY                 "+valueQuantity);
         });
 */
 
-        viewHolder.quantity.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @SuppressLint("NewApi")
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (mDataSet.get(position).isEditable()) {
-                    //if (actionId == EditorInfo.) {
-                    //if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-                    // System.out.println("AFTER ID"+event.getAction());
-                    //System.out.println("AFTER CHANGED"+event.getKeyCode());
+            viewHolder.quantity.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+                @SuppressLint("NewApi")
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (mDataSet.get(position).isEditable()) {
+                        //if (actionId == EditorInfo.) {
+                        //if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+                        // System.out.println("AFTER ID"+event.getAction());
+                        //System.out.println("AFTER CHANGED"+event.getKeyCode());
 //                System.out.println("AFTER CHANGED"+event.getKeyCode());
-                    System.out.println("AFTER CHANGED" + EditorInfo.IME_ACTION_DONE);
-                    if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED || actionId == EditorInfo.IME_ACTION_DONE) {
+                        System.out.println("AFTER CHANGED" + EditorInfo.IME_ACTION_DONE);
+                        if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED || actionId == EditorInfo.IME_ACTION_DONE) {
 
-                        if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
-                            viewHolder.quantity.setText("1");
-                        } else {
-                            if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
-                                System.out.println("OUT OF STOCK");
+                            if (viewHolder.quantity.getText().toString().equals("") || viewHolder.quantity.getText().toString().equals("0")) {
+                                viewHolder.quantity.setText("1");
+                            } else {
+                                if (Integer.parseInt(viewHolder.quantity.getText().toString()) > Integer.parseInt(viewHolder.stock.getTag().toString())) {
+                                    System.out.println("OUT OF STOCK");
 
-                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                                        mContext);
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                            mContext);
 
-                                // set title
-                                alertDialogBuilder.setTitle("Cart Alert");
+                                    // set title
+                                    alertDialogBuilder.setTitle("Cart Alert");
 
 
-                                // set dialog message
-                                alertDialogBuilder
-                                        .setMessage("The Quantity is not available in Stock")
-                                        .setCancelable(false)
-                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                // if this button is clicked, close
-                                                // current activity
-                                                viewHolder.quantity.setText(valueQuantity);
-                                                dialog.cancel();
-                                            }
-                                        });
+                                    // set dialog message
+                                    alertDialogBuilder
+                                            .setMessage("The Quantity is not available in Stock")
+                                            .setCancelable(false)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    // if this button is clicked, close
+                                                    // current activity
+                                                    viewHolder.quantity.setText(valueQuantity);
+                                                    dialog.cancel();
+                                                }
+                                            });
                                    /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // if this button is clicked, just close
@@ -632,49 +683,52 @@ System.out.println("KEY                 "+valueQuantity);
                                         }
                                     });*/
 
-                                // create alert dialog
-                                AlertDialog alertDialog = alertDialogBuilder.create();
+                                    // create alert dialog
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
 
-                                // show it
-                                alertDialog.show();
+                                    // show it
+                                    alertDialog.show();
 
-                               // viewHolder.quantity.setText(valueQuantity);
+                                    // viewHolder.quantity.setText(valueQuantity);
 
-                            } else {
-                                HashMap<String, Object> updateString = new HashMap<String, Object>();
-                                //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
-                                updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                } else {
+                                    HashMap<String, Object> updateString = new HashMap<String, Object>();
+                                    //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                    String send = viewHolder.prodOverviewTitle.getTag().toString();
+                                    updateString.put("QUANTITY", Integer.parseInt(viewHolder.quantity.getText().toString()));
+                                    updateString.put("ACTION", "UPDATE");
+                                    updateString.put("CID", Integer.parseInt(send));
 
 
-                                JSONObject updateJson = new JSONObject(updateString);
-                                System.out.println("AFTER CHANGED+" + updateJson);
-                                //submit_btn.performClick();
+                                    JSONObject updateJson = new JSONObject(updateString);
+                                    System.out.println("AFTER CHANGED+" + updateJson);
+                                    //submit_btn.performClick();
                    /*System.out.println("AFTER CHANGED");
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.
                             INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(activity.getParent().getCurrentFocus().getWindowToken(), 0);*/
-                                View view = activity_main.getCurrentFocus();
-                                if (view != null) {
-                                    InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                                }
-                                if (networkInfo != null && networkInfo.isConnected()) {
+                                    View view = activity_main.getCurrentFocus();
+                                    if (view != null) {
+                                        InputMethodManager imm = (InputMethodManager) activity_main.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                    }
+                                    if (networkInfo != null && networkInfo.isConnected()) {
 
-                                    String updateId = viewHolder.prodOverviewTitle.getTag().toString();
-                                    //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-                                    new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), updateId);
-                                    mDataSet.get(position).setIsEditable(false);
-                                } else {
-                                    Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                                            .setActionTextColor(Color.RED)
-                                            .show();
+                                        String updateId = viewHolder.prodOverviewTitle.getTag().toString();
+                                        //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
+                                        new APIClient(activity_main, mContext, new UpdateCallBack()).updateCart(updateJson.toString(), userId);
+                                        mDataSet.get(position).setIsEditable(false);
+                                    } else {
+                                        Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                                .setActionTextColor(Color.RED)
+                                                .show();
+                                    }
                                 }
                             }
+
+
+                            return true;
                         }
-
-
-                        return true;
-                    }
               /*  if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
 
                 }*/
@@ -706,13 +760,12 @@ System.out.println("KEY                 "+valueQuantity);
                     }*/
 
 
-
-                }
+                    }
 
                     return false;
                 }
 
-        });
+            });
        /* viewHolder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -730,32 +783,57 @@ System.out.println("KEY                 "+valueQuantity);
                 }
             }
         });*/
-        viewHolder.remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDataSet.get(position).isEditable()) {
-                    //TextView deleteId = (TextView) v.findViewById(R.id.list_content);
-                    String deleteId = viewHolder.prodOverviewTitle.getTag().toString();
-                    System.out.println(viewHolder.prodOverviewTitle.getTag());
+            viewHolder.remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mDataSet.get(position).isEditable()) {
+                        //TextView deleteId = (TextView) v.findViewById(R.id.list_content);
+                        String deleteId = viewHolder.prodOverviewTitle.getTag().toString();
+                        System.out.println(viewHolder.prodOverviewTitle.getTag());
+                        HashMap<String, Object> updateString = new HashMap<String, Object>();
+                        //updateString.put("quantity", Integer.parseInt(viewHolder.quantity.getText().toString()));
 
-                    if (networkInfo != null && networkInfo.isConnected()) {
+                        updateString.put("ACTION", "REMOVE");
+                        updateString.put("CID", Integer.parseInt(deleteId));
 
 
-                        //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-                        new APIClient(activity_main, mContext, new RemoveProductCallBack()).removeProductFromCartCall(deleteId);
-                        mDataSet.get(position).setIsEditable(false);
+                        JSONObject updateJson = new JSONObject(updateString);
+                        System.out.println("INT" + updateJson);
+                        System.out.println("INT" + updateJson.toString());
+                        if (networkInfo != null && networkInfo.isConnected()) {
 
-                    } else {
-                        Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
-                                .setActionTextColor(Color.RED)
-                                .show();
+
+                            //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
+                            new APIClient(activity_main, mContext, new RemoveProductCallBack()).removeProductFromCartCall(userId, Integer.parseInt(deleteId));
+                            mDataSet.get(position).setIsEditable(false);
+
+                        } else {
+                            Snackbar.make(activity_main.findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+                        }
+
+
+                        //  remove(item);
                     }
-
-
-                    //  remove(item);
                 }
-            }
-        });
+            });
+        }
+        else
+        {
+            final FooterHolder footer = (FooterHolder) viewHolder1;
+            footer.count.setText(mDataSet.get(position).getToatalItems());
+            footer.sum.setText("AED "+mDataSet.get(position).getSum());
+            footer.delivery.setText(mDataSet.get(position).getDelivery());
+
+            footer.delivery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((CheckOutActivity)mContext).populate();
+
+                }
+            });
+        }
 
 //        viewHolder.main_prodRatingBar.setRating(4);
 
@@ -863,7 +941,19 @@ System.out.println("KEY                 "+valueQuantity);
 
 
 
+    public static class FooterHolder extends RecyclerView.ViewHolder {
 
+TextView count,sum,total,delivery;
+
+        FooterHolder(View itemView) {
+            super(itemView);
+count=(TextView)itemView.findViewById(R.id.totalItemsCount);
+            sum=(TextView)itemView.findViewById(R.id.subTotal);
+            delivery=(TextView)itemView.findViewById(R.id.shippingText);
+
+
+        }
+    }
 
 
 

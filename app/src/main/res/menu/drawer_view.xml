@@ -30,6 +30,12 @@
             android:icon="@drawable/order_history_icon"
             android:title="Orders History" />
 
+        <item
+            android:id="@+id/offers"
+            app:itemTextColor="#333333"
+            android:icon="@drawable/offers_icon"
+            android:title="Offers" />
+
     </group>
 
 
@@ -61,6 +67,7 @@
     <group android:id="@+id/sub_item_logout">
         <item
             android:id="@+id/navigation_Logout"
+            android:visible="false"
             app:itemTextColor="#333333"
             android:icon="@drawable/logout_ico"
             android:title="Logout" />

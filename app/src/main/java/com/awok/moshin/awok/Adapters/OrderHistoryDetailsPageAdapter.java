@@ -146,7 +146,9 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<Recycle
             final HeaderViewHolder headView = (HeaderViewHolder) viewholder;
             headView.orderStatus.setText(orderHistoryDetailsData.get(position).getHeadOrderStatus());
             headView.orderTimeDate.setText(orderHistoryDetailsData.get(position).getHeadOrderTime());
-            headView.button.setText(orderHistoryDetailsData.get(position).getHeadOrderMessageCount());
+            headView.deliveryEstimate.setText(orderHistoryDetailsData.get(position).getEstimatedDelivery());
+            headView.shipmentStatus.setText(orderHistoryDetailsData.get(position).getIsShipped());
+            //headView.button.setText(orderHistoryDetailsData.get(position).getHeadOrderMessageCount());
         }
 
 
@@ -158,7 +160,7 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<Recycle
         else if (viewholder.getItemViewType() == 1) {
             final ViewHolder holder = (ViewHolder) viewholder;
             ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-            imageLoader.get(orderHistoryDetailsData.get(position).getImage(), new ImageLoader.ImageListener() {
+            imageLoader.get("http://"+orderHistoryDetailsData.get(position).getImage(), new ImageLoader.ImageListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     holder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
@@ -178,10 +180,10 @@ public class OrderHistoryDetailsPageAdapter extends RecyclerView.Adapter<Recycle
 
             holder.price.setText(orderHistoryDetailsData.get(position).getPrice());
             holder.quantity.setText(orderHistoryDetailsData.get(position).getQuantity() + "X ");
-            holder.daysData.setText(orderHistoryDetailsData.get(position).getEstimated_days_from() + " days - " + orderHistoryDetailsData.get(position).getEstimated_days_to() + " days");
+         //   holder.daysData.setText(orderHistoryDetailsData.get(position).getEstimated_days_from() + " days - " + orderHistoryDetailsData.get(position).getEstimated_days_to() + " days");
             holder.title.setText(orderHistoryDetailsData.get(position).getTitle());
-            holder.seller.setText("Seller: " + orderHistoryDetailsData.get(position).getShipping());
-            holder.shipping.setTag(orderHistoryDetailsData.get(position).getTitle());
+          //  holder.seller.setText("Seller: " + orderHistoryDetailsData.get(position).getShipping());
+          //  holder.shipping.setTag(orderHistoryDetailsData.get(position).getTitle());
 
       /*  }
         else {
@@ -341,7 +343,7 @@ daysData=(TextView)itemLayoutView
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
-        TextView  orderStatus,orderTimeDate;
+        TextView  orderStatus,orderTimeDate,deliveryEstimate,shipmentStatus;
         Button button;
 
 
@@ -350,6 +352,8 @@ daysData=(TextView)itemLayoutView
 
             orderStatus=(TextView)itemView.findViewById(R.id.orderStatus);
             orderTimeDate=(TextView)itemView.findViewById(R.id.orderTimeDate);
+            deliveryEstimate=(TextView)itemView.findViewById(R.id.deliveryStatus);
+            shipmentStatus=(TextView)itemView.findViewById(R.id.shipStatus);
             //RatingBar ratingBar=(RatingBar)mView.findViewById(R.id.main_prodRatingBar);
             button=(Button)itemView.findViewById(R.id.button);
 

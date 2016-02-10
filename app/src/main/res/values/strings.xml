@@ -11,6 +11,7 @@
     <string name="color">Color</string>
     <string name="country_code">+971</string>
     <string name="mobile_number">Mobile Number</string>
+    <string name="email_id">Enter Email Id</string>
     <string name="user_login_register">User Log In/Register</string>
     <string name="logout">Logout</string>
     <string name="cart_alert">Cart Alert</string>
@@ -28,9 +29,10 @@
     <string name="notifications">Notifications</string>
     <string name="my_orders">My Orders</string>
     <string name="payment_method">Payment Method</string>
+    <string name="facebook_app_id">533205070180105</string>
     <string name="shipping_address">Shipping Address</string>
-    <string name="address_1">Adress 1</string>
-    <string name="address_2">Add New Address</string>
+    <string name="address_1">Address </string>
+    <string name="address_2">Address </string>
     <string name="profile_picture">Profile Picture</string>
 
     <string name="buy_now">BUY NOW</string>
@@ -41,7 +43,9 @@
     <string name="enter_password_and_confirm_password">Please enter your password and confirm password to register.</string>
     <string name="head_txt">Stylish Design</string>
     <string name="body_txt">A sophisticated design and practicality. The Samsung Galaxy Tab 4 (10.1") has it all. Its sleek design is accented by a luxurious back cover with a leather-like texture that adds a premium feel and classic look.</string>
-    <string name="enter_mobile_number">Enter your mobile number</string>
+    <string name="enter_mobile_number">Enter your mobile number(+971) **********</string>
+    <string name="enter_emailId">Enter your Email Id</string>
+    <string name="enter_email">Enter your Email Address</string>
     <string name="order_placed_successfully">Your order has been placed successfully</string>
     <string name="order_placed_failure">Your order was failed and was not placed! Please try again.</string>
     <string name="skip">Skip</string>
@@ -50,11 +54,13 @@
 Introducing the world’s first 4K smartphone</string>
     <string name="check_out_price">3000 AED</string>
     <string name="enter_password">Please Enter Password</string>
+    <string name="enter_min_char">Please Enter atleast 6 characters</string>
     <string name="total">Total:</string>
     <string name="aed">AED</string>
     <string name="please_confirm_password">Please Confirm Your Password</string>
     <string name="password_do_not_match">Passwords do not match</string>
     <string name="incorrect_mobile">Mobile number is incorrect</string>
+    <string name="incorrect_email">Email Id is incorrect</string>
     <!--<string name="enter_password">Please Enter Password</string>-->
     <!--<string name="enter_password">Please Enter Password</string>-->
     <!--<string name="enter_password">Please Enter Password</string>-->
@@ -80,6 +86,7 @@ Introducing the world’s first 4K smartphone</string>
     <string name="gender">Gender</string>
     <string name="save">SAVE</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="hint_phone">Phone Number with area code</string>
     <string name="create_account">CREATE ACCOUNT</string>
 
     <string name="enter_your_full_name">Enter your full name</string>
@@ -179,6 +186,7 @@ Introducing the world’s first 4K smartphone</string>
     <string name="title_activity_add_new_address">AddNewAddress</string>
     <string name="err_msg_name">Invalid or Incorrect Name</string>
     <string name="err_msg_add">Please Enter Address</string>
+    <string name="err_msg_email">Please Enter Email</string>
     <string name="err_msg_pin">Invalid PIN</string>
     <string name="err_msg_phone">Invalid Phone Number</string>
     <string name="discount">41%</string>
@@ -191,4 +199,9 @@ Introducing the world’s first 4K smartphone</string>
     <string name="title_activity_modify_dispute">ModifyDispute</string>
     <string name="title_activity_dispute_list">DisputeList</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_pick__payment__activity">Pick_Payment_ACtivity</string>
+    <string name="title_activity_offers">OffersActivity</string>
+    <string name="title_activity_order_detail_summary">OrderDetailSummary</string>
+    <string name="title_activity_offers_category">OffersCategoryActivity</string>
+    <string name="title_activity_category_web_view">CategoryWebView</string>
 </resources>

@@ -79,19 +79,19 @@
         android:id="@+id/profileParentLayout"
         android:background="@color/gray_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="120dp">
 
 
 
             <ImageView
                 android:id="@+id/avatar"
-                android:src="@drawable/sony"
+                android:src="@drawable/default_img"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:elevation="4dp"
-                android:layout_marginTop="24dp"
+              android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
-                android:layout_marginBottom="24dp"
+
                 android:layout_alignParentLeft="true"
                 />
 
@@ -103,10 +103,9 @@
                 android:layout_alignTop="@+id/avatar"
                 android:layout_toRightOf="@+id/avatar"
                 android:textColor="@color/button_text"
-                android:layout_height="wrap_content"
-                android:text="Mohsin Hussain Butt"
-                />
+                android:layout_height="wrap_content" />
             <TextView
+                android:visibility="gone"
                 android:id="@+id/locationTextView"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -119,6 +118,7 @@
                 />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/followingTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -131,6 +131,7 @@
                 />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/followersTextView"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="5dp"
@@ -155,6 +156,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp">
@@ -182,12 +184,14 @@
                     android:textColor="@color/primary"/>
             </RelativeLayout>
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/border"></RelativeLayout>
 
 
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp">
@@ -215,6 +219,7 @@
                     android:textColor="@color/primary"/>
             </RelativeLayout>
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/border"></RelativeLayout>
@@ -256,6 +261,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/paymentGrid"
                 android:layout_width="match_parent"
                 android:padding="15dp"
                 android:layout_height="wrap_content">
@@ -275,7 +281,7 @@
                     android:textColor="@color/normal_text"/>
                 <TextView
                     android:id="@+id/paymentValueTextView"
-                    android:text="Paypal"
+                    android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -306,14 +312,84 @@
                     android:layout_toRightOf="@+id/shippingAddressImageView"
                     android:textSize="16sp"
                     android:textColor="@color/normal_text"/>
-                <ImageView
-                    android:id="@+id/shippingDetailIconImageView"
+                <TextView
+                    android:text=""
+                    android:id="@+id/addressCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/navdot_icon" />
+
+
+
+                     />
+
+
+
+
+
+
             </RelativeLayout>
+
+
+
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/addressContentLayout"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/radioAddress">
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:padding="2dp"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+
+                    android:text="Primary Address:"
+                    android:id="@+id/name" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:padding="2dp"
+                    android:layout_below="@+id/name"
+                    android:layout_height="wrap_content"
+
+                    android:id="@+id/address" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:padding="2dp"
+                    android:layout_below="@+id/address"
+                    android:layout_height="wrap_content"
+
+                    android:id="@+id/state" />
+
+                <TextView
+                    android:layout_below="@+id/state"
+                    android:layout_width="wrap_content"
+                    android:padding="2dp"
+
+                    android:layout_height="wrap_content"
+                    android:id="@+id/country" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="4546545464"
+                    android:id="@+id/phone"
+                    android:layout_below="@+id/country" />
+
+
+            </RelativeLayout>
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

@@ -194,9 +194,9 @@
             android:background="@drawable/edittext_edit_text_holo_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
 
-            android:hint="Enter  Zip / Postal Code"
+            android:hint="Enter Email Address"
             android:ems="10"
             android:id="@+id/zipPostal"
             android:layout_alignParentTop="true"
@@ -240,7 +240,7 @@
             android:background="@drawable/edittext_edit_text_holo_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="phone"
 
             android:hint="Enter Your Phone Number"
             android:ems="10"
@@ -277,7 +277,7 @@
                 android:background="@drawable/edittext_edit_text_holo_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="phone"
                 android:hint="Enter Your Phone Number"
                 android:ems="10"
                 android:id="@+id/phone2"
@@ -342,6 +342,26 @@
 
         />
     </LinearLayout>
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/primary"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/phone2Main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Make as Primary Address"
+            android:id="@+id/primaryCheck" />
+
+    </LinearLayout>
+
+
 </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>
         <LinearLayout
@@ -374,4 +394,35 @@
 
         </LinearLayout>
         </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/progressLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/loader_bg"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:id="@+id/marker_progress"
+            android:indeterminateDrawable="@drawable/progress_bar_load_more"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:text="Loading.."
+            android:textColor="@color/normal_text"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
     </RelativeLayout>

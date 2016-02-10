@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -33,7 +32,6 @@ import com.awok.moshin.awok.Models.ProductRatingPageModel;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
-import com.awok.moshin.awok.Util.EndlessRecyclerOnScrollListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,12 +65,14 @@ public class ReviewsFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout reviewsLayout;
+    private int totalPages=2;
     private boolean loading = true;
-    ProductRatingPageModel prodRatingData=new ProductRatingPageModel();
+
     private int current_page = 1;
+
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private List<ProductRatingPageModel> prodRating = new ArrayList<ProductRatingPageModel>();
-private ScrollView nestedScroll;
+private RelativeLayout nestedScroll;
     private int visibleThreshold = 5;
     View views;
 
@@ -103,7 +103,7 @@ private ScrollView nestedScroll;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View mView = inflater.inflate(R.layout.fragment_reviews, container, false);
-        nestedScroll=(ScrollView)mView.findViewById(R.id.nestedScroll);
+        nestedScroll=(RelativeLayout)mView.findViewById(R.id.nestedScroll);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.overViewRecyclerView);
         views=(View)mView.findViewById(R.id.view);
 //
@@ -118,7 +118,7 @@ private ScrollView nestedScroll;
    /////////     mRecyclerView.setNestedScrollingEnabled(false);
         // mRecyclerView.hasNestedScrollingParent();
   //////////      mRecyclerView.setHasFixedSize(false);
-        mLayoutManager=new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mLayoutManager=new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         //mLayoutManager=new MyLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
         //mRecyclerView.setLayoutManager(new com.awok.moshin.awok.Util.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
@@ -144,14 +144,62 @@ private ScrollView nestedScroll;
 
 
 
-views.setOnClickListener(new View.OnClickListener() {
+/*views.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         onLoadMore();
     }
-});
+});*/
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+//                    StaggeredGridLayoutManager layoutManager = ((StaggeredGridLayoutManager) mRecyclerView.getLayoutManager());
+                int visibleItemCount, totalItemCount, firstVisibleItem;
+//
+                visibleItemCount = mRecyclerView.getChildCount();
+                totalItemCount = mLayoutManager.getItemCount();
 
 
+                firstVisibleItem = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount)
+                        <= (firstVisibleItem + 5)) {
+                    // End has been reached
+
+                    // Do something
+                   /*     for (int j=0;j<20;j++)
+                        {
+                            Model mm=new Model();
+
+
+                            mm.setText("I am "+j);
+                            mm.setColor("Color is" + j);
+
+
+                            model.add(mm);
+
+                        }*/
+                    System.out.println("TOTAL" + totalPages);
+                    current_page++;
+                    if(totalPages>=current_page) {
+                        onLoadMore();
+//                        mRecAdapter.notifyDataSetChanged();
+
+
+                        loading = true;
+                    }
+                }
+            }
+        });
 
 
 /*nestedScroll.setOnScrollChangeListener(new OnScrollChangeListener() {
@@ -413,7 +461,7 @@ System.out.println("COUNT"+current_page);
 
         }
 
-        if(savedBy.equals("")||savedBy.equals("0"))
+       /* if(savedBy.equals("")||savedBy.equals("0"))
         {
             savedByTxt.setVisibility(View.GONE);
         }
@@ -423,7 +471,7 @@ System.out.println("COUNT"+current_page);
             savedByTxt.setText("Saved By: "+savedBy+" people");
 
 
-        }
+        }*/
 
 
         productNameView.setText(productName);
@@ -431,13 +479,13 @@ System.out.println("COUNT"+current_page);
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         if(image.equals(""))
         {
-            imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+            imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.cart_icon));
         }
         else {
-            imageLoader.get(image, new ImageLoader.ImageListener() {
+            imageLoader.get("http://"+image, new ImageLoader.ImageListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                    imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.cart_icon));
                     progressBar.setVisibility(View.GONE);
                 }
 
@@ -512,6 +560,15 @@ System.out.println("COUNT"+current_page);
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
+            if(!rating.get(rating.size()-1).isLoader()){
+            rating.add(new ProductRatingPageModel(true, "Loading More..."));
+
+            mAdapter.notifyItemInserted((rating.size() - 1));
+        }
+        else{
+            //rating.remove(new ProductRatingPageModel(true, "Loading More..."));
+            //mAdapter.notifyItemRemoved((rating.size() - 1));
+        }
             new APIClient(getActivity(), getActivity(),  new GetCartCallback()).productReviewCommentsCallBack(productId,current_page);
 
         } else {
@@ -521,7 +578,7 @@ System.out.println("COUNT"+current_page);
                     .show();*/
 
 
-            Snackbar snackbar =Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+            Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED);
 
             View snackbarView = snackbar.getView();
@@ -609,7 +666,7 @@ System.out.println("COUNT"+current_page);
 
 
 
-    public void call(List<ProductRatingPageModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String savedBy,String productId) {
+    public void call(List<ProductRatingPageModel> rating,String productName,String image,String ratingValue,String ratingCountValue,String boughtBy,String productId) {
         this.productName = productName;
         this.image = image;
         System.out.println(image + " review Frag");
@@ -617,11 +674,11 @@ System.out.println("COUNT"+current_page);
         this.ratingCount = ratingCountValue;
         this.rating = rating;
         this.boughtBy = boughtBy;
-        this.savedBy = savedBy;
+        //this.savedBy = savedBy;
         this.productId = productId;
 
 
-        if (boughtByTxt != null || savedByTxt != null || imgMain != null || ratingCounttxt != null) {
+        if (boughtByTxt != null ||imgMain != null || ratingCounttxt != null) {
 
             if (this.boughtBy.equals("") || this.boughtBy.equals("0")) {
                 boughtByTxt.setVisibility(View.GONE);
@@ -633,7 +690,7 @@ System.out.println("COUNT"+current_page);
 
             }
 
-            if (this.savedBy.equals("") || this.savedBy.equals("0")) {
+           /* if (this.savedBy.equals("") || this.savedBy.equals("0")) {
                 savedByTxt.setVisibility(View.GONE);
             } else {
 
@@ -641,19 +698,19 @@ System.out.println("COUNT"+current_page);
                 savedByTxt.setVisibility(View.VISIBLE);
 
 
-            }
+            }*/
 
 
             productNameView.setText(this.productName);
             System.out.println(image + "image");
         /*ImageLoader imageLoader = AppController.getInstance().getImageLoader();*/
             if (this.image.equals("")) {
-                imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.cart_icon));
             } else {
                 imageLoader.get(this.image, new ImageLoader.ImageListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_img));
+                        imgMain.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.cart_icon));
                         progressBar.setVisibility(View.GONE);
                     }
 
@@ -745,11 +802,16 @@ System.out.println("COUNT"+current_page);
             try {
 
 
+
+
+
+                rating.remove((rating.size()-1));
+
                 JSONObject jsonObjectData;
                 jsonObjectData = new JSONObject(response);
 
 
-                if (jsonObjectData.getString("errors").equals("true")) {
+             ///////////////////////   if (jsonObjectData.getString("errors").equals("true")) {
 
 
                    /* Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "No More Comments", Snackbar.LENGTH_LONG)
@@ -760,36 +822,37 @@ System.out.println("COUNT"+current_page);
                     TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
                     textView.setTextColor(Color.WHITE);
                     snackbar.show();*/
-                } else {
+          ///////////      } else {
 
-                    for (int i = 0; i < jsonObjectData.getJSONObject("data").getJSONArray("comments").length(); i++) {
+                    for (int i = 0; i < jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("PRODUCT_REVIEWS").getJSONArray("MESSAGES").length(); i++) {
+                        ProductRatingPageModel prodRatingData=new ProductRatingPageModel();
 
+                        JSONObject data = jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("PRODUCT_REVIEWS").getJSONArray("MESSAGES").getJSONObject(i);
 
-                        JSONObject data = jsonObjectData.getJSONObject("data").getJSONArray("comments").getJSONObject(i);
-
-                        prodRatingData.setContent(data.getJSONObject("data").getString("content"));
-                        prodRatingData.setRate(data.getJSONObject("data").getString("rate"));
-                        prodRatingData.setUsername(data.getString("username"));
-
-
+                        prodRatingData.setContent(data.getString("MESSAGE"));
+                       // prodRatingData.setRate(data.getString("rate"));
+                        prodRatingData.setUsername(data.getString("NAME"));
 
 
 
-                        if(data.has("days")){
+
+
+                       /* if(data.has("days")){
                             prodRatingData.setDays(data.getString("days"));
                         }
                         else{
                             prodRatingData.setDays(data.getString("created_at"));
-                        }
-
+                        }*/
+prodRatingData.setDays(data.getString("DATE_UPDATED"));
 
                         rating.add(prodRatingData);
 
                     }
                     //     mRecyclerView.setAdapter(mAdapter);
-                }
+              ////////  }
+                totalPages=(int)Math.ceil((jsonObjectData.getJSONObject("OUTPUT").getJSONObject("NAVIGATION").getDouble("TOTAL") / jsonObjectData.getJSONObject("OUTPUT").getJSONObject("NAVIGATION").getDouble("COUNT")));
                 mAdapter.notifyDataSetChanged();
-                current_page++;
+               // current_page++;
 
                 }catch(JSONException e){
                     e.printStackTrace();

@@ -3,6 +3,7 @@ package com.awok.moshin.awok.NetworkLayer;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.awok.moshin.awok.Util.Constants;
 import com.awok.moshin.awok.Util.Utilities;
 
 import org.apache.http.conn.ConnectTimeoutException;
@@ -49,7 +50,9 @@ public class HTTPClient{
     public String oauth_cookies;
     //	public Boolean oauth_client = true;
     SharedPreferences mSharedPrefs;
+    String token="";
     static int TIMEOUT_VALUE = 10000;
+
 
 
 
@@ -90,6 +93,10 @@ public class HTTPClient{
             oauth_cookies = mSharedPrefs.getString("cookie", null);
 //			Log.v(TAG, "OAuth Token from Shared Preferences: " + oauth_token);
 //			Log.d(TAG, "Shared Preferences loaded.");
+        }
+        if ((mSharedPrefs.contains(Constants.USER_AUTH_TOKEN_PREFS)))
+        {
+             token = mSharedPrefs.getString(Constants.USER_AUTH_TOKEN_PREFS, null);
         }
     }
 
@@ -190,6 +197,9 @@ public class HTTPClient{
         con.setRequestMethod("GET");
 //        con.setRequestProperty("Cookie", oauth_cookies);
         con.setRequestProperty("Parameters", params);
+        //con.setRequestProperty("Content-Type","application/json");
+        con.setRequestProperty("Authorization",token);
+        System.out.println("LOGOUT" + token);
 //		if (oauth_client)
 //			con.setRequestProperty("Authorization", getAuthString());
 //        con.setRequestProperty("Content-Length", "0");
@@ -225,9 +235,12 @@ public class HTTPClient{
         urlConn.setDoInput(true);
         urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
-        urlConn.setRequestProperty("Content-Type","text/plain");
+        //urlConn.setRequestProperty("Content-Type","text/plain");
+        urlConn.setRequestProperty("Content-Type","application/json");
 //        urlConn.setRequestProperty("Host", "android.schoolportal.gr");
+        urlConn.setRequestProperty("Authorization",token);
         urlConn.connect();
+        System.out.println("LOGOUT" + token);
 //Create JSONObject here
 //        JSONObject jsonParam = new JSONObject();
 //        jsonParam.put("ID", "25");
@@ -250,29 +263,34 @@ public class HTTPClient{
         System.out.println("VHFGHDFHFhf" + urlConn.getURL().toString());
         System.out.println("VHFGHDFHFhf"+ params.toString());
         System.out.println("GO"+urlConn.getContentType());
+
         String resp = readURL(urlConn);
+        System.out.println("POST Response: " + resp);
         Log.v(TAG, "POST Response: " + resp);
         return resp;
     }
 
-    public String put(String reqapi,String params) throws IOException
+    public String patch(String reqapi,String params) throws IOException
     {
-       /* URL url = new URL(reqapi);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setConnectTimeout(2000);
-        con.setDoInput(true);
-        con.setDoOutput(true);
-        con.setRequestMethod("PUT");
+//        URL url = new URL(reqapi);
+//        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+//        con.setConnectTimeout(2000);
+//
+//
+//        con.setDoOutput(true);
+//        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+////        con.setRequestProperty("Cookie", oauth_cookies);
+//        //con.setRequestProperty("Parameters", params);
+//
+//        con.setRequestMethod("POST");
+//        OutputStreamWriter wr= new OutputStreamWriter(con.getOutputStream());
+//        wr.write(params.toString());
 
-        con.setRequestProperty("Parameters", params);
-        con.setRequestProperty("Content-Length", "0");
-
-        String resp = readURL(con);
-
-        Log.v(TAG, "PUT Response: " + resp);
-        return resp;*/
         URL url = new URL(reqapi);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestProperty("Content-Type","application/json");
+        con.setRequestProperty("Authorization",token);
+
         con.setConnectTimeout(2000);
         con.setDoInput(true);
 
@@ -302,25 +320,165 @@ public class HTTPClient{
         return resp;
     }
 
-    public String delete(String reqapi, String params) throws IOException
+   /* public String patch(String reqapi,String params) throws IOException
     {
+       *//* URL url = new URL(reqapi);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setConnectTimeout(2000);
+        con.setDoInput(true);
+        con.setDoOutput(true);
+        con.setRequestMethod("PUT");
+
+        con.setRequestProperty("Parameters", params);
+        con.setRequestProperty("Content-Length", "0");
+
+        String resp = readURL(con);
+
+        Log.v(TAG, "PUT Response: " + resp);
+        return resp;*//*
         URL url = new URL(reqapi);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setConnectTimeout(2000);
         con.setDoInput(true);
+
+        con.setRequestMethod("PATCH");
+        con.setRequestProperty("Content-Type","application/json");
+        con.setRequestProperty("login-access-token", "97f4d72a59c9670f32a10954de6814be");
+//        con.setRequestProperty("Cookie", oauth_cookies);
+        if(params!=null){
+            con.setRequestProperty("Parameters", params);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream ());
+            wr.writeBytes(params.toString());
+
+            wr.flush();
+            wr.close();
+        }
+
+//		if (oauth_client)
+//			con.setRequestProperty("Authorization", getAuthString());
+//        con.setRequestProperty("Content-Length", "0");
+
+        //String resp = readURL(con);
+
+
+        System.out.println("VHFGHDFHFhf" + con.getURL().toString());
+//        System.out.println("VHFGHDFHFhf"+ params.toString());
+        System.out.println("GO"+con.getContentType());
+        String resp = readURL(con);
+        Log.v(TAG, "POST Response: " + resp);
+        return resp;
+    }*/
+
+
+    public String put(String reqapi,String params) throws IOException
+    {
+       /* URL url = new URL(reqapi);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setConnectTimeout(2000);
+        con.setDoInput(true);
+        con.setDoOutput(true);
+        con.setRequestMethod("PUT");
+
+        con.setRequestProperty("Parameters", params);
+        con.setRequestProperty("Content-Length", "0");
+
+        String resp = readURL(con);
+
+        Log.v(TAG, "PUT Response: " + resp);
+        return resp;*/
+   /*     URL url = new URL(reqapi);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setConnectTimeout(2000);
+        con.setRequestMethod("PUT");
+        con.setDoInput(true);
+        con.setRequestProperty("Content-Type","application/json");
+        con.setRequestProperty("login-access-token",token);
+
+//        con.setRequestProperty("Cookie", oauth_cookies);
+        if(params!=null){
+            con.setRequestProperty("Parameters", params);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream ());
+            wr.writeBytes(params.toString());
+
+            wr.flush();
+            wr.close();
+        }*/
+
+
+
+
+
+        URL url = new URL(reqapi);
+        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+        httpCon.setDoOutput(true);
+        httpCon.setRequestMethod("PUT");
+        httpCon.setRequestProperty("Authorization", token);
+
+        if(params!=null) {
+            httpCon.setRequestProperty("Content-Type","application/json");
+            OutputStreamWriter out = new OutputStreamWriter(
+                    httpCon.getOutputStream());
+            out.write(params);
+            out.close();
+        }
+
+
+//		if (oauth_client)
+//			con.setRequestProperty("Authorization", getAuthString());
+//        con.setRequestProperty("Content-Length", "0");
+
+        //String resp = readURL(con);
+
+
+        System.out.println("VHFGHDFHFhf" + httpCon.getURL().toString());
+//        System.out.println("VHFGHDFHFhf"+ params.toString());
+        System.out.println("GO"+httpCon.getContentType());
+        String resp = readURL(httpCon);
+        Log.v(TAG, "POST Response: " + resp);
+        return resp;
+    }
+
+    public String delete(String reqapi, String params) throws IOException
+    {
+     /*   URL url = new URL(reqapi);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setDoInput(true);
+        con.setRequestProperty("Parameters", params);
+        con.setRequestProperty("login-access-token", "97f4d72a59c9670f32a10954de6814be");
         //con.setDoOutput(true);
         con.setRequestMethod("DELETE");
 //        con.setRequestProperty("Cookie", oauth_cookies);
-        con.setRequestProperty("Content-Length", "0");
-        con.setRequestProperty("Parameters", params);
+     *//*   con.setRequestProperty("Content-Length", "0");
+        con.setRequestProperty("Parameters", params);*//*
 //		if (oauth_client)
 //			con.setRequestProperty("Authorization", getAuthString());
 
         String resp = readURL(con);
 
         Log.v(TAG, "DELETE Response: " + resp);
-       /* System.out.println("VHFGHDFHFhf" + con.getURL().toString());
+        System.out.println("VHFGHDFHFhf" + con.getURL().toString());
+        System.out.println("GO"+con.getContentType());
+        System.out.println(TAG+ "DELETE Response: " + resp);
+       *//* System.out.println("VHFGHDFHFhf" + con.getURL().toString());
         System.out.println("VHFGHDFHFhf"+ params.toString());
-        System.out.println("GO" + con.getContentType());*/
+        System.out.println("GO" + con.getContentType());*//*
+        return resp;*/
+        URL url = new URL(reqapi);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setConnectTimeout(2000);
+        con.setDoInput(true);
+
+        con.setRequestMethod("DELETE");
+//        con.setRequestProperty("Cookie", oauth_cookies);
+        con.setRequestProperty("Parameters", params);
+        con.setRequestProperty("Authorization",token);
+//		if (oauth_client)
+//			con.setRequestProperty("Authorization", getAuthString());
+//        con.setRequestProperty("Content-Length", "0");
+
+        String resp = readURL(con);
+
+        Log.v(TAG, "GET Response: " + resp);
         return resp;
     }
 

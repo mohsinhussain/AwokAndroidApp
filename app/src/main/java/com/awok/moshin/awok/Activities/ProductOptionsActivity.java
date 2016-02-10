@@ -1,7 +1,9 @@
 package com.awok.moshin.awok.Activities;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +11,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,19 +21,24 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -79,6 +88,8 @@ public class ProductOptionsActivity extends AppCompatActivity {
     SizeSpecGridAdapter sizeAdapter;
     EditText quantity;
     Button increment, decrement;
+    private TextView inputNumberErrorTextView;
+    ProgressBar progressBarForm;
     String colorString = "";
     String storageString = "";
     String sizeString = "";
@@ -87,34 +98,63 @@ public class ProductOptionsActivity extends AppCompatActivity {
     StaggeredGridLayoutManager colorLayoutManager, storageLayoutManager, sizeLayoutManager;
     private String valueQuantity;
     private int stockQuantity;
+    private String uid,ssid,sku;
     String variantId = "";
     Button checkOutButton;
     RelativeLayout shippingMethodSelectionLayout;
     TextView errorTextView;
     SharedPreferences mSharedPrefs;
     private ImageView countryImage;
+TextView loginErrorTextView,registrationErrorTextView;
     String imageIco;
     int imageSource;
+    String code="";
+    String phoneNumber="";
     ConnectivityManager connMgr;
     NetworkInfo networkInfo;
     String savedMethodName = "";
     String savedMethodProfileId = "";
     JSONObject dataToSend;
+    Dialog inputNumberDialog;
+    String userId="";
+    Snackbar toast;
     ImageView productImageView;
     TextView productNameTextView, priceTexView, colorTextView, sizeTextView;
     JSONArray variantsArray;
     JSONObject specsObject;
+    String emailId="";
+    String password="";
+    Dialog shippingDialog;
+    Dialog loginDialog;
+    private String sendValue="";
+EditText passwordEditText;
+    CountDownTimer timerLoop;
+    private CountDownTimer countDownTimer;
+    Dialog verifyDialog;
+    EditText emailEditText;
+    Dialog registerDialog;
+    private JSONObject variantData;
     View topQuantityBorder;
     TextView colorLabelTextView, countryNameTextView;
     String shippingResponse = "";
     TextView outOfStockMessageTextView;
     LinearLayout quantityCountLayout;
+    ProgressBar progressBarLogin;
+    private  long startTime=0;
+    private String valueValidation="";
+
+    private final long interval = 1 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_product_options);
+        mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
+        if ((mSharedPrefs.contains(Constants.USER_ID_PREFS)))
+        {
+            userId = mSharedPrefs.getString(Constants.USER_ID_PREFS, null);
+        }
         checkOutButton = (Button) findViewById(R.id.checkOutButton);
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressLayout = (LinearLayout) findViewById(R.id.progressLayout);
@@ -186,11 +226,12 @@ public class ProductOptionsActivity extends AppCompatActivity {
 
 
         productId =getIntent().getExtras().getString(Constants.PRODUCT_ID_INTENT);
+        variantId=productId;
         productNameTextView.setText(getIntent().getExtras().getString(Constants.PRODUCT_NAME_INTENT));
         priceTexView.setText(getIntent().getExtras().getString(Constants.PRODUCT_PRICE_NEW_INTENT));
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         String imageURL = getIntent().getExtras().getString(Constants.PRODUCT_IMAGE_INTENT);
-        imageLoader.get(imageURL, new ImageLoader.ImageListener() {
+        imageLoader.get("http://"+imageURL, new ImageLoader.ImageListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 productImageView.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
@@ -206,6 +247,13 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 }
             }
         });
+ssid=getIntent().getExtras().getString("SSID");
+        uid=getIntent().getExtras().getString("UID");
+        sku=getIntent().getExtras().getString("SKU");
+
+
+
+
 
         try {
             //null pointer exception
@@ -216,24 +264,37 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 specsObject = new JSONObject();
             }
             specsObject = new JSONObject(getIntent().getExtras().getString(Constants.PRODUCT_SPECS_INTENT));
-            variantsArray = new JSONArray(getIntent().getExtras().getString(Constants.PRODUCT_VARIANTS_INTENT));
+///            variantsArray = new JSONArray(getIntent().getExtras().getString(Constants.PRODUCT_VARIANTS_INTENT));
 
-                if(specsObject.has("colors")){
-                    for(int i=0;i<specsObject.getJSONArray("colors").length();i++){
-                        colorArray.add(new ColorSpec(specsObject.getJSONArray("colors").getJSONObject(i).getString("color"),
-                                specsObject.getJSONArray("colors").getJSONObject(i).getString("image"), false));
+                if(specsObject.has("COLORS")){
+                    for(int i=0;i<specsObject.getJSONArray("COLORS").length();i++){
+                        if(specsObject.getJSONArray("COLORS").getJSONObject(i).has("PICTURE")) {
+                            colorArray.add(new ColorSpec(specsObject.getJSONArray("COLORS").getJSONObject(i).getString("NAME"),
+                                    specsObject.getJSONArray("COLORS").getJSONObject(i).getString("PICTURE"), false));
+                        }
+                        else
+                        {
+                            colorArray.add(new ColorSpec(specsObject.getJSONArray("COLORS").getJSONObject(i).getString("NAME"),
+                                    getIntent().getExtras().getString(Constants.PRODUCT_IMAGE_INTENT), true));
+                        }
                     }
                 }
 
 
-                if(specsObject.has("sizes")){
-                    for(int i=0;i<specsObject.getJSONArray("sizes").length();i++){
-                        storageArray.add(new StorageSpec(specsObject.getJSONArray("sizes").getJSONObject(i).getString("size"), false));
+                if(specsObject.has("STORAGES")){
+                    for(int i=0;i<specsObject.getJSONArray("STORAGES").length();i++){
+                        if(specsObject.getJSONArray("STORAGES").getJSONObject(i).has("STOCK")) {
+                            storageArray.add(new StorageSpec(specsObject.getJSONArray("STORAGES").getJSONObject(i).getString("NAME"), false));
+                        }
+                        else
+                        {
+                            storageArray.add(new StorageSpec(specsObject.getJSONArray("STORAGES").getJSONObject(i).getString("NAME"), true));
+                        }
                     }
                 }
 
-
-                for(int i=0;i<variantsArray.length();i++){
+variantData=new JSONObject(getIntent().getExtras().getString(Constants.PRODUCT_VARIANTS_INTENT));
+          /*     for(int i=0;i<variantsArray.length();i++){
                     Variant variant = (new Variant(variantsArray.getJSONObject(i).getJSONObject("_id").getString("$id"),
                             variantsArray.getJSONObject(i).getJSONObject("specs").optString("size"), variantsArray.getJSONObject(i).getInt("quantity"),
                             variantsArray.getJSONObject(i).getJSONObject("pricing").getInt("discount_price")));
@@ -243,9 +304,9 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         }
                     }
                     variantArray.add(variant);
-                }
-
-            if(variantArray.size()>1){
+                }*/
+populateSpecs();
+         /*   if(variantArray.size()>1){
                 populateSpecs();
             }
            else{
@@ -271,7 +332,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 stockQuantity = variantArray.get(0).getStock();
                 stockQuantityTextView.setVisibility(View.VISIBLE);
                 stockQuantityTextView.setText(stockQuantity + " items left in stock");
-            }
+            }*/
 
 
         } catch (JSONException e) {
@@ -298,21 +359,28 @@ public class ProductOptionsActivity extends AppCompatActivity {
         checkOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!variantId.equalsIgnoreCase("") && stockQuantity>=Integer.parseInt(quantity.getText().toString()) && !savedMethodProfileId.equalsIgnoreCase("") && errorTextView.getText().toString().equalsIgnoreCase("")){
+                System.out.println("VALID"+variantId);
+                System.out.println("savedMethodProfileId" + savedMethodProfileId);
+                System.out.println("errorTextView"+errorTextView.getText().toString());
+checkUser();
+             /*   if(!variantId.equalsIgnoreCase("") && !savedMethodProfileId.equalsIgnoreCase("") && errorTextView.getText().toString().equalsIgnoreCase("")){
                     checkOutButton.setEnabled(false);
                     checkOutButton.setBackgroundColor(getResources().getColor(R.color.border));
                     checkOutButton.setTextColor(getResources().getColor(R.color.button_text));
                     HashMap<String,Object> addToCartData=new HashMap<String, Object>();
                     //55f6a9462f17f64a9b5f5ce4
-                    addToCartData.put("user_id", "564c67318e424a70651aa0d1");
-                    addToCartData.put("product_id", productId);
-                    addToCartData.put("shipping_profile_id", savedMethodProfileId);
-                    addToCartData.put("variant_id",variantId);
-                    addToCartData.put("quantity", Integer.parseInt(quantity.getText().toString()));
+                    addToCartData.put("USER_ID", userId);
+                   // addToCartData.put("product_id", productId);
+                    //addToCartData.put("shipping_profile_id", savedMethodProfileId);
+                    //addToCartData.put("variant_id",variantId);
+                    //addToCartData.put("quantity", Integer.parseInt(quantity.getText().toString()));
+                    addToCartData.put("SKU",sku);
+                    addToCartData.put("UID",uid);
+                    addToCartData.put("SSID",ssid);
                     System.out.println("HashMap: "+addToCartData);
                     dataToSend=new JSONObject(addToCartData);
                     System.out.println(dataToSend.toString());
-                    new APIClient(ProductOptionsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(dataToSend.toString());
+                    new APIClient(ProductOptionsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(userId,sku,uid,ssid);
                 }
                 else{
                     Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Please select valid product option", Snackbar.LENGTH_LONG)
@@ -323,7 +391,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
                     textView.setTextColor(Color.WHITE);
                     snackbar.show();
-                }
+                }*/
             }
         });
 
@@ -342,7 +410,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            String locationId = "560a8eddf26f2e024b8b4690";
+            String locationId = "4001";
             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                     variantId);
         } else {
@@ -358,6 +426,10 @@ public class ProductOptionsActivity extends AppCompatActivity {
         colorRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(quantity.getText().equals("0"))
+                {
+                    quantity.setText("1");
+                }
                 for (int i = 0; i < colorArray.size(); i++) {
                     colorArray.get(i).setIsSelected(false);
                 }
@@ -371,7 +443,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 colorTextView.setText(colorString);
                 ImageLoader imageLoader = AppController.getInstance().getImageLoader();
                 String ImgUrl = colorArray.get(position).getImageUrl();
-                imageLoader.get(ImgUrl, new ImageLoader.ImageListener() {
+                imageLoader.get("http://"+ImgUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         productImageView.setImageDrawable(getResources().getDrawable(R.drawable.default_img));
@@ -394,30 +466,46 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         System.out.println("Call shipping method API");
 
 
-                        for (int i = 0; i < variantArray.size(); i++) {
+                     //   for (int i = 0; i < variantArray.size(); i++) {
+//////////////////////////////////////////////////////******
+                        //    if (variantArray.get(i).getColor().equalsIgnoreCase(colorString) && variantArray.get(i).getStorage().equalsIgnoreCase(storageString)) {
+                       // if (variantData.optJSONObject(colorString+"-"+storageString).toString().equalsIgnoreCase(colorString+"-"+storageString)) {
+                        if(variantData.has(colorString+"-"+storageString)) {
+                            JSONObject dataImp=variantData.optJSONObject(colorString+"-"+storageString);
+                            isMatching = true;
+                            try {
+                                variantId = dataImp.getString("ID");
+                                stockQuantity=10;
+                                JSONObject cart_id=dataImp.getJSONObject("CART_DATA");
+                                sku=cart_id.getString("SKU");
+                                uid=cart_id.getString("UID");
+                                ssid=cart_id.getString("SSID");
+                                //stockQuantity = variantArray.get(i).getStock();
+                                //stockQuantity=0;
+                                //stockQuantityTextView.setVisibility(View.VISIBLE);
+                                //stockQuantityTextView.setText(stockQuantity + " items left in stock");
+                                priceTexView.setText("AED " + dataImp.getString("PRICE"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
-                            if (variantArray.get(i).getColor().equalsIgnoreCase(colorString) && variantArray.get(i).getStorage().equalsIgnoreCase(storageString)) {
-                                isMatching = true;
-                                variantId = variantArray.get(i).getId();
-                                stockQuantity = variantArray.get(i).getStock();
-                                stockQuantityTextView.setVisibility(View.VISIBLE);
-                                stockQuantityTextView.setText(stockQuantity + " items left in stock");
-                                priceTexView.setText("AED " + variantArray.get(i).getPrice());
-                                if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
-                                    //null pointer exception
-                                    quantity.setText(String.valueOf(stockQuantity));
-                                    if (networkInfo != null && networkInfo.isConnected()) {
-                                        String locationId = "560a8eddf26f2e024b8b4690";
-                                        new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
-                                                variantId);
-                                    } else {
-                                        Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
-                                                .setActionTextColor(Color.RED)
-                                                .show();
-                                    }
+                            if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                                //null pointer exception
+                                quantity.setText(String.valueOf(stockQuantity));
+                                if (networkInfo != null && networkInfo.isConnected()) {
+                                    String locationId = "4001";
+                                    new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
+                                            variantId);
+                                } else {
+                                    Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_SHORT)
+                                            .setActionTextColor(Color.RED)
+                                            .show();
                                 }
                             }
                         }
+                       // }
+                          //  }
+                  //      }
 //                        else{
 //                            isMatching = true;
 //                            if(variantArray.get(i).getColor().equalsIgnoreCase(colorString)){
@@ -449,7 +537,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                         if (networkInfo != null && networkInfo.isConnected()) {
-                            String locationId = "560a8eddf26f2e024b8b4690";
+                            String locationId = "4001";
                             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                     variantId);
                         } else {
@@ -468,7 +556,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         stockQuantity = 0;
                     }
                 }
-                else{
+          /*      else{
                     if (!colorString.equalsIgnoreCase("")) {
                         //call shipping method API
                         System.out.println("Call shipping method API");
@@ -486,7 +574,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
                                     quantity.setText(stockQuantity);
                                     if (networkInfo != null && networkInfo.isConnected()) {
-                                        String locationId = "560a8eddf26f2e024b8b4690";
+                                        String locationId = "4001";
                                         new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                                 variantId);
                                     } else {
@@ -506,7 +594,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                         if (networkInfo != null && networkInfo.isConnected()) {
-                            String locationId = "560a8eddf26f2e024b8b4690";
+                            String locationId = "4001";
                             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                     variantId);
                         } else {
@@ -524,7 +612,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         stockQuantityTextView.setVisibility(View.GONE);
                         stockQuantityTextView.setText("");
                     }
-                }
+                }*/
                     //locationId  = 560a8eddf26f2e024b8b4690
             }
         });
@@ -533,6 +621,10 @@ public class ProductOptionsActivity extends AppCompatActivity {
         storageRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(quantity.getText().equals("0"))
+                {
+                    quantity.setText("1");
+                }
                 for(int i=0;i<storageArray.size();i++){
                     storageArray.get(i).setIsSelected(false);
                 }
@@ -547,18 +639,29 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         boolean isMatching = false;
 
 
-                        for (int i = 0; i < variantArray.size(); i++) {
-                                if (variantArray.get(i).getColor().equalsIgnoreCase(colorString) && variantArray.get(i).getStorage().equalsIgnoreCase(storageString)) {
+                        if(variantData.has(colorString+"-"+storageString))
+                        {
+                                    JSONObject dataImp=variantData.optJSONObject(colorString+"-"+storageString);
                                     isMatching = true;
-                                    variantId = variantArray.get(i).getId();
-                                    stockQuantity = variantArray.get(i).getStock();
-                                    stockQuantityTextView.setVisibility(View.VISIBLE);
-                                    stockQuantityTextView.setText(stockQuantity + " items left in stock");
-                                    priceTexView.setText("AED " + variantArray.get(i).getPrice());
+                                    try {
+                                        variantId = dataImp.getString("ID");
+                                        stockQuantity=10;
+                                        JSONObject cart_id=dataImp.getJSONObject("CART_DATA");
+                                        sku=cart_id.getString("SKU");
+                                        uid=cart_id.getString("UID");
+                                        ssid=cart_id.getString("SSID");
+                                        //stockQuantity = variantArray.get(i).getStock();
+                                        //stockQuantity=0;
+                                        //stockQuantityTextView.setVisibility(View.VISIBLE);
+                                        //stockQuantityTextView.setText(stockQuantity + " items left in stock");
+                                        priceTexView.setText("AED " + dataImp.getString("PRICE"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                     if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
                                         quantity.setText(Integer.toString(stockQuantity));
                                         if (networkInfo != null && networkInfo.isConnected()) {
-                                            String locationId = "560a8eddf26f2e024b8b4690";
+                                            String locationId = "4001";
                                             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                                     variantId);
                                         } else {
@@ -568,7 +671,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                        }
+                    //    }
 
                         if (isMatching) {
                             outOfStockMessageTextView.setVisibility(View.GONE);
@@ -577,7 +680,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                     getSystemService(Context.CONNECTIVITY_SERVICE);
                             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                             if (networkInfo != null && networkInfo.isConnected()) {
-                                String locationId = "560a8eddf26f2e024b8b4690";
+                                String locationId = "4001";
                                 new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                         variantId);
                             } else {
@@ -597,7 +700,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                         }
                     }
                 }
-                else{
+                /*else{
                     if (!storageString.equalsIgnoreCase("")) {
                         boolean isMatching = false;
 
@@ -613,7 +716,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 if (Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
                                     quantity.setText(Integer.toString(stockQuantity));
                                     if (networkInfo != null && networkInfo.isConnected()) {
-                                        String locationId = "560a8eddf26f2e024b8b4690";
+                                        String locationId = "4001";
                                         new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                                 variantId);
                                     } else {
@@ -632,7 +735,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                     getSystemService(Context.CONNECTIVITY_SERVICE);
                             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                             if (networkInfo != null && networkInfo.isConnected()) {
-                                String locationId = "560a8eddf26f2e024b8b4690";
+                                String locationId = "4001";
                                 new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                         variantId);
                             } else {
@@ -650,7 +753,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                             stockQuantity = 0;
                         }
                     }
-                }
+                }*/
                 }
         });
 
@@ -667,6 +770,175 @@ public class ProductOptionsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void checkUser() {
+        if(!variantId.equalsIgnoreCase("") && !savedMethodProfileId.equalsIgnoreCase("") && errorTextView.getText().toString().equalsIgnoreCase("")){
+            checkOutButton.setEnabled(false);
+            checkOutButton.setBackgroundColor(getResources().getColor(R.color.border));
+            checkOutButton.setTextColor(getResources().getColor(R.color.button_text));
+            verify();
+            /*HashMap<String,Object> addToCartData=new HashMap<String, Object>();
+            //55f6a9462f17f64a9b5f5ce4
+            addToCartData.put("USER_ID", userId);
+            // addToCartData.put("product_id", productId);
+            //addToCartData.put("shipping_profile_id", savedMethodProfileId);
+            //addToCartData.put("variant_id",variantId);
+            //addToCartData.put("quantity", Integer.parseInt(quantity.getText().toString()));
+            addToCartData.put("SKU",sku);
+            addToCartData.put("UID",uid);
+            addToCartData.put("SSID",ssid);
+            System.out.println("HashMap: "+addToCartData);
+            dataToSend=new JSONObject(addToCartData);
+            System.out.println(dataToSend.toString());
+            new APIClient(ProductOptionsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(userId,sku,uid,ssid);*/
+        }
+        else{
+            Snackbar snackbar =Snackbar.make(findViewById(android.R.id.content), "Please select valid product option", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED);
+
+            View snackbarView = snackbar.getView();
+
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+        }
+    }
+
+    private void verify() {
+
+
+
+
+        if (mSharedPrefs.contains(Constants.USER_ID_PREFS)) {
+            initializeCart();
+        } else {
+            //show login dialog
+            inputNumberDialog = new Dialog(this, R.style.AppCompatAlertDialogStyle);
+            inputNumberDialog.setCancelable(true);
+            inputNumberDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            inputNumberDialog.setContentView(R.layout.dialog_input_number);
+            inputNumberErrorTextView = (TextView)inputNumberDialog.findViewById(R.id.errorMessageTextView);
+             emailEditText = (EditText) inputNumberDialog.findViewById(R.id.emailEditText);
+            Button cancelButton = (Button) inputNumberDialog.findViewById(R.id.cancelButton);
+            Button nextButton = (Button) inputNumberDialog.findViewById(R.id.nextButton);
+            final Button countryCodeButton = (Button) inputNumberDialog.findViewById(R.id.countryCodeButton);
+            progressBarForm = (ProgressBar) inputNumberDialog.findViewById(R.id.load_progress_bar);
+            // if button is clicked, close the custom dialog
+
+            //populateCountryCodes();
+            countryCodeButton.setOnClickListener(new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+                @Override
+                public void onClick(View v) {
+                    //show login dialog
+                    final Dialog countryCodeDialog = new Dialog(ProductOptionsActivity.this, R.style.AppCompatAlertDialogStyle);
+                    countryCodeDialog.setCancelable(true);
+                    countryCodeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    countryCodeDialog.setContentView(R.layout.dialog_country_code);
+                    final ListView mList = (ListView)countryCodeDialog.findViewById(R.id.codeListView);
+
+                    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                            ProductOptionsActivity.this,
+                            android.R.layout.simple_list_item_1);
+                  //  arrayAdapter.addAll(countryCodes);
+                   /* mList.setAdapter(arrayAdapter);
+                    mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            countryCodeButton.setText(countryCodeNumbers.get(position));
+                            countryCodeDialog.cancel();
+                        }
+                    });*/
+
+                    countryCodeDialog.show();
+                    countryCodeDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                }
+            });
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    inputNumberDialog.cancel();
+                }
+            });
+            nextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LayoutInflater inflater = getWindow().getLayoutInflater();
+                    final View mDialogView = inflater.inflate(R.layout.dialog_input_number, null);
+                    if (emailEditText.getText().toString().equalsIgnoreCase("")) {
+                        emailEditText.setError("Please enter your mobile number");
+                    } else {
+                        if (android.util.Patterns.EMAIL_ADDRESS.matcher(emailEditText.getText()).matches()) {
+                          //  Log.v(TAG, "phone number is correct");
+                            emailId =emailEditText.getText().toString();
+                            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new CheckUserCallback()).userCheckAPICall(emailId);
+                        } else {
+                            toast.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+
+                            emailEditText.setError("Email Id is incorrect");
+                        }
+
+                    }
+                }
+            });
+            inputNumberDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    finish();
+                }
+            });
+
+            inputNumberDialog.show();
+            inputNumberDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        }
+
+
+
+
+
+
+
+
+
+        /*HashMap<String,Object> addToCartData=new HashMap<String, Object>();
+        //55f6a9462f17f64a9b5f5ce4
+        addToCartData.put("USER_ID", userId);
+        // addToCartData.put("product_id", productId);
+        //addToCartData.put("shipping_profile_id", savedMethodProfileId);
+        //addToCartData.put("variant_id",variantId);
+        //addToCartData.put("quantity", Integer.parseInt(quantity.getText().toString()));
+        addToCartData.put("SKU",sku);
+        addToCartData.put("UID",uid);
+        addToCartData.put("SSID",ssid);
+        System.out.println("HashMap: "+addToCartData);
+        dataToSend=new JSONObject(addToCartData);
+        System.out.println(dataToSend.toString());
+        new APIClient(ProductOptionsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(userId,sku,uid,ssid);*/
+    }
+
+    private void initializeCart() {
+        HashMap<String,Object> addToCartData=new HashMap<String, Object>();
+        //55f6a9462f17f64a9b5f5ce4
+        if ((mSharedPrefs.contains(Constants.USER_ID_PREFS)))
+        {
+            userId = mSharedPrefs.getString(Constants.USER_ID_PREFS, null);
+        }
+        addToCartData.put("USER_ID", userId);
+        // addToCartData.put("product_id", productId);
+        //addToCartData.put("shipping_profile_id", savedMethodProfileId);
+        //addToCartData.put("variant_id",variantId);
+        //addToCartData.put("quantity", Integer.parseInt(quantity.getText().toString()));
+        addToCartData.put("SKU",sku);
+        addToCartData.put("UID",uid);
+        addToCartData.put("SSID",ssid);
+        System.out.println("HashMap: "+addToCartData);
+        dataToSend=new JSONObject(addToCartData);
+        System.out.println(dataToSend.toString());
+        new APIClient(ProductOptionsActivity.this, getApplicationContext(),  new GetAddToCartCallBack()).addToCartAPICall(userId,sku,uid,ssid);
     }
 
 
@@ -689,7 +961,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 if (quantity.getText().toString().equals("") || quantity.getText().toString().equals("0")) {
                     quantity.setText("1");
                     if (networkInfo != null && networkInfo.isConnected()) {
-                        String locationId = "560a8eddf26f2e024b8b4690";
+                        String locationId = "4001";
                         new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                 variantId);
                     } else {
@@ -698,7 +970,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 .show();
                     }
                 } else {
-                    if (!variantId.equalsIgnoreCase("") && Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                    if (!variantId.equalsIgnoreCase("") && Integer.parseInt(quantity.getText().toString()) > 10) {
                         System.out.println("OUT OF STOCK");
 
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -746,7 +1018,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                         if (networkInfo != null && networkInfo.isConnected()) {
-                            String locationId = "560a8eddf26f2e024b8b4690";
+                            String locationId = "4001";
                             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                     variantId);
                         } else {
@@ -782,7 +1054,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
 //                                .show();
 //                    }
                 } else {
-                    if (!variantId.equalsIgnoreCase("") && Integer.parseInt(quantity.getText().toString()) > stockQuantity) {
+                    if (!variantId.equalsIgnoreCase("") && Integer.parseInt(quantity.getText().toString()) > 10) {
                         System.out.println("OUT OF STOCK");
 
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -802,7 +1074,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                         // current activity
                                         quantity.setText(Integer.toString(stockQuantity));
                                         if (networkInfo != null && networkInfo.isConnected()) {
-                                            String locationId = "560a8eddf26f2e024b8b4690";
+                                            String locationId = "4001";
                                             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                                     variantId);
                                         } else {
@@ -830,7 +1102,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                 getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                         if (networkInfo != null && networkInfo.isConnected()) {
-                            String locationId = "560a8eddf26f2e024b8b4690";
+                            String locationId = "4001";
                             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                     variantId);
                         } else {
@@ -873,7 +1145,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     if (quantity.getText().toString().equals("") || quantity.getText().toString().equals("0")) {
                         quantity.setText("1");
                         if (networkInfo != null && networkInfo.isConnected()) {
-                            String locationId = "560a8eddf26f2e024b8b4690";
+                            String locationId = "4001";
                             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                     variantId);
                         } else {
@@ -897,7 +1169,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                     if (quantity.getText().toString().equals("") || quantity.getText().toString().equals("0")) {
                         quantity.setText("1");
                         if (networkInfo != null && networkInfo.isConnected()) {
-                            String locationId = "560a8eddf26f2e024b8b4690";
+                            String locationId = "4001";
                             new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                     variantId);
                         } else {
@@ -926,7 +1198,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                             // current activity
                                             quantity.setText(Integer.toString(stockQuantity));
                                             if (networkInfo != null && networkInfo.isConnected()) {
-                                                String locationId = "560a8eddf26f2e024b8b4690";
+                                                String locationId = "4001";
                                                 new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                                         variantId);
                                             } else {
@@ -956,7 +1228,7 @@ public class ProductOptionsActivity extends AppCompatActivity {
                                     getSystemService(Context.CONNECTIVITY_SERVICE);
                             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                             if (networkInfo != null && networkInfo.isConnected()) {
-                                String locationId = "560a8eddf26f2e024b8b4690";
+                                String locationId = "4001";
                                 new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new GetShippingsCallBack()).ShippingsAPICall(productId, quantity.getText().toString(), locationId,
                                         variantId);
                             } else {
@@ -1196,25 +1468,30 @@ public class ProductOptionsActivity extends AppCompatActivity {
                 JSONObject issueObj = new JSONObject(response);
                 JSONObject dataObj = null;
                 JSONObject varObj;
+                System.out.println("SHIPPING"+dataObj);
 //                , sizesArray, storageArray;
-                if(!issueObj.getBoolean("errors")){
-                    dataObj =  issueObj.getJSONObject("data");
-                    if(dataObj.has("server")){
-                        for(int i=0;i<dataObj.getJSONArray("server").length();i++){
+            //    if(!issueObj.getBoolean("errors")){
+                    dataObj =  issueObj.getJSONObject("OUTPUT").getJSONObject("DATA");
+                    if(dataObj.has("SHIPPING")){
+                       /* for(int i=0;i<dataObj.getJSONArray("SHIPPING").length();i++){
                             shippingMethodArray.add(new ShippingMethod(dataObj.getJSONArray("server").getJSONObject(i).getDouble("shipping_cost"),
                                     dataObj.getJSONArray("server").getJSONObject(i).getInt("savings"), dataObj.getJSONArray("server").getJSONObject(i).getString("name"),
                                     dataObj.getJSONArray("server").getJSONObject(i).getInt("est_from"), dataObj.getJSONArray("server").getJSONObject(i).getInt("est_to"),
                                     dataObj.getJSONArray("server").getJSONObject(i).getString("profile_id"), false));
-                        }
+                        }*/
+                        shippingMethodArray.add(new ShippingMethod(dataObj.getJSONObject("SHIPPING").getDouble("PRICE"),
+                                1, dataObj.getJSONObject("SHIPPING").getString("NAME"),
+                                dataObj.getJSONObject("SHIPPING").getInt("PERIOD_FROM"), dataObj.getJSONObject("SHIPPING").getInt("PERIOD_TO"),
+                                dataObj.getJSONObject("SHIPPING").getString("ID"), false));
                     }
                     errorTextView.setVisibility(View.GONE);
                     errorTextView.setText("");
-                }
+         /*       }
                 else{
                     dataObj =  issueObj.getJSONObject("data");
                     errorTextView.setVisibility(View.VISIBLE);
                     errorTextView.setText(dataObj.getString("public"));
-                }
+                }*/
                 progressLayout.setVisibility(View.GONE);
 
                 pupolateShippingMethod();
@@ -1344,5 +1621,630 @@ public class ProductOptionsActivity extends AppCompatActivity {
 
 
     }
+
+
+
+    public class CheckUserCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject obj = new JSONObject(response);
+             /*   if (obj.getInt("status") == 200) {
+                    inputNumberErrorTextView.setVisibility(View.GONE);
+                    if (obj.getJSONObject("message").getBoolean("register") == true) {
+                        showRegister();
+                    } else {
+                        showLogin();
+                    }
+                }*/
+                inputNumberErrorTextView.setVisibility(View.GONE);
+                /*if(obj.has("ERROR"))
+                {
+                    showLogin();
+                }
+                else
+                {
+                    showRegister();
+                }*/
+                if(obj.getJSONObject("STATUS").getInt("CODE")==400) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(0).getString("MESSAGE"), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                    emailEditText.setError(obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(0).getString("MESSAGE"));
+                }
+                else {
+                    if(obj.getJSONObject("STATUS").getInt("CODE")==204)
+                    {
+                        showRegister();
+                    }
+                    else if(obj.getJSONObject("STATUS").getInt("CODE")==409)
+                    {
+                        showLogin();
+                    }
+                }
+                progressBarForm.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                inputNumberErrorTextView.setVisibility(View.VISIBLE);
+                inputNumberErrorTextView.setText("Please check you connectivity");
+                progressBarForm.setVisibility(View.GONE);
+            }
+
+        }
+
+        @Override
+        public void onTaskCancelled() {
+        }
+
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+            progressBarForm.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+    public void showLogin() {
+        //show login dialog
+        loginDialog = new Dialog(this, R.style.AppCompatAlertDialogStyle);
+        loginDialog.setCancelable(true);
+        loginDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loginDialog.setContentView(R.layout.dialog_login);
+        loginErrorTextView = (TextView)loginDialog.findViewById(R.id.errorMessageTextView);
+        final EditText passwordEditText = (EditText) loginDialog.findViewById(R.id.passwordEditText);
+        Button cancelButton = (Button) loginDialog.findViewById(R.id.cancelButton);
+        Button nextButton = (Button) loginDialog.findViewById(R.id.nextButton);
+        progressBarLogin = (ProgressBar) loginDialog.findViewById(R.id.load_progress_bar);
+        // if button is clicked, close the custom dialog
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginDialog.dismiss();
+            }
+        });
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (passwordEditText.getText().toString().equalsIgnoreCase("")) {
+                    passwordEditText.setError("Please Enter Password");
+//                    Snackbar.make(findViewById(android.R.id.content), "Please Enter Password", Snackbar.LENGTH_LONG)
+//                            .setActionTextColor(Color.RED)
+//                            .show();
+
+                } else {
+                    password = passwordEditText.getText().toString();
+                    HashMap<String, Object> userData = new HashMap<String, Object>();
+                    userData.put("phone_number", emailId);
+                    userData.put("access_key", password);
+
+                    valueValidation="login";
+                    JSONObject dataToSend = new JSONObject(userData);
+                    new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new loginAndRegisterUserCallback()).userLoginAPICall(emailId,password);
+                }
+            }
+        });
+
+        loginDialog.show();
+        loginDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    public void showRegister() {
+        //show login dialog
+        registerDialog = new Dialog(this, R.style.AppCompatAlertDialogStyle);
+        registerDialog.setCancelable(true);
+        registerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        registerDialog.setContentView(R.layout.dialog_register);
+        registrationErrorTextView = (TextView)registerDialog.findViewById(R.id.errorMessageTextView);
+        final EditText regPhoneNumberEditText=   (EditText) registerDialog.findViewById(R.id.regPhoneNumberEditText);
+        passwordEditText = (EditText) registerDialog.findViewById(R.id.passwordEditText);
+        final EditText confirmPasswordEditText = (EditText) registerDialog.findViewById(R.id.confirmPasswordEditText);
+        Button cancelButton = (Button) registerDialog.findViewById(R.id.cancelButton);
+        Button nextButton = (Button) registerDialog.findViewById(R.id.nextButton);
+        LinearLayout buttonLayout = (LinearLayout) registerDialog.findViewById(R.id.buttonLayout);
+        progressBarLogin = (ProgressBar) registerDialog.findViewById(R.id.load_progress_bar);
+        // if button is clicked, close the custom dialog
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerDialog.dismiss();
+            }
+        });
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (passwordEditText.getText().toString().equalsIgnoreCase("")) {
+                    passwordEditText.setError(getString(R.string.enter_password));
+//                    Snackbar.make(findViewById(android.R.id.content), "Please Enter Password", Snackbar.LENGTH_LONG)
+//                            .setActionTextColor(Color.RED)
+//                            .show();
+
+                } else if (confirmPasswordEditText.getText().toString().equalsIgnoreCase("")) {
+                    confirmPasswordEditText.setError(getString(R.string.confirm_password));
+//                    Snackbar.make(findViewById(android.R.id.content), "Please Confirm Your Password", Snackbar.LENGTH_LONG)
+//                            .setActionTextColor(Color.RED)
+//                            .show();
+                }
+
+                else if (regPhoneNumberEditText.getText().toString().equalsIgnoreCase("")) {
+                    regPhoneNumberEditText.setError("Please Enter Phone Number");
+                }
+                else if(!android.util.Patterns.PHONE.matcher(regPhoneNumberEditText.getText().toString()).matches()||regPhoneNumberEditText.getText().length()<10)
+                {
+                    regPhoneNumberEditText.setError("Incorrect Phone Number");
+                }
+                else if (!passwordEditText.getText().toString().equalsIgnoreCase(confirmPasswordEditText.getText().toString())) {
+                    confirmPasswordEditText.setError(getString(R.string.password_do_not_match));
+//                    Snackbar.make(findViewById(android.R.id.content), "Your password and confirm password are not same", Snackbar.LENGTH_LONG)
+//                            .setActionTextColor(Color.RED)
+//                            .show();
+                } else {
+                    password = passwordEditText.getText().toString();
+                    HashMap<String, Object> userData = new HashMap<String, Object>();
+                   /* userData.put("phone_number", emailId);
+                    userData.put("access_key", password);*/
+                    userData.put("email", emailId);
+                    userData.put("password", password);
+                    userData.put("cpassword", password);
+                    userData.put("phone",regPhoneNumberEditText.getText().toString());
+                    JSONObject dataToSend = new JSONObject(userData);
+                    valueValidation="register";
+                    new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new loginAndRegisterUserCallback()).useRegisterAPICall(dataToSend.toString());
+                }
+            }
+        });
+
+        registerDialog.show();
+        registerDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+
+    public class loginAndRegisterUserCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject obj = new JSONObject(response);
+              /*  if (obj.getBoolean("errors")) {
+                    if ((loginDialog != null)) {
+                        loginErrorTextView.setVisibility(View.VISIBLE);
+                        loginErrorTextView.setText(obj.getString("message"));
+                    }
+                    else if ((registerDialog != null)) {
+                        registrationErrorTextView.setVisibility(View.VISIBLE);
+                        registrationErrorTextView.setText(obj.getString("message"));
+                    }
+                }*/
+
+
+
+                if(obj.getJSONObject("STATUS").getInt("CODE")==400) {
+                   /* Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(0).getString("MESSAGE"), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();*/
+                    for(int i=0;i<obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").length();i++)
+                    {
+                        JSONObject verificationCheck=obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(i);
+
+                        if (verificationCheck.getString("FIELD").equals("PASSWORD")) {
+                            passwordEditText.setError(verificationCheck.getString("MESSAGE"));
+                        }
+                        if (verificationCheck.getString("FIELD").equals("EMAIL")) {
+                            Snackbar.make(findViewById(android.R.id.content), verificationCheck.getString("MESSAGE"), Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.RED)
+                                    .show();
+                        }
+
+                    }
+                    emailEditText.setError(obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(0).getString("MESSAGE"));
+                }
+                else if(obj.getJSONObject("STATUS").getInt("CODE")==404)
+                {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(0).getString("MESSAGE"), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                else if(obj.getJSONObject("STATUS").getInt("CODE")==409)
+                {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(0).getString("MESSAGE"), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+
+                else if(obj.getJSONObject("STATUS").getInt("CODE")==201){
+                    SharedPreferences.Editor editor = mSharedPrefs.edit();
+                    editor.putString(Constants.USER_MOBILE_PREFS, emailId);
+
+                    editor.putString(Constants.USER_AUTH_TOKEN_PREFS, obj.getJSONObject("OUTPUT").getJSONObject("DATA").getString("TOKEN"));
+                    //editor.putString(Constants.USER_ID_PREFS, obj.getJSONObject("OUTPUT").getJSONObject("DATA").getString("USER_ID"));
+                    editor.putString(Constants.USER_ID_PREFS, "Y");
+
+                    editor.commit();
+                    //Hide dialogs and proceed with cart
+                    if ((loginDialog != null)) {
+                        loginDialog.dismiss();
+                        loginDialog = null;
+                    }
+                    if ((registerDialog != null)) {
+                        registerDialog.dismiss();
+                        registerDialog = null;
+                    }
+                    if ((inputNumberDialog != null)) {
+                        inputNumberDialog.dismiss();
+                        inputNumberDialog = null;
+                    }
+                    if(valueValidation.equals("register"))
+                    {
+                        if(obj.getJSONObject("OUTPUT").getJSONObject("DATA").has("CODE_EXP_TIME")) {
+                            startTime=obj.getJSONObject("OUTPUT").getJSONObject("DATA").getInt("CODE_EXP_TIME") * 1000;
+                            verifyDialog();
+                        }
+                    }
+                    else {
+                        initializeCart();
+                    }
+                }
+                progressBarLogin.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressBarLogin.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onTaskCancelled() {
+        }
+
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+            progressBarLogin.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+
+    private void verifyDialog() {
+        verifyDialog = new Dialog(this);
+        ///  verifyDialog.setCancelable(true);
+        verifyDialog.setCanceledOnTouchOutside(false);
+        verifyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        verifyDialog.setContentView(R.layout.dialog_phone_verification);
+        final Button resend = (Button) verifyDialog.findViewById(R.id.resend);
+        final Button nextButton = (Button) verifyDialog.findViewById(R.id.verify);
+        final TextView timer=(TextView)verifyDialog.findViewById(R.id.timer);
+        Button changePhone=(Button)verifyDialog.findViewById(R.id.changePhone);
+        TextView skip=(TextView)verifyDialog.findViewById(R.id.skipButton);
+        skip.setVisibility(View.VISIBLE);
+        final EditText verifyCode=(EditText)verifyDialog.findViewById(R.id.verifyCode);
+        resend.setEnabled(false);
+
+        // countDownTimer = new MyCountDownTimer(startTime, interval);
+
+        sendValue="verify";
+
+
+        changePhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifyCode.setHint("Enter New Phone Number");
+                nextButton.setText("Send");
+                sendValue="changeNumber";
+//sendData(sendValue);
+            }
+        });
+skip.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        verifyDialog.dismiss();
+        initializeCart();
+    }
+});
+
+        resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendValue="resend";
+                //verifyDialog.dismiss();
+                sendData(sendValue);
+                timerLoop.cancel();
+                timerLoop.start();
+                sendValue="verify";
+               /* new CountDownTimer(startTime, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        timer.setText("" + millisUntilFinished / 1000);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        timer.setText("Code Expired");
+                        resend.setEnabled(true);
+                        resend.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+                    }
+                }.start();*/
+            }
+        });
+
+        timerLoop=new CountDownTimer(startTime, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timer.setText("" + millisUntilFinished / 1000);
+            }
+
+            @Override
+            public void onFinish() {
+                timer.setText("Code Expired");
+                resend.setEnabled(true);
+                resend.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+            }
+        }.start();
+
+
+
+
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (sendValue.equals("verify")) {
+                    if (verifyCode.getText().toString().equalsIgnoreCase("")) {
+                        verifyCode.setError("Please Enter Code");
+                    }
+                    else
+                    {
+                        code=verifyCode.getText().toString();
+                        // verifyDialog.dismiss();
+                        sendData(sendValue);
+                    }
+
+
+                } else if (sendValue.equals("changeNumber")) {
+                    if (verifyCode.getText().toString().equalsIgnoreCase("")) {
+                        verifyCode.setError("Please Enter Phone Number");
+                    } else if (!android.util.Patterns.PHONE.matcher(verifyCode.getText().toString()).matches() || verifyCode.getText().length() < 10) {
+                        verifyCode.setError("Incorrect Phone Number");
+                    } else {
+                        phoneNumber = verifyCode.getText().toString();
+                        verifyCode.setText("");
+                        verifyCode.setHint("Enter Verification Code");
+                        sendValue = "changeNumber";
+                        //phoneNumber = verifyCode.getText().toString();
+                        //   verifyDialog.dismiss();
+                        sendData(sendValue);
+                        sendValue="verify";
+                        nextButton.setText("Verify");
+                        timerLoop.cancel();
+                        timerLoop.start();
+                      /*  new CountDownTimer(startTime, 1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                timer.setText("" + millisUntilFinished / 1000);
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                timer.setText("Code Expired");
+                                resend.setEnabled(true);
+                                resend.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+                            }
+                        }.start();*/
+                    }
+                }
+            }
+        });
+
+
+
+
+        verifyDialog.show();
+        verifyDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+
+
+
+/*    public class MyCountDownTimer extends CountDownTimer {
+        public MyCountDownTimer(long startTime, long interval) {
+            super(startTime, interval);
+        }
+
+        @Override
+        public void onFinish() {
+            timer.setText("Code Expired");
+            resend.setEnabled(true);
+            resend.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            timer.setText("" + millisUntilFinished / 1000);
+        }
+    }*/
+
+
+
+
+    public void sendData(String value)
+    {
+        if(value.equals("verify"))
+        {
+            HashMap<String,String > verifyData=new HashMap<String ,String >();
+            //   verifyData.put("user_id",userId);
+            //   verifyData.put("code", code);
+            //    verifyData.put("mode","verify-sms-code");
+
+            JSONObject dataVerify=new JSONObject(verifyData);
+            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new verifyCode()).verifySms(code);
+        }
+        else if(value.equals("changeNumber"))
+        {
+
+
+
+            HashMap<String,String > resendData=new HashMap<String ,String >();
+            //   resendData.put("user_id",userId);
+            resendData.put("phone", phoneNumber);
+            //  resendData.put("mode","send-verify-sms");
+
+            JSONObject dataResend=new JSONObject(resendData);
+
+            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new changePhone()).reSendCallBack(dataResend.toString());
+        }
+        else if(value.equals("resend"))
+        {
+            HashMap<String,String > resendSmsData=new HashMap<String ,String >();
+            //      resendSmsData.put("user_id",userId);
+
+            // resendSmsData.put("mode","resend-verify-sms");
+
+            JSONObject dataSmsResend=new JSONObject(resendSmsData);
+
+            new APIClient(ProductOptionsActivity.this, ProductOptionsActivity.this, new reSendSms()).reSendSms(dataSmsResend.toString());
+        }
+
+    }
+
+
+    public class verifyCode extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject obj = new JSONObject(response);
+                System.out.println("OUTPUT" + obj);
+                if(obj.getJSONObject("STATUS").getInt("CODE")==200) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("STATUS").getString("MESSAGE").toString(), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                    verifyDialog.dismiss();
+                    initializeCart();
+
+                  /*  Intent i = new Intent(ProductOptionsActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();*/
+                }
+                else if (obj.getJSONObject("STATUS").getInt("CODE")==201) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("STATUS").getString("MESSAGE").toString(), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+
+                    /*Intent i = new Intent(ProductOptionsActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();*/
+                    initializeCart();
+                }
+                else if(obj.getJSONObject("STATUS").getInt("CODE")==400)
+                {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(0).getString("MESSAGE").toString(), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                    verifyDialog.dismiss();
+                }
+                else{
+                    Snackbar.make(findViewById(android.R.id.content), "Server Error Occured", Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                progressBar.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressBar.setVisibility(View.GONE);
+            }
+
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+            progressBar.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+
+    public class reSendSms extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject obj = new JSONObject(response);
+                if(obj.getJSONObject("STATUS").getInt("CODE")==201) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("STATUS").getString("MESSAGE").toString(), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                else if(obj.getJSONObject("STATUS").getInt("CODE")==200) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("STATUS").getString("MESSAGE").toString(), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                else{
+                    Snackbar.make(findViewById(android.R.id.content), "Server Error Occured", Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                progressBar.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressBar.setVisibility(View.GONE);
+            }
+
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+            progressBar.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+
+
+
+    public class changePhone extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject obj = new JSONObject(response);
+                if(obj.getJSONObject("STATUS").getInt("CODE")==201) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("STATUS").getString("MESSAGE").toString(), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                else if(obj.getJSONObject("STATUS").getInt("CODE")==200) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("STATUS").getString("MESSAGE").toString(), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                else{
+                    Snackbar.make(findViewById(android.R.id.content), "Server Error Occured", Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                progressBar.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressBar.setVisibility(View.GONE);
+            }
+
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+            progressBar.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+
 
 }

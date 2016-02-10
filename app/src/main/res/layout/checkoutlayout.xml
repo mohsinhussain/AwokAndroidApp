@@ -20,6 +20,7 @@
     android:orientation="vertical"
     android:layout_height="wrap_content">
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -96,13 +97,13 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 />
-
+           <!-- android:scaleType="fitCenter"-->
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:id="@+id/mainImg"
-                android:src="@drawable/test"
-                android:scaleType="fitCenter"/>
+                android:src="@drawable/default_img"
+                />
         </FrameLayout>
 
 
@@ -120,10 +121,10 @@
 
         <TextView
             android:id="@+id/OverViewTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:text="title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:text="if location id is passed in request parameters; delivery cost will be calculated if not then teif location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.xt message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly.if location id is passed in request parameters; delivery cost will be calculated if not then text message will be shown accordingly."
             android:textColor="@color/normal_text"
             android:textSize="14sp"
             android:layout_marginRight="16dp"
@@ -171,6 +172,8 @@
              />
         </LinearLayout>
         <LinearLayout
+
+            android:layout_marginBottom="30dp"
             android:id="@+id/quantity_count"
             android:background="#eeeeee"
             android:layout_marginTop="15dp"
@@ -266,6 +269,7 @@ android:visibility="gone"
             />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -299,6 +303,7 @@ android:visibility="gone"
             />
 
         <TextView
+            android:layout_marginTop="10dp"
             android:paddingLeft="4dp"
             android:paddingTop="8dp"
             android:gravity="center"
@@ -434,6 +439,7 @@ android:visibility="gone"
 
        </RelativeLayout>-->
 <RelativeLayout
+    android:visibility="gone"
 android:id="@+id/footer"
 android:paddingBottom="10dp"
 android:background="@color/primary_material_light_1"

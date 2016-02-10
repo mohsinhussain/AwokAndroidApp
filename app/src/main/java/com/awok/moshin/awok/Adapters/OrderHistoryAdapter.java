@@ -51,7 +51,7 @@ import java.util.TimeZone;
 /**
  * Created by shon on 9/29/2015.
  */
-public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder> {
+public class OrderHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<OrderHistoryModel> orderHistoryData = new ArrayList<OrderHistoryModel>();
     private Activity activity;
     View customView;
@@ -60,7 +60,8 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     NetworkInfo networkInfo;
     Context context;
     Context mContext;
-
+    private  final int TYPE_FOOTER = 2;
+    private  final int TYPE_ITEM = 3;
     String orderCheck="";
     LinearLayout.LayoutParams lp;
 
@@ -85,22 +86,37 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     // Create new views (invoked by the layout manager)
     @Override
-    public OrderHistoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                          int viewType) {
         // create a new view
-        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
+      /*  View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.order_history_customlayout, null);
 
 
         customView=itemLayoutView;
 
         ViewHolder viewHolder = new ViewHolder(itemLayoutView);
+        return viewHolder;*/
+        RecyclerView.ViewHolder viewHolder;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+     //   Status: Ready for Shipment
+
+         if (viewType == 2) {
+            View footer = inflater.inflate(R.layout.footer_product_progressbar, parent, false);
+            viewHolder = new FooterHolder(footer);
+        }
+
+        else {
+            View item = inflater.inflate(R.layout.order_history_customlayout, parent, false);
+            viewHolder = new itemHolder(item);
+        }
         return viewHolder;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final  RecyclerView.ViewHolder viewHolder, final int position) {
 
 
         final OrderHistoryModel item = orderHistoryData.get(position);
@@ -109,6 +125,15 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         {*/
 
 
+
+
+        if (viewHolder.getItemViewType() == 2) {
+            final FooterHolder footer = (FooterHolder) viewHolder;
+        }
+        else {
+
+
+            final itemHolder holder = (itemHolder) viewHolder;
 
 
         /*switch (viewHolder.getItemViewType()) {
@@ -125,32 +150,30 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
                 viewHolder.headLayMonth.setVisibility(View.GONE);
                 break;
         }*/
-System.out.println("ISHEADER" + orderHistoryData.get(position).getIsHeader());
+            System.out.println("ISHEADER" + orderHistoryData.get(position).getIsHeader());
 
-if (orderHistoryData.get(position).getIsHeader())
-{
-    viewHolder.headLayMonth.setVisibility(View.VISIBLE);
-}
-        else
-{
-    viewHolder.headLayMonth.setVisibility(View.GONE);
-}
+            if (orderHistoryData.get(position).getIsHeader()) {
+                holder.headLayMonth.setVisibility(View.VISIBLE);
+            } else {
+                holder.headLayMonth.setVisibility(View.GONE);
+            }
 
 
 //viewHolder.main.setVisibility(View.GONE);
             //viewHolder.totalLay.setVisibility(View.GONE);
             //viewHolder.title.setText(orderHistoryData.get(position).getTitle());
-           // viewHolder.quantity.setText(orderHistoryData.get(position).getQuantity());
-           // viewHolder.seller.setText(orderHistoryData.get(position).getSeller());
-        //viewHolder.seller.setTag(orderHistoryData.get(position).getOrderId());
-          //  viewHolder.price.setText(orderHistoryData.get(position).getPrice());
+            // viewHolder.quantity.setText(orderHistoryData.get(position).getQuantity());
+            // viewHolder.seller.setText(orderHistoryData.get(position).getSeller());
+            //viewHolder.seller.setTag(orderHistoryData.get(position).getOrderId());
+            //  viewHolder.price.setText(orderHistoryData.get(position).getPrice());
 //viewHolder.image.setImageBitmap(base64ToBitmap(orderHistoryData.get(position).getImageData()));
-            viewHolder.orderNo.setText("Order #"+orderHistoryData.get(position).getOrderNo());
-                viewHolder.orderNo.setTag(orderHistoryData.get(position).getOrderId());
-        viewHolder.dateTime.setText("placed on " + date(orderHistoryData.get(position).getDateTime().toString()));
-        viewHolder.monthValue.setText(orderHistoryData.get(position).getHeader());
-
-           // viewHolder.shipping.setText("In Stock : " + orderHistoryData.get(position).getShipping());
+            holder.orderNo.setText("Order #" + orderHistoryData.get(position).getOrderNo());
+            holder.orderNo.setTag(orderHistoryData.get(position).getOrderId());
+            //  viewHolder.dateTime.setText("placed on " + date(orderHistoryData.get(position).getDateTime().toString()));
+            holder.dateTime.setText("placed on " + orderHistoryData.get(position).getDateTime().toString());
+            holder.monthValue.setText(orderHistoryData.get(position).getHeader());
+holder.status.setText("Status: "+orderHistoryData.get(position).getStatus());
+            // viewHolder.shipping.setText("In Stock : " + orderHistoryData.get(position).getShipping());
             //orderCheck=orderHistoryData.get(position).getOrderId();
 
 
@@ -172,8 +195,7 @@ if (orderHistoryData.get(position).getIsHeader())
         }*/
 
 
-
-
+        }
 
     }
 
@@ -187,7 +209,7 @@ if (orderHistoryData.get(position).getIsHeader())
 
 
     // inner class to hold a reference to each item of RecyclerView
-    public static class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
+    public static class itemHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
 
         /*public TextView title,quantity,seller,price,totalPrice,shipping;
         public ImageView image;
@@ -195,11 +217,12 @@ if (orderHistoryData.get(position).getIsHeader())
         TextView orderNo,dateTime;
         LinearLayout headLayMonth;
         TextView monthValue;
+        TextView status;
 
 
 
 
-        public ViewHolder(View itemLayoutView) {
+        public itemHolder(View itemLayoutView) {
             super(itemLayoutView);
             /*title = (TextView) itemLayoutView
                     .findViewById(R.id.productTitle);
@@ -241,6 +264,8 @@ main=(RelativeLayout)itemLayoutView
                     .findViewById(R.id.headLayMonth);
             monthValue=(TextView)itemLayoutView
                     .findViewById(R.id.monthValue);
+            status=(TextView)itemLayoutView
+                    .findViewById(R.id.status);
         }
         @Override
         public void onClick(View view) {
@@ -254,7 +279,16 @@ main=(RelativeLayout)itemLayoutView
 
 
 
+    public static class FooterHolder extends RecyclerView.ViewHolder {
 
+
+
+        FooterHolder(View itemView) {
+            super(itemView);
+
+
+        }
+    }
 
 
 
@@ -279,7 +313,7 @@ main=(RelativeLayout)itemLayoutView
             index = position;
             return ITEM_WITHOUT_SELLER;
         }*/
-        if(orderHistoryData.get(position).getIsHeader())
+      /*  if(orderHistoryData.get(position).getIsHeader())
 
         {
             System.out.println("SHOW");
@@ -291,7 +325,22 @@ return SHOW_HEADER;
         {
             System.out.println("NO SHOW");
 return NO_SHOW;
+        }*/
+
+
+
+
+         if (orderHistoryData.get(position).isLoader()) {
+            return TYPE_FOOTER;
+
         }
+
+
+        else if (position >= 0) {
+            return TYPE_ITEM;
+        }
+
+        return 1;
 
     }
 public String date(String date)

@@ -10,7 +10,32 @@ public class ShippingAddressModel {
     private String phone1, phone2;
     private boolean isSelected;
     private String id;
+    private String stateId,countryId,locationId;
 
+
+    public String getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
+    }
 
     public ShippingAddressModel()
     {
@@ -21,7 +46,7 @@ public class ShippingAddressModel {
 
 
 
-    public ShippingAddressModel(String id, String name,String address1,String address2,String state,String country,String pin,String phone1, String phone2, boolean isSelected)
+    public ShippingAddressModel(String id, String name,String address1,String address2,String state,String country,String pin,String phone1, String phone2, boolean isSelected,String stateId,String countryId,String locationId)
     {
         this.id = id;
         this.name=name;
@@ -33,6 +58,9 @@ public class ShippingAddressModel {
         this.phone1=phone1;
         this.phone2=phone2;
         this.isSelected=isSelected;
+        this.country=country;
+        this.state=state;
+        this.locationId=locationId;
 
 
     }

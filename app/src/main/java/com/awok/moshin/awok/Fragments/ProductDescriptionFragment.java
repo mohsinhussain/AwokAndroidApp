@@ -41,6 +41,8 @@ public class ProductDescriptionFragment extends Fragment {
 private String description="";
     private int flag=0;
         private RecyclerView mRecyclerView;
+    private TextView txt;
+    private String productName="";
         private RecyclerView.Adapter mAdapter;
     private WebView webView;
         private RecyclerView.LayoutManager mLayoutManager;
@@ -79,14 +81,20 @@ private String description="";
         //descriptionTextView.setText(description);
 
         webView = (WebView) mView.findViewById(R.id.webview);
-        webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
+        txt=(TextView)mView.findViewById(R.id.txt);
+        //webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
         if (description.equals(""))
         {
             flag=0;
+            txt.setText(productName);
+            webView.setVisibility(View.GONE);
         }
         else
         {
             flag=1;
+            txt.setVisibility(View.GONE);
+            //txt.setText(description);
+            webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
         }
 
 
@@ -180,13 +188,25 @@ private String description="";
 
 
 
-   public void call(String description)
+   public void call(String description,String productName)
    {
        this.description=description;
-       if(webView!=null){
+       this.productName=productName;
+     /*  if(webView!=null){
            webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
+       }*/
+       if (txt != null  ) {
+           if (this.description.equals("")) {
+               flag = 0;
+               txt.setText(productName);
+           } else {
+               flag = 1;
+               //txt.setText(this.description);
+               if(webView!=null){
+                   webView.loadData(description, "text/html; charset=utf-8", "UTF-8");
+               }
+           }
        }
-
 
 //       ProductDescriptionFragment desc = (ProductDescriptionFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.viewpager);
 //       if (desc != null && desc.isVisible()) {

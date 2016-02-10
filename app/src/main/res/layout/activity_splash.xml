@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:fillViewport="true"
     android:layout_height="match_parent"
-     >
+    >
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/splash_background">
+        android:background="@drawable/launch_screen">
 
-    <ImageView
-        android:id="@+id/imgLogo"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/launch_logo" />
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/launch_logo" />
 
-    <LinearLayout
-        android:id="@+id/dummyLogoLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:visibility="invisible"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/dummyLogoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:visibility="invisible"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
-        <!--<TextView-->
+            <!--<TextView-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_marginTop="10dp"-->
@@ -36,26 +37,26 @@
             <!--android:text="@string/always_low_prices"-->
             <!--/>-->
 
-        <ImageView
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="40dp"
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/launch_logo" />
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:id="@+id/loginLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/launch_logo" />
-
-    </LinearLayout>
-
-
-
-
-    <LinearLayout
-        android:id="@+id/loginLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dummyLogoLayout"
-        android:visibility="gone"
-        android:layout_margin="30dp"
-        android:orientation="vertical">
+            android:layout_below="@+id/dummyLogoLayout"
+            android:visibility="gone"
+            android:layout_margin="30dp"
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/passwordEditText"
@@ -68,163 +69,232 @@
                 android:imeOptions="actionDone"
                 android:textSize="16sp"
                 android:hint="@string/password"
-                android:background="#FFFFFF"/>
+                />
 
-        <Button
-            android:id="@+id/loginButton"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"
-            android:background="#FF9800"
-            android:text="@string/login"
-            android:textColor="#fff"
-            android:textSize="16sp"/>
-        <Button
-            android:id="@+id/forgotPasswordButton"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:background="#0000"
-            android:padding="10dp"
-            android:text="@string/forgot_password"
-            android:textColor="#fff"
-            android:textSize="12sp"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/registerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dummyLogoLayout"
-        android:visibility="gone"
-        android:layout_margin="30dp"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/regPasswordEditText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:inputType="textPassword"
-            android:layout_gravity="center_horizontal"
-            android:imeOptions="actionNext"
-            android:textSize="16sp"
-            android:hint="@string/password"
-            android:background="#FFFFFF"/>
-
-        <EditText
-            android:id="@+id/regConfirmPasswordEditText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:inputType="textPassword"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal"
-            android:imeOptions="actionDone"
-            android:textSize="16sp"
-            android:hint="@string/confirm_password"
-            android:background="#FFFFFF"/>
-
-        <Button
-            android:id="@+id/registerButton"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"
-            android:background="#FF9800"
-            android:text="@string/register"
-            android:textColor="#fff"
-            android:textSize="16sp"/>
-    </LinearLayout>
-
-
-
-
-    <LinearLayout
-        android:id="@+id/formLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dummyLogoLayout"
-        android:layout_margin="30dp"
-        android:visibility="invisible"
-        android:orientation="vertical">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content">
             <Button
-                android:id="@+id/countryCodeButton"
-                android:text="@string/country_code"
-                android:minHeight="0dp"
+                android:id="@+id/loginButton"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
                 android:padding="10dp"
-                android:textColor="#B3B3B3"
-                android:background="#F5F5F5"
+                android:background="#FF9800"
+                android:text="@string/login"
+                android:textColor="#fff"
+                android:textSize="16sp"/>
+            <Button
+                android:id="@+id/forgotPasswordButton"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:background="#0000"
+                android:padding="10dp"
+                android:text="@string/forgot_password"
+                android:textColor="#fff"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/registerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dummyLogoLayout"
+            android:visibility="gone"
+            android:layout_margin="30dp"
+            android:orientation="vertical">
+<!--
+            android:background="#FFFFFF"
+-->
+            <EditText
+                android:id="@+id/regPasswordEditText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                android:layout_gravity="center_horizontal"
+                android:imeOptions="actionNext"
                 android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:hint="@string/password"
+                />
 
             <EditText
-                android:id="@+id/mobileEditText"
+                android:id="@+id/regConfirmPasswordEditText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:imeOptions="actionDone"
+                android:textSize="16sp"
+                android:hint="@string/confirm_password"
+                />
+
+
+            <EditText
+                android:id="@+id/regPhoneNumberEditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:singleLine="true"
                 android:inputType="phone"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
                 android:imeOptions="actionDone"
                 android:textSize="16sp"
-                android:hint="@string/enter_mobile_number"
-                android:background="#FFFFFF"/>
+                android:hint="@string/hint_phone"
+                />
 
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:background="#FF9800"
+                android:text="@string/register"
+                android:textColor="#fff"
+                android:textSize="16sp"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/nextButton"
+
+
+
+        <LinearLayout
+            android:id="@+id/formLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"
-            android:background="#FF9800"
-            android:text="@string/next"
-            android:textColor="#fff"
-            android:textSize="16sp"/>
+            android:layout_below="@+id/dummyLogoLayout"
+            android:layout_margin="30dp"
+            android:visibility="invisible"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/countryCodeButton"
+                    android:text="@string/country_code"
+                    android:minHeight="0dp"
+                    android:padding="10dp"
+                    android:textColor="#B3B3B3"
+                    android:background="#F5F5F5"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/skipButton"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:background="#0000"
-            android:padding="10dp"
-            android:text="@string/skip"
-            android:textColor="#fff"
-            android:textSize="12sp"/>
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/emailEditText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textColorHint="#ffe2dd"
+                    android:textColor="#FFFFFF"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress"
+                    android:imeOptions="actionDone"
+                    android:textSize="16sp"
+                    android:hint="@string/enter_email"
+                    />
 
-        <TextView
-            android:layout_alignParentBottom="true"
-            android:paddingBottom="50dp"
-            android:paddingLeft="28sp"
-            android:paddingRight="28sp"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:maxLines="2"
-            android:text="@string/copyright"
-            android:textColor="@color/button_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:background="#FF9800"
+                android:text="@string/next"
+                android:textColor="#fff"
+                android:textSize="16sp"/>
 
 
-    <ProgressBar android:indeterminate="true"
-        android:layout_width="50dp" android:layout_height="50dp"
-        android:id="@+id/marker_progress" android:background ="@drawable/progress_splash"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
-    </RelativeLayout>
+            <LinearLayout
+android:id="@+id/divider"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-</ScrollView>
+                <View
+                    android:layout_weight="2"
+
+                    android:layout_gravity="center_vertical"
+                    android:background="#f48259"
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"/>
+
+                <TextView
+
+                    android:text="OR"
+                    android:layout_margin="10dp"
+                    android:textColor="#ffb3b0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+
+
+                    android:background="#f48259"
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"/>
+
+            </LinearLayout>
+
+
+
+                 <com.facebook.login.widget.LoginButton
+                     android:id="@+id/fbButton"
+                     android:layout_height="wrap_content"
+                     android:layout_width="match_parent"
+                     android:layout_marginTop="20dp"
+                     android:padding="10dp"
+                     android:background="#FFFFFF"
+                     android:text="Login with Facebook"
+                     android:textColor="#3765a3"
+                     android:textSize="16sp"/>
+
+
+                 <Button
+                     android:id="@+id/skipButton"
+                     android:layout_height="wrap_content"
+                     android:layout_width="match_parent"
+                     android:layout_marginTop="20dp"
+                     android:background="#0000"
+                     android:padding="10dp"
+                     android:text="@string/skip"
+                     android:textColor="#fff"
+                     android:textSize="12sp"/>
+             </LinearLayout>
+
+             <TextView
+                 android:layout_alignParentBottom="true"
+                 android:paddingBottom="50dp"
+                 android:paddingLeft="28sp"
+                 android:paddingRight="28sp"
+                 android:textSize="12sp"
+                 android:gravity="center"
+                 android:maxLines="2"
+                 android:text="@string/copyright"
+                 android:textColor="@color/button_text"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content" />
+
+
+             <ProgressBar android:indeterminate="true"
+                 android:layout_width="50dp" android:layout_height="50dp"
+                 android:id="@+id/marker_progress" android:background ="@drawable/progress_splash"
+                 android:layout_alignParentBottom="true"
+                 android:layout_centerHorizontal="true" />
+
+         </RelativeLayout>
+
+     </ScrollView>

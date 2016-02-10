@@ -3,6 +3,7 @@
     xmlns:flowlayout="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/button_text"
     android:paddingBottom="60dp"
     android:orientation="vertical"
     >
@@ -10,319 +11,96 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <EditText
+            android:layout_margin="16dp"
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="left"
+            android:hint="Keywords - seperate by space"
+            android:textColor="@color/red_base"
+            android:textSize="16dp"
+            android:inputType="textNoSuggestions" />
+
+        <LinearLayout
+            android:id="@+id/spinnerLayout"
+            android:weightSum="2"
+            android:layout_below="@+id/editText"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:text="Sub Category:"
+                android:textColor="@color/light_gray"
+                android:layout_height="wrap_content" />
+            <Spinner
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner"
+                />
+        </LinearLayout>
+
 
     <LinearLayout
+        android:id="@+id/containerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/spinnerLayout"
         android:paddingLeft="8dp"
-        android:paddingBottom="60dp"
         android:orientation="vertical">
 
 
-        <RelativeLayout
-            android:id="@+id/colorLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/colorImageView"
-                android:background="@drawable/color_icon"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/colorTextView"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:text="@string/color"
-                android:layout_toRightOf="@+id/colorImageView"
-                android:textColor="@color/header_text"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/colorclearButton"
-                android:layout_alignBottom="@+id/colorTextView"
-                android:text="Clear All"
-                android:background="#0000"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:textSize="10sp"
-                android:paddingLeft="8dp"
-                android:paddingTop="10dp"
-                android:paddingRight="8dp"
-                android:textColor="@color/link_text"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.liangfeizc.flowlayout.FlowLayout
-                android:id="@+id/colorFlowlayout"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/colorTextView"
-                flowlayout:vertical_spacing="10dp"
-                flowlayout:horizontal_spacing="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/tagsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/tagsImageView"
-                android:background="@drawable/tag_icon"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tagsTextView"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_toRightOf="@+id/tagsImageView"
-                android:text="Tags"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/header_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/tagsClearButton"
-                android:layout_alignBottom="@+id/tagsTextView"
-                android:text="Clear All"
-                android:background="@color/tranparent"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:paddingLeft="8dp"
-                android:paddingTop="10dp"
-                android:paddingRight="8dp"
-                android:textSize="10sp"
-                android:textColor="@color/link_text"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.liangfeizc.flowlayout.FlowLayout
-                android:id="@+id/tagsFlowlayout"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/tagsTextView"
-                flowlayout:vertical_spacing="10dp"
-                flowlayout:horizontal_spacing="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/ratingLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/ratingImageView"
-                android:background="@drawable/l_rating_star_default_icon"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/ratingTextView"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_toRightOf="@+id/ratingImageView"
-                android:text="Rating"
-                android:textColor="@color/header_text"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/ratingClearButton"
-                android:layout_alignBottom="@+id/ratingTextView"
-                android:text="Clear All"
-                android:background="@color/tranparent"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:textSize="10sp"
-                android:paddingLeft="8dp"
-                android:paddingTop="10dp"
-                android:paddingRight="8dp"
-                android:textColor="@color/link_text"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.liangfeizc.flowlayout.FlowLayout
-                android:id="@+id/ratingFlowLayout"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/ratingTextView"
-                flowlayout:vertical_spacing="10dp"
-                flowlayout:horizontal_spacing="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-
-
-    <RelativeLayout
-        android:id="@+id/priceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/priceImageView"
-            android:background="@drawable/price_icon"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/priceTextView"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_toRightOf="@+id/priceImageView"
-            android:text="Price"
-            android:textColor="@color/header_text"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/priceClearButton"
-            android:layout_alignBottom="@+id/priceTextView"
-            android:text="Clear All"
-            android:background="@color/tranparent"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:textSize="10sp"
-            android:paddingLeft="8dp"
-            android:paddingTop="10dp"
-            android:paddingRight="8dp"
-            android:textColor="@color/link_text"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.liangfeizc.flowlayout.FlowLayout
-            android:id="@+id/priceFlowLayout"
-            android:layout_marginTop="5dp"
-            android:layout_below="@+id/priceTextView"
-            flowlayout:vertical_spacing="10dp"
-            flowlayout:horizontal_spacing="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/sizeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/sizeImageView"
-                android:background="@drawable/price_icon"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/sizeTextView"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_toRightOf="@+id/sizeImageView"
-                android:text="Size"
-                android:textColor="@color/header_text"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/sizeClearButton"
-                android:layout_alignBottom="@+id/sizeTextView"
-                android:text="Clear All"
-                android:background="@color/tranparent"
-                android:minHeight="0dp"
-                android:paddingLeft="8dp"
-                android:paddingTop="10dp"
-                android:paddingRight="8dp"
-                android:minWidth="0dp"
-                android:textSize="10sp"
-                android:textColor="@color/link_text"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.liangfeizc.flowlayout.FlowLayout
-                android:id="@+id/sizeFlowLayout"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/sizeTextView"
-                flowlayout:vertical_spacing="10dp"
-                flowlayout:horizontal_spacing="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/brandLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/brandImageView"
-                android:background="@drawable/price_icon"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/brandTextView"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_toRightOf="@+id/brandImageView"
-                android:text="Brand"
-                android:textColor="@color/header_text"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/brandClearButton"
-                android:layout_alignBottom="@+id/brandTextView"
-                android:text="Clear All"
-                android:background="@color/tranparent"
-                android:minHeight="0dp"
-                android:paddingLeft="8dp"
-                android:paddingTop="10dp"
-                android:paddingRight="8dp"
-                android:minWidth="0dp"
-                android:textSize="10sp"
-                android:textColor="@color/link_text"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.liangfeizc.flowlayout.FlowLayout
-                android:id="@+id/brandFlowLayout"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/brandTextView"
-                flowlayout:vertical_spacing="10dp"
-                flowlayout:horizontal_spacing="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-        <!--<Button-->
-            <!--android:text="APPLY"-->
-            <!--android:textColor="@color/button_text"-->
-            <!--android:layout_marginTop="15dp"-->
-            <!--android:textSize="24sp"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--android:background="@color/button_bg"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/applyButton" />-->
 
     </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/containerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/seekbarLayout"
+                android:padding="16dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/minPriceTextView"
+                    android:gravity="left"
+                    android:text="minPrice"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/maxPriceTextView"
+                    android:gravity="right"
+                    android:text="maxPrice"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/progressLayout"

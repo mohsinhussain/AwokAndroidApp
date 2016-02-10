@@ -16,7 +16,16 @@ public class OrderHistoryModel {
     public String dateTime,orderId;
     private String price;
     private boolean isHeader;
+    private String status="";
     private String header;
+private String jsonData;
+
+
+
+    private String message;
+
+    private boolean loader=false;
+    private String St;
 
 
     public OrderHistoryModel()
@@ -38,12 +47,50 @@ public class OrderHistoryModel {
 
     }*/
 
-    public OrderHistoryModel(String orderNo,String dateTime,String price,Boolean isHeader,String header)
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isLoader() {
+        return loader;
+    }
+
+    public void setLoader(boolean loader) {
+        this.loader = loader;
+    }
+
+    public OrderHistoryModel(boolean loader, String message) {
+        this.loader = loader;
+
+        this.message=message;
+        this.isHeader=false;
+
+    }
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public OrderHistoryModel(String orderNo,String dateTime,String price,Boolean isHeader,String header,String status)
     {
         this.orderNo=orderNo;
         this.dateTime=dateTime;
         this.isHeader=isHeader;
         this.header=header;
+
+
+        this.status=status;
+
     }
 
 
@@ -227,4 +274,12 @@ public class OrderHistoryModel {
     }
 
 
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+
+    public String getJsonData() {
+        return jsonData;
+    }
 }

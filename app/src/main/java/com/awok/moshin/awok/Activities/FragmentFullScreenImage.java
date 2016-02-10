@@ -130,7 +130,7 @@ int size,pos;
             final ProgressBar progressBar = (ProgressBar) itemView.findViewById(R.id.load_progress_bar);
            // for (int i=0;i<baseImage.size();i++) {
 
-                imageLoader.get(baseImage.get(position), new ImageLoader.ImageListener() {
+                imageLoader.get("http://"+baseImage.get(position), new ImageLoader.ImageListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         imageView.setImage(ImageSource.resource(R.drawable.default_img));

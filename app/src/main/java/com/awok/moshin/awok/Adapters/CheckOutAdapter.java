@@ -727,7 +727,7 @@ viewHolder.remove.setOnClickListener(new View.OnClickListener() {
 
 
                 //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-            new APIClient(activity_main, context,  new RemoveProductCallBack()).removeProductFromCartCall(deleteId);
+            new APIClient(activity_main, context,  new RemoveProductCallBack()).removeProductFromCartCall(deleteId,1);
 
 
 

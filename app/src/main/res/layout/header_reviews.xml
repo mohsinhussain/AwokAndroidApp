@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:padding="10dp"
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageHolderLayout"
+            android:padding="5dp"
+            >
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:id="@+id/load_progress_bar"
+                android:indeterminateDrawable="@drawable/progress_bar_load_more"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                />
+
+            <ImageView
+                android:layout_width="108dp"
+                android:layout_height="97dp"
+                android:id="@+id/mainImg"
+                android:src="@drawable/about_icon"
+                android:scaleType="fitCenter"
+                />
+        </FrameLayout>
+
+
+
+        <TextView
+            android:id="@+id/productTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+
+            android:text="title"
+            android:textColor="@color/normal_text"
+            android:textSize="14sp"
+            android:layout_alignTop="@+id/imageHolderLayout"
+            android:layout_toRightOf="@+id/imageHolderLayout" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/light_gray"
+            android:text="Bought by 2000 users"
+            android:id="@+id/textView"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/productTitle"
+            android:layout_toRightOf="@+id/imageHolderLayout"
+            android:layout_toEndOf="@+id/imageHolderLayout" />
+
+        <TextView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saved by 4000 users"
+            android:id="@+id/textView2"
+            android:textSize="12sp"
+            android:textColor="@color/light_gray"
+            android:layout_marginTop="11dp"
+            android:layout_below="@+id/textView"
+            android:layout_toRightOf="@+id/imageHolderLayout"
+            android:layout_toEndOf="@+id/imageHolderLayout" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/productRating"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:layout_below="@+id/main_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp">
+
+
+
+        <RatingBar
+            android:id="@+id/main_prodRatingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="2.0"
+            android:stepSize="1.0"
+            android:layout_marginTop="12dp"
+            android:layout_below="@+id/main_content"
+            android:layout_toRightOf="@+id/productTitle"
+            android:layout_toEndOf="@+id/productTitle" />
+        <TextView
+            android:id="@+id/product_reviewCount"
+            android:layout_width="fill_parent"
+            android:padding="5dp"
+            android:layout_height="fill_parent"
+
+
+            android:gravity="center_horizontal"
+            android:text="(1 rating)"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/link_text" />
+
+
+
+
+
+    </LinearLayout>
+    <View
+        android:id="@+id/sep"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/border"/>
+    <LinearLayout
+     android:visibility="gone"
+        android:id="@+id/reviews_txt"
+        android:layout_below="@+id/sep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="No Reviews"
+            android:id="@+id/nReviews" />
+    </LinearLayout>
+</LinearLayout>

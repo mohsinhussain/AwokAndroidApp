@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="20dp"
+    android:background="#FFFFFF"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:textColor="#3e3e3e"
+            android:textSize="25dp"
+            android:text="Select Location"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/address2Lay"
+        android:id="@+id/countryLay"
+        android:background="@drawable/country_dropdown_bg"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical">
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/country"
+            android:layout_below="@+id/nameLayout"
+
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/countryLay"
+        android:id="@+id/stateLay"
+        android:background="@drawable/country_dropdown_bg"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical">
+        <Spinner
+
+
+
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/state"
+            android:layout_below="@+id/countryLay"
+
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/stateLay"
+        android:id="@+id/cityLay"
+        android:background="@drawable/country_dropdown_bg"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical">
+        <Spinner
+
+
+
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/area"
+            android:layout_below="@+id/state"
+
+            />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:id="@+id/buttonLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="right"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_height="36dp"
+            android:layout_width="wrap_content"
+            android:padding="8dp"
+            android:background="@color/tranparent"
+            android:layout_marginRight="8dp"
+            android:text="@string/cancel"
+            android:textColor="@color/dialog_button_cancel"
+            android:textSize="16sp"
+            android:minWidth="0dp" />
+
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_height="36dp"
+            android:layout_width="wrap_content"
+            android:padding="8dp"
+            android:background="@color/tranparent"
+            android:text="Done"
+            android:textColor="@color/dialog_button_yes"
+            android:textSize="16sp"
+            android:minWidth="0dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

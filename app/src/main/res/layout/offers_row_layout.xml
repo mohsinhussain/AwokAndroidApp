@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+
+
+    android:padding="8dp" >
+
+<RelativeLayout
+
+android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/mainRel"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+   <ImageView
+       android:id="@+id/offersImage"
+       android:layout_width="72dp"
+       android:layout_height="72dp" />
+    <LinearLayout
+        android:id="@+id/data"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/offersImage"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+
+
+        android:id="@+id/title"
+        android:layout_centerVertical="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="title"
+        android:layout_weight="1"
+        android:layout_marginLeft="15dp"
+        android:padding="10dp"
+
+        android:textStyle="bold" />
+        <TextView
+            android:layout_toRightOf="@+id/offersImage"
+
+            android:id="@+id/desc"
+            android:layout_centerVertical="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="title"
+            android:layout_weight="1"
+            android:layout_marginLeft="15dp"
+            android:padding="10dp"
+
+            android:textStyle="normal" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+</RelativeLayout>

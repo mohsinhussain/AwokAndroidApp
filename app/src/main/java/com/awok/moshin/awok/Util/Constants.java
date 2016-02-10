@@ -19,6 +19,14 @@ public class Constants {
     public static String CAT_NAME_INTENT = "catNameIntent";
     public static String SHIPPING_RESPONSE_INTENT = "shippingResponseIntent";
     public static String USER_MOBILE_PREFS = "userMobileNumberInPrefs";
+    public static String USER_PROFILE_PIC = "userProfilePicture";
+    ///////
+
+    public static String USER_EMAIL_PREFS = "userEmailIdInPrefs";
+    public static String USER_ADDRESS_ID = "userAddressId";
+
+
+    public static String PRODUCT_OUT_STOCK = "userOutOfStock";
     public static String USER_SETTING_COUNTRY="userCountryPrefs";
     public static String USER_COUNTRY_IMAGE_ID="userCountryImageIdPrefs";
     public static String USER_ID_PREFS = "userIdInPrefs";

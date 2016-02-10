@@ -231,6 +231,8 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
 
         // BEGIN_INCLUDE(recyclerViewOnBindViewHolder)
         // Replace the contents of a view (invoked by the layout manager)
+
+
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
             Log.d(TAG, "Element " + position + " set.");
@@ -683,7 +685,7 @@ public class OrderSummaryCustomAdapter extends RecyclerView.Adapter<OrderSummary
 
 
                         //new APIClient(activity, context,  new RemoveProductCallBack()).removeProductFromCartCall("55ffc54c1a7da7681500002a");
-                        new APIClient(activity_main, mContext,  new RemoveProductCallBack()).removeProductFromCartCall(deleteId);
+                        new APIClient(activity_main, mContext,  new RemoveProductCallBack()).removeProductFromCartCall(deleteId,1);
 
 
 

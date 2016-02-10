@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.awok.moshin.awok" >
 
-    <uses-sdk tools:overrideLibrary="com.liangfeizc.flowlayout" />
+    <uses-sdk tools:overrideLibrary="com.liangfeizc.flowlayout,com.facebook" />
+
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -49,7 +50,6 @@
         <activity
             android:name=".Activities.ProductDetailsActivity"
             android:label="@string/app_name"
-
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -147,13 +147,14 @@
         <activity
             android:name=".Activities.ProfileActivity"
             android:label="@string/title_activity_order_summary"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".Activities.ShippingMethodActivity"
             android:label="Shipping Method"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name=".Activities.FragmentFullScreenImage"
@@ -173,7 +174,8 @@
         </activity>
         <activity
             android:name=".Activities.EditProfileActivity"
-            android:label="@string/title_activity_shipping_delivery_frag" >
+            android:label="@string/title_activity_shipping_delivery_frag"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".Activities.Settings"
@@ -221,6 +223,37 @@
             android:name=".Activities.Main2Activity"
             android:label="@string/title_activity_main2" >
         </activity>
+        <activity
+            android:name=".Activities.Pick_Payment_ACtivity"
+            android:label="@string/title_activity_pick__payment__activity" >
+        </activity>
+        <activity
+            android:name=".Activities.OffersActivity"
+            android:label="@string/title_activity_offers" >
+        </activity>
+        <activity
+            android:name=".Activities.OrderDetailSummary"
+            android:label="@string/title_activity_order_detail_summary" >
+        </activity>
+        <activity
+            android:name=".Activities.OffersCategoryActivity"
+            android:label="@string/title_activity_offers_category" >
+        </activity>
+        <activity
+            android:name=".Activities.CategoryWebView"
+            android:label="@string/title_activity_category_web_view" >
+        </activity>
+
+
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
     </application>
 
 </manifest>

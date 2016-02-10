@@ -31,6 +31,7 @@ import com.awok.moshin.awok.Models.productOverviewRating;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +50,8 @@ private RecyclerView list;
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBar progressBar;
     LinearLayout progressLayout;
+    String userId="";
+    SharedPreferences mSharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +88,10 @@ private RecyclerView list;
        // setDate();
 
 
-
+        mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
+        if ((mSharedPrefs.contains(Constants.USER_ID_PREFS))) {
+            userId = mSharedPrefs.getString(Constants.USER_ID_PREFS, null);
+        }
 
 
 
@@ -119,7 +125,7 @@ overViewList.add(address);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
 
-            new APIClient(this, getApplicationContext(), new GetAddressCallback()).addressCallBack("55f6a9e52f17f64a9b5f5ce5");
+            new APIClient(this, getApplicationContext(), new GetAddressCallback()).addressCallBack(userId);
 
 
         } else {
@@ -164,6 +170,7 @@ overViewList.add(address);
         i.putExtra("zip", overViewList.get(position).getPin());
         i.putExtra("mobile1", overViewList.get(position).getPhone1());
         i.putExtra("mobile2", overViewList.get(position).getPhone2());
+        i.putExtra("isPrimary",overViewList.get(position).isSelected());
 
         startActivity(i);
 
@@ -188,7 +195,7 @@ overViewList.add(address);
                 getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(this, getApplicationContext(), new RemoveAddressCallback()).removeAddressAPICall(addressId);
+            new APIClient(this, getApplicationContext(), new RemoveAddressCallback()).removeAddressAPICall(addressId,userId);
 
 
         } else {
@@ -205,8 +212,11 @@ overViewList.add(address);
                 getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(this, getApplicationContext(), new GetAddressCallback()).setPrimaryAddressAPICall(addressId);
-
+            new APIClient(this, getApplicationContext(), new GetAddressCallback()).setPrimaryAddressAPICall(addressId,userId);
+            SharedPreferences.Editor editor = mSharedPrefs.edit();
+            editor.putString(Constants.USER_ADDRESS_ID, addressId);
+            System.out.println("ADDED " + addressId);
+            editor.commit();
 
         } else {
 
@@ -277,16 +287,28 @@ overViewList.add(address);
 
                 JSONObject jsonObjectData;
                 jsonObjectData = new JSONObject(response);
-                System.out.println(jsonObjectData.toString());
-                if (jsonObjectData.getString("status").equals("0")) {
+                if(jsonObjectData.getJSONObject("STATUS").getInt("CODE")==401)
+                {
+                    String userId = mSharedPrefs.getString(Constants.USER_ID_PREFS, null);
+                    new APIClient(ShippingAddressActivity.this, ShippingAddressActivity.this, new logoutUserCallback()).userLogoutAPICall(userId);
+                }
 
-                } else {
+
+                else if(jsonObjectData.getJSONObject("STATUS").getInt("CODE")==200) {
+                    System.out.println(jsonObjectData.toString());
+                    if (jsonObjectData.getJSONObject("OUTPUT").has("MESSAGE")) {
+
+                        Snackbar.make(findViewById(android.R.id.content), jsonObjectData.getJSONObject("OUTPUT").getString("MESSAGE"), Snackbar.LENGTH_INDEFINITE)
+                                .setActionTextColor(Color.RED)
+                                .show();
+                    }
+                /*else {
 
                     Snackbar.make(findViewById(android.R.id.content), jsonObjectData.getString("title"), Snackbar.LENGTH_INDEFINITE)
                             .setActionTextColor(Color.RED)
                             .show();
+                }*/
                 }
-
 
 
                 if (getApplicationContext() != null) {
@@ -333,33 +355,94 @@ overViewList.add(address);
 
                 JSONObject jsonObjectData;
                 jsonObjectData = new JSONObject(response);
-                System.out.println(jsonObjectData.toString());
-                if (jsonObjectData.getString("status").equals("0")) {
-
-                } else {
-                    overViewList.clear();
-                    JSONArray address=jsonObjectData.getJSONArray("address");
-                    for(int i=0;i<address.length();i++)
-                        {
-                            JSONObject jData=address.getJSONObject(i);
-                            ShippingAddressModel addressModel=new ShippingAddressModel();
-                            addressModel.setName(jData.getString("name"));
-                            addressModel.setId(jData.getString("id"));
-                            addressModel.setAddress1(jData.getJSONObject("address").getString("address_line1"));
-                            addressModel.setAddress2(jData.getJSONObject("address").getString("address_line2"));
-                            addressModel.setState(jData.getString("state"));
-                            addressModel.setCity(jData.getString("city"));
-                            addressModel.setCountry(jData.getString("country"));
-                            addressModel.setPin(jData.getString("postal_code"));
-                            addressModel.setPhone1(jData.getString("phone_number1"));
-                            addressModel.setPhone2(jData.getString("phone_number2"));
-                            addressModel.setIsSelected(jData.getBoolean("is_primary"));
-                            overViewList.add(addressModel);
-                        }
-                    list.setAdapter(mAdapter);
+                if(jsonObjectData.getJSONObject("STATUS").getInt("CODE")==401)
+                {
+                    String userId = mSharedPrefs.getString(Constants.USER_ID_PREFS, null);
+                    new APIClient(ShippingAddressActivity.this, ShippingAddressActivity.this, new logoutUserCallback()).userLogoutAPICall(userId);
                 }
 
 
+                else if(jsonObjectData.getJSONObject("STATUS").getInt("CODE")==200) {
+                    System.out.println(jsonObjectData.toString());
+            /*    if (jsonObjectData.getString("status").equals("0")) {
+
+                } else {*/
+                    overViewList.clear();
+                    JSONArray address = jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONArray("PROFILES");
+                    for (int i = 0; i < address.length(); i++) {
+                        JSONObject jData = address.getJSONObject(i);
+
+
+                        ShippingAddressModel addressModel = new ShippingAddressModel();
+
+
+                        addressModel.setId(jData.optString("ADDRESS_ID"));
+
+                        if (jData.getJSONObject("LOCATION_INFO").has("EMIRATE")) {
+                            addressModel.setState(jData.getJSONObject("LOCATION_INFO").getJSONObject("EMIRATE").optString("NAME"));
+                            addressModel.setStateId(jData.getJSONObject("LOCATION_INFO").getJSONObject("EMIRATE").optString("ID"));
+                            System.out.println(jData.getJSONObject("LOCATION_INFO").getJSONObject("EMIRATE").optString("ID"));
+                        }
+                        if (jData.getJSONObject("LOCATION_INFO").has("AREA")) {
+                            addressModel.setCity(jData.getJSONObject("LOCATION_INFO").getJSONObject("AREA").optString("NAME"));
+                            addressModel.setLocationId(jData.getJSONObject("LOCATION_INFO").getJSONObject("EMIRATE").optString("ID"));
+                            System.out.println(jData.getJSONObject("LOCATION_INFO").getJSONObject("AREA").optString("ID"));
+                        }
+                        if (jData.getJSONObject("LOCATION_INFO").has("COUNTRY")) {
+                            addressModel.setCountry(jData.getJSONObject("LOCATION_INFO").getJSONObject("COUNTRY").optString("NAME"));
+                            addressModel.setCountryId(jData.getJSONObject("LOCATION_INFO").getJSONObject("EMIRATE").optString("ID"));
+                            System.out.println(jData.getJSONObject("LOCATION_INFO").getJSONObject("COUNTRY").optString("ID"));
+                        }
+
+                        for (int j = 0; j < jData.getJSONArray("FIELDS").length(); j++) {
+
+                            JSONObject jAddData = jData.getJSONArray("FIELDS").getJSONObject(j);
+                            if (jAddData.getString("ID").equals("65")) {
+                                addressModel.setName(jAddData.optString("VALUE"));
+                                System.out.println(jAddData.optString("VALUE"));
+                            }
+                            if (jAddData.getString("ID").equals("67")) {
+                                addressModel.setAddress1(jAddData.optString("VALUE"));
+                                System.out.println(jAddData.optString("VALUE"));
+                            }
+                            if (jAddData.getString("ID").equals("69")) {
+                                addressModel.setAddress2(jAddData.optString("VALUE"));
+                                System.out.println(jAddData.optString("VALUE"));
+                            }
+
+                            if (jAddData.getString("ID").equals("78")) {
+                                addressModel.setPin(jAddData.optString("VALUE"));
+                                System.out.println(jAddData.optString("VALUE"));
+                            }
+                            if (jAddData.getString("ID").equals("70")) {
+                                addressModel.setPhone1(jAddData.optString("VALUE"));
+                                System.out.println(jAddData.optString("VALUE"));
+                            }
+                            if (jAddData.getString("ID").equals("71")) {
+                                addressModel.setPhone2(jAddData.optString("VALUE"));
+                                System.out.println(jAddData.optString("VALUE"));
+
+                            }
+                            if (jAddData.optString("ID").equals("116")) {
+                                if (jAddData.optString("VALUE").equals("Y")) {
+                                    addressModel.setIsSelected(true);
+
+                                } else {
+                                    addressModel.setIsSelected(false);
+                                }
+
+                            }
+
+                        }
+                        overViewList.add(addressModel);
+
+                    }
+
+
+                    list.setAdapter(mAdapter);
+                    //  }
+
+                }
                 progressLayout.setVisibility(View.GONE);
 
 
@@ -385,7 +468,40 @@ overViewList.add(address);
     }
 
 
+    public class logoutUserCallback extends AsyncCallback {
+        public void onTaskComplete(String response) {
+            try {
+                JSONObject obj = new JSONObject(response);
+                if(obj.getJSONObject("OUTPUT").has("ERRORS")) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(0).getString("MESSAGE"), Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                else{
+                    SharedPreferences.Editor editor = mSharedPrefs.edit();
+                    editor.clear();
+                    editor.commit();
+                    Intent i = new Intent(ShippingAddressActivity.this, SplashActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+                progressLayout.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                progressLayout.setVisibility(View.GONE);
+            }
 
+        }
+        @Override
+        public void onTaskCancelled() {
+        }
+        @Override
+        public void onPreExecute() {
+            // TODO Auto-generated method stub
+            progressLayout.setVisibility(View.VISIBLE);
+
+        }
+    }
 
 
 

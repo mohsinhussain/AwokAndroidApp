@@ -48,7 +48,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
   CardView mCardView;
   //        TextView nameTextView;
   TextView priceTextView;
-  //        TextView oldPriceTextView;
+          TextView oldPriceTextView;
   TextView discountTextView, timerTextView;
   ImageView itemImageView;
   LinearLayout container, timerLayout;
@@ -62,7 +62,7 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
     mCardView = (CardView)itemView.findViewById(R.id.cv);
 //            nameTextView = (TextView)itemView.findViewById(R.id.nameTextView);
     priceTextView = (TextView)itemView.findViewById(R.id.priceTextView);
-//            oldPriceTextView = (TextView)itemView.findViewById(R.id.oldPriceTextView);
+            oldPriceTextView = (TextView)itemView.findViewById(R.id.oldPriceTextView);
     discountTextView = (TextView)itemView.findViewById(R.id.percentTextView);
     loadProgressBar = (ProgressBar)itemView.findViewById(R.id.load_progress_bar);
     itemImageView = (ImageView)itemView.findViewById(R.id.itemImageView);
@@ -100,49 +100,67 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    if(!character.isCached()) {
-      itemImageView.getViewTreeObserver().addOnPreDrawListener(
-              new ViewTreeObserver.OnPreDrawListener() {
-                public boolean onPreDraw() {
-                  int cellWidth = itemImageView.getMeasuredWidth();
-                  int imageHeighFromServer = character.getImageHeight(mContext);
-                  int imageWidthFromServer = 120;
-                  int cellHeight = cellWidth * imageHeighFromServer / imageWidthFromServer;
-                  itemImageView.getLayoutParams().height = cellHeight;
-                  itemImageView.requestLayout();
-//                System.out.println("ItemImageView: " + itemImageView.getLayoutParams().height);
-                  return true;
-                }
-              });
-
-
-      int cellWidth2 = overLay.getMeasuredWidth();
-      int imageHeighFromServer2 = character.getImageHeight(mContext);
-      int imageWidthFromServer2= 90;
-      int cellHeight2 = cellWidth2 * imageHeighFromServer2 / imageWidthFromServer2;
-      overLay.getLayoutParams().height = cellHeight2;
-      overLay.requestLayout();
+//    if(!character.isCached()) {
+//      itemImageView.getViewTreeObserver().addOnPreDrawListener(
+//              new ViewTreeObserver.OnPreDrawListener() {
+//                public boolean onPreDraw() {
+//                  int cellWidth = itemImageView.getMeasuredWidth();
+//                  int imageHeighFromServer = character.getImageHeight(mContext);
+//                  int imageWidthFromServer = 120;
+//                  int cellHeight = cellWidth * imageHeighFromServer / imageWidthFromServer;
+//                  itemImageView.getLayoutParams().height = cellHeight;
+//                  itemImageView.requestLayout();
+////                System.out.println("ItemImageView: " + itemImageView.getLayoutParams().height);
+//                  return true;
+//                }
+//              });
+//
+//
+//      int cellWidth2 = overLay.getMeasuredWidth();
+//      int imageHeighFromServer2 = character.getImageHeight(mContext);
+//      int imageWidthFromServer2= 90;
+//      int cellHeight2 = cellWidth2 * imageHeighFromServer2 / imageWidthFromServer2;
+//      overLay.getLayoutParams().height = cellHeight2;
+//      overLay.requestLayout();
+//    }
+    if(character.getDiscPercent()==0)
+    {
+      discountTextView.setVisibility(View.GONE);
+      oldPriceTextView.setVisibility(View.INVISIBLE);
     }
-
-    discountTextView.setText(character.getDiscPercent() + "%");
+    else {
+      discountTextView.setVisibility(View.VISIBLE);
+      discountTextView.setText(character.getDiscPercent() + "% OFF");
+      oldPriceTextView.setVisibility(View.VISIBLE);
+    }
     priceLayout.setVisibility(View.VISIBLE);
-    priceTextView.setText(character.getPriceNew());
+    if(character.getPriceNew().toString().equals(" AED 0"))
+    {
+      System.out.println("resrtsus");
+      priceTextView.setText("OUT OF STOCK");
+      oldPriceTextView.setVisibility(View.INVISIBLE);
+    }
+    else {
+      System.out.println("resrtsus"+character.getPriceNew());
+      priceTextView.setText(character.getPriceNew());
+      oldPriceTextView.setText(character.getPriceOld());
+    }
 
     itemImageView.setImageDrawable(null);
 
 //        holder.itemImageView.setVisibility(View.INVISIBLE);
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-    imageLoader.get(character.getImage(), new ImageLoader.ImageListener() {
+    System.out.println("ch" + character.getImage());
+    imageLoader.get("http://" + character.getImage(), new ImageLoader.ImageListener() {
       @Override
       public void onErrorResponse(VolleyError error) {
 
 //                holder.itemImageView.setVisibility(View.VISIBLE);
 
         itemImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.default_img));
-        if(character.isCached()){
+        if (character.isCached()) {
           overLay.setVisibility(View.GONE);
-        }
-        else{
+        } else {
           Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
           animation.setStartOffset(500);
           animation.setFillAfter(true);
@@ -159,10 +177,9 @@ public class CharacterViewHolder extends RecyclerView.ViewHolder {
           // load image into imageview
           itemImageView.setImageBitmap(response.getBitmap());
 //                    holder.itemImageView.setVisibility(View.VISIBLE);
-          if(character.isCached()){
+          if (character.isCached()) {
             overLay.setVisibility(View.GONE);
-          }
-          else{
+          } else {
             Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
             animation.setStartOffset(500);
             animation.setFillAfter(true);

@@ -25,6 +25,7 @@ String rating;
     private String xtraImage;
     private boolean isCached;
     int years, months, days, hours, minutes, seconds;
+    private String outOfStock;
 
     public Products() {
         this.loader = false;
@@ -46,7 +47,7 @@ String rating;
         seconds = 0;
     }
 
-    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount,int imageHeight, int imageWidth, String xtraImage) {
+    public Products(String id, String name, String image, int priceNew, int priceOld, int discPercent, String categoryId, String description,String rating,String ratingCount,int imageHeight, int imageWidth, String xtraImage,String outOfStock) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -60,6 +61,7 @@ String rating;
         this.imageHeight=imageHeight;
         this.loader = false;
         this.xtraImage=xtraImage;
+        this.outOfStock=outOfStock;
         isCached = false;
         years = 0;
         days = 0;
@@ -190,7 +192,7 @@ String rating;
     }
 
     public String getImage() {
-        return "http://mp.alifca.com/"+image;
+        return image;
     }
 
     public void setImage(String image) {
@@ -257,4 +259,11 @@ String rating;
     }
 
 
+    public void setOutOfStock(String outOfStock) {
+        this.outOfStock = outOfStock;
+    }
+
+    public String getOutOfStock() {
+        return outOfStock;
+    }
 }

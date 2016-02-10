@@ -16,7 +16,7 @@
 
     <ImageView
         android:id="@+id/avatar"
-        android:src="@drawable/sony"
+        android:src="@drawable/default_img"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginLeft="10dp"
@@ -30,6 +30,7 @@
         android:layout_marginTop="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:id="@+id/welcome"
+        android:textColor="#FFFFFF"
         android:layout_below="@+id/avatar"
         android:layout_alignLeft="@+id/avatar"
         android:layout_alignStart="@+id/avatar" />
@@ -41,6 +42,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Shon Prinson"
         android:id="@+id/nameTxt"
+        android:textColor="#FFFFFF"
         android:layout_alignLeft="@+id/welcome"
         android:layout_alignStart="@+id/welcome"
         android:layout_marginTop="10dp"

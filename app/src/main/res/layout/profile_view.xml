@@ -1,0 +1,347 @@
+<!--
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </android.support.design.widget.AppBarLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+-->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical"
+     >
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:layout_centerVertical="true"
+                android:text="My Picture"
+                android:textColor="@color/input_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_margin="10dp"
+                android:id="@+id/avatar"
+                android:src="@drawable/sony"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:elevation="4dp"
+
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+
+
+                android:background="@color/line_seperator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/fullNameFloat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:hint="Full Name"
+                android:id="@+id/fullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                 />
+        </android.support.design.widget.TextInputLayout>
+            <View
+                android:layout_marginTop="10dp"
+                android:background="@color/line_seperator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/emailFloat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:hint="Email Address"
+                    android:id="@+id/emailId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <View
+                android:layout_marginTop="10dp"
+                android:background="@color/line_seperator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/phoneFloat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:hint="Phone Number"
+                    android:id="@+id/phoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <View
+                android:layout_marginTop="10dp"
+                android:background="@color/line_seperator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/genderLay"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+          <TextView
+
+              android:layout_marginLeft="10dp"
+              android:layout_marginTop="5dp"
+              android:textSize="15sp"
+              android:text="Gender"
+              android:textColor="@color/input_hint"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/gender"
+                android:textSize="16sp"
+                android:text="Please Select"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <View
+                android:layout_marginTop="10dp"
+                android:background="@color/line_seperator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/dobLay"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:textSize="15sp"
+                android:text="Date of Birth"
+                android:textColor="@color/input_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/date"
+                android:textSize="16sp"
+                android:text="Please Select"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <View
+                android:layout_marginTop="10dp"
+                android:background="@color/line_seperator"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+
+            android:id="@+id/interestLay"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp"
+                android:text="Interests"
+                android:textColor="@color/input_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/interest"
+                android:textSize="16sp"
+                android:text="Please Select"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <View
+                android:layout_marginTop="10dp"
+                android:background="@color/line_seperator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:id="@+id/langLay"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp"
+                android:text="Language"
+                android:textColor="@color/input_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/language"
+                android:textSize="16sp"
+                android:text="Please Select"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <View
+                android:layout_marginTop="10dp"
+                android:background="@color/line_seperator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                 />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                 />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button android:id="@+id/btn_signup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+
+            android:layout_marginTop="40dp"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+</ScrollView>
+<!--
+</android.support.design.widget.CoordinatorLayout>-->

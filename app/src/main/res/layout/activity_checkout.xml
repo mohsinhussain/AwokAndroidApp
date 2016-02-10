@@ -265,7 +265,142 @@ android:id="@+id/subtotal"
     </RelativeLayout>
                 </RelativeLayout>
             </android.support.v4.widget.NestedScrollView>-->
-    <ScrollView
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/overViewRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/main_content"
+android:layout_above="@+id/bottomLay"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+
+        android:background="#fff"
+
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:scrollbars="none" />
+
+
+
+    <LinearLayout
+        android:id="@+id/bottomLay"
+        android:background="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dialog_bg"/>
+
+        <RelativeLayout
+            android:background="@color/button_text"
+            android:layout_width="wrap_content"
+            android:padding="8dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingLeft="8dp"
+                android:orientation="horizontal">
+                <TextView
+
+                    android:id="@+id/totalTextView"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/total"
+                    android:gravity="bottom"
+                    android:textSize="12sp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/light_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:id="@+id/totalText"
+                    android:background="@color/button_text"
+                    android:textColor="#ff3823"
+                    android:layout_width="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="AED 20"
+                    android:layout_height="wrap_content"
+                    android:gravity="left" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="8dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/checkout"
+                    android:gravity="center"
+                    android:layout_width="145dp"
+                    android:layout_height="44dp"
+                    android:background="@color/red_base"
+                    android:textSize="15sp"
+                    android:text="@string/secure_checkout"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/loader_bg"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:id="@+id/marker_progress"
+            android:indeterminateDrawable="@drawable/progress_bar_load_more"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:text="Loading.."
+            android:textColor="@color/normal_text"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Cart is Empty!! Continue Shopping"
+        android:id="@+id/cartEmptyText"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
+  <!--  <ScrollView
         android:layout_below="@+id/main_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -283,11 +418,11 @@ android:id="@+id/subtotal"
 
 
 
-    <!--android:layout_below="@+id/main_content"-->
-    <!--android:layout_above="@+id/totalLay"
-    android:layout_below="@+id/main_content"-->
-
-    <android.support.v7.widget.RecyclerView
+    &lt;!&ndash;android:layout_below="@+id/main_content"&ndash;&gt;
+    &lt;!&ndash;android:layout_above="@+id/totalLay"
+    android:layout_below="@+id/main_content"&ndash;&gt;
+&lt;!&ndash;////////////////**************************************************************&ndash;&gt;
+    &lt;!&ndash;<android.support.v7.widget.RecyclerView
         android:id="@+id/overViewRecyclerView"
         android:layout_width="match_parent"
 
@@ -297,17 +432,19 @@ android:id="@+id/subtotal"
         android:background="#fff"
 
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:scrollbars="none" />
+        android:scrollbars="none" />&ndash;&gt;
 
 
 
-    <!--android:layout_above="@+id/bottomLay"-->
+    &lt;!&ndash;android:layout_above="@+id/bottomLay"&ndash;&gt;
 
-    <!--android:background="@drawable/shadow_background"-->
+    &lt;!&ndash;android:background="@drawable/shadow_background"&ndash;&gt;
 
-    <LinearLayout
+  &lt;!&ndash;  <LinearLayout
 
+android:visibility="gone"
 android:background="#FFFFFF"
+        android:layout_marginTop="5dp"
         android:id="@+id/totalLay"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
@@ -325,11 +462,11 @@ android:background="#FFFFFF"
         android:orientation="vertical">
 
 
-<!--        <View
+&lt;!&ndash;        <View
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/primary_material_light_1"/>-->
+            android:background="@color/primary_material_light_1"/>&ndash;&gt;
 
 
         <LinearLayout
@@ -442,7 +579,7 @@ android:background="#FFFFFF"
 
         </LinearLayout>
 
-    </LinearLayout>
+    </LinearLayout>&ndash;&gt;
 
 
 
@@ -450,7 +587,7 @@ android:background="#FFFFFF"
     </ScrollView>
 
 
-    <LinearLayout
+    &lt;!&ndash;<LinearLayout
         android:id="@+id/bottomLay"
         android:background="#FFFFFF"
         android:layout_width="match_parent"
@@ -525,7 +662,7 @@ android:background="#FFFFFF"
         </RelativeLayout>
 
 
-    </LinearLayout>
+    </LinearLayout>&ndash;&gt;
     <TextView
         android:id="@+id/error_text"
         android:text="Oops.. Something went wrong"
@@ -538,13 +675,13 @@ android:background="#FFFFFF"
         android:layout_centerHorizontal="true"
         android:layout_height="match_parent"
         />
-    <!--<ProgressBar android:indeterminate="true"
+    &lt;!&ndash;<ProgressBar android:indeterminate="true"
 
         android:layout_width="50dp" android:layout_height="50dp"
         android:id="@+id/marker_progress" android:background ="@drawable/progress"
         android:layout_gravity="center"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />-->
+        android:layout_centerHorizontal="true" />&ndash;&gt;
     <LinearLayout
         android:id="@+id/progressLayout"
         android:layout_width="wrap_content"
@@ -583,7 +720,7 @@ android:background="#FFFFFF"
         android:text="Cart is Empty!! Continue Shopping"
         android:id="@+id/cartEmptyText"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true" />-->
 </RelativeLayout>
 
 

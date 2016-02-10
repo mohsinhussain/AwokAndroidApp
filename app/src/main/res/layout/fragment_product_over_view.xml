@@ -26,6 +26,7 @@
         android:scrollbars="none" />-->
 
     <WebView
+        android:visibility="gone"
         android:overScrollMode="never"
         android:scrollbars="none"
         android:id="@+id/webview"
@@ -33,5 +34,15 @@
         android:layout_alignParentLeft="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></WebView>
+
+    <TextView
+        android:padding="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=""
+        android:id="@+id/txt"
+        android:layout_gravity="left|top" />
+
 
 </FrameLayout>

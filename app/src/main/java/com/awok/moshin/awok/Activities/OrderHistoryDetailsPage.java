@@ -56,6 +56,8 @@ private String orderId;
     private String sendProductUniqueId,sendProductName;
     private RelativeLayout mainLay;
     ProgressBar progressBar;
+    JSONObject jsonObject;
+    String dateCreated,orderstatus,shippingCost,orderprice,isShipped,estimated_delivery;
     private Button disputeOpen;
     private RecyclerView.Adapter mAdapter;
     private TextView orderTime,delTime,orderStatus,shippingAmount,totalAmount,sellerStore,sellerName;
@@ -94,6 +96,12 @@ disputeOpen=(Button)findViewById(R.id.disputeButton);
             }
         });
 orderId=getIntent().getExtras().getString("OrderId");
+        try {
+            jsonObject=new JSONObject(getIntent().getExtras().getString("JsonObject"));
+            System.out.println("JSONOBJECT" + jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         System.out.println("ORDER" + orderId);
 
     orderTime=(TextView)findViewById(R.id.orderTimeDate);
@@ -105,7 +113,7 @@ orderId=getIntent().getExtras().getString("OrderId");
         sellerName=(TextView)findViewById(R.id.sellerName);
 
 mainLay=(RelativeLayout)findViewById(R.id.mainLay);
-        mainLay.setVisibility(View.GONE);
+  //      mainLay.setVisibility(View.GONE);
 
 
         mRecyclerView.setNestedScrollingEnabled(true);
@@ -158,14 +166,14 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
             }
         }));
 
-        ConnectivityManager connMgr = (ConnectivityManager)
+/*        ConnectivityManager connMgr = (ConnectivityManager)
                 getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            /*if(categoryId==null){
+            *//*if(categoryId==null){
                 new APIClient(getApplicationContext(), getApplicationContext(),  new GetProductsCallback()).allProductsAPICall(pageCount);
             }
-            else{*/
+            else{*//*
             new APIClient(this, getApplicationContext(),  new GetHistoryDetailsCallback()).OrderHistoryDetailsItemsCallBack(orderId);
             // }
 
@@ -173,14 +181,71 @@ mainLay=(RelativeLayout)findViewById(R.id.mainLay);
             Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
                     .show();
+        }*/
+
+
+dataPopulate();
+
+
+
+
+    }
+
+    private void dataPopulate() {
+
+
+        try {
+            dateCreated=jsonObject.getString("DATE_INSERT");
+
+        orderstatus=jsonObject.getString("STATUS");
+        shippingCost=jsonObject.getString("SHIPPING_COST");
+        isShipped=jsonObject.getString("IS_SHIPPED");
+        estimated_delivery=jsonObject.getString("ESTIMATED_DELIVERY");
+        orderprice=jsonObject.getString("PRICE");
+            System.out.println("DATE_INSERT"+dateCreated);
+            System.out.println("STATUS"+orderstatus);
+            System.out.println("SHIPPING_COST"+shippingCost);
+            System.out.println("IS_SHIPPED"+isShipped);
+            System.out.println("ESTIMATED_DELIVERY"+estimated_delivery);
+            System.out.println("PRICE" + orderprice);
+
+            orderHistoryDetailsData.add(new OrderHistoryDetailsModel("2",orderstatus , dateCreated,estimated_delivery,isShipped, true));
+            for(int j=0;j<jsonObject.getJSONArray("BASKET_ITEMS").length();j++) {
+                OrderHistoryDetailsModel orderData = new OrderHistoryDetailsModel();
+                JSONObject jsonCartData = jsonObject.getJSONArray("BASKET_ITEMS").getJSONObject(j);
+
+                orderData.setImage(jsonCartData.getString("IMAGE"));
+                //orderData.setPrice(jsonCartData.getString("total_price"));
+                orderData.setPrice(jsonCartData.getString("CURRENCY") + " " + jsonCartData.getString("PRICE"));
+                /////////orderData.setIntentPrice(jsonCartData.getString("total"));
+                orderData.setQuantity(jsonCartData.getString("QUANTITY"));
+                orderData.setProductName(jsonCartData.getString("NAME"));
+                orderData.setProductUniqueId(jsonCartData.getString("ID"));
+                orderData.setTitle(jsonCartData.getString("NAME"));
+                //////////////orderData.setSeller(jsonCartData.getString("seller_name"));
+                //////orderData.setEstimated_days_from(jsonCartData.getJSONObject("shipping_info").getString("estimated_days_from"));
+                ///////orderData.setEstimated_days_to(jsonCartData.getJSONObject("shipping_info").getString("estimated_days_to"));
+                //////orderData.setShipping(jsonCartData.getString("seller_name"));
+                //////orderData.setShippingStatus(jsonCartData.getString("seller_name"));
+                ///////orderData.setDelTime(jsonCartData.getString("seller_name"));
+                orderHistoryDetailsData.add(orderData);
+
+            }
+            orderHistoryDetailsData.add(new OrderHistoryDetailsModel(jsonObject.getString("CURRENCY")+" "+shippingCost,jsonObject.getString("CURRENCY")+" "+orderprice, true));
+            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-
-
-
-
-
-
+     /*   "ID":"404688096",
+                "DATE_INSERT":"December 08, 2015 at 10:19:43",
+                "STATUS":"Order has been received.",
+                "SHIPPING_COST":"40.00",
+                "NUMBER":"467688"
+        "PRICE":"939.00",
+                "IS_SHIPPED":"Not Shipped",
+                "ESTIMATED_DELIVERY":"6 to 24 Hours",*/
     }
 
 
@@ -291,7 +356,7 @@ shippingAmount.setText(jsonCart.getString("currency")+" "+jsonCart.getString("sh
                         orderDisputeId=jsonCart.getString("number");
 if(j==0)
 {
-    orderHistoryDetailsData.add(new OrderHistoryDetailsModel("2","Completed",date(jsonCartData.getString("time_created_unix")), true));
+   //////////// orderHistoryDetailsData.add(new OrderHistoryDetailsModel("2","Completed",date(jsonCartData.getString("time_created_unix")), true));
 }
                         else
                         if(j==((jsonCart.getJSONArray("cart").length())-1))

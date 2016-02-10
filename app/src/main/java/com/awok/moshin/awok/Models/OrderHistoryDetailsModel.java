@@ -24,6 +24,25 @@ public class OrderHistoryDetailsModel {
     private String headOrderStatus;
     private String headOrderTime;
     private String footerShipment;
+    private String estimatedDelivery;
+    private String isShipped;
+
+    public String getEstimatedDelivery() {
+        return estimatedDelivery;
+    }
+
+    public void setEstimatedDelivery(String estimatedDelivery) {
+        this.estimatedDelivery = estimatedDelivery;
+    }
+
+    public String getIsShipped() {
+        return isShipped;
+    }
+
+    public void setIsShipped(String isShipped) {
+        this.isShipped = isShipped;
+    }
+
     private String totalAmount;
     private boolean headerView=false;
     private boolean loader=false;
@@ -96,13 +115,15 @@ public class OrderHistoryDetailsModel {
     }
 
 
-    public OrderHistoryDetailsModel(String headOrderMessageCount,String headOrderStatus,String headOrderTime,boolean headerView)
+    public OrderHistoryDetailsModel(String headOrderMessageCount,String headOrderStatus,String headOrderTime,String estimatedDelivery,String isShipped,boolean headerView)
     {
         this.headOrderMessageCount=headOrderMessageCount;
         this.headOrderStatus=headOrderStatus;
         this.headOrderTime=headOrderTime;
         this.headerView=headerView;
         this.loader=false;
+        this.estimatedDelivery=estimatedDelivery;
+        this.isShipped=isShipped;
     }
 
 

@@ -2,11 +2,113 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+
     <RelativeLayout
         android:gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_below="@+id/shipSeperator"
+
+        android:id="@+id/paymentInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:id="@+id/payTxt"
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:text="Payment Information"/>
+
+
+
+            <ImageView
+                android:layout_alignParentRight="true"
+
+                android:id="@+id/paymentImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detailsarrow"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/paymentInfo"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/paySeperator"
+        android:background="#e3e3e3"/>
+
+
+
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/paySeperator"
+        android:id="@+id/shipStatusLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/shipStatusImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/delivery_time_icon"/>
+
+            <TextView
+                android:layout_toRightOf="@+id/shipStatusImg"
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="Shipping Status"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text=""
+                android:layout_centerVertical="true"
+                android:id="@+id/shipStatus"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/shipStatusLay"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/shipStatusSeperator"
+        android:background="#e3e3e3"/>
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/shipStatusSeperator"
         android:id="@+id/orderStatusLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -35,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Completed"
+                android:text=""
                 android:layout_centerVertical="true"
                 android:id="@+id/orderStatus"
                 android:layout_alignParentTop="true"
@@ -105,15 +207,66 @@
 
 
 
-
     <View
         android:layout_below="@+id/orderTimeLay"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/orderTimeSeperator"
+        android:background="#e3e3e3"/>
+
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/shipStatusSeperator"
+        android:id="@+id/deliveryStatusLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/delStatusImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/order_status_icon"/>
+
+            <TextView
+                android:layout_toRightOf="@+id/delStatusImg"
+                android:layout_width="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="Delivery Estimate"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text=""
+                android:layout_centerVertical="true"
+                android:id="@+id/deliveryStatus"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/deliveryStatusLay"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:id="@+id/delView"
         android:background="#e3e3e3"/>
 
     <RelativeLayout
+        android:visibility="gone"
         android:gravity="center_vertical"
         android:layout_below="@+id/delView"
         android:layout_marginRight="10dp"
@@ -159,6 +312,7 @@
 
 
     <RelativeLayout
+        android:visibility="gone"
         android:gravity="center_vertical"
         android:layout_below="@+id/orderView"
         android:layout_marginRight="10dp"

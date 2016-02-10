@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+
     android:id="@+id/nestedScroll"
     android:layout_height="wrap_content"
+
     android:overScrollMode="never"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+   >
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+    <android.support.v7.widget.RecyclerView
+        android:overScrollMode="never"
 
-
+        android:id="@+id/overViewRecyclerView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
 
 
         <LinearLayout
+
+            android:visibility="gone"
+
             android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,6 +39,7 @@
     android:paddingBottom="8dp">-->
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -39,7 +51,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageHolderLayout"
             android:padding="5dp"
-            android:layout_below="@+id/sellerDivider" >
+     >
 
             <ProgressBar
                 style="?android:attr/progressBarStyleSmall"
@@ -54,7 +66,7 @@
                 android:layout_width="108dp"
                 android:layout_height="97dp"
                 android:id="@+id/mainImg"
-                android:src="@drawable/default_img"
+                android:src="@drawable/cart_icon"
                 android:scaleType="fitCenter"
                 />
         </FrameLayout>
@@ -101,6 +113,7 @@
 
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/productRating"
 
         android:layout_width="wrap_content"
@@ -149,6 +162,7 @@
 
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/reviews"
         android:layout_below="@+id/ratingsSeperator"
         android:layout_width="match_parent"
@@ -166,25 +180,28 @@
             android:id="@+id/textView3" />
     </LinearLayout>
             <View
+                android:visibility="gone"
                 android:id="@+id/bottomSeperator"
                 android:background="@color/border"
 
                 android:layout_below="@+id/reviews"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"/>
-            <android.support.v7.widget.RecyclerView
+            <!--android:layout_below="@+id/bottomSeperator"-->
+<!--            <android.support.v7.widget.RecyclerView
                 android:overScrollMode="never"
-                android:layout_below="@+id/bottomSeperator"
+
                 android:id="@+id/overViewRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                />-->
 
 
 
 
 
             <Button
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -194,6 +211,6 @@
 
 
     </LinearLayout>
-        </ScrollView>
+        </RelativeLayout>
 
 

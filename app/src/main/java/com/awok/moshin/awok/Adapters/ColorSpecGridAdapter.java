@@ -67,7 +67,7 @@ public class ColorSpecGridAdapter extends BaseAdapter {
             loadProgressBar = (ProgressBar)gridView.findViewById(R.id.load_progress_bar);
 
             ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-            imageLoader.get(mobileValues.get(position).getImageUrl(), new ImageLoader.ImageListener() {
+            imageLoader.get("http://"+mobileValues.get(position).getImageUrl(), new ImageLoader.ImageListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.default_img));

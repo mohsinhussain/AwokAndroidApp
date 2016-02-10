@@ -88,11 +88,12 @@ apply=(Button)findViewById(R.id.apply);
 
                 System.out.println("Status" + " " + mainStatus + " " + "id" + " " + mainId + " " + "From" + " " + timeStamp(spinnerOrder.getText().toString()) + " " + "To" + " " + timeStamp(statusAll.getText().toString()));
                 i.putExtra("statusId", mainId);
-                i.putExtra("From",timeStamp(spinnerOrder.getText().toString()));
-                i.putExtra("To", timeStamp(statusAll.getText().toString()));
+                //i.putExtra("From",timeStamp(spinnerOrder.getText().toString()));
+                //i.putExtra("To", timeStamp(statusAll.getText().toString()));
 
 
-
+                i.putExtra("From",dateFetch(spinnerOrder.getText().toString()));
+                i.putExtra("To", dateFetch(statusAll.getText().toString()));
 
 
 
@@ -258,7 +259,22 @@ statusAll.setOnClickListener(new View.OnClickListener() {
     }
 
 
-
+public String dateFetch(String dateValue)
+{
+    DateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+    Date date = null;
+    Timestamp timeStampDate=null;
+    try {
+        date = (Date)formatter.parse(dateValue);
+        timeStampDate = new Timestamp(date.getTime());
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+    SimpleDateFormat sdf=new SimpleDateFormat("dd.MM.yyyy");
+    String s=sdf.format(date.getTime());
+    System.out.println("Today is S" + s);
+    return s;
+}
 
 
 
@@ -282,6 +298,8 @@ public String timeStamp(String dateValue)
     } catch (ParseException e) {
         e.printStackTrace();
     }
+
+
     System.out.println("Today is " + date.getTime());
     System.out.println("Today is " + timeStampDate);
     System.out.println("Today is " + date.getTime() / 1000L);
@@ -308,24 +326,24 @@ return valueDate;
                 jsonObjectData=new JSONObject(response);
 
 
-if(jsonObjectData.getString("status").equals("0"))
+/*if(jsonObjectData.getString("status").equals("0"))
 {
 
 }
                 else
-{
-JSONArray data=jsonObjectData.getJSONArray("data");
+{*/
+JSONArray data=jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONArray("ORDER_STATUSES");
     for(int i=0;i<data.length();i++)
     {
         OrderStatusModel orderModel=new OrderStatusModel();
         JSONObject dataInner=data.getJSONObject(i);
-        String status=dataInner.getString("name");
-        orderModel.setStatusType(dataInner.getString("name"));
-        orderModel.setStatusId(dataInner.getString("_id"));
+//        String status=dataInner.getString("name");
+        orderModel.setStatusType(dataInner.getString("NAME"));
+        orderModel.setStatusId(dataInner.getString("ID"));
         orderModel.setIsSelected(false);
         overViewList.add(orderModel);
     }
-}
+//}
 
 
 

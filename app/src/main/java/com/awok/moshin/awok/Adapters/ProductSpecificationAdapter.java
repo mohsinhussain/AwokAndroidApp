@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Models.ProductSpecification;
@@ -67,12 +68,21 @@ public class ProductSpecificationAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.product_spec_list, null);
 
         if (position % 2 == 1) {
-            convertView.setBackgroundColor(Color.WHITE);
+            convertView.setBackgroundColor(Color.parseColor("#EEEEEE"));
+
         } else {
-            convertView.setBackgroundColor(Color.parseColor("#E0E0E0"));
+            convertView.setBackgroundColor(Color.WHITE);
         }
         TextView prodSpecTitle=(TextView)convertView.findViewById(R.id.prodSpecTitle);
         TextView prodSpecValue=(TextView)convertView.findViewById(R.id.prodSpecValue);
+        TextView prodDataValue=(TextView)convertView.findViewById(R.id.prodDataValue);
+        TextView prodSubTitle=(TextView)convertView.findViewById(R.id.prodSubTitle);
+        LinearLayout sub=(LinearLayout)convertView.findViewById(R.id.sub);
+
+
+
+
+
 
 
 
@@ -86,6 +96,17 @@ prodSpecTitle.setTypeface(title);
         ProductSpecification prodSpecData=prodSpec.get(position);
         prodSpecTitle.setText(prodSpecData.getSpecTitle());
         prodSpecValue.setText(prodSpecData.getSpecValue());
+        prodSubTitle.setText(prodSpecData.getSubTitle());
+        prodDataValue.setText(prodSpecData.getSubData());
+
+       if(prodSpecData.getSubData().toString().equals(""))
+        {
+            sub.setVisibility(View.GONE);
+        }
+        else
+       {
+           sub.setVisibility(View.VISIBLE);
+       }
 
 
         return convertView;

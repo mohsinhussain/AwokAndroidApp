@@ -1,48 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.RecyclerView
+        android:overScrollMode="never"
+        android:id="@+id/recyclerViewRating"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:scrollbars="none" />
+<!--<ScrollView
+    android:visibility="gone"
+    android:layout_width="match_parent"
     android:id="@+id/nestedScroll"
     android:layout_height="wrap_content"
-    android:overScrollMode="never"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
+   >
+   &lt;!&ndash; android:focusableInTouchMode="true"
+android:overScrollMode="never"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"&ndash;&gt;
     <LinearLayout
+
+
         android:layout_width="match_parent"
-        android:overScrollMode="never"
+
         android:layout_height="match_parent"
+
+
+
+
+
         android:orientation="vertical"
         >
 
-        <!--<ImageView
+        &lt;!&ndash;<ImageView
             android:id="@+id/prod_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="fitXY"
             android:src="@drawable/textimg"
             android:fitsSystemWindows="true"
-            app:layout_collapseMode="parallax" />-->
+            app:layout_collapseMode="parallax" />&ndash;&gt;
 
-
+        &lt;!&ndash;android:focusable="true"
+         android:overScrollMode="never"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="beforeDescendants"&ndash;&gt;
 
         <android.support.v4.view.ViewPager
             android:id="@+id/imageSlider"
             app:layout_collapseMode="parallax"
-            android:overScrollMode="never"
+
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:descendantFocusability="beforeDescendants"
+
             android:layout_width="fill_parent"
             android:layout_height="360dp"/>
 
-        <!--<View
+        &lt;!&ndash;<View
             android:layout_width="fill_parent"
             android:background="#eeeeee"
 
             android:layout_marginTop="5dp"
-            android:layout_height="1dp"/>-->
+            android:layout_height="1dp"/>&ndash;&gt;
 
 
         <RelativeLayout
@@ -63,7 +85,7 @@ android:id="@+id/layMiddle"
     android:background="@color/primary"/>
 
 <ImageView
-    android:src="@drawable/wish_icon"
+    android:src="@drawable/save_icon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/imageView5"
@@ -114,7 +136,7 @@ android:id="@+id/layMiddle"
 
 </RelativeLayout>
 
-            <!--<LinearLayout
+            &lt;!&ndash;<LinearLayout
                 android:id="@+id/saveShare"
                 android:background="#FFFFFF"
                 android:layout_width="match_parent"
@@ -147,7 +169,7 @@ android:id="@+id/layMiddle"
 
 
 
-            </LinearLayout>-->
+            </LinearLayout>&ndash;&gt;
 
             <LinearLayout
                 android:paddingLeft="15dp"
@@ -200,30 +222,30 @@ android:id="@+id/layMiddle"
 
                 </RelativeLayout>
 
-              <!--  <TextView
+              &lt;!&ndash;  <TextView
                     android:id="@+id/prod_warranty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:text="1 Year Warranty"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#BDBDBD" />-->
+                    android:textColor="#BDBDBD" />&ndash;&gt;
 
-            <!--</LinearLayout>-->
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
 
-     <!--   </android.support.v7.widget.CardView>
+     &lt;!&ndash;   </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_margin"
             android:layout_marginLeft="@dimen/card_margin"
-            android:layout_marginRight="@dimen/card_margin">-->
+            android:layout_marginRight="@dimen/card_margin">&ndash;&gt;
 
-       <!--     <LinearLayout
+       &lt;!&ndash;     <LinearLayout
                 style="@style/Widget.CardContent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">-->
+                android:layout_height="wrap_content">&ndash;&gt;
 
                 <LinearLayout
                     android:id="@+id/reviewLay"
@@ -252,13 +274,13 @@ android:id="@+id/layMiddle"
 
 
                 </LinearLayout>
-<!--<LinearLayout
+&lt;!&ndash;<LinearLayout
     android:layout_below="@+id/reviewLay"
     android:id="@+id/overViewRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">-->
-            <!--<android.support.v7.widget.RecyclerView
+    android:orientation="vertical">&ndash;&gt;
+            &lt;!&ndash;<android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewRating"
                 android:padding="5dp"
                 android:layout_marginTop="10dp"
@@ -271,15 +293,15 @@ android:id="@+id/layMiddle"
 
 
 
-                android:scrollbars="none" />-->
-    <android.support.v7.widget.RecyclerView
+                android:scrollbars="none" />&ndash;&gt;
+&lt;!&ndash;    <android.support.v7.widget.RecyclerView
         android:overScrollMode="never"
         android:id="@+id/recyclerViewRating"
         android:layout_width="match_parent"
 
         android:layout_height="match_parent"
-        android:scrollbars="none" />
-<!--</LinearLayout>-->
+        android:scrollbars="none" />&ndash;&gt;
+&lt;!&ndash;</LinearLayout>&ndash;&gt;
 
                 <TextView
                     android:id="@+id/prod_color"
@@ -379,7 +401,7 @@ android:id="@+id/layMiddle"
 
 
 
-                <!--<TextView
+                &lt;!&ndash;<TextView
                     android:id="@+id/prod_reviews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -407,13 +429,13 @@ android:id="@+id/layMiddle"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:text="Quick Delivery and exactly the same product"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />-->
+                    android:textAppearance="?android:attr/textAppearanceSmall" />&ndash;&gt;
 
             </LinearLayout>
 
         </RelativeLayout>
 
-       <!-- <LinearLayout
+       &lt;!&ndash; <LinearLayout
             android:layout_width="match_parent"
 
             android:layout_height="match_parent"
@@ -475,7 +497,7 @@ android:id="@+id/layMiddle"
             </LinearLayout>
 
 
-        </LinearLayout>-->
+        </LinearLayout>&ndash;&gt;
         <RelativeLayout
             android:visibility="gone"
             android:layout_marginTop="50dp"
@@ -500,7 +522,7 @@ android:layout_marginBottom="10dp"
 
                 android:clipToPadding="false"
 
-                android:src="@drawable/guar"
+                android:src="@drawable/cart_icon"
 
 
                 android:id="@+id/imageView3" />
@@ -613,5 +635,6 @@ android:layout_marginBottom="10dp"
     </LinearLayout>
 
 
-</ScrollView>
+</ScrollView>-->
 
+</LinearLayout>

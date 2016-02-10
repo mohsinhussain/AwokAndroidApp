@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/dialog_bg"
+    android:id="@+id/parent"
+    android:layout_gravity="center_horizontal">
+
+    <TextView
+
+        android:id="@+id/headerTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginTop="24dp"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="20dp"
+        android:text="Phone Number Verification"
+        android:textColor="#696969"/>
+
+
+    <LinearLayout
+        android:id="@id/main"
+
+
+        android:layout_below="@+id/headerTextView"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+
+        <LinearLayout
+            android:gravity="center_vertical"
+
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:padding="5dp"
+
+                android:id="@+id/message"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+
+                android:gravity="center_horizontal"
+
+                android:text="Phone Number Verification"
+                android:textColor="#696969"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <Button
+                android:id="@+id/ok"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:textColor="#FFFFFF"
+                android:background="#FF6600"
+                android:text="DONE"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

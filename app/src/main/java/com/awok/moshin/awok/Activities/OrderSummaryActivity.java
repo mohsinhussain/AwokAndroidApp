@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -32,14 +33,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.awok.moshin.awok.Adapters.CheckOutAdapter;
+import com.awok.moshin.awok.Adapters.CustomAdapter;
 import com.awok.moshin.awok.Adapters.OrderSummaryAdapter;
 import com.awok.moshin.awok.Adapters.OrderSummaryCustomAdapter;
+import com.awok.moshin.awok.Adapters.PaymentPickAdapter;
 import com.awok.moshin.awok.Models.Checkout;
+import com.awok.moshin.awok.Models.Checkout_Model;
 import com.awok.moshin.awok.Models.OrderSummary;
+import com.awok.moshin.awok.Models.Payment_Pick;
 import com.awok.moshin.awok.Models.ShippingAddressModel;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
+import com.awok.moshin.awok.Util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,8 +66,14 @@ public class OrderSummaryActivity extends AppCompatActivity {
  //   private RecyclerView.LayoutManager mLayoutManager;
     private List<OrderSummary> overViewList = new ArrayList<OrderSummary>();
     private ProgressBar progressBar;
+    JSONObject receiveJson;
     LinearLayout progressLayout;
+    SharedPreferences mSharedPrefs;
+    private ArrayList<Checkout_Model> listData = new ArrayList<Checkout_Model>();
     private Button addEditAddressButton;
+    private String userId="";
+    private String locationId="";
+    String addressId="";
     LinearLayout addressDetailLayout;
     LinearLayout bottomPriceLay,bottomLay;
     TextView nameTextView, addressTextView, cityTextView, countryTextView, postalcodeTextView, mobileNumberTextView;
@@ -69,7 +81,11 @@ public class OrderSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
-
+        mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
+        if ((mSharedPrefs.contains(Constants.USER_ADDRESS_ID)))
+        {
+            addressId = mSharedPrefs.getString(Constants.USER_ADDRESS_ID, null);
+        }
         progressBar = (ProgressBar) findViewById(R.id.marker_progress);
         progressLayout = (LinearLayout) findViewById(R.id.progressLayout);
         progressLayout.setVisibility(View.VISIBLE);
@@ -92,12 +108,18 @@ public class OrderSummaryActivity extends AppCompatActivity {
         bottomLay.setVisibility(View.GONE);
         nameTextView=(TextView)findViewById(R.id.nameTextView);
         addressTextView=(TextView)findViewById(R.id.addressTextView);
-        cityTextView=(TextView)findViewById(R.id.cityTextView);
+       // cityTextView=(TextView)findViewById(R.id.cityTextView);
         countryTextView=(TextView)findViewById(R.id.countryTextView);
         postalcodeTextView=(TextView)findViewById(R.id.postalcodeTextView);
         mobileNumberTextView=(TextView)findViewById(R.id.mobileNumberTextView);
 
-
+userId=getIntent().getStringExtra("userId");
+     //   locationId=getIntent().getStringExtra("locationId");
+        try {
+            receiveJson= new JSONObject(getIntent().getStringExtra("model"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         addEditAddressButton.setOnClickListener(new View.OnClickListener() {
@@ -124,10 +146,10 @@ JSONObject dataToSend;
 
 
 
-                addToCartData.put("user_id", "55f6a9462f17f64a9b5f5ce4");
-                addToCartData.put("user_address_id", "562b3f388e424af254dce20a");
-                addToCartData.put("payment_method_id","560001201a7da7681500004c");
-                addToCartData.put("location_id","560a8eddf26f2e024b8b4690");
+                addToCartData.put("address_id", addressId);
+                addToCartData.put("action", "place-order");
+                addToCartData.put("user_id", userId);
+
 
 
 
@@ -141,7 +163,9 @@ JSONObject dataToSend;
                 new APIClient(getApplicationContext(), getApplicationContext(),  new GetProductsCallback()).allProductsAPICall(pageCount);
             }
             else{*/
-                    new APIClient(OrderSummaryActivity.this, getApplicationContext(),  new GetCheckOutCallBack()).OrderCheckOutCallBack(dataToSend.toString());
+                  //  new APIClient(OrderSummaryActivity.this, getApplicationContext(),  new GetCheckOutCallBack()).OrderCheckOutCallBack(dataToSend.toString());
+                    new APIClient(OrderSummaryActivity.this, getApplicationContext(),  new GetCheckOutCallBack()).PlaceOrderCallBack(dataToSend.toString());
+
                     // }
 
                 } else {
@@ -181,7 +205,7 @@ JSONObject dataToSend;
 
        // mRecyclerView.setNestedScrollingEnabled(true);
 
-        mAdapter = new OrderSummaryCustomAdapter(OrderSummaryActivity.this,overViewList);
+               mAdapter = new OrderSummaryCustomAdapter(OrderSummaryActivity.this,overViewList);
         //mRecyclerView.setAdapter(mAdapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -207,8 +231,8 @@ JSONObject dataToSend;
                 getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(this, getApplicationContext(),  new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
-            new APIClient(this, getApplicationContext(),  new GetAddressCallback()).getPrimaryAddressAPICall("55f6a9462f17f64a9b5f5ce4");
+            new APIClient(this, getApplicationContext(),  new GetCartCallback()).orderSummaryItemsCallBack(userId, addressId);
+      //      new APIClient(this, getApplicationContext(),  new GetAddressCallback()).getPrimaryAddressAPICall("55f6a9462f17f64a9b5f5ce4");
         } else {
             errorText.setVisibility(View.VISIBLE);
             /*Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
@@ -237,8 +261,8 @@ JSONObject dataToSend;
                 getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            new APIClient(this, getApplicationContext(),  new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
-            new APIClient(this, getApplicationContext(),  new GetAddressCallback()).getPrimaryAddressAPICall("55f6a9e52f17f64a9b5f5ce5");
+            new APIClient(this, getApplicationContext(),  new GetCartCallback()).orderSummaryItemsCallBack(userId,addressId);
+            //new APIClient(this, getApplicationContext(),  new GetAddressCallback()).getPrimaryAddressAPICall("55f6a9e52f17f64a9b5f5ce5");
         } else {
             errorText.setVisibility(View.VISIBLE);
             Snackbar.make(findViewById(android.R.id.content), "No network connection available", Snackbar.LENGTH_LONG)
@@ -287,9 +311,15 @@ JSONObject dataToSend;
                 JSONObject jsonObjectData;
                 jsonObjectData = new JSONObject(response);
                 System.out.println(jsonObjectData.toString());
-                if (jsonObjectData.getString("status").equals("0")) {
+               /* if (jsonObjectData.getString("status").equals("0")) {
                     //bottomPriceLay.setVisibility(View.GONE);
-                } else {
+                } else {*/
+                if(jsonObjectData.getJSONObject("STATUS").getInt("CODE")==(200))
+
+
+
+
+                {
                     //bottomPriceLay.setVisibility(View.VISIBLE);
                     addEditAddressButton.setText(getString(R.string.change_address));
 //                    addEditAddressButton.setTextColor(getColor(R.color.input_hint));
@@ -299,7 +329,7 @@ JSONObject dataToSend;
                     ShippingAddressModel addressModel=new ShippingAddressModel();
                     nameTextView.setText(jData.getString("name"));
                     addressTextView.setText(jData.getJSONObject("address").getString("address_line1"));
-                    cityTextView.setText(jData.getString("city"));
+                   // cityTextView.setText(jData.getString("city"));
                     countryTextView.setText(jData.getString("country"));
                     postalcodeTextView.setText(jData.getString("postal_code"));
                     mobileNumberTextView.setText(jData.getString("phone_number1"));
@@ -342,13 +372,17 @@ JSONObject dataToSend;
     public class GetCartCallback extends AsyncCallback {
         public void onTaskComplete(String response) {
             try {
+                if ((mSharedPrefs.contains(Constants.USER_ADDRESS_ID)))
+                {
+                    addressId = mSharedPrefs.getString(Constants.USER_ADDRESS_ID, null);
+                }
                 overViewList.clear();
                 System.out.println(response);
                 /*JSONArray jsonArray;
                 jsonArray = new JSONArray(response);*/
 //                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_PRODUCT_LIST_NAME);
                 JSONObject jsonObjectData;
-                jsonObjectData=new JSONObject(response);
+                jsonObjectData = new JSONObject(response);
                 System.out.println(jsonObjectData.toString());
                 // int length = jsonObjectData.length();
 /////////                System.out.println(jsonObjectData.getJSONObject("data"));
@@ -358,7 +392,7 @@ JSONObject dataToSend;
                 /////              jsonArray=jsonObjectData.getJSONObject("data").getJSONArray("seller_cart");
 
                 //String sellerName=jsonArray.getString("seller").toString();
-                if(jsonObjectData.getString("errors").equals("true"))
+              /*  if(jsonObjectData.getString("errors").equals("true"))
                 {
                     bottomLay.setVisibility(View.GONE);
                     bottomPriceLay.setVisibility(View.GONE);
@@ -367,6 +401,72 @@ JSONObject dataToSend;
                 }
 
                 else
+                {*/
+                if (jsonObjectData.getJSONObject("STATUS").getInt("CODE") == (204)) {
+                    bottomLay.setVisibility(View.GONE);
+                    bottomPriceLay.setVisibility(View.GONE);
+                }
+                else if (jsonObjectData.getJSONObject("STATUS").getInt("CODE") == (400))
+                {
+
+                   // mAdapter = new CustomAdapter(OrderSummaryActivity.this,listData);
+                    // mAdapter.notifyDataSetChanged();
+                    totalPriceText.setText(receiveJson.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getString("COUNT"));
+                    ;
+
+                    allPriceText.setText("AED " + receiveJson.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getString("TOTAL"));
+                    totalValueTextView.setText("AED " + receiveJson.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getString("TOTAL"));
+                    ;
+                    int length = receiveJson.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONArray("BASKET").length();
+                    JSONArray jArray = receiveJson.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONArray("BASKET");
+                    for (int i = 0; i < length; i++) {
+                        OrderSummary listData=new OrderSummary();
+                        JSONObject jObj = jArray.getJSONObject(i);
+
+
+                        listData.setProductId(jObj.optString("ID"));
+                        listData.setOverViewTitle(jObj.optString("NAME"));
+                        String temp=jObj.optString("PERCENTAGE").toString();
+                        String output = temp.substring(0, temp.indexOf('.'));
+                        listData.setDiscount(output);
+                        /////////////listData.setDiscount(jObj.optString("PERCENTAGE"));
+                        //listData.setProductId(jObj.optString("PRODUCT_ID"));
+                        listData.setOldPrice(jObj.optString("OLD_PRICE"));
+                        listData.setOverViewText(jObj.optString("PRICE"));
+                   //     listData.setCurrency(jObj.optString("CURRENCY"));
+                        listData.setQuantity(jObj.optString("QUANTITY"));
+                        listData.setImageBitmapString("http://" + jObj.optString("IMAGE"));
+                        listData.setIsHeader(true);
+                        listData.setIsEditable(true);
+                        if(i==0)
+                        {
+                            listData.setIsHeader(true);
+                        }
+                        else
+                        {
+                            listData.setIsHeader(false);
+                        }
+
+                        if(i==length-1)
+                        {
+                            listData.setIsFooter(true);
+                        }
+                        else
+                        {
+                            listData.setIsFooter(false);
+                        }
+
+                        overViewList.add(listData);
+
+                    }
+
+                }
+                else
+                if(jsonObjectData.getJSONObject("STATUS").getInt("CODE")==(200))
+
+
+                   // mAdapter = new OrderSummaryCustomAdapter(OrderSummaryActivity.this,overViewList);
+
                 {
                     bottomLay.setVisibility(View.VISIBLE);
                     bottomPriceLay.setVisibility(View.VISIBLE);
@@ -376,16 +476,16 @@ JSONObject dataToSend;
 //
 //                    itemAmount.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
 //                    total.setText(jsonObjectData.getJSONObject("data").getString("total")+" AED");
-                    int length = jsonObjectData.getJSONObject("data").getJSONObject("server").getJSONArray("sellers_cart").length();
-                    for(int i=0;i<length;i++){
-                        JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONObject("server").getJSONArray("sellers_cart").getJSONObject(i);
+            /*        int length = jsonObjectData.getJSONObject("data").getJSONObject("server").getJSONArray("sellers_cart").length();
+                    for(int i=0;i<length;i++){*/
+                    //    JSONObject jsonObject = jsonObjectData.getJSONObject("data").getJSONObject("server").getJSONArray("sellers_cart").getJSONObject(i);
 //totalPriceText.setText(jsonObjectData.getJSONObject("data").getJSONObject("public").getString("total_items"));
                        // totalPriceText.setText("200");
-                        totalPriceText.setText(jsonObjectData.getJSONObject("data").getJSONObject("server").getString("total_items_count"));
+                        totalPriceText.setText(jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("BASKET").getJSONObject("DATA").getString("TOTAL_ITEMS"));
 
-                        allPriceText.setText("AED "+jsonObjectData.getJSONObject("data").getJSONObject("server").getString("total"));
-                        totalValueTextView.setText("AED "+jsonObjectData.getJSONObject("data").getJSONObject("server").getString("total"));
-                        JSONArray productDetails=jsonObject.getJSONArray("items");
+                        allPriceText.setText("AED " + jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("BASKET").getJSONObject("DATA").getString("PRICE"));
+                        totalValueTextView.setText("AED " + jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getString("GRAND_TOTAL_PRICE"));
+                        JSONArray productDetails=jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("BASKET").getJSONObject("DATA").getJSONArray("BASKET");
                         int lengthOfProducts = productDetails.length();
                         for(int j=0;j<lengthOfProducts;j++)
                         {
@@ -400,18 +500,19 @@ JSONObject dataToSend;
                             listData.setProductId(jsonObjectProductDetails.getString("_id"));
                             listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
                             listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));*/
-                            listData.setSellerSubTotal(jsonObject.getString("subtotal"));
+                            JSONObject data=productDetails.getJSONObject(j);
+                //            listData.setSellerSubTotal(data.getString("PRICE"));
 
-                            if (jsonObject.getString("shipping_cost").equals("0"))
+                          /*  if (data.getString("shipping_cost").equals("0"))
                             {
                                 listData.setSellerShipping("Free");
                             } else {
-                                listData.setSellerShipping("AED " +jsonObject.getString("shipping_cost"));
-                            }
+                                listData.setSellerShipping("AED " +data.getString("shipping_cost"));
+                            }*/
 
 
                             //listData.setSellerShipping(jsonObject.getString("shipping"));
-                            listData.setSellerTotal(jsonObject.getString("total"));
+                          /*  listData.setSellerTotal(data.getString("total"));
                             if(j==0)
                             {
                                 listData.setIsHeader(true);
@@ -419,7 +520,7 @@ JSONObject dataToSend;
                             else
                             {
                                 listData.setIsHeader(false);
-                            }
+                            }*/
 
                             if(j==lengthOfProducts-1)
                             {
@@ -435,9 +536,9 @@ JSONObject dataToSend;
                             listData.setStatusId("respnonse needed");
                             JSONObject jsonObjectProductDetails = productDetails.getJSONObject(j);
 
-                            listData.setOverViewText(jsonObjectProductDetails.getString("unit_price"));
+                            listData.setOverViewText(jsonObjectProductDetails.getString("PRICE"));
 //                            listData.setTotalPrice(jsonObjectProductDetails.getString("total_price"));
-                            listData.setTotalPrice(jsonObjectProductDetails.getString("total"));
+                            listData.setTotalPrice(jsonObjectProductDetails.getString("PRICE"));
                            // listData.setTotalPrice("200");
 
                             if(j==0)
@@ -458,20 +559,48 @@ JSONObject dataToSend;
                                 listData.setIsFooter(false);
                             }
 
-                            listData.setStatusId(jsonObjectData.getString("status"));
-                            listData.setOverViewTitle(jsonObjectProductDetails.getString("product_name"));
-                            listData.setDiscount(jsonObjectProductDetails.getString("discount_percentage"));
-                            listData.setSellerLabel(jsonObjectProductDetails.getString("seller_name"));
-                            listData.setImageBitmapString(jsonObjectProductDetails.getString("image"));
-                            listData.setOldPrice(jsonObjectProductDetails.getString("old_price"));
-                            listData.setProductId(jsonObjectProductDetails.getString("id"));
-                            listData.setQuantity(jsonObjectProductDetails.getString("quantity"));
-                            listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
+             //////////////////               listData.setStatusId(jsonObjectData.getString("status"));
+                            listData.setOverViewTitle(jsonObjectProductDetails.getString("NAME"));
+
+                            String temp=jsonObjectProductDetails.optString("PERCENTAGE").toString();
+                            String output = temp.substring(0, temp.indexOf('.'));
+                            listData.setDiscount(output);
+                          /////////  listData.setDiscount(jsonObjectProductDetails.getString("PERCENTAGE"));
+                       //     listData.setSellerLabel(jsonObjectProductDetails.getString("seller_name"));
+                            listData.setImageBitmapString(jsonObjectProductDetails.getString("IMAGE"));
+                            listData.setOldPrice(jsonObjectProductDetails.getString("OLD_PRICE"));
+                            listData.setProductId(jsonObjectProductDetails.getString("ID"));
+                            listData.setQuantity(jsonObjectProductDetails.getString("QUANTITY"));
+                    //        listData.setRemainingStock(jsonObjectProductDetails.getString("total_quantity"));
                             //listData.setRemainingStock("20");
                             listData.setIsEditable(true);
 
                             overViewList.add(listData);
                         }
+
+
+
+                    {
+                        //bottomPriceLay.setVisibility(View.VISIBLE);
+                        addEditAddressButton.setText(getString(R.string.change_address));
+//                    addEditAddressButton.setTextColor(getColor(R.color.input_hint));
+                        addEditAddressButton.setTextColor(getResources().getColor(R.color.input_hint));
+                        addressDetailLayout.setVisibility(View.VISIBLE);
+                        //JSONObject jData=jsonObjectData.getJSONObject("address");
+                        ShippingAddressModel addressModel=new ShippingAddressModel();
+                        nameTextView.setText(jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("Personal_Full_Name").getString("VALUE"));
+                        if(jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("Personal_Apt_Villa_No").getString("VALUE").equals("")||jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("Personal_Apt_Villa_No").getString("VALUE").equals(null)) {
+                            addressTextView.setText(jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("Personal_Street").getString("VALUE"));
+                        }
+                        else
+                        {
+                            addressTextView.setText(jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("Personal_Street").getString("VALUE") + " ," + (jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("Personal_Apt_Villa_No").getString("VALUE")));
+                        }
+                       // cityTextView.setText(jData.getString("city"));
+                        countryTextView.setText(jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("ALL_USER_INFO").getString("AREA")+" ,"+jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("ALL_USER_INFO").getString("CITY"));
+                        postalcodeTextView.setText(jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("Personal_Email").getString("VALUE"));
+                        mobileNumberTextView.setText(jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("SUMMARY").getJSONObject("PROFILE").getJSONObject("DATA").getJSONObject("Personal_Telephone").getString("VALUE"));
+                    }
                     /*listData.setOverViewText(getResources().getString(R.string.check_out_price));
                     listData.setOverViewTitle(getResources().getString(R.string.checkout_head));
                     listData.setSellerLabel(schoolbag[i].toString());*/
@@ -484,7 +613,7 @@ JSONObject dataToSend;
 
                     // mAdapter.notifyAll();
 
-                }
+               // }
 
                 if(getApplicationContext()!=null){
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
@@ -533,51 +662,64 @@ JSONObject dataToSend;
 System.out.println("RESPONSE"+response);
                 JSONObject jsonObjectData;
                 jsonObjectData=new JSONObject(response);
-                System.out.println("RESPONSE"+jsonObjectData.getString("status"));
+          //      System.out.println("RESPONSE"+jsonObjectData.getString("status"));
+
+if(jsonObjectData.getJSONObject("STATUS").getInt("CODE")==201) {
+/*    final Dialog cartAlertDialog = new Dialog(OrderSummaryActivity.this, R.style.AppCompatAlertDialogStyle);
+    cartAlertDialog.setCancelable(true);
+    cartAlertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+    cartAlertDialog.setContentView(R.layout.dialog_cart_alert);
+    TextView messageTextView = (TextView) cartAlertDialog.findViewById(R.id.msgTextView);
+    Button okButton = (Button) cartAlertDialog.findViewById(R.id.okButton);
+    if (!jsonObjectData.getBoolean("errors")) {
+        messageTextView.setText(getString(R.string.order_placed_successfully));
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cartAlertDialog.cancel();
+                Intent i = new Intent(OrderSummaryActivity.this, OrderHistory.class);
+                finish();
+                startActivity(i);
+            }
+        });
+    } else {
+        messageTextView.setText(getString(R.string.order_placed_failure));
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cartAlertDialog.cancel();
+
+            }
+        });
+    }
 
 
-                final Dialog cartAlertDialog = new Dialog(OrderSummaryActivity.this, R.style.AppCompatAlertDialogStyle);
-                cartAlertDialog.setCancelable(true);
-                cartAlertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                cartAlertDialog.setContentView(R.layout.dialog_cart_alert);
-                TextView messageTextView = (TextView)cartAlertDialog.findViewById(R.id.msgTextView);
-                Button okButton = (Button) cartAlertDialog.findViewById(R.id.okButton);
-                if(!jsonObjectData.getBoolean("errors"))
-                {
-                    messageTextView.setText(getString(R.string.order_placed_successfully));
-                    okButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            cartAlertDialog.cancel();
-                            Intent i=new Intent(OrderSummaryActivity.this,OrderHistory.class);
-                            finish();
-                            startActivity(i);
-                        }
-                    });
-                }
-                else{
-                    messageTextView.setText(getString(R.string.order_placed_failure));
-                    okButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            cartAlertDialog.cancel();
+    cartAlertDialog.show();
+    cartAlertDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);*/
+    Snackbar.make(findViewById(android.R.id.content), "Order Placed Successfully", Snackbar.LENGTH_LONG)
+            .setActionTextColor(Color.RED)
+            .show();
+    JSONObject sendObj=jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONObject("PAY_METHODS");
+    String verify=jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getString("VERIFIED");
+    String phone=jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getString("PHONE_NUMBER");
+    int orderId=jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getInt("ORDER_ID");
+    Intent i = new Intent(OrderSummaryActivity.this, Pick_Payment_ACtivity.class);
+    i.putExtra("dataPay",sendObj.toString());
+    i.putExtra("verified",verify);
+    i.putExtra("phone",phone);
+    i.putExtra("orderId",Integer.toString(orderId));
+    i.putExtra("before",jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getString("BEFORE_SMS_TITLE"));
+    i.putExtra("after",jsonObjectData.getJSONObject("OUTPUT").getJSONObject("DATA").getString("AFTER_SMS_TITLE"));
+    finish();
+    startActivity(i);
 
-                        }
-                    });
-                }
-
-
-                cartAlertDialog.show();
-                cartAlertDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-
-                if(getApplicationContext()!=null){
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    progressLayout.startAnimation(animation);
-                }
-                progressLayout.setVisibility(View.GONE);
-                //initializeData();
-
+    if (getApplicationContext() != null) {
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+        progressLayout.startAnimation(animation);
+    }
+    progressLayout.setVisibility(View.GONE);
+    //initializeData();
+}
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -689,7 +831,7 @@ System.out.println("RESPONSE"+response);
     mainLay.setVisibility(View.VISIBLE);
 }*/
 public void refreshData() {
-    new APIClient(this, getApplicationContext(), new GetCartCallback()).cartItemsCallBack("55f6a9462f17f64a9b5f5ce4");
+    new APIClient(this, getApplicationContext(), new GetCartCallback()).orderSummaryItemsCallBack(userId,addressId);
 }
     public class MyLinearLayoutManager extends LinearLayoutManager {
 

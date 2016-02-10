@@ -25,7 +25,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
@@ -37,7 +36,6 @@ import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,8 +44,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -55,30 +51,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.awok.moshin.awok.Fragments.BundleOffersFragment;
-import com.awok.moshin.awok.Fragments.CategoriesFragment;
-import com.awok.moshin.awok.Fragments.DailyDealsFragment;
 import com.awok.moshin.awok.Fragments.FilterFragment;
-import com.awok.moshin.awok.Fragments.Home_Fragment;
 import com.awok.moshin.awok.Fragments.HotDealsFragment;
-import com.awok.moshin.awok.Fragments.ProductOverViewFragment;
-import com.awok.moshin.awok.Fragments.SignInFragment;
-import com.awok.moshin.awok.Fragments.WeeklyBestSellersFragment;
 import com.awok.moshin.awok.Models.Categories;
-import com.awok.moshin.awok.Models.Products;
 import com.awok.moshin.awok.NetworkLayer.APIClient;
 import com.awok.moshin.awok.NetworkLayer.AsyncCallback;
 import com.awok.moshin.awok.R;
 import com.awok.moshin.awok.Util.Constants;
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -96,13 +86,19 @@ private DrawerLayout mDrawerLayout;
     MenuItem searchItem;
     private ImageView voiceIco;
     int selectedTabIndex = 0;
+    String userId="";
     private View overlay;
     ProgressBar progressBarLogout;
     boolean isFilter;
     Adapter adapter;
+    String image="";
     RelativeLayout navHeaderLayout;
     Button applyButton;
     private TextView txtSpeechInput;
+    String filterFinalString= "";
+    String keywords = "";
+    String catString ="";
+    ArrayList<String> filterValuesArray = new ArrayList<String>();
 
     private final int REQ_CODE_SPEECH_INPUT = 100;
     ArrayList<String> tagsFilterArray = new ArrayList<String>();
@@ -130,7 +126,18 @@ private DrawerLayout mDrawerLayout;
         ab.setIcon(R.drawable.back_button);
 //        ab.setIcon(R.drawable.menu_icon);
         img = (ImageView)findViewById(R.id.avatar);
-        Picasso.with(this).load(R.drawable.textimg).transform(new CircleTransformation()).into(img);
+        mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
+        if ((mSharedPrefs.contains(Constants.USER_PROFILE_PIC)))
+        {
+            image = mSharedPrefs.getString(Constants.USER_PROFILE_PIC, null);
+            Picasso.with(MainActivity.this).load("http://" + image).transform(new CircleTransformation()).into(img);
+        }
+        else
+        {
+            Picasso.with(this).load(R.drawable.default_img).transform(new CircleTransformation()).into(img);
+        }
+
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navHeaderLayout = (RelativeLayout) findViewById(R.id.navHeaderBackground);
@@ -163,8 +170,10 @@ private DrawerLayout mDrawerLayout;
         }
 
         isFilter = false;
-
-
+        mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
+        if ((mSharedPrefs.contains(Constants.USER_ID_PREFS))) {
+            navigationView.getMenu().findItem(R.id.navigation_Logout).setVisible(true);
+        }
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,7 +207,7 @@ private DrawerLayout mDrawerLayout;
 
 
 
-        voiceIco=(ImageView)findViewById(R.id.voiceIco);
+   /*     voiceIco=(ImageView)findViewById(R.id.voiceIco);
         voiceIco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,7 +216,7 @@ private DrawerLayout mDrawerLayout;
                 viewPager.setVisibility(View.VISIBLE);
                 promptSpeechInput();
             }
-        });
+        });*/
         txtSpeechInput = (TextView) findViewById(R.id.txtSpeechInput);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -245,8 +254,46 @@ private DrawerLayout mDrawerLayout;
         navHeaderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(i);
+                mDrawerLayout.closeDrawers();
+                mSharedPrefs = getSharedPreferences(Constants.PREFS_NAME, 0);
+                if ((mSharedPrefs.contains(Constants.USER_ID_PREFS)))
+                {
+                    userId = mSharedPrefs.getString(Constants.USER_ID_PREFS, null);
+                    Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                    //Intent i = new Intent(MainActivity.this, EditProfileActivity.class);
+                    startActivity(i);
+                }
+                else
+                {
+                    final Dialog check = new Dialog(MainActivity.this, R.style.AppCompatAlertDialogStyle);
+                    check.setCancelable(true);
+                    check.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    check.setContentView(R.layout.activity_login_check);
+                    Button cancelButton = (Button) check.findViewById(R.id.cancelButton);
+                    Button logoutButton = (Button) check.findViewById(R.id.logoutButton);
+                    progressBarLogout = (ProgressBar) check.findViewById(R.id.load_progress_bar);
+                    // if button is clicked, close the custom dialog
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            check.dismiss();
+                        }
+                    });
+                    logoutButton .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(MainActivity.this, SplashActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    });
+
+                    check.show();
+                    check.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                }
+                /*Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                //Intent i = new Intent(MainActivity.this, EditProfileActivity.class);
+                startActivity(i);*/
             }
         });
 
@@ -263,8 +310,18 @@ private DrawerLayout mDrawerLayout;
                         mDrawerLayout.closeDrawers();
 
                         return true;
+
+
+                    case R.id.offers:
+                        Intent t=new Intent(MainActivity.this,OffersActivity.class);
+                        startActivity(t);
+                        mDrawerLayout.closeDrawers();
+                        return true;
                     case R.id.cart:
-                        Intent i=new Intent(MainActivity.this,CheckOutActivity.class);
+                       /* Intent i=new Intent(MainActivity.this,CheckOutActivity.class);
+                        startActivity(i);*/
+                        //Intent i=new Intent(MainActivity.this,ShippingAddressActivity.class);
+                       Intent i=new Intent(MainActivity.this,CheckOutActivity.class);
                         startActivity(i);
                         mDrawerLayout.closeDrawers();
                         return true;
@@ -274,6 +331,7 @@ private DrawerLayout mDrawerLayout;
                         mDrawerLayout.closeDrawers();
                         return true;
                     case R.id.navigation_Logout:
+                        mDrawerLayout.closeDrawers();
                         final Dialog logoutDialog = new Dialog(MainActivity.this, R.style.AppCompatAlertDialogStyle);
                         logoutDialog.setCancelable(true);
                         logoutDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -291,20 +349,26 @@ private DrawerLayout mDrawerLayout;
                         logoutButton .setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String mobileNumber = mSharedPrefs.getString(Constants.USER_MOBILE_PREFS, null);
-                                new APIClient(MainActivity.this, MainActivity.this, new logoutUserCallback()).userLogoutAPICall(mobileNumber);
+                                if (isLoggedIn())
+                                {
+                                    LoginManager.getInstance().logOut();
+                                }
+                                String userId = mSharedPrefs.getString(Constants.USER_ID_PREFS, null);
+                                new APIClient(MainActivity.this, MainActivity.this, new logoutUserCallback()).userLogoutAPICall(userId);
                             }
                         });
 
                         logoutDialog.show();
                         logoutDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
+return true;
 
                     case R.id.navigation_settings:
                         /*Intent k=new Intent(MainActivity.this,Settings.class);
                         startActivity(k);*/
-                        Intent k=new Intent(MainActivity.this,DisputeActivity.class);
+                        Intent k=new Intent(MainActivity.this,AddNewAddress.class);
                         startActivity(k);
+                      /*  Intent k=new Intent(MainActivity.this,DisputeActivity.class);
+                        startActivity(k);*/
                         mDrawerLayout.closeDrawers();
                         return true;
 
@@ -325,12 +389,15 @@ private DrawerLayout mDrawerLayout;
             try {
                 JSONObject mMembersJSON;
                 mMembersJSON = new JSONObject(resp);
-                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_CATEGORY_LIST_NAME);
+                System.out.println("OUTPUT"+resp);
+                //JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_CATEGORY_LIST_NAME);
+                JSONArray jsonArray=mMembersJSON.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONArray("SECTION_LIST");
                 int length = jsonArray.length();
 
                 for(int i=0;i<length;i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    categoriesArrayList.add(new Categories(jsonObject.getString("id"), jsonObject.getString("name"), jsonObject.getString("parent")));
+                    //categoriesArrayList.add(new Categories(jsonObject.getString("ID"), jsonObject.getString("NAME"), jsonObject.getString("parent")));
+                    categoriesArrayList.add(new Categories(jsonObject.getString("ID"), jsonObject.getString("NAME"), "MOBILES"));
                 }
                 initializeData();
                 tabLayout.setupWithViewPager(viewPager);
@@ -379,7 +446,10 @@ private DrawerLayout mDrawerLayout;
         }
     }
 
-
+    public boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
+    }
 
 
     private void promptSpeechInput() {
@@ -424,49 +494,68 @@ private DrawerLayout mDrawerLayout;
 
 
 
-    @Override
-    public void addSize(String size) {
-        sizeFilterArray.add(size);
-        System.out.println("Add Size: "+size);
-    }
+//    @Override
+//    public void addSize(String size) {
+//        sizeFilterArray.add(size);
+//        System.out.println("Add Size: "+size);
+//    }
+//
+//    @Override
+//    public void removeSize(String size) {
+//        for(int i=0;i<sizeFilterArray.size();i++){
+//            if(sizeFilterArray.get(i).equalsIgnoreCase(size))
+//                sizeFilterArray.remove(i);
+//        }
+//        System.out.println("Remove Size: " + size);
+//    }
+//
+//    @Override
+//    public void addBrand(String brand) {
+//        brandFilterArray.add(brand);
+//        System.out.println("Add Rating: "+brand);
+//    }
+//
+//    @Override
+//    public void removeBrand(String brand) {
+//        for(int i=0;i<brandFilterArray.size();i++){
+//            if(brandFilterArray.get(i).equalsIgnoreCase(brand))
+//                brandFilterArray.remove(i);
+//        }
+//        System.out.println("Remove Brand: " + brand);
+//    }
+//
+//    @Override
+//    public void addRating(String ratings) {
+//        ratingFilterArray.add(ratings);
+//        System.out.println("Add Rating: "+ratings);
+//    }
+//
+//    @Override
+//    public void removeRating(String ratings) {
+//        for(int i=0;i<ratingFilterArray.size();i++){
+//            if(ratingFilterArray.get(i).equalsIgnoreCase(ratings))
+//                ratingFilterArray.remove(i);
+//        }
+//        System.out.println("Remove Rating: " + ratings);
+//    }
+//
 
     @Override
-    public void removeSize(String size) {
-        for(int i=0;i<sizeFilterArray.size();i++){
-            if(sizeFilterArray.get(i).equalsIgnoreCase(size))
-                sizeFilterArray.remove(i);
+    public void updateFilters(String keywords, String catString, ArrayList<String> filterStringArray, ArrayList<String> filterValuesArray, String minValue, String maxValue) {
+        filterFinalString = "";
+        this.filterValuesArray = filterValuesArray;
+        for(int i=0; i<filterStringArray.size();i++){
+            filterFinalString = filterFinalString+filterStringArray.get(i);
         }
-        System.out.println("Remove Size: " + size);
-    }
-
-    @Override
-    public void addBrand(String brand) {
-        brandFilterArray.add(brand);
-        System.out.println("Add Rating: "+brand);
-    }
-
-    @Override
-    public void removeBrand(String brand) {
-        for(int i=0;i<brandFilterArray.size();i++){
-            if(brandFilterArray.get(i).equalsIgnoreCase(brand))
-                brandFilterArray.remove(i);
+        filterFinalString = filterFinalString+"&min-price="+minValue+"&max-price="+maxValue;
+        this.catString =catString;
+        try {
+            this.keywords= URLEncoder.encode(keywords, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
-        System.out.println("Remove Brand: " + brand);
-    }
-
-    @Override
-    public void addRating(String ratings) {
-        ratingFilterArray.add(ratings);
-        System.out.println("Add Rating: "+ratings);
-    }
-
-    @Override
-    public void removeRating(String ratings) {
-        for(int i=0;i<ratingFilterArray.size();i++){
-            if(ratingFilterArray.get(i).equalsIgnoreCase(ratings))
-                ratingFilterArray.remove(i);
-        }
-        System.out.println("Remove Rating: " + ratings);
+        System.out.println("filterFinalString: "+filterFinalString);
+        System.out.println("catString: "+catString);
     }
 
     @Override
@@ -478,51 +567,51 @@ private DrawerLayout mDrawerLayout;
         ratingFilterArray = new ArrayList<String>();
         brandFilterArray = new ArrayList<String>();
     }
-
-    @Override
-    public void addColor(String color) {
-        colorFilterArray.add(color);
-        System.out.println("Add Color: "+color);
-    }
-
-    @Override
-    public void removeColor(String color) {
-        for(int i=0;i<colorFilterArray.size();i++){
-            if(colorFilterArray.get(i).equalsIgnoreCase(color))
-                colorFilterArray.remove(i);
-        }
-        System.out.println("Remove Color: " + color);
-    }
-
-    @Override
-    public void addTag(String tag) {
-        tagsFilterArray.add(tag);
-        System.out.println("Add Color: "+tag);
-    }
-
-    @Override
-    public void removeTag(String tag) {
-        for(int i=0;i<tagsFilterArray.size();i++){
-            if(tagsFilterArray.get(i).equalsIgnoreCase(tag))
-                tagsFilterArray.remove(i);
-        }
-        System.out.println("Remove Color: " + tag);
-    }
-
-    @Override
-    public void addPrice(String price) {
-        priceFilterArray.add(price);
-        System.out.println("Add Price: "+price);
-    }
-
-    @Override
-    public void removePrice(String price) {
-        for(int i=0;i<priceFilterArray.size();i++){
-            if(priceFilterArray.get(i).equalsIgnoreCase(price))
-                priceFilterArray.remove(i);
-        }
-        System.out.println("Remove Color: " + price);
-    }
+//
+//    @Override
+//    public void addColor(String color) {
+//        colorFilterArray.add(color);
+//        System.out.println("Add Color: "+color);
+//    }
+//
+//    @Override
+//    public void removeColor(String color) {
+//        for(int i=0;i<colorFilterArray.size();i++){
+//            if(colorFilterArray.get(i).equalsIgnoreCase(color))
+//                colorFilterArray.remove(i);
+//        }
+//        System.out.println("Remove Color: " + color);
+//    }
+//
+//    @Override
+//    public void addTag(String tag) {
+//        tagsFilterArray.add(tag);
+//        System.out.println("Add Color: "+tag);
+//    }
+//
+//    @Override
+//    public void removeTag(String tag) {
+//        for(int i=0;i<tagsFilterArray.size();i++){
+//            if(tagsFilterArray.get(i).equalsIgnoreCase(tag))
+//                tagsFilterArray.remove(i);
+//        }
+//        System.out.println("Remove Color: " + tag);
+//    }
+//
+//    @Override
+//    public void addPrice(String price) {
+//        priceFilterArray.add(price);
+//        System.out.println("Add Price: "+price);
+//    }
+//
+//    @Override
+//    public void removePrice(String price) {
+//        for(int i=0;i<priceFilterArray.size();i++){
+//            if(priceFilterArray.get(i).equalsIgnoreCase(price))
+//                priceFilterArray.remove(i);
+//        }
+//        System.out.println("Remove Color: " + price);
+//    }
 
 
 
@@ -530,8 +619,8 @@ private DrawerLayout mDrawerLayout;
         public void onTaskComplete(String response) {
             try {
                 JSONObject obj = new JSONObject(response);
-                if(obj.getBoolean("errors")) {
-                    Snackbar.make(findViewById(android.R.id.content), obj.getString("message"), Snackbar.LENGTH_LONG)
+                if(obj.getJSONObject("OUTPUT").has("ERRORS")) {
+                    Snackbar.make(findViewById(android.R.id.content), obj.getJSONObject("OUTPUT").getJSONArray("ERRORS").getJSONObject(0).getString("MESSAGE"), Snackbar.LENGTH_LONG)
                             .setActionTextColor(Color.RED)
                             .show();
                 }
@@ -565,14 +654,17 @@ private DrawerLayout mDrawerLayout;
         public void onTaskComplete(String response) {
             try {
                 JSONObject mMembersJSON;
+                System.out.println("CATE" + response);
                 Log.v(TAG, response);
                 mMembersJSON = new JSONObject(response);
-                JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_CATEGORY_LIST_NAME);
+                //JSONArray jsonArray = mMembersJSON.getJSONArray(Constants.JSON_CATEGORY_LIST_NAME);
+                JSONArray jsonArray=mMembersJSON.getJSONObject("OUTPUT").getJSONObject("DATA").getJSONArray("SECTION_LIST");
                 int length = jsonArray.length();
 
                 for(int i=0;i<length;i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    categoriesArrayList.add(new Categories(jsonObject.getString("id"), jsonObject.getString("name"), jsonObject.getString("parent")));
+                   // categoriesArrayList.add(new Categories(jsonObject.getString("ID"), jsonObject.getString("NAME"), jsonObject.getString("parent")));
+                    categoriesArrayList.add(new Categories(jsonObject.getString("ID"), jsonObject.getString("NAME"), "MOBILES"));
 
                 }
 
@@ -607,7 +699,7 @@ private DrawerLayout mDrawerLayout;
 
         if (viewPager != null) {
             if(selectedTabIndex==0){
-                adapter.addFragment(new HotDealsFragment(null, colorFilterArray, tagsFilterArray, priceFilterArray, sizeFilterArray, brandFilterArray, ratingFilterArray,true, true), "All");
+                adapter.addFragment(new HotDealsFragment(null, catString, filterFinalString, filterValuesArray, keywords, true, true), "All");
             }
             else{
                 adapter.addFragment(new HotDealsFragment(), "All");
@@ -619,7 +711,7 @@ private DrawerLayout mDrawerLayout;
 
             for (int i = 0; i < size; i++) {
                 if (selectedTabIndex == i+1) {
-                    adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId(), colorFilterArray, tagsFilterArray, priceFilterArray,sizeFilterArray, brandFilterArray, ratingFilterArray, true, true), categoriesArrayList.get(i).getName());
+                    adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId(), catString, filterFinalString, filterValuesArray, keywords, true, true), categoriesArrayList.get(i).getName());
                 } else {
                     adapter.addFragment(new HotDealsFragment(categoriesArrayList.get(i).getId()), categoriesArrayList.get(i).getName());
                 }
@@ -633,7 +725,8 @@ private DrawerLayout mDrawerLayout;
         selectedTabIndex = -1;
     }
 
-    private void initializeData(){
+    private void
+    initializeData(){
 
 //        adapter = new Adapter(getSupportFragmentManager());
         if(viewPager!=null){
